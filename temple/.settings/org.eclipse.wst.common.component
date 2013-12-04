@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="temple">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="temple.common.jar" deploy-path="/lib" handle="module:/resource/temple.common/temple.common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.ejb.client.jar" deploy-path="/lib" handle="module:/resource/temple.ejb.client/temple.ejb.client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.ejb.jar" deploy-path="/" handle="module:/resource/temple.ejb/temple.ejb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.model.jar" deploy-path="/lib" handle="module:/resource/temple.model/temple.model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.cdi.client.jar" deploy-path="/lib" handle="module:/resource/temple.cdi.client/temple.cdi.client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.cdi.jar" deploy-path="/lib" handle="module:/resource/temple.cdi/temple.cdi">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.web.client.jar" deploy-path="/lib" handle="module:/resource/temple.web.client/temple.web.client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>

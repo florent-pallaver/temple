@@ -1,0 +1,9 @@
+/AccessDeniedException.class
+/IncorrectPasswordException.class
+/NoUserSessionException.class
+/SessionException.class
+/SessionManager.class
+/SignInException.class
+/SignUpException.class
+/UpdatePasswordException.class
+/UserNotFoundException.class

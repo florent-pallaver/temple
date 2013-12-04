@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: temple.common.jar 
+ temple.model.jar
+
