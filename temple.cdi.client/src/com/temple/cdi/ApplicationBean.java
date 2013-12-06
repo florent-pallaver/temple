@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * TODOC
+ * Qualifier for a bean implemented by the application.
  * 
  * @author Florent Pallaver
  * @version 1.0

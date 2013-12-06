@@ -13,9 +13,9 @@ import javax.xml.registry.FindException;
 import com.temple.ejb.TempleManager;
 import com.temple.model.EntityKey;
 import com.temple.model.TempleEntity;
+import com.temple.model.filter.AbstractPageableEntityFilter;
 import com.temple.model.filter.EntityFilter;
 import com.temple.model.filter.FindMaxFilter;
-import com.temple.model.filter.AbstractPageableEntityFilter;
 
 /**
  * TODOC
@@ -111,9 +111,9 @@ public interface TempleEntityManager extends TempleManager {
 	void persist(TempleEntity po, boolean flush) throws EntityException;
 
 	/**
-	 * @param po
+	 * @param tes
 	 */
-	void update(TempleEntity po) throws UpdateException;
+	void update(TempleEntity... tes) throws UpdateException;
 
 	/**
 	 * @param po
@@ -121,10 +121,10 @@ public interface TempleEntityManager extends TempleManager {
 	void delete(TempleEntity po) throws EntityException;
 
 	/**
-	 * @param po
-	 * @param id
+	 * @param clazz
+	 * @param ids
 	 */
-	void deleteById(Class<? extends TempleEntity> clazz, Serializable id) throws EntityException;
+	void deleteById(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException;
 
 	/**
 	 * @param po

@@ -44,7 +44,7 @@ public class SessionBean extends AbstractRequestBean {
 		try {
 			this.sessionManager.signIn(this.login, this.password);
 		} catch (final SignInException e) {
-			this.addErrorMessage("paris_forms_signIn", e);
+			this.addErrorMessage(e);
 		}
 	}
 

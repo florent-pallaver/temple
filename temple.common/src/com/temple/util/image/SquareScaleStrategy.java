@@ -38,7 +38,7 @@ public class SquareScaleStrategy implements ScaleStrategy {
 			sw = dimension;
 			sh = (int) Math.round(h * ratio);
 			tx = 0;
-			ty = sw - sh / 2;
+			ty = (sw - sh) / 2;
 		}
 		final BufferedImage dstImg = new BufferedImage(dimension, dimension, srcImg.getType());
 		final Graphics2D g = dstImg.createGraphics();

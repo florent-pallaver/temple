@@ -27,6 +27,12 @@ public @interface CDIApplicationParameter {
 	 */
 	Type value();
 
+	/**
+	 * TODOC
+	 * 
+	 * @author Florent Pallaver
+	 * @version 1.0
+	 */
 	public static enum Type {
 		USER_CLASS,
 		LANGUAGE_BUNDLE,

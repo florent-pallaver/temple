@@ -3,6 +3,7 @@ package com.temple.web.servlet.filter;
 import java.io.IOException;
 
 import javax.enterprise.inject.Instance;
+import javax.faces.application.ResourceHandler;
 import javax.inject.Inject;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -25,7 +26,7 @@ import com.temple.web.cdi.request.RequestParser;
 @WebFilter(urlPatterns = "/*", servletNames = "Faces Servlet")
 public class URLRewriter extends AbstractFilter {
 
-	private static final String JAVAX_FACES_RESOURCE = "javax.faces.resource";
+	private static final String JAVAX_FACES_RESOURCE = ResourceHandler.RESOURCE_IDENTIFIER.substring(1);
 
 	@Inject
 	@ApplicationBean

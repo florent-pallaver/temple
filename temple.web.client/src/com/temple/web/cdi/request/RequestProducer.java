@@ -65,7 +65,7 @@ public class RequestProducer extends AbstractTempleBean {
 			try {
 				i = Integer.valueOf(p);
 			} catch (final NumberFormatException e) {
-				this.logThrowable(p + " is not an integer", e);
+				this.warning(p + " is not an integer - " + e.getMessage());
 			}
 		}
 		return i;

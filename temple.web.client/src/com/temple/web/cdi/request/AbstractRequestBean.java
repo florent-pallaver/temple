@@ -19,6 +19,10 @@ import com.temple.web.cdi.AbstractTempleWebBean;
  */
 public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 
+	private static final String warningMessagesClientId = "warningMessages";
+
+	private static final String errorMessagesClientId = "errorMessages";
+
 	@Inject
 	@TempleBean
 	private LanguageBean languageBean;
@@ -28,7 +32,7 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	protected SessionBean sessionBean;
 
 	protected void addWarningMessage(String clientId, String key, Object... parameters) {
-		this.addWarning(clientId, this.languageBean.getString(key, parameters));
+		this.addWarning(clientId == null ? AbstractRequestBean.warningMessagesClientId : clientId, this.languageBean.getString(key, parameters));
 	}
 
 	/**
@@ -37,8 +41,7 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	 * @param e
 	 */
 	protected void addErrorMessage(LocaleViewableTempleException e) {
-		this.logThrowable(e);
-		this.addErrorMessage(null, e);
+		this.addErrorMessage(AbstractRequestBean.errorMessagesClientId, e);
 	}
 
 	/**
@@ -71,7 +74,7 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	 * @param parameters
 	 */
 	protected void addErrorMessage(String clientId, String messageKey, Object... parameters) {
-		this.addError(clientId, this.languageBean.getString(messageKey, parameters));
+		this.addError(clientId == null ? AbstractRequestBean.errorMessagesClientId : clientId, this.languageBean.getString(messageKey, parameters));
 	}
 
 	/**

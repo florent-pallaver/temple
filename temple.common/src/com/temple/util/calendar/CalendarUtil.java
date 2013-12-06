@@ -1,6 +1,7 @@
 package com.temple.util.calendar;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * TODOC
@@ -11,10 +12,36 @@ import java.util.Calendar;
 public abstract class CalendarUtil {
 
 	/**
+	 * Finds the nearest {@link Date} to today so that one's age will be at least the given age.
+	 * 
+	 * @param age - a minimum age
+	 * @return TODOC
+	 */
+	public static final Date findMaxDateForMinAge(int age) {
+		final Calendar c = Calendar.getInstance();
+		c.add(Calendar.YEAR, -age);
+		return c.getTime();
+	}
+
+	/**
+	 * Finds the farthest {@link Date} from today so that one's age will be at most the given age.
+	 * TODOC
+	 * 
+	 * @param age
+	 * @return
+	 */
+	public static final Date findMinDateForMaxAge(int age) {
+		final Calendar c = Calendar.getInstance();
+		c.add(Calendar.YEAR, -age - 1);
+		c.add(Calendar.DATE, 1);
+		return c.getTime();
+	}
+
+	/**
 	 * TODOC
 	 * 
 	 * @param c - a date
-	 * @return the age corresponding to the given date right now.
+	 * @return the age in year corresponding to the given date right now.
 	 */
 	public static final int getAge(Calendar c) {
 		final Calendar now = Calendar.getInstance();

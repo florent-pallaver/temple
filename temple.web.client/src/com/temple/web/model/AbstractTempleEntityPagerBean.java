@@ -3,7 +3,6 @@
  */
 package com.temple.web.model;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.temple.LocaleViewableTempleException;
@@ -29,7 +28,7 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity> exte
 
 	protected int pageCount = 0;
 
-	private PartialResults<M> results = null;
+	protected List<M> results = null;
 
 	AbstractTempleEntityPagerBean() {
 		this(null);
@@ -51,14 +50,18 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity> exte
 		if (this.results == null) {
 			this.info("Getting all");
 			try {
-				this.results = this.getFirstPage();
-				this.totalCount = this.results.getTotalCount();
-				this.resetPageCount();
+				final PartialResults<M> page = this.getFirstPage();
+				this.results = page.getAll();
+				this.totalCount = page.getTotalCount();
 			} catch (final LocaleViewableTempleException e) {
 				this.addErrorMessage(e);
+				this.results = null;
+				this.totalCount = 0;
+			} finally {
+				this.resetPageCount();
 			}
 		}
-		return this.results == null ? Collections.<M> emptyList() : this.results.getAll();
+		return this.results;
 	}
 
 	protected abstract PartialResults<M> getFirstPage() throws LocaleViewableTempleException;
@@ -68,8 +71,7 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity> exte
 		if (this.results == null) {
 			return null;
 		}
-		final List<M> objects = this.results.getAll();
-		return objects.isEmpty() ? null : objects.get(index % objects.size());
+		return this.results.isEmpty() ? null : this.results.get(index % this.results.size());
 	}
 
 	@Override

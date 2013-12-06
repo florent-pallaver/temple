@@ -7,12 +7,14 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.temple.cdi.ApplicationBean;
+import com.temple.cdi.CDIConfiguration;
 import com.temple.cdi.TempleBean;
-import com.temple.cdi.application.ApplicationManager;
 import com.temple.cdi.impl.AbstractCDIBean;
 import com.temple.cdi.session.LanguageBean;
 import com.temple.impl.view.DefaultLocaleViewable;
 import com.temple.util.human.Language;
+import com.temple.view.LocaleBundle;
 import com.temple.view.LocaleStringViewHelper;
 import com.temple.view.LocaleViewable;
 
@@ -29,15 +31,22 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	@TempleBean
-	private ApplicationManager am;
+	private LocaleBundle bundle;
 
-	// @Inject
 	private Language currentLanguage;
 
+	/**
+	 * Constructor.
+	 */
 	TempleLanguageBean() {
 		super();
+	}
+
+	@Inject
+	TempleLanguageBean(@ApplicationBean CDIConfiguration conf) {
+		this();
+		this.currentLanguage = conf.getDefaultLanguage();
+		this.bundle = conf.getLocaleBundle();
 	}
 
 	@Override
@@ -58,7 +67,7 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 
 	@Override
 	public String getString(String key, Object... parameters) {
-		return this.getString(new DefaultLocaleViewable(key, parameters, this.am.getLocaleBundle()));
+		return this.getString(new DefaultLocaleViewable(key, parameters, this.bundle));
 	}
 
 	@Override
@@ -68,6 +77,6 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 
 	@Override
 	public String getDetailedString(String key, Object... parameters) {
-		return this.getDetailedString(new DefaultLocaleViewable(key, parameters, this.am.getLocaleBundle()));
+		return this.getDetailedString(new DefaultLocaleViewable(key, parameters, this.bundle));
 	}
 }

@@ -11,7 +11,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -140,11 +139,13 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public void update(TempleEntity po) throws UpdateException {
-		try {
-			this.em.merge(po);
-		} catch (final PersistenceException e) {
-			throw new UpdateException(po, e);
+	public void update(TempleEntity... tes) throws UpdateException {
+		for (final TempleEntity te : tes) {
+			try {
+				this.em.merge(te);
+			} catch (final PersistenceException e) {
+				throw new UpdateException(te, e);
+			}
 		}
 	}
 
@@ -158,11 +159,13 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public void deleteById(Class<? extends TempleEntity> clazz, Serializable id) throws EntityException {
-		try {
-			this.em.remove(this.em.getReference(clazz, id));
-		} catch (final PersistenceException e) {
-			throw new EntityException(clazz, id, e);
+	public void deleteById(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException {
+		for (final Serializable id : ids) {
+			try {
+				this.em.remove(this.em.getReference(clazz, id));
+			} catch (final PersistenceException e) {
+				throw new EntityException(clazz, id, e);
+			}
 		}
 	}
 
