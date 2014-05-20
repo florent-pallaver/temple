@@ -27,10 +27,6 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	@TempleBean
 	private LanguageBean languageBean;
 
-	@Inject
-	@TempleBean
-	protected SessionBean sessionBean;
-
 	protected void addWarningMessage(String clientId, String key, Object... parameters) {
 		this.addWarning(clientId == null ? AbstractRequestBean.warningMessagesClientId : clientId, this.languageBean.getString(key, parameters));
 	}

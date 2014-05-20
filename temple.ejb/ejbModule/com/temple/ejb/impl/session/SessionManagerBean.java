@@ -3,12 +3,16 @@ package com.temple.ejb.impl.session;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import com.temple.Module;
 import com.temple.bean.AbstractTempleBean;
 import com.temple.cdi.CDIApplicationParameter;
 import com.temple.cdi.CDIApplicationParameter.Type;
+import com.temple.cdi.TempleBean;
+import com.temple.cdi.request.SignInEvent;
+import com.temple.cdi.session.SessionBean;
 import com.temple.cdi.util.ClassWrapper;
 import com.temple.credentials.ejb.model.CredentialsManager;
 import com.temple.credentials.ejb.model.IncorrectPasswordException;
@@ -44,7 +48,11 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 	private ClassWrapper<TempleUser> userClass;
 
 	@Inject
-	private SessionData currentSession;
+	private Event<SignInEvent> signInEvent;
+
+	@Inject
+	@TempleBean
+	private SessionBean currentSession;
 
 	SessionManagerBean() {
 		super(Module.EJB);
@@ -59,6 +67,7 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 				throw new UserNotFoundException(login);
 			}
 			this.currentSession.setUser(u);
+			this.signInEvent.fire(new SignInEvent(u));
 		} catch (final FindEntityException | LoginNotFoundException e) {
 			throw new UserNotFoundException(login, e);
 		} catch (final IncorrectPasswordException e) {
@@ -77,11 +86,6 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 	}
 
 	@Override
-	public void checkSession() throws NoUserSessionException {
-		this.getSessionUser();
-	}
-
-	@Override
 	public void checkOwnership(Integer ownerId) throws SessionException {
 		if (!this.getSessionUser().getId().equals(ownerId)) {
 			throw new AccessDeniedException();
@@ -95,15 +99,5 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 			throw new NoUserSessionException();
 		}
 		return user;
-	}
-
-	@Override
-	public Object getParameter(String key) throws SessionException {
-		return this.currentSession.get(key);
-	}
-
-	@Override
-	public void setParameter(String key, Object value) throws SessionException {
-		this.currentSession.set(key, value);
 	}
 }

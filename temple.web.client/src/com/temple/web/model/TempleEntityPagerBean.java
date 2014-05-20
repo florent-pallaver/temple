@@ -6,6 +6,7 @@ package com.temple.web.model;
 import java.util.List;
 
 import com.temple.model.TempleEntity;
+import com.temple.model.filter.EntityFilter;
 import com.temple.util.Pageable;
 
 /**
@@ -15,7 +16,12 @@ import com.temple.util.Pageable;
  * @version 1.0
  * @param <M>
  */
-public interface TempleEntityPagerBean<M extends TempleEntity> extends Pageable {
+public interface TempleEntityPagerBean<M extends TempleEntity, F extends EntityFilter<M>> extends Pageable {
+
+	/**
+	 * @return the filter
+	 */
+	F getFilter();
 
 	/**
 	 * TODOC

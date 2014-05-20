@@ -5,13 +5,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.xml.bind.DatatypeConverter;
@@ -33,47 +27,6 @@ public abstract class TempleUtil {
 	 * Constructor
 	 */
 	protected TempleUtil() {}
-
-	// TODO move to CalendarUtil
-	/**
-	 * TODOC
-	 * 
-	 * @param date
-	 * @return
-	 */
-	public static final int findAge(Date date) {
-		final Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		return TempleUtil.findAges(c)[0];
-	}
-
-	/**
-	 * TODOC
-	 * 
-	 * @param date
-	 * @return
-	 */
-	public static final int findAge(Calendar date) {
-		return TempleUtil.findAges(date)[0];
-	}
-
-	/**
-	 * TODOC
-	 * 
-	 * @param dates
-	 * @return
-	 */
-	public static final int[] findAges(Calendar... dates) {
-		final Calendar now = Calendar.getInstance();
-		final int nowY = now.get(Calendar.YEAR);
-		final int[] ages = new int[dates.length];
-		for (int i = dates.length; i-- > 0;) {
-			final int dateY = dates[i].get(Calendar.YEAR);
-			now.set(Calendar.YEAR, dateY);
-			ages[i] = nowY - dateY + (now.compareTo(dates[i]) < 0 ? -1 : 0);
-		}
-		return ages;
-	}
 
 	/**
 	 * TODOC
@@ -238,9 +191,7 @@ public abstract class TempleUtil {
 	public static final int linearSearch(Object[] a, Object v) {
 		final int l = a.length;
 		int i = 0;
-		for (; i < l && !TempleUtil.equals(a[i], v); i++) {
-			;
-		}
+		for (; i < l && !TempleUtil.equals(a[i], v); i++) {}
 		return i == l ? TempleUtil.VALUE_NOT_FOUND : i;
 	}
 
@@ -357,16 +308,44 @@ public abstract class TempleUtil {
 	 * TODOC
 	 * 
 	 * @param o
+	 * @param f
+	 * @return
+	 * @throws RuntimeException
+	 */
+	protected static final void set(Object o, AccessibleObject f, Object v) {
+		try {
+			final boolean accessible = f.isAccessible();
+			if (!accessible) {
+				f.setAccessible(true);
+			}
+			if (f instanceof Method) {
+				((Method) f).invoke(o, v);
+			} else {
+				((Field) f).set(o, v);
+			}
+			if (!accessible) {
+				f.setAccessible(false);
+			}
+		} catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
+			// should never happen !
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * TODOC
+	 * 
+	 * @param o
 	 * @return
 	 */
 	public static final String toString(Object o) {
 		final StringBuilder sb = new StringBuilder(o.getClass().getName()).append('[');
-		final Field[] fields = ToStringFieldsCache.instance.getFields(o.getClass());
+		final AnnotatedField<ToString>[] fields = Lazy.toStringFieldsCache.getFields(o.getClass());
 		final int l = fields.length;
 		if (l > 0) {
-			sb.append(fields[0].getName()).append(':').append(TempleUtil.getString(o, fields[0]));
+			sb.append(fields[0].field.getName()).append(':').append(TempleUtil.getString(o, fields[0].field));
 			for (int i = 1; i < l; i++) {
-				sb.append(", ").append(fields[i].getName()).append(':').append(TempleUtil.get(o, fields[i]));
+				sb.append(", ").append(fields[i].field.getName()).append(':').append(TempleUtil.get(o, fields[i].field));
 			}
 		}
 		return sb.append(']').toString();
@@ -377,34 +356,9 @@ public abstract class TempleUtil {
 		return type.isArray() && !type.getComponentType().isPrimitive() ? Arrays.toString((Object[]) TempleUtil.get(o, f)) : TempleUtil.get(o, f);
 	}
 
-	private static final class ToStringFieldsCache {
+	private static final class Lazy {
 
-		static final ToStringFieldsCache instance = new ToStringFieldsCache();
-
-		private final Map<Class<?>, Field[]> cache = new HashMap<>();
-
-		private ToStringFieldsCache() {
-			super();
-		}
-
-		Field[] getFields(Class<?> c) {
-			Field[] toStringFields = this.cache.get(c);
-			if (toStringFields == null) {
-				final List<Field> fields = new ArrayList<>();
-				for (final Field f : c.getDeclaredFields()) {
-					if (f.isAnnotationPresent(ToString.class)) {
-						fields.add(f);
-					}
-				}
-				final Class<?> sc = c.getSuperclass();
-				if (sc != null) {
-					fields.addAll(0, Arrays.asList(this.getFields(sc)));
-				}
-				toStringFields = fields.toArray(new Field[fields.size()]);
-				this.cache.put(c, toStringFields);
-			}
-			return toStringFields;
-		}
+		static final AnnotatedFieldCache<ToString> toStringFieldsCache = new AnnotatedFieldCache<>(ToString.class);
 	}
 	/* public static final boolean equals(Object... objects) { boolean e = true; int l = objects.length; if(l > 0) {
 	 * Object r = objects[0]; for(int i = l; e &&

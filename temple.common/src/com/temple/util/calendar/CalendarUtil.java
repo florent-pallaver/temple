@@ -42,7 +42,9 @@ public abstract class CalendarUtil {
 	 * 
 	 * @param c - a date
 	 * @return the age in year corresponding to the given date right now.
+	 * @deprecated use {@link #findAge(Date)} instead
 	 */
+	@Deprecated
 	public static final int getAge(Calendar c) {
 		final Calendar now = Calendar.getInstance();
 		final int thisYear = now.get(Calendar.YEAR);
@@ -52,6 +54,36 @@ public abstract class CalendarUtil {
 		final int birthMonth = c.get(Calendar.MONTH);
 		final int birthDay = c.get(Calendar.DAY_OF_MONTH);
 		return thisYear - birthYear - (thisMonth == birthMonth && thisDay < birthDay || thisMonth < birthMonth ? 1 : 0);
+	}
+
+	/**
+	 * TODOC
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static final int findAge(Date date) {
+		final Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return CalendarUtil.findAges(c)[0];
+	}
+
+	/**
+	 * TODOC
+	 * 
+	 * @param dates
+	 * @return
+	 */
+	public static final int[] findAges(Calendar... dates) {
+		final Calendar now = Calendar.getInstance();
+		final int nowY = now.get(Calendar.YEAR);
+		final int[] ages = new int[dates.length];
+		for (int i = dates.length; i-- > 0;) {
+			final int dateY = dates[i].get(Calendar.YEAR);
+			now.set(Calendar.YEAR, dateY);
+			ages[i] = nowY - dateY + (now.compareTo(dates[i]) < 0 ? -1 : 0);
+		}
+		return ages;
 	}
 
 	private CalendarUtil() {}

@@ -1,6 +1,5 @@
 package com.temple.util.geo;
 
-
 /**
  * Enumeration of all countries in the world!
  * 
@@ -53,7 +52,7 @@ public enum Country implements GeoLocatable {
 	}
 
 	/**
-	 * @return the ISO code of this country.
+	 * @return the 2 letters ISO code of this country.
 	 */
 	public String getIsoCode() {
 		return this.isoCode;

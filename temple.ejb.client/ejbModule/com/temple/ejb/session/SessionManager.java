@@ -25,14 +25,6 @@ public interface SessionManager {
 	void signOut();
 
 	/**
-	 * Checks that the current session has a {@link TempleUser} attached to it.
-	 * 
-	 * @throws NoUserSessionException if no {@link TempleUser} is attached to the current session.
-	 */
-	@Deprecated
-	void checkSession() throws NoUserSessionException;
-
-	/**
 	 * TODOC
 	 * 
 	 * @param ownerId
@@ -51,22 +43,4 @@ public interface SessionManager {
 	 * @throws NoUserSessionException
 	 */
 	TempleUser getSessionUser() throws NoUserSessionException;
-
-	/**
-	 * TODOC
-	 * 
-	 * @param key
-	 * @return
-	 * @throws SessionException
-	 */
-	Object getParameter(String key) throws SessionException;
-
-	/**
-	 * TODOC
-	 * 
-	 * @param sid
-	 * @param value
-	 * @throws SessionException
-	 */
-	void setParameter(String key, Object value) throws SessionException;
 }

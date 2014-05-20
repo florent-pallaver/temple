@@ -14,7 +14,8 @@ import com.temple.util.TempleUtil;
  * 
  * @author Florent Pallaver
  * @version 1.0
- * @see CryptAlgorithm
+ * @see MD5CryptAlgorithm
+ * @see SHA512Base64CryptAlgorithm
  * @see NoCryptAlgorithm
  */
 public final class Security {
@@ -52,18 +53,54 @@ public final class Security {
 	}
 
 	/**
-	 * Implementation of {@link UDCryptAlgorithm} to crypt a String using {@value #algorithm} and return it
-	 * base64-encoded.
+	 * Implementation of {@link UDCryptAlgorithm} to crypt a String using {@value #algorithm}.
 	 * 
 	 * @author Florent Pallaver
+	 * @version 1.0
 	 * @see #instance
 	 */
-	public static final class CryptAlgorithm implements UDCryptAlgorithm {
+	public static final class MD5CryptAlgorithm implements UDCryptAlgorithm {
 
 		/**
 		 * Sole instance of this class
 		 */
-		public static final UDCryptAlgorithm instance = new CryptAlgorithm();
+		public static final UDCryptAlgorithm instance = new MD5CryptAlgorithm();
+
+		/**
+		 * The algorithm used by this class to crypt string.
+		 */
+		public static final String algorithm = "MD5";
+
+		private final MessageDigest md;
+
+		private MD5CryptAlgorithm() {
+			try {
+				this.md = MessageDigest.getInstance(MD5CryptAlgorithm.algorithm);
+			} catch (final NoSuchAlgorithmException e) {
+				throw new Error(MD5CryptAlgorithm.algorithm + " is not available in this environment", e);
+			}
+		}
+
+		@Override
+		public String encrypt(String s) {
+			return new String(this.md.digest(s.getBytes()));
+		}
+	}
+
+	/**
+	 * Implementation of {@link UDCryptAlgorithm} to crypt a String using {@value #algorithm} and return it
+	 * base64-encoded.
+	 * 
+	 * @author Florent Pallaver
+	 * @version 1.0
+	 * @see #instance
+	 */
+	public static final class SHA512Base64CryptAlgorithm implements UDCryptAlgorithm {
+
+		/**
+		 * Sole instance of this class
+		 */
+		public static final UDCryptAlgorithm instance = new SHA512Base64CryptAlgorithm();
 
 		/**
 		 * The algorithm used by this class to crypt string.
@@ -72,11 +109,11 @@ public final class Security {
 
 		private final MessageDigest md;
 
-		private CryptAlgorithm() {
+		private SHA512Base64CryptAlgorithm() {
 			try {
-				this.md = MessageDigest.getInstance(CryptAlgorithm.algorithm);
+				this.md = MessageDigest.getInstance(SHA512Base64CryptAlgorithm.algorithm);
 			} catch (final NoSuchAlgorithmException e) {
-				throw new Error(CryptAlgorithm.algorithm + " is not available in this environment", e);
+				throw new Error(SHA512Base64CryptAlgorithm.algorithm + " is not available in this environment", e);
 			}
 		}
 
@@ -90,9 +127,14 @@ public final class Security {
 	 * TODOC
 	 * 
 	 * @author Florent Pallaver
+	 * @version 1.0
+	 * @see #instance
 	 */
 	public static final class NoCryptAlgorithm implements BDCryptAlgorithm {
 
+		/**
+		 * Sole instance of this class.
+		 */
 		public static final BDCryptAlgorithm instance = new NoCryptAlgorithm();
 
 		private NoCryptAlgorithm() {}

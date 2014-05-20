@@ -35,9 +35,6 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 
 	private Language currentLanguage;
 
-	/**
-	 * Constructor.
-	 */
 	TempleLanguageBean() {
 		super();
 	}
@@ -57,6 +54,7 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 	@Override
 	public void setCurrentLanguage(Language language) {
 		this.currentLanguage = language;
+		// FIXME shouldn't be here !
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(language.getLocale());
 	}
 

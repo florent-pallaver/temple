@@ -85,6 +85,6 @@ public class CredentialsManagerBean implements CredentialsManager {
 	}
 
 	private final String crypt(String login, String salt, String rawPassword) {
-		return Security.CryptAlgorithm.instance.encrypt(salt + rawPassword + login);
+		return Security.SHA512Base64CryptAlgorithm.instance.encrypt(salt + rawPassword + login);
 	}
 }

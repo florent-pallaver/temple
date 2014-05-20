@@ -8,7 +8,8 @@ import java.util.List;
 import com.temple.LocaleViewableTempleException;
 import com.temple.ejb.model.PartialResults;
 import com.temple.model.TempleEntity;
-import com.temple.model.filter.AbstractPageableEntityFilter;
+import com.temple.model.filter.EntityFilter;
+import com.temple.util.Pageable;
 import com.temple.web.cdi.request.AbstractRequestBean;
 
 /**
@@ -18,11 +19,12 @@ import com.temple.web.cdi.request.AbstractRequestBean;
  * @version 1.0
  * @param <M>
  */
-public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity> extends AbstractRequestBean implements TempleEntityPagerBean<M> {
+public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends EntityFilter<M> & Pageable> extends AbstractRequestBean implements
+		TempleEntityPagerBean<M, F> {
 
 	// @Inject
 	// private Conversation conversation;
-	protected AbstractPageableEntityFilter<M> filter;
+	protected F filter;
 
 	protected int totalCount = 0;
 
@@ -40,9 +42,14 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity> exte
 	 * 
 	 * @param filter
 	 */
-	protected AbstractTempleEntityPagerBean(AbstractPageableEntityFilter<M> filter) {
+	protected AbstractTempleEntityPagerBean(F filter) {
 		super();
 		this.filter = filter;
+	}
+
+	@Override
+	public F getFilter() {
+		return this.filter;
 	}
 
 	@Override
