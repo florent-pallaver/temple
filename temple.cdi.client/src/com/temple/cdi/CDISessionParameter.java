@@ -9,8 +9,9 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
+ * Qualifier for application parameter.
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -22,13 +23,18 @@ public @interface CDISessionParameter {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	Type value();
 
 	public static enum Type {
+		/**
+		 *
+		 */
 		SIGNED_IN,
+		/**
+		 */
 		USER,
 	}
 }

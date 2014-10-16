@@ -27,7 +27,7 @@ import com.temple.model.filter.FindMaxFilter;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -111,12 +111,12 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 		try {
 			this.em.persist(po);
 			if (flush) {
-				if (this.isFinestLoggable()) {
-					this.finest("about to flush");
+				if (this.isDebugLoggable()) {
+					this.debug("about to flush");
 				}
 				this.em.flush();
-				if (this.isFinestLoggable()) {
-					this.finest("flush done");
+				if (this.isDebugLoggable()) {
+					this.debug("flush done");
 				}
 			}
 			if (this.isInfoLoggable()) {

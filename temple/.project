@@ -10,6 +10,8 @@
 		<project>temple.cdi.client</project>
 		<project>temple.cdi</project>
 		<project>temple.web.client</project>
+		<project>temple.credentials.ejb.client</project>
+		<project>signarkJPA</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

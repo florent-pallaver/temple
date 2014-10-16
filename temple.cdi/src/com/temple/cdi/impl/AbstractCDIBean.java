@@ -5,11 +5,11 @@ import com.temple.bean.AbstractTempleBean;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
-public class AbstractCDIBean extends AbstractTempleBean {
+public abstract class AbstractCDIBean extends AbstractTempleBean {
 
 	/**
 	 * Constructor.

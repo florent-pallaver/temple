@@ -9,8 +9,9 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
+ * Qualifier for request parameter.
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -22,7 +23,7 @@ public @interface CDIRequestParameter {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	Type value();

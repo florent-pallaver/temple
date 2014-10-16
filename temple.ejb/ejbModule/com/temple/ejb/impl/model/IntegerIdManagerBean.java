@@ -59,7 +59,7 @@ public class IntegerIdManagerBean extends AbstractEntityManagerBean implements I
 					this.info(mc + " " + maxId);
 					IdentifierGeneratorHelper.instance.register(mc, this.self);
 				} catch (InstantiationException | IllegalAccessException e) {
-					this.severe(e);
+					this.error(e);
 				}
 			}
 		}

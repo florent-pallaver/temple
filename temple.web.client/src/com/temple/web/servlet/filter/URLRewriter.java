@@ -18,7 +18,7 @@ import com.temple.web.cdi.request.RequestParser;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -46,14 +46,14 @@ public class URLRewriter extends AbstractFilter {
 		final String pi = this.parser.getApplicationURI(request);
 		final boolean b = pi.startsWith(URLRewriter.JAVAX_FACES_RESOURCE) || pi.startsWith(this.config.get().getStaticResourcePathPrefix());
 		if (!b) {
-			if (this.isConfigLoggable()) {
-				this.config("Dispatching " + pi);
+			if (this.isDebugLoggable()) {
+				this.debug("Dispatching " + pi);
 			}
 			// FIXME index.jsf to parameter !
 			request.getRequestDispatcher("/index.jsf").forward(request, response);
 		} else {
-			if (this.isConfigLoggable()) {
-				this.config("letting through " + pi);
+			if (this.isDebugLoggable()) {
+				this.debug("letting through " + pi);
 			}
 		}
 		return b;

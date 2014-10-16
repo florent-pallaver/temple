@@ -8,7 +8,7 @@ import javax.inject.Named;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -19,7 +19,7 @@ public class IsTrueValidatorBean extends AbstractTempleValidatorBean {
 	@Override
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		if (!Boolean.TRUE.equals(value)) {
-			final String clientId = component.getClientId(context);
+			// final String clientId = component.getClientId(context);
 			// this.addErrorMessage(clientId, clientId + "_rq");
 		}
 	}

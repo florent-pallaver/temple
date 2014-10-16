@@ -28,20 +28,8 @@ public abstract class AbstractLogger {
 		this.logger = Logger.getLogger(module.packageName + '.' + this.getClass().getSimpleName());
 	}
 
-	protected boolean isFinestLoggable() {
-		return this.logger.isLoggable(Level.FINEST);
-	}
-
-	protected boolean isFinerLoggable() {
-		return this.logger.isLoggable(Level.FINER);
-	}
-
-	protected boolean isFineLoggable() {
+	protected boolean isDebugLoggable() {
 		return this.logger.isLoggable(Level.FINE);
-	}
-
-	protected boolean isConfigLoggable() {
-		return this.logger.isLoggable(Level.CONFIG);
 	}
 
 	protected boolean isInfoLoggable() {
@@ -52,24 +40,12 @@ public abstract class AbstractLogger {
 		return this.logger.isLoggable(Level.WARNING);
 	}
 
-	protected boolean isSevereLoggable() {
+	protected boolean isErrorLoggable() {
 		return this.logger.isLoggable(Level.SEVERE);
 	}
 
-	protected void finest(Object arg0) {
-		this.log(Level.FINEST, arg0);
-	}
-
-	protected void finer(Object arg0) {
-		this.log(Level.FINER, arg0);
-	}
-
-	protected void fine(Object arg0) {
+	protected void debug(Object arg0) {
 		this.log(Level.FINE, arg0);
-	}
-
-	protected void config(Object arg0) {
-		this.log(Level.CONFIG, arg0);
 	}
 
 	protected void info(Object arg0) {
@@ -80,7 +56,7 @@ public abstract class AbstractLogger {
 		this.log(Level.WARNING, arg0);
 	}
 
-	protected void severe(Object arg0) {
+	protected void error(Object arg0) {
 		this.log(Level.SEVERE, arg0);
 	}
 

@@ -12,7 +12,7 @@ import com.temple.util.calendar.CalendarUtil;
 /**
  * TODOC
  * Allows null values as non null checks are to be done by other validators...
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -35,7 +35,7 @@ public class AgeLimitValidator implements ConstraintValidator<AgeLimit, DateInRa
 		if (c == null) {
 			b = true;
 		} else {
-			final int age = CalendarUtil.getAge(c);
+			final int age = CalendarUtil.findAges(c)[0];
 			b = this.min <= age && age <= this.max;
 		}
 		return b;
