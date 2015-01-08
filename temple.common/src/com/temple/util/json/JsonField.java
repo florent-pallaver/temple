@@ -10,7 +10,7 @@ import javax.json.JsonObjectBuilder;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -21,7 +21,7 @@ public @interface JsonField {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	Class<? extends Handler> handler() default StringHandler.class;
@@ -39,7 +39,7 @@ public @interface JsonField {
 	boolean outputable() default true;
 
 	/**
-	 * TODOC
+	 * TODOC {@link Handler}s implementation must be public
 	 * 
 	 * @author Florent Pallaver
 	 * @version 1.0
@@ -48,7 +48,7 @@ public @interface JsonField {
 
 		/**
 		 * TODOC
-		 * 
+		 *
 		 * @param job
 		 * @param name
 		 * @param value
@@ -57,7 +57,7 @@ public @interface JsonField {
 
 		/**
 		 * TODOC
-		 * 
+		 *
 		 * @param jo
 		 * @param name
 		 * @return

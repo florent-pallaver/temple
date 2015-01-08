@@ -1,4 +1,4 @@
-package com.temple.util.image;
+package com.temple.util.media.image;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;

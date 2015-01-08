@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -21,14 +21,14 @@ public interface UserIdentity extends Serializable {
 	int getUserId();
 
 	/**
-	 * @return the encrypted password
+	 * @return the encrypted pass
 	 */
-	String getEncryptedPassword();
+	String getEncryptedPass();
 
 	/**
-	 * Sets the encrypted password
-	 * 
-	 * @param encryptedPassword - the encrypted password to set
+	 * Sets the encrypted pass
+	 *
+	 * @param encryptedPass - the encrypted pass to set
 	 */
-	void setEncryptedPassword(String encryptedPassword);
+	void setEncryptedPass(String encryptedPass);
 }

@@ -12,20 +12,20 @@ import com.temple.util.ToString;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
 @Entity
 @Table(name = DefaultUserIdentity.TABLE_NAME, indexes = { @Index(name = DefaultUserIdentity.USER_ID_INDEX_NAME,
-		columnList = DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
+columnList = DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
 public class DefaultUserIdentity implements UserIdentity {
 
-	static final String TABLE_NAME = "user_identity";
+	static final String TABLE_NAME = "user_identities";
 
-	static final String USER_ID_INDEX_COLUMN_LIST = "userId";
+	static final String USER_ID_INDEX_COLUMN_LIST = "USER_ID";
 
-	static final String USER_ID_INDEX_NAME = "U_" + DefaultUserIdentity.TABLE_NAME + "_userId";
+	static final String USER_ID_INDEX_NAME = "U_" + DefaultUserIdentity.TABLE_NAME + "_" + DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST;
 
 	static final int LOGIN_MAX_LENGTH = 32;
 
@@ -41,13 +41,13 @@ public class DefaultUserIdentity implements UserIdentity {
 	private String login;
 
 	@Column(nullable = false, length = DefaultUserIdentity.PASSWORD_MAX_LENGTH)
-	private String password;
+	private String pass;
 
 	@Column(nullable = false, updatable = false, length = DefaultUserIdentity.SALT_MAX_LENGTH)
 	private String salt;
 
 	@ToString
-	@Column(nullable = false, updatable = false)
+	@Column(name = DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST, nullable = false, updatable = false)
 	private int userId;
 
 	protected DefaultUserIdentity() {}
@@ -55,15 +55,15 @@ public class DefaultUserIdentity implements UserIdentity {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param login
-	 * @param encryptedPassword
+	 * @param encryptedPass
 	 * @param salt
 	 */
-	public DefaultUserIdentity(String login, String encryptedPassword, String salt, int userId) {
+	public DefaultUserIdentity(String login, String encryptedPass, String salt, int userId) {
 		super();
 		this.login = login;
-		this.password = encryptedPassword;
+		this.pass = encryptedPass;
 		this.salt = salt;
 		this.userId = userId;
 	}
@@ -74,13 +74,13 @@ public class DefaultUserIdentity implements UserIdentity {
 	}
 
 	@Override
-	public String getEncryptedPassword() {
-		return this.password;
+	public String getEncryptedPass() {
+		return this.pass;
 	}
 
 	@Override
-	public void setEncryptedPassword(String password) {
-		this.password = password;
+	public void setEncryptedPass(String pass) {
+		this.pass = pass;
 	}
 
 	/**

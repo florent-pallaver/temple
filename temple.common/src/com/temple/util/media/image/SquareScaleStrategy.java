@@ -1,4 +1,4 @@
-package com.temple.util.image;
+package com.temple.util.media.image;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;

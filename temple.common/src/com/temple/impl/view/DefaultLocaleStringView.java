@@ -38,7 +38,7 @@ public class DefaultLocaleStringView extends AbstractLocaleView implements Local
 	 * @param bundle - TODOC
 	 */
 	protected DefaultLocaleStringView(Language language, LocaleBundle bundle) {
-		this(language, LocaleViewable.NO_PARAMETER, bundle);
+		this(language, LocaleViewable.NO_PARAMETERS, bundle);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class DefaultLocaleStringView extends AbstractLocaleView implements Local
 	 * @param bundle - TODOC
 	 */
 	public DefaultLocaleStringView(Language language, String key, LocaleBundle bundle) {
-		this(language, key, LocaleViewable.NO_PARAMETER, bundle);
+		this(language, key, LocaleViewable.NO_PARAMETERS, bundle);
 	}
 
 	/**

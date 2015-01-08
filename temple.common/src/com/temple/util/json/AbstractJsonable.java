@@ -4,7 +4,7 @@ import javax.json.JsonObject;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -17,8 +17,9 @@ public class AbstractJsonable implements Jsonable {
 
 	/**
 	 * Constructor.
-	 * TODOC
-	 * 
+	 * TODOC <br />
+	 * null safe
+	 *
 	 * @param jo
 	 */
 	protected AbstractJsonable(JsonObject jo) {

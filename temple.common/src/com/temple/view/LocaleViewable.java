@@ -1,9 +1,8 @@
 package com.temple.view;
 
-
 /**
  * A LocaleViewable is a {@link Viewable} which requires a Locale to be viewed.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  * @see Viewable
@@ -19,7 +18,7 @@ public interface LocaleViewable extends Viewable {
 	/**
 	 * The constant to use when no parameter is needed in a LocaleViewable.
 	 */
-	Object[] NO_PARAMETER = {};
+	Object[] NO_PARAMETERS = {};
 
 	/**
 	 * @return a key to find a localized string, never <code>null</code>.
@@ -31,11 +30,13 @@ public interface LocaleViewable extends Viewable {
 	 * <p>
 	 * If any LocaleViewable is in this array, then it will be transformed to a localized string to complete this
 	 * LocaleViewable.
-	 * 
+	 *
 	 * @return the parameters to complete the localized string.
-	 * @see #NO_PARAMETER
+	 * @see #NO_PARAMETERS
 	 */
-	Object[] getLocaleParameters();
+	default Object[] getLocaleParameters() {
+		return LocaleViewable.NO_PARAMETERS;
+	}
 
 	/**
 	 * @return the {@link LocaleBundle} to use to transform this LocaleViewable.

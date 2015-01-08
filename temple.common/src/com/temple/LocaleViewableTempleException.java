@@ -26,7 +26,7 @@ public abstract class LocaleViewableTempleException extends AbstractTempleExcept
 	 * @param cause - the cause of this exception
 	 */
 	protected LocaleViewableTempleException(Module module, Throwable cause) {
-		this(LocaleViewable.NO_PARAMETER, module, cause);
+		this(LocaleViewable.NO_PARAMETERS, module, cause);
 	}
 
 	/**

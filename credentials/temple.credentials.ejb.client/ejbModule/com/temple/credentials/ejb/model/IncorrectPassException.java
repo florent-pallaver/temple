@@ -3,19 +3,19 @@ package com.temple.credentials.ejb.model;
 import com.temple.view.LocaleViewable;
 
 /**
- * TODOC
- * 
+ * Thrown whenever an incorrect pass has been given.
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
-public final class IncorrectPasswordException extends CredentialsException {
+public final class IncorrectPassException extends CredentialsException {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor.
 	 */
-	public IncorrectPasswordException() {
-		super(LocaleViewable.NO_PARAMETER);
+	public IncorrectPassException() {
+		super(LocaleViewable.NO_PARAMETERS);
 	}
 }

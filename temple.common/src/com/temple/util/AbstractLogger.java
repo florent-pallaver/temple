@@ -24,12 +24,17 @@ public abstract class AbstractLogger {
 	}
 
 	protected AbstractLogger(String prefix, Module module) {
-		this.prefix = this.getClass().getSimpleName() + (prefix == null ? " " : " " + prefix + " - ");
-		this.logger = Logger.getLogger(module.packageName + '.' + this.getClass().getSimpleName());
+		this(prefix, module, null);
+	}
+
+	protected AbstractLogger(String prefix, Module module, String suffix) {
+		final String s = suffix == null ? this.getClass().getSimpleName() : suffix;
+		this.prefix = s + (prefix == null ? " " : " " + prefix + " - ");
+		this.logger = Logger.getLogger(module.packageName + '.' + s);
 	}
 
 	protected boolean isDebugLoggable() {
-		return this.logger.isLoggable(Level.FINE);
+		return this.logger.isLoggable(Level.FINEST);
 	}
 
 	protected boolean isInfoLoggable() {
@@ -45,7 +50,7 @@ public abstract class AbstractLogger {
 	}
 
 	protected void debug(Object arg0) {
-		this.log(Level.FINE, arg0);
+		this.log(Level.FINEST, arg0);
 	}
 
 	protected void info(Object arg0) {

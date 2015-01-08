@@ -19,6 +19,6 @@ public final class UpdateUserIdentityException extends CredentialsException {
 	 * @param cause
 	 */
 	public UpdateUserIdentityException(Throwable cause) {
-		super(cause, LocaleViewable.NO_PARAMETER);
+		super(cause, LocaleViewable.NO_PARAMETERS);
 	}
 }

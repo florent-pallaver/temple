@@ -1,9 +1,8 @@
-package com.temple.util.image;
+package com.temple.util.media.image;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
@@ -13,7 +12,7 @@ import com.temple.util.AbstractLogger;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -24,17 +23,13 @@ public class ImageScaler extends AbstractLogger {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param imageMimeType
 	 * @throws RuntimeException
 	 */
-	ImageScaler(String imageMimeType) throws RuntimeException {
+	ImageScaler(ImageCodec it) throws RuntimeException {
 		super(Module.DEFAULT);
-		final Iterator<ImageWriter> it = ImageIO.getImageWritersByMIMEType(imageMimeType);
-		if (!it.hasNext()) {
-			throw new RuntimeException("No ImageWriter available for type " + imageMimeType);
-		}
-		this.writer = it.next();
+		this.writer = it.getImageWriter();
 	}
 
 	public void scale(File src, File dst, int dimension, ScaleStrategy m) {
@@ -50,7 +45,9 @@ public class ImageScaler extends AbstractLogger {
 
 	@Override
 	protected void finalize() {
-		this.info("ImageScaler about to be garbage collected");
+		if (this.isDebugLoggable()) {
+			this.debug("ImageScaler about to be garbage collected");
+		}
 		this.writer.dispose();
 	}
 }

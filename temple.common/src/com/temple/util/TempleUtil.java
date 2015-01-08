@@ -12,7 +12,7 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -30,7 +30,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -40,7 +40,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param bytes
 	 * @return
 	 */
@@ -50,7 +50,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param str64
 	 * @return
 	 */
@@ -60,7 +60,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param bytes64
 	 * @return
 	 */
@@ -84,13 +84,14 @@ public abstract class TempleUtil {
 	 * @return a random value within the interval [ min ; max [
 	 */
 	public static final long random(long min, long max) {
+		// FIXME bug si on utilise les limites MAX and MIN
 		final long r = min + Math.round(Math.random() * (max - min));
 		return r == max ? min : r;
 	}
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param o
 	 * @return
 	 */
@@ -134,7 +135,7 @@ public abstract class TempleUtil {
 	 * <li>or they are equals according to the {@link Object#equals(Object) equals method} : <code>a.equals(b)</code></li>
 	 * </ul>
 	 * TODOC add the array case
-	 * 
+	 *
 	 * @param one
 	 *            - one object.
 	 * @param another
@@ -180,7 +181,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * Searches a value in an array and return it's first position in that array.
-	 * 
+	 *
 	 * @param a
 	 *            - an array.
 	 * @param v
@@ -197,7 +198,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * Checks if an array contains a given value.
-	 * 
+	 *
 	 * @param a
 	 *            - an array.
 	 * @param v
@@ -210,7 +211,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * Shuffles elements of the given array.
-	 * 
+	 *
 	 * @param a
 	 *            - an array of Object.
 	 */
@@ -227,7 +228,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * Shuffles elements of the given array.
-	 * 
+	 *
 	 * @param a
 	 *            - an array of int.
 	 */
@@ -244,7 +245,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * Shuffles elements of the given array.
-	 * 
+	 *
 	 * @param a
 	 *            - an array of short.
 	 */
@@ -261,7 +262,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param e
 	 * @return
 	 * @throws NullPointerException
@@ -280,7 +281,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param o
 	 * @param f
 	 * @return
@@ -306,7 +307,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param o
 	 * @param f
 	 * @return
@@ -334,7 +335,7 @@ public abstract class TempleUtil {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param o
 	 * @return
 	 */

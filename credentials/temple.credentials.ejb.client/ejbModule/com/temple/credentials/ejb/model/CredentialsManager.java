@@ -6,7 +6,7 @@ import javax.ejb.Remote;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -25,34 +25,34 @@ public interface CredentialsManager extends Serializable {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param login
-	 * @param password
+	 * @param pass
 	 * @return
 	 * @throws LoginNotFoundException
-	 * @throws IncorrectPasswordException
+	 * @throws IncorrectPassException
 	 */
-	int findUserId(String login, String password) throws LoginNotFoundException, IncorrectPasswordException;
+	int findUserId(String login, String pass) throws LoginNotFoundException, IncorrectPassException;
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param login
-	 * @param password
+	 * @param pass
 	 * @param userId
 	 * @throws SignUpException
 	 */
-	void createIdentity(String login, String password, int userId) throws CreateUserIdentityException;
+	void createIdentity(String login, String pass, int userId) throws CreateUserIdentityException;
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param userId
 	 * @param current
 	 * @param nevv
 	 * @throws UpdateUserIdentityException
-	 * @throws IncorrectPasswordException
+	 * @throws IncorrectPassException
 	 */
-	void updatePassword(int userId, String current, String nevv) throws UpdateUserIdentityException, IncorrectPasswordException;
-	// reset password
+	void updatePass(int userId, String current, String nevv) throws UpdateUserIdentityException, IncorrectPassException;
+	// TODO reset pass
 }
