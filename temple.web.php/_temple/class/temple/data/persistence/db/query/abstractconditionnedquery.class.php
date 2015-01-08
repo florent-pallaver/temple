@@ -46,18 +46,11 @@ abstract class AbstractConditionnedQuery extends AbstractQuery implements Condit
 		return $this->orders ;
 	}
 
-	public function addOrderedField(Field $field, $asc = false) {
-		$this->orders[] = $field . ' ' . ($asc ? 'ASC' : 'DESC') ;
+	public function addOrderBy(OrderBy $orderBy) {
+		$this->orders[] = $orderBy ;
 		return $this ;
 	}
-
-	public function addOrderedFields(array $fields, $asc = false) {
-		foreach($fields as $f) {
-			$this->addOrderedField($f, $asc) ;
-		}
-		return $this ;
-	}
-
+	
 	// 	public final function addRandomOrder() {
 	// 		$this->orders[] = 'RAND()' ;
 	// 		return $this ;

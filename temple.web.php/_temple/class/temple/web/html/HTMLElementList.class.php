@@ -32,7 +32,7 @@ class HTMLElementList extends AbstractHTMLElement {
 	 * 
 	 * @param HTMLElement $e
 	 * @param scalar $key
-	 * @return HTMLElementList
+	 * @return HTMLElementList - $this object
 	 */
 	public function addElement(HTMLElement $e = null, $key = null) {
 		if($e) {
@@ -59,4 +59,5 @@ class HTMLElementList extends AbstractHTMLElement {
 			$e->render() ;
 		}
 	}
+    
 }

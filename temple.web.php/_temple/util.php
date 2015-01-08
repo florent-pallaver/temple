@@ -29,5 +29,5 @@ function _dif($v, $d) {
  * @return array
  */
 function _eia($v) {
-	return is_array($v) ? $v : [$v] ;
+	return $v === null ? null : (is_array($v) ? $v : [$v]) ;
 }

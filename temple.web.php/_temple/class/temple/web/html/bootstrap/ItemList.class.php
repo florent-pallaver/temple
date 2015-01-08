@@ -2,7 +2,7 @@
 
 namespace temple\web\html\bootstrap;
 
-use temple\web\html\HTMLElement ;
+use temple\web\html\HTMLElement;
 
 /**
  * Description of ItemList
@@ -27,16 +27,20 @@ class ItemList extends AbstractComponent {
 	 * @param type $cssClass
 	 * @return ItemList
 	 */
-	public final function addItem(HTMLElement $item, $cssClass = null) {
-		return $this->addChild(new ListItem($item, $cssClass)) ;
+	public final function addItem(HTMLElement $item = null, $cssClass = null) {
+		if ($item) {
+			$this->addChild($item instanceof \temple\web\html\HTMLNode && $item->isNode('li') ?
+							$item->addCssClass($cssClass) : new ListItem($item, $cssClass));
+		}
+		return $this;
 	}
-	
+
 	/**
 	 * 
 	 * @return ItemList
 	 */
 	public final function addDivider() {
-		return $this->addChild(ListItem::$DIVIDER) ;
+		return $this->addChild(ListItem::$DIVIDER);
 	}
 
 	/**
@@ -47,14 +51,14 @@ class ItemList extends AbstractComponent {
 	public static function createOrdered($cssClass = null) {
 		return new ItemList(true, $cssClass);
 	}
-	
+
 	/**
 	 * 
 	 * @param type $cssClass
 	 * @return \temple\web\html\bootstrap\ItemList
 	 */
 	public static function createUnordered($cssClass = null) {
-		return new ItemList(false, $cssClass) ;
+		return new ItemList(false, $cssClass);
 	}
-	
+
 }

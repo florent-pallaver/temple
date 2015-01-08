@@ -23,7 +23,7 @@ abstract class AbstractModel implements Model {
 		return $this->id;
 	}
 
-	protected function setId($id) {
+	protected final function setId($id) {
 		$this->id = $id;
 	}
 
@@ -48,5 +48,5 @@ abstract class AbstractModel implements Model {
 	private static function _init() {
 		self::$mappings['id'] = new BasicMapping(self::_property('id'), true, false);
 	}
-
+	
 }

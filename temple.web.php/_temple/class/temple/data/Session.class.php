@@ -69,17 +69,36 @@ final class Session extends SessionHandler implements SessionHandlerInterface {
 		return _iod($_SESSION, $key);
 	}
 
+	/**
+	 * Resets the current session (i.e. empties $_SESSION)
+	 */
+	public function reset() {
+		$this->lazyStart() ;
+		$_SESSION = [] ;
+	}
+	
 	private function lazyStart() {
 		if(!$this->isActive()) {
 			$this->logger->debug('Starting Session') ;
 			session_set_save_handler($this, true) ;
-			session_start();
+			if(session_start()) {
+				$this->logger->debug('Session started') ;
+			} else {
+				$this->logger->severe('Unable to start session') ;
+			}
 		}
 	}
-	
+		
 	public function read($session_id) {
 		$s = parent::read($session_id);
-		$_SESSION = unserialize($s) ;
+		$a = [] ;
+		if($s) {
+			$a = unserialize($s) ;
+			if(!is_array($a)) {
+				$a = [] ;
+			}
+		}
+		$_SESSION = $a;
 		return '' ;
 	}
 

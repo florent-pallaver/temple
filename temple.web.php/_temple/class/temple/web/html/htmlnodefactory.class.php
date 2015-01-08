@@ -31,7 +31,7 @@ final class HTMLNodeFactory {
 	 * @param unknown $class
 	 * @return \temple\web\html\HTMLNode
 	 */
-	public static final function createDiv($class, $id = null) {
+	public static final function createDiv($class = null, $id = null) {
 		return self::createNodeWithClass('div', $class)->setAttribute('id', $id) ;
 	}
 	

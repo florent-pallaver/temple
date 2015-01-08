@@ -2,8 +2,6 @@
 
 namespace temple\data\persistence\model ;
 
-use temple\data\persistence\db\query\Comparison;
-
 /**
  * TODOC
  *
@@ -13,8 +11,8 @@ class Filter {
 
 	private $modelClass ;
 
-	private $comparison ;
-
+	private $conditions ;
+	
 	private $orders ;
 
 	private $maxCount ;
@@ -31,12 +29,13 @@ class Filter {
 	 * @param number $maxCount
 	 * @param number $offset
 	 */
-	public function __construct(\ReflectionClass $modelClass, Comparison $comp, array $orders = [], $maxCount = 0, $offset = 0) {
+	public function __construct(\ReflectionClass $modelClass, $maxCount = 0, $offset = 0) {
 		$this->modelClass = $modelClass ;
-		$this->comparison = $comp;
-		$this->orders = $orders ;
+//		$this->comparison = $comp;
+		$this->orders = [] ;
 		$this->maxCount = $maxCount < 0 ? 0 : $maxCount ;
 		$this->offset = $offset < 0 ? 0 : $offset ;
+		$this->conditions = [] ;
 	}
 
 	/**
@@ -47,16 +46,22 @@ class Filter {
 	}
 
 	/**
-	 * TODOC
-	 *
-	 * @return Comparison :
+	 * 
+	 * @return array
 	 */
-	public function getComparison() {
-		return $this->comparison ;
-	}
-
 	public function getOrders() {
 		return $this->orders ;
+	}
+	
+	/**
+	 * 
+	 * @param Key $modelKey
+	 * @param boolean $asc
+	 * @return Filter
+	 */
+	public function addOrder(Key $modelKey, $asc = false) {
+		$this->orders[] = [$modelKey, $asc] ;
+		return $this ;
 	}
 
 	public function getMaxCount() {
@@ -67,10 +72,35 @@ class Filter {
 		return $this->offset ;
 	}
 
-	public function addComparison(array $mappings, $value) {
-		
+	/**
+	 * 
+	 * @return array
+	 */
+	public function getKeyConditions() {
+		return $this->conditions ;
+	}
+	
+	/**
+	 * 
+	 * @param Key $modelKey
+	 * @param mixed $value
+	 * @return Filter
+	 */
+	public function addKeyCondition(Key $modelKey, $value) {
+		$this->conditions[] = [$modelKey, _eia($value)] ;
+		return $this ;
+	}
+	
+	/**
+	 * 
+	 * @param \ReflectionClass $modelClass
+	 * @param type $maxCount
+	 * @param type $offset
+	 * @return Filter
+	 */
+	public static function create(\ReflectionClass $modelClass, $maxCount = 0, $offset = 0) {
+		return new Filter($modelClass, $maxCount, $offset) ;
 	}
 	
 }
-
 

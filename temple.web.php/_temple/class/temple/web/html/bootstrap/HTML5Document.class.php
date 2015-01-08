@@ -23,8 +23,8 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 		parent::__construct($title, $author, $description);
 		$rp = \temple\web\Config::TEMPLE_RESOURCE_PATH ;
 		$this->addMeta('viewport', 'width=device-width, initial-scale=1.0') ;
-		$this->addCssLink($rp . 'bootstrap/3_1_1/css/bootstrap.min.css')
-				->addCssLink($rp . 'css/temple.css');
+		$this->addCssLink($rp . 'bootstrap/3_3_1/css/bootstrap.min.css')
+				->addCssLink($rp . 'css/temple.min.css');
 		$this->getBody()
 				->addChild(NF::createNode('header', ['class'=>'container', 'id'=>self::HEADER_ID]), self::HEADER_ID) 
 				->addChild(NF::createNode('main', ['class'=>'container', 'id'=>self::MAIN_ID]), self::MAIN_ID) 
@@ -32,14 +32,14 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 				->addChild(new \temple\web\html\HTMLElementList(), self::$modalsKey)
 				->addChild(new \temple\web\html\HTMLElementList(), self::$scriptsKey)
 			;
-		$this->getMain()->addChild(new AnchorLink($this->getBody(), 'chevron-up', '_backToTop')) ;
-		$this->addScriptLink($rp . 'jquery/1_11_0/js/jquery.min.js') ;
+		$this->getMain()->addChild(new AnchorLink($this->getBody(), new InnerText('chevron-up'), '_backToTop')) ;
+		$this->addScriptLink($rp . 'jquery/2_1_1/js/jquery.min.js') ;
 //		$this->addScriptLink('//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js') ;
-		$this->addScriptLink($rp . 'bootstrap/3_1_1/js/bootstrap.min.js') ;
-		$this->addScriptLink($rp . 'js/jqueryField.js') ;
-		$this->addScriptLink($rp . 'js/alertAutoDismiss.js') ;
-		$this->addScriptLink($rp . 'js/backToTop.js') ;
-		$this->addScriptLink($rp . 'js/TempleForm.js') ;
+		$this->addScriptLink($rp . 'bootstrap/3_3_1/js/bootstrap.min.js') ;
+		$this->addScriptLink($rp . 'js/jqueryField.min.js') ;
+		$this->addScriptLink($rp . 'js/backToTop.min.js') ;
+		$this->addScriptLink($rp . 'js/TempleAlert.min.js') ;
+		$this->addScriptLink($rp . 'js/TempleForm.min.js') ;
 	}
 
 	/**
@@ -63,10 +63,19 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 		return $this->getBody()->getChild(self::FOOTER_ID) ;
 	}
 
+	/**
+	 * 
+	 * @param type $icon
+	 * @param type $title
+	 * @param \temple\web\html\HTMLElement $body
+	 * @param type $cssClass
+	 * @param \temple\web\html\HTMLElement $footer
+	 * @return \temple\web\html\bootstrap\Modal
+	 */
 	public function addModal($icon, $title, HTMLElement $body, $cssClass = '', HTMLElement $footer = null) {
 		$m = new Modal($icon, $title, $body, $footer, $cssClass) ;
 		$this->getBody()->getChild(self::$modalsKey)->addElement($m) ;
-		return $m->getId() ;
+		return $m ;
 	}
 
 	public function addScript($script) {

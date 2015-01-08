@@ -41,6 +41,10 @@ trait Enum {
 		return $this->name;
 	}
 
+	public final function equals($other) {
+		return self::_class()->isInstance($other) && ($this->ordinal === $other->ordinal) ;
+	}
+	
 	/**
 	 * TODOC
 	 *
@@ -54,7 +58,7 @@ trait Enum {
 	 * @return 
 	 */
 	public static function getByOrdinal($ordinal) {
-		return self::$_all[$ordinal];
+		return _iod(self::$_all, $ordinal) ;
 	}
 
 	private static function _initEnum() {

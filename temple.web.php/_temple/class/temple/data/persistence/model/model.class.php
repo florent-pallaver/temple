@@ -10,12 +10,8 @@ namespace temple\data\persistence\model ;
  */
 interface Model extends \JsonSerializable {
 
-	const STRING_FORMATTER = '\data\model\simpleStringFormatter' ;
-
-	const VALUE_OR_NULL_FORMATTER = '\data\model\valueOrNullFormatter' ;
-
 	/**
-	 * @return \ReflectionClass this object class.
+	 * @return \ReflectionClass this object's class.
 	 */
 	function getClass() ;
 
@@ -24,12 +20,4 @@ interface Model extends \JsonSerializable {
 	 */
 	function getId() ;
 
-}
-
-function simpleStringFormatter($string) {
-	return $string === null ? 'NULL' : '\'' . $string . '\'' ;
-}
-
-function valueOrNullFormatter($value) {
-	return $value === null ? 'NULL' : $value ;
 }

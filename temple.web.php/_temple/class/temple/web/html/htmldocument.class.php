@@ -13,6 +13,11 @@ interface htmldocument extends \temple\view\Renderable {
 	/**
 	 * @return HTMLNode
 	 */
+	function getTitle() ;
+	
+	/**
+	 * @return HTMLNode
+	 */
 	function getHead() ;
 	
 	/**

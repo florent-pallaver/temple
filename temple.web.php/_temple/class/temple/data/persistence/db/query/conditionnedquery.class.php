@@ -17,26 +17,17 @@ interface ConditionnedQuery extends Query {
 
 	/**
 	 * TODOC
-	 * @return array
+	 * @return array an array of OrderBy
 	 */
 	function getOrders() ;
 
 	/**
-	 * TODOC
-	 *
-	 * @param unknown $field
-	 * @param string $asc
+	 * 
+	 * @param OrderBy $orderBy
+	 * @return ConditionnedQuery
 	 */
-	function addOrderedField(Field $field, $asc = false) ;
-
-	/**
-	 * TODOC
-	 *
-	 * @param array $fields
-	 * @param string $asc
-	 */
-	function addOrderedFields(array $fields, $asc = false) ;
-
+	function addOrderBy(OrderBy $orderBy) ;
+	
 	// 	public final function addRandomOrder() {
 	// 		$this->orders[] = 'RAND()' ;
 	// 		return $this ;

@@ -10,6 +10,7 @@ use temple\Singleton ;
 use temple\data\persistence\db\Driver;
 use temple\data\persistence\db\QueryException;
 use temple\data\persistence\db\ConnectionException ;
+use temple\data\persistence\db\UniqueConstraintException ;
 use temple\data\persistence\db\query\ConditionnedQuery;
 use temple\data\persistence\db\query\QueryResult;
 
@@ -22,8 +23,17 @@ class DriverImpl extends Driver {
 
 	use Singleton ;
 
+	const LOGGER_NAME = 'MySQLi_DRIVER' ;
+	
 	/** @var mysqli */
 	private $connection = null ;
+
+	protected $logger ;
+	
+	protected function __construct() {
+		parent::__construct();
+		$this->logger = \temple\Logger::getInstance(self::LOGGER_NAME) ;
+	}
 
 	public final function connect() {
 		if($this->connection === null || !$this->connection->ping()) {
@@ -56,21 +66,38 @@ class DriverImpl extends Driver {
 
 	public final function sqlQuery($sqlQuery) {
 		$this->connect() ;
+		$this->logger->debug($sqlQuery) ;
 		$result = $this->connection->query($sqlQuery) ;
-		if($result instanceof mysqli_result) {
-			$rowCount = $this->connection->affected_rows ;
-			$insertId = $this->connection->insert_id ;
-			$rows = [] ;
-			while($rows[] = $result->fetch_assoc()) {}
-			$result->free() ;
-			return new QueryResult($rowCount, $rows, $insertId) ;
+		if(!$result) {
+			if($this->connection->errno == 1062) {
+				throw new UniqueConstraintException($sqlQuery, $this->connection->error, $this->connection->errno) ;
+			} else {
+				throw new QueryException($sqlQuery, $this->connection->error, $this->connection->errno) ;
+			}
 		}
-		throw new QueryException($sqlQuery, $this->connection->error, $this->connection->errno) ;
+		// before checking warnings as it changes affected_rows !
+		$rowCount = $this->connection->affected_rows ;
+		$rows = [] ;
+		$insertId = $this->connection->insert_id ;
+		if($this->connection->warning_count) {
+			$this->logger->warning($sqlQuery) ;
+			$ws = $this->connection->get_warnings() ;
+			do {
+				$this->logger->warning(sprintf('[%s] %s', $ws->errno, $ws->message)) ;
+			} while ($ws->next()) ;
+		}
+		if($result instanceof mysqli_result) {
+			while($r = $result->fetch_assoc()) {
+				$rows[] = $r ;
+			}
+			$result->free() ;
+		}
+		return new QueryResult($rowCount, $rows, $insertId) ;
 	}
 
 	public final function escape($string) {
 		$this->connect();
-		return $this->connection->escape_string($string) ;
+		return $this->connection->real_escape_string($string) ;
 	}
 	
 }

@@ -24,6 +24,6 @@ interface Update extends ConditionnedQuery {
 	 * @param Value $value
 	 * @return Update
 	 */
-	function addAssignment(Field $field, Value $value) ;
+	function addAssignment(Field $field, $value) ;
 
 }

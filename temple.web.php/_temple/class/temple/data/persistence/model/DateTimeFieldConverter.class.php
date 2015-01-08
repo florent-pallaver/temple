@@ -18,7 +18,17 @@ class DateTimeFieldConverter extends AbstractFieldConverter {
 	}
 
 	protected function toPHPValue0($notNullValue) {
-		return \DateTime::createFromFormat(self::SQL_DATE_FORMAT, $notNullValue) ;
+		$date = \DateTime::createFromFormat(self::SQL_DATE_FORMAT, $notNullValue) ;
+		if(!$date) {
+			$errors = \DateTime::getLastErrors() ;
+			foreach($errors['warnings'] as $w) {
+				\temple\Logger::getInstance()->warning($w);
+			}
+			foreach($errors['errors'] as $e) {
+				\temple\Logger::getInstance()->error($e);
+			}
+		}
+		return $date;
 	}
 	
 }

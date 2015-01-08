@@ -31,7 +31,7 @@ trait Entity {
 	private static function _initEntity() {
 		$class = self::_class();
 		ProxyGenerator::getInstance()->generate($class);
-		self::$TABLE = strtolower($class->getShortName());
+		self::$TABLE = Config::$TABLE_PREFIX . strtolower($class->getShortName());
 	}
 
 }

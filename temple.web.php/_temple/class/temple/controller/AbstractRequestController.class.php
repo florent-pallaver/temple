@@ -10,33 +10,33 @@ namespace temple\controller;
 abstract class AbstractRequestController extends AbstractController {
 
 	protected static $default0 = ['default' => 0];
-	
-	protected static $defaultEmptyArray = ['default' => []] ;
-	
+	protected static $defaultEmpty = ['default' => ''];
+	protected static $defaultEmptyArray = ['default' => []];
+
 	/**
-	 * Use when string must not be empty.
+	 * Use when string must not be empty and HTML needs to be escaped.
 	 * @var array
 	 */
-	protected static $_notEmptyHTML = ['notEmpty' => true] ;
+	protected static $_notEmptyHTML = ['notEmpty' => true];
 
 	/**
 	 * Use when HTML does not need to be escaped.
 	 * @var array
 	 */
-	protected static $_NotHTML = ['escapeHTML' => false] ;
+	protected static $_NotHTML = ['escapeHTML' => false];
 
 	/**
 	 * Use when string must not be empty and HTML does not need to be escaped.
 	 * @var array
 	 */
-	protected static $_notEmptyNotHTML = ['notEmpty' => true, 'escapeHTML' => false] ;
-	
+	protected static $_notEmptyNotHTML = ['notEmpty' => true, 'escapeHTML' => false];
+
 	protected final function getBooleanGetParam($name) {
 		return $this->getBooleanParam(INPUT_GET, $name);
 	}
 
 	protected final function getIntGetParam($name, array $options = []) {
-		return $this->getIntParam(INPUT_GET, $name, $options);
+		return $this->getNumberParam(INPUT_GET, $name, $options);
 	}
 
 	protected final function getStringGetParam($name, array $options = []) {
@@ -48,7 +48,15 @@ abstract class AbstractRequestController extends AbstractController {
 	}
 
 	protected final function getIntPostParam($name, array $options = []) {
-		return $this->getIntParam(INPUT_POST, $name, $options);
+		return $this->getNumberParam(INPUT_POST, $name, $options);
+	}
+
+	protected final function getFloatPostParam($name, array $options = []) {
+		return $this->getNumberParam(INPUT_POST, $name, $options, true);
+	}
+
+	protected final function getEnumPostParam($name, \ReflectionClass $enumClass, array $options = []) {
+		return $this->getEnumParam(INPUT_POST, $name, $enumClass, $options);
 	}
 
 	protected final function getStringPostParam($name, array $options = []) {
@@ -56,23 +64,27 @@ abstract class AbstractRequestController extends AbstractController {
 	}
 
 	protected final function getArrayPostParam($name, array $options = []) {
-		return $this->getArrayParam(INPUT_POST, $name, $options) ;
+		return $this->getArrayParam(INPUT_POST, $name, $options);
 	}
-	
+
 	protected final function getFilesParam($name, $max = 0) {
 		if (!isset($_FILES[$name])) {
 			$this->paramFailed($name);
 		}
-		$params = [];
-		foreach ($_FILES[$name] as $k => $values) {
-			foreach ($values as $i => $v) {
-				if ($i < $max || $max == 0) {
-					$params[$i][$k] = $v;
+		if(is_array($_FILES[$name]['error'])) {
+			$params = [];
+			foreach ($_FILES[$name] as $k => $values) {
+				foreach ($values as $i => $v) {
+					if ($i < $max || $max == 0) {
+						$params[$i][$k] = $v;
+					}
 				}
 			}
-		}
-		if (count($_FILES[$name]['error']) > $max) {
-			$this->info("Only $max files can be uploaded at a time, the extra ones have been ignored.");
+			if ($max > 0 && count($_FILES[$name]['error']) > $max) {
+				$this->info("Only $max files can be uploaded at a time, the extra ones have been ignored.");
+			}
+		} else {
+			$params = &$_FILES[$name];
 		}
 		return $params;
 	}
@@ -83,18 +95,29 @@ abstract class AbstractRequestController extends AbstractController {
 		return $b === true;
 	}
 
-	private final function getIntParam($type, $name, array $options) {
-		$i = filter_input($type, $name, FILTER_VALIDATE_INT, $options);
-		if ($i || $i === 0) {
-			return $i;
+	private final function getNumberParam($type, $name, array $options, $float = false) {
+		$n = filter_input($type, $name, $float ? FILTER_VALIDATE_FLOAT : FILTER_VALIDATE_INT, $options);
+		if ($n || $n === 0) {
+			return $n;
 		}
 		if (array_key_exists('default', $options)) {
-//			$_POST[$name] = $options['default'];
 			return $options['default'];
 		}
 		$this->paramFailed($name);
 	}
 
+	private final function getEnumParam($type, $name, \ReflectionClass $enumClass, array $options) {
+		$ordinal = $this->getNumberParam($type, $name, ['default'=>-1], false) ;
+		$e = $enumClass->getMethod('getByOrdinal')->invoke(null, $ordinal) ;
+		if($e) {
+			return $e;
+		}
+		if (array_key_exists('default', $options)) {
+			return $options['default'];
+		}
+		$this->paramFailed($name);
+	}
+	
 	private final function getStringParam($type, $name, array $options) {
 		$str = filter_input($type, $name);
 		if ($str !== null && is_string($str)) {
@@ -119,37 +142,42 @@ abstract class AbstractRequestController extends AbstractController {
 		}
 		$this->paramFailed($name);
 	}
-	
+
 	private final function paramFailed($name) {
 		$this->failure("Parameter $name is incorrect.");
 	}
 
-	protected final function failure($reason = null) {
-		throw new ActionException($this->getActionDescription(), $reason) ;
+	protected final function failure($reason = null, $hint = '', \Exception $e = null) {
+		throw new ActionException($this->getActionDescription(), $reason, $hint, $e);
 	}
-	
+
 	/**
 	 * @return \temple\data\persistence\db\Driver
 	 */
 	protected final function getDbDriver() {
-		return \temple\data\persistence\db\Driver::getInstance() ;
+		return \temple\data\persistence\db\Driver::getInstance();
 	}
 
 	/**
 	 * @return \temple\data\persistence\db\query\QueryFactory
 	 */
 	protected final function getQueryFactory() {
-		return \temple\data\persistence\db\query\QueryFactory::getInstance() ;
+		return \temple\data\persistence\db\query\QueryFactory::getInstance();
 	}
-	
+
 	/**
 	 * @return \temple\data\persistence\model\ModelManager
 	 */
 	protected final function getModelManager() {
-		return \temple\data\persistence\model\ModelManager::getInstance() ;
+		return \temple\data\persistence\model\ModelManager::getInstance();
 	}
-	
-	// MIGHT BE OBSOLETE
+
+	/**
+	 * @return \temple\web\mail\Mailer
+	 */
+	protected final function getMailer() {
+		return \temple\web\mail\Mailer::getInstance() ;
+	}
 	
 	protected final function getCheckedDate($key) {
 		$birthdate = trim($this->getStringPostParam($key));
@@ -190,38 +218,35 @@ abstract class AbstractRequestController extends AbstractController {
 	 * @throws ActionException if $notEmpty is true and the checked string is empty
 	 */
 	protected final function getCheckedString($key, $maxLength, $paramName = '', $options = []) {
-		$str = trim($this->getStringPostParam($key)) ;
-		$pattern = _iod($options, 'pattern', '') ;
-		if($pattern) {
-			$c = 0 ;
-			$r = _iod($options, 'replacement', '') ;
-			$str = preg_replace($pattern, $r, $str, -1, $c) ;
-			if($c && $paramName) {
-				$this->info("$paramName '$str' contained invalid characters, they have been replaced.") ;
+		$str = trim($this->getStringPostParam($key));
+		$pattern = _iod($options, 'pattern', '');
+		if ($pattern) {
+			$c = 0;
+			$r = _iod($options, 'replacement', '');
+			$str = preg_replace($pattern, $r, $str, -1, $c);
+			if ($c && $paramName) {
+				$this->info("$paramName '$str' contained invalid characters, they have been replaced.");
 			}
 		}
-		if(_iod($options, 'escapeHTML', true)) {
-			$str = htmlspecialchars($str, ENT_QUOTES) ;
+		if (_iod($options, 'escapeHTML', true)) {
+			$str = htmlspecialchars($str, ENT_QUOTES);
 		}
-		if(_iod($options, 'notEmpty', false) && strlen($str) == 0) {
-			throw new ActionException('perform action', "The field '$paramName' cannot be empty.");
+		if (_iod($options, 'notEmpty', false) && strlen($str) == 0) {
+			$this->failure("The field '$paramName' cannot be empty.");
 		}
 //		$e = $this->escapeSQL($str) ;
-		if ($maxLength > 0 && strlen($e) > $maxLength) {
-			$e = substr($e, 0, $maxLength);
+		if ($maxLength > 0 && strlen($str) > $maxLength) {
+			$str = substr($str, 0, $maxLength);
 			if ($paramName) {
 				$this->info("The field '$paramName' exceeded the $maxLength characters length limit and has been truncated.");
 			}
 		}
-		return $e;
-
-		
-		
-		$str = $this->ensureString($post, $maxLength, $paramName);
-		if ($notEmpty && strlen($str) == 0) {
-			throw new ActionException('perform action', "The field '$paramName' cannot be empty.");
-		}
 		return $str;
+//		$str = $this->ensureString($post, $maxLength, $paramName);
+//		if ($notEmpty && strlen($str) == 0) {
+//			throw new ActionException('perform action', "The field '$paramName' cannot be empty.");
+//		}
+//		return $str;
 	}
-	
+
 }

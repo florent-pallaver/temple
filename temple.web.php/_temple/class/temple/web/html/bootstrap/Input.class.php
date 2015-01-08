@@ -12,14 +12,20 @@ class Input extends AbstractFormField {
 	const TYPE_HIDDEN = 'hidden';
 	const TYPE_TEXT = 'text';
 	const TYPE_SECRET = 'password';
-	const TYPE_EMAIL = 'email';
 	const TYPE_RADIO = 'radio';
 	const TYPE_CHECKBOX = 'checkbox';
+	const TYPE_FILE = 'file';
+	const TYPE_EMAIL = 'email';
+	const TYPE_NUMBER = 'number';
 
-	public function __construct($name, $type, $placeholder, $required = false, $cssClass = null) {
+	const ACCEPT_ALL = '*/*' ;
+	const ACCEPT_VIDEO = 'video/*' ;
+	const ACCEPT_IMAGE = 'image/*' ;
+	const ACCEPT_AUDIO = 'audio/*' ;
+	
+	public function __construct($name, $type, $placeholder, $required = false, $cssClass = 'form-control') {
 		parent::__construct('input', $cssClass);
-		$this->addCssClass('form-control')
-				->setName($name)
+		$this->setName($name)
 				->setAttribute('type', $type)
 				->setAttribute('placeholder', $placeholder)
 				->setRequired($required);
@@ -54,8 +60,48 @@ class Input extends AbstractFormField {
 	 * @param type $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
-	public static function create($name, $placeholder, $required = false, $cssClass = null) {
+	public static function create($name, $placeholder, $required = false, $cssClass = 'form-control') {
 		return new Input($name, self::TYPE_TEXT, $placeholder, $required, $cssClass);
+	}
+
+	/**
+	 * 
+	 * @param type $name
+	 * @param type $required
+	 * @param type $multiple
+	 * @param type $accept
+	 * @return Input
+	 */
+	public static function createFile($name, $required = false, $multiple = false, $accept = self::ACCEPT_ALL) {
+		$i = new Input($name, self::TYPE_FILE, null, $required) ;
+		if($multiple) {
+			$i->setAttribute('multiple', 'multiple') ;
+		}
+		return $i->setAttribute('accept', $accept) ;
+	}
+	
+	/**
+	 * 
+	 * @param type $name
+	 * @param type $placeholder
+	 * @param type $required
+	 * @param type $cssClass
+	 * @return \temple\web\html\bootstrap\Input
+	 */
+	public static function createNumber($name, $placeholder, $required = false, $cssClass = 'form-control') {
+		return new Input($name, self::TYPE_NUMBER, $placeholder, $required, $cssClass);
+	}
+
+		/**
+	 * 
+	 * @param type $name
+	 * @param type $placeholder
+	 * @param type $required
+	 * @param type $cssClass
+	 * @return \temple\web\html\bootstrap\Input
+	 */
+	public static function createEmail($name, $placeholder, $required = false, $cssClass = 'form-control') {
+		return new Input($name, self::TYPE_EMAIL, $placeholder, $required, $cssClass);
 	}
 
 	/**
@@ -66,7 +112,7 @@ class Input extends AbstractFormField {
 	 * @param type $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
-	public static function createSecret($name, $placeholder, $required = false, $cssClass = null) {
+	public static function createSecret($name, $placeholder, $required = false, $cssClass = 'form-control') {
 		return new Input($name, self::TYPE_SECRET, $placeholder, $required, $cssClass);
 	}
 
@@ -75,12 +121,9 @@ class Input extends AbstractFormField {
 	 * @param type $name
 	 * @return Input
 	 */
-	public static function createHidden($name) {
-		return new Input($name, self::TYPE_HIDDEN, null, false);
-	}
-
-	public static function createRadio($name, $required = false, $cssClass = null) {
-		
+	public static function createHidden($name, $value = null) {
+		$i = new Input($name, self::TYPE_HIDDEN, null, false, null);
+		return $i->setValue($value) ;
 	}
 
 	/**
@@ -89,8 +132,8 @@ class Input extends AbstractFormField {
 	 * @return Input
 	 */
 	public static function createCheckbox($name, $value) {
-		$i = new Input($name, self::TYPE_CHECKBOX, null, false) ;
-		return $i->setAttribute('class', null)->setAttribute('value', $value) ;
+		$i = new Input($name, self::TYPE_CHECKBOX, null, false, null) ;
+		return $i->setAttribute('value', $value) ;
 	}
 
 }

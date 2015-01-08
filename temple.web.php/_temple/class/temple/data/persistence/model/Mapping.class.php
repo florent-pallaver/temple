@@ -21,6 +21,12 @@ interface Mapping {
 	 */
 	function getDBValue(Model $m) ;
 
+	/**
+	 * 
+	 * @param \temple\data\persistence\model\Model $m
+	 * @param mixed $value
+	 * @return mixed the set value
+	 */
 	function setPHPValue(Model $m, $value) ;
 	
 }

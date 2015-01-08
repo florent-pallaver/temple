@@ -17,11 +17,15 @@ final class ExceptionHandler {
 	 * 
 	 * @param Exception $e
 	 */
-	public static function log(Exception $e) {
+	public static function log(Exception $e, $logTrace = true) {
 		$l = Logger::getInstance() ;
-		$l->log($_SERVER['REQUEST_URI'], self::$EXCEPTION_LOG_LEVEL) ;
 		$l->log($e->getMessage(), self::$EXCEPTION_LOG_LEVEL) ;
-		$l->log($e->getTraceAsString(), self::$EXCEPTION_LOG_LEVEL) ;
+		if($logTrace) {
+			$l->log($e->getTraceAsString(), self::$EXCEPTION_LOG_LEVEL) ;
+			if($e->getPrevious()) {
+				self::log($e->getPrevious()) ;
+			}
+		}
 	}
 	
 	/**
@@ -30,6 +34,7 @@ final class ExceptionHandler {
 	 */
 	public static function handle(Exception $e) {
 		self::log($e) ;
+		http_response_code(500) ;
 		$v = new view\FailureView($e) ;
 		$v->render() ;
 	}

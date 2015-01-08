@@ -11,6 +11,8 @@ class HTML5Document implements htmldocument {
 
 	const DOCTYPE = '<!DOCTYPE html>' ;
 	
+	private static $titleKey = '_title|' ;
+	
 	/**
 	 * @var HTMLNode
 	 */
@@ -26,20 +28,18 @@ class HTML5Document implements htmldocument {
 		$this->head->addChild(new HTMLNode('meta', ['charset' => self::CHARSET_UTF_8])) ;
 		$this->addMeta('author', $author) ;
 		$this->addMeta('description', $description) ;
-		$this->head->addChild(HTMLNodeFactory::createNodeWithString('title', $title)) ;
+		$this->head->addChild(HTMLNodeFactory::createNodeWithString('title', $title), self::$titleKey) ;
 		$this->body = new HTMLNode('body') ;
 	}
 	
-	/**
-	 * @return HTMLNode
-	 */
+	public final function getTitle() {
+		return $this->head->getChild(self::$titleKey) ;
+	}
+	
 	public final function getHead() {
 		return $this->head;
 	}
 
-	/**
-	 * @return HTMLNode
-	 */
 	public final function getBody() {
 		return $this->body;
 	}

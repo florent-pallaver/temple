@@ -2,6 +2,8 @@
 
 namespace temple\data\persistence\model;
 
+use temple\Logger ;
+
 /**
  * Description of ModelProxy
  *
@@ -9,32 +11,41 @@ namespace temple\data\persistence\model;
  */
 trait ModelProxy {
 
+	/**
+	 *
+	 * @var \ReflectionProperty
+	 */
 	private $property ;
 
 	private $holder ;
 	
 	private $instance ;
 	
-	public function __construct(\ReflectionProperty $property, Model $holder) {
-		parent::__construct();
+	public function proxyInit(\ReflectionProperty $property = null, Model $holder = null) {
 		$this->property = $property ;
 		$this->holder = $holder ;
 	}
 	
 	public function __destruct() {
-		\temple\Logger::getInstance()->debug('Destroying proxy [' . parent::_class() . ', ' . $this->getId() . ']');
+//		error_log('Destroying proxy ['.parent::_class()->getName().', '.$this->getId().']') ;
+//		Logger::getInstance('PROXY')->debug('Destroying proxy ['.parent::_class()->getName().', '.$this->getId().']');
 	}
 	
 	private function lazyLoad() {
 		if(!$this->instance) {
-			$this->instance = ModelManager::getInstance()->findById(parent::_class(), $this->getId()) ;
-			$p = $this->property->isPrivate() ;
-			if($p) {
-				$this->property->setAccessible(true) ;
-			}
-			$this->property->setValue($this->holder, $this->instance) ;
-			if($p) {
-				$this->property->setAccessible(false) ;
+			Logger::getInstance('PROXY')->debug('Lazily loading ['.parent::_class()->getName().', '.$this->getId().']');
+			// setter les fields parents a la place c'est mieux !
+			$this->instance = ModelManager::getInstance()->findByKey(parent::getPK(), $this->getId()) ;
+			if($this->property && $this->holder) {
+//				Logger::getInstance('PROXY')->severe(gettype($this->property)) ;
+				$p = $this->property->isPrivate() ;
+				if($p) {
+					$this->property->setAccessible(true) ;
+				}
+				$this->property->setValue($this->holder, $this->instance) ;
+				if($p) {
+					$this->property->setAccessible(false) ;
+				}
 			}
 		}
 	}

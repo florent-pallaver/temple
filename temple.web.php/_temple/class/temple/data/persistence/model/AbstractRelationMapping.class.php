@@ -14,12 +14,12 @@ abstract class AbstractRelationMapping extends AbstractMapping implements Relati
 	/**
 	 * @var Key
 	 */
-	private $from ;
+	protected $from ;
 	
 	/**
 	 * @var Key
 	 */
-	private $to ;
+	protected $to ;
 	
 //	private $uniqueAlias ;
 
@@ -27,8 +27,19 @@ abstract class AbstractRelationMapping extends AbstractMapping implements Relati
 
 	private $optionnal ;
 
+	/**
+	 * 
+	 * @param ReflectionProperty $field
+	 * @param \temple\data\persistence\model\Key $from
+	 * @param \temple\data\persistence\model\Key $to
+	 * @param boolean $autoFetch
+	 * @param boolean $optionnal
+	 * @param boolean $insertable
+	 * @param boolean $updatable
+	 * @throws \temple\IllegalArgumentException
+	 */
 	public function __construct(ReflectionProperty $field, Key $from, Key $to, $autoFetch = false, $optionnal = false, $insertable = true, $updatable = true) {
-		parent::__construct($field, $insertable, $updatable, ModelFieldConverter::getInstance($to->getClass()));
+		parent::__construct($field, $insertable, $updatable);
 		if(count($to->getColumnNames()) != count($from->getColumnNames())) {
 			throw new \temple\IllegalArgumentException('Given keys do not have the same number of columns') ;
 		}
@@ -52,6 +63,25 @@ abstract class AbstractRelationMapping extends AbstractMapping implements Relati
 
 	public final function isOptionnal() {
 		return $this->optionnal ;
+	}
+	
+	public function getDBValue(Model $m) {
+		$o = $this->getValue($m) ;
+		return _eia($o ? $o->getId() : null) ;
+ 	}
+	
+	public function setPHPValue(Model $m, $value) {
+		$o = null ;
+		if($value !== null) {
+			if(is_object($value) && $this->to->getClass()->isInstance($value)) {
+				$o = $value ;
+			} else {
+				$o = ModelManager::getInstance()->getProxy($this->to->getClass(), $value) ;
+				$o->proxyInit($this->field, $m) ;
+			}
+		}
+		$this->setValue($m, $o) ;
+		return $o ;
 	}
 	
 }

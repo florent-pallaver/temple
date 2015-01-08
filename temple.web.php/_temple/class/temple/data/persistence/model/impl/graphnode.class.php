@@ -72,29 +72,11 @@ class GraphNode {
 	}
 
 	/**
-	 * TODOC
-	 * @return array
-	 */
-//	public function getArrows() {
-//		return $this->arrows;
-//	}
-
-	/**
-	 * TODOC
-	 *
-	 * @param string $fieldName
-	 * @return GraphArrow
-	 */
-//	public function getArrow($fieldName) {
-//		return _iod($this->arrows, $fieldName);
-//	}
-
-	/**
 	 * 
 	 * @param \temple\data\persistence\db\query\Comparison $comp
 	 * @param type $maxCount
 	 * @param type $offset
-	 * @return type
+	 * @return \temple\data\persistence\db\query\Select
 	 */
 	public function newSelect(Comparison $comp, $maxCount = 0, $offset = 0) {
 		$fields = [];
@@ -110,24 +92,60 @@ class GraphNode {
 	 * @return \temple\data\persistence\db\query\Insert
 	 */
 	public function newInsert(Model $model) {
-		$i = self::$qf->newInsert($this->metamodel->getTableName());
 		$f = [];
 		$v = [];
 		foreach ($this->metamodel->getMappings() as $m) {
-			if ($m->isInsertable()) {
-				foreach($m->getColumnNames() as $cn) {
-					$f[] = $cn ;
-				}
-				foreach($m->getDBValue($model) as $dv) {
-					$v[] = $dv ;
+			$this->setFieldsAndValues($model, $m, $f, $v);
+		}
+		foreach ($this->metamodel->getRelationMappings() as $rm) {
+			if ($rm instanceof \temple\data\persistence\model\ManyToOne || $rm instanceof \temple\data\persistence\model\OneToOne) {
+				$this->setFieldsAndValues($model, $rm, $f, $v);
+			}
+		}
+		return self::$qf->newInsert($this->metamodel->getTableName())->setFields($f)->addTuple($v);
+	}
+
+	private function setFieldsAndValues(Model $model, Mapping $m, &$fields, &$values) {
+		if ($m->isInsertable()) {
+			foreach ($m->getColumnNames() as $cn) {
+				$fields[] = $cn;
+			}
+			foreach ($m->getDBValue($model) as $dv) {
+				$values[] = $dv;
+			}
+		}
+	}
+
+	public function newUpdate(Model $model) {
+		$t = $this->entryArrow->getTable();
+		$u = self::$qf->newUpdate($t);
+		foreach ($this->metamodel->getMappings() as $m) {
+			if ($m->isUpdatable()) {
+				$cols = $m->getColumnNames();
+				$vals = $m->getDBValue($model);
+				for ($i = 0, $l = count($cols); $i < $l; $i++) {
+					$u->addAssignment(new Field($cols[$i], $t), $vals[$i]);
 				}
 			}
 		}
-		return $i->setFields($f)->addTuple($v);
+		$u->getCondition()->addComparison(self::$qf->newKeyComparison($this->metamodel->getPrimaryKey(), $model->getId(), $t)) ;
+//		 TODO add condition
+//		throw new Exception('Not Implemented');
+		return $u;
 	}
 
+	/**
+	 * 
+	 * @param \temple\data\persistence\db\query\Comparison $comp
+	 * @param type $maxCount
+	 * @param type $offset
+	 * @return \temple\data\persistence\db\query\Delete
+	 */
 	public function newDelete(Comparison $comp, $maxCount = 0, $offset = 0) {
-		
+		$table = self::table($this->entryArrow);
+		$d = self::$qf->newDelete($table, $maxCount, $offset);
+		$d->getCondition()->addComparison($comp);
+		return $d;
 	}
 
 	/**
@@ -151,14 +169,16 @@ class GraphNode {
 					if ($cols !== null && !$m->autoFetch()) {
 						self::addColumns($m, $t, $cols);
 					}
-					$jt = self::table($a, $m->autoFetch() ? $cols : null);
-					$jc = self::$qf->newAndCondition();
-					$tfn = $m->getColumnNames();
-					$jtfn = $m->getMappedKey()->getColumnNames();
-					for ($i = 0, $l = count($tfn); $i < $l; $i++) {
-						$jc->addComparison(self::$qf->newFieldComparison(new Field($tfn[$i], $t), new Field($jtfn[$i], $jt)));
+					if ($m->autoFetch()) {
+						$jt = self::table($a, $m->autoFetch() ? $cols : null);
+						$jc = self::$qf->newAndCondition();
+						$tfn = $m->getColumnNames();
+						$jtfn = $m->getMappedKey()->getColumnNames();
+						for ($i = 0, $l = count($tfn); $i < $l; $i++) {
+							$jc->addComparison(self::$qf->newFieldComparison(new Field($tfn[$i], $t), new Field($jtfn[$i], $jt)));
+						}
+						$t->join($m->isOptionnal() ? JoinType::$LEFT_OUTER_JOIN : JoinType::$INNER_JOIN, $jt, $jc);
 					}
-					$t->join($m->isOptionnal() ? JoinType::$LEFT_OUTER_JOIN : JoinType::$INNER_JOIN, $jt, $jc);
 				}
 			}
 		}
@@ -169,6 +189,18 @@ class GraphNode {
 		foreach ($m->getColumnNames() as $cn) {
 			$cols[] = new Field($cn, $t, $t->getAlias() . '_' . $cn);
 		}
+	}
+
+	public function extractObject0(array $tuple) {
+		$node = $this->entryArrow->getNode();
+		$instance = $node->metamodel->newInstance();
+		foreach ($node->metamodel->getMappings() as $m) {
+			$m->setPHPValue($instance, self::getValue($m, $tuple));
+		}
+		foreach ($node->metamodel->getRelationMappings() as $m) {
+			$m->setPHPValue($instance, self::getValue($m, $tuple));
+		}
+		return $instance;
 	}
 
 	/**
@@ -183,7 +215,7 @@ class GraphNode {
 
 	private static function object(GraphArrow $arrow, array $tuple) {
 		$node = $arrow->getNode();
-		$instance = $node->metamodel->newInstance() ;
+		$instance = $node->metamodel->newInstance();
 		$colPrefix = $arrow->getName() . '_';
 		$allFieldsNull = true;
 		foreach ($node->metamodel->getMappings() as $m) {
@@ -194,17 +226,19 @@ class GraphNode {
 			$instance = null;
 		} elseif (!$arrow->isCyclic()) {
 			foreach ($node->arrows as $a) {
+				$m = $a->getMapping();
 				if ($a->isTraversable()) {
-					$m = $a->getMapping();
-					$v = $m->autoFetch() ? self::object($a, $tuple) : self::getValue($m, $tuple, $colPrefix) ;
-					$m->setPHPValue($instance, $v) ;
+					$v = $m->autoFetch() ? self::object($a, $tuple) : self::getValue($m, $tuple, $colPrefix);
+					$m->setPHPValue($instance, $v);
+				} else {
+					$m->setPHPValue($instance, self::getValue($m, $tuple, $colPrefix));
 				}
 			}
 		}
 		return $instance;
 	}
 
-	private static function getValue(Mapping $m, array $tuple, $colPrefix) {
+	private static function getValue(Mapping $m, array $tuple, $colPrefix = '') {
 		$value = [];
 		foreach ($m->getColumnNames() as $cn) {
 			$value[] = _iod($tuple, $colPrefix . $cn);

@@ -1,125 +1,125 @@
-function Temple() {
-}
-
-// public static
-Temple.LEVELS = ['success', 'info', 'warning', 'danger'];
-Temple.ICONS = ['ok-sign', 'info-sign', 'warning-sign', 'exclamation-sign'];
-Temple.ALERTS_DIV = $('#_templeAlerts');
-
-function TempleAlert(index, msg) {
-
-	this.index = index;
-	this.msg = msg;
-
-}
-
-TempleAlert.prototype.show = function() {
-	Temple.ALERTS_DIV.prepend('<div class="fade in alert alert-dismissable alert-' +
-			Temple.LEVELS[this.index] + '">' +
-			'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-			'<span class="glyphicon glyphicon-' + Temple.ICONS[this.index] + '"></span> ' +
-			this.msg.replace(/\n/g, '<br />') + '</div>');
-};
-
-function TempleForm(form) {
-
-	this.form = form ;
-
-}
+$(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+	alert('An error occured while processing the request.\n\nCause: Error ' + jqxhr.status + ' - ' + thrownError);
+});
 
 String.prototype.endsWith = function(suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
-	
-TempleForm.prototype.submit = function() {
-		var form = $(this.form);
-		var submits = form.find('*[type="submit"]');
 
-		submits.attr('disabled', 'disabled');
+function TempleForm(form) {
 
-		var data = {};
+	this.form = form;
 
-		var button = form.find('button[type="submit"]._clicked');
-		data[button.attr('name')] = button.val();
+	var f = $(form);
+	this.submits = f.find('*[type="submit"]');
+	this.clicked = f.find('button[type="submit"]._clicked');
 
-		var inputs = form.find('input');
-		$.each(inputs, function(i, e) {
-			var input = $(e) ;
-			var name = input.attr('name') ;
-			var val = input.val() ;
-			if(name.endsWith('[]')) {
-				if(!data[name]) {
-					data[name] = [] ;
-				}
-				if(input.attr('type') !== 'checkbox' || input.prop('checked')) {
-					data[name].push(val) ;
-				}
-			} else {
-				data[name] = val;
-			}
-		});
+}
 
-		var selects = form.find('select');
-		$.each(selects, function(i, e) {
-			data[$(e).attr('name')] = $(e).val();
-		});
+TempleForm.SUCCESS_STATUS = 3;
 
-		var texts = form.find('textarea');
-		$.each(texts, function(i, e) {
-			data[$(e).attr('name')] = $(e).val();
-		});
-
-		var formId = form.attr('id');
-		if (formId) {
-			$('*[form="' + formId + '"]');
+TempleForm.prototype.submitDone = function(result) {
+	TempleAlert.showAll(result.messages);
+	if (result.status === TempleForm.SUCCESS_STATUS) {
+		var data = $(this.form).data();
+		var fn = data['onSuccess'];
+		if (fn && (typeof window[fn] === 'function')) {
+			window[fn](data, result.data);
 		}
+		if(result.goTo) {
+			window.location.replace(result.goTo) ;
+		} else if (result.reload) {
+//			window.setTimeout(function() {
+				if (!window.location.reload()) {
+					// link pour reloader
+				}
+//			}, 1000);
+		} else {
+			if(result.resetForm) {
+				this.form.reset();
+			}
+			$(this.form).find('input[type="password"]').val('') ;
+		}
+	}
+};
 
-		$.ajax(form.attr('action'), {
-			type: 'POST',
-			dataType: 'json',
-			cache: false,
-			context: this.form,
-			data: data})
-				.done(function(result) {
-					$.each(result.messages, function(level, msgs) {
-						for (var i = 0, l = msgs.length; i < l; i++) {
-							new TempleAlert(level, msgs[i]).show();
-						}
-					});
-					if (!result.status) {
-						if (result.reload) {
-							window.setTimeout(function() {
-								if (!window.location.reload()) {
-									// link pour reloader
-								}
-							}, 3000);
-						} else {
-							this.reset();
-						}
-					}
-				})
-				.fail(function(jqXHR, textStatus, errorThrown) {
-					alert('An error occured while sending the request.\n' + textStatus + ' ' + errorThrown);
-				})
-				.always(function() {
-					button.removeClass('_clicked');
-					submits.removeAttr('disabled');
-				});
+TempleForm.prototype.submitAlways = function() {
+	this.clicked.removeClass('_clicked');
+	this.clicked[0].blur();
+	this.submits.removeAttr('disabled');
+};
 
+TempleForm.prototype.submit = function() {
+	this.submits.attr('disabled', 'disabled');
 
-} ;
+	var data = new FormData(this.form);
+	data.append(this.clicked.attr('name'), this.clicked.val());
 
-Temple.spySubmits = function() {
+	$.ajax($(this.form).attr('action'), {
+		type: 'POST',
+		dataType: 'json',
+		cache: false,
+		context: this,
+		data: data,
+		contentType: false,
+		processData: false})
+			.done(this.submitDone)
+			.always(this.submitAlways);
+};
 
-	$('button[type="submit"]').on('click', function() {
-		$(this).addClass('_clicked');
+TempleForm.spySubmits = function() {
+
+	$('button[type="submit"]').on('click', function(event) {
+		if(!$(this).hasClass('_confirm') || confirm('Are you sure you want to do this action?')) {
+			$(this).addClass('_clicked');
+		} else {
+			this.blur() ;
+			event.preventDefault() ;
+		}
 	});
 
-	$('form').on('submit', function(event) {
-		event.preventDefault() ;
-		new TempleForm(this).submit() ;
+	$('form._temple-form').on('submit', function(event) {
+		event.preventDefault();
+		new TempleForm(this).submit();
 	});
 
 };
 
-Temple.spySubmits() ;
+TempleForm.spySubmits();
+
+//	var data = {};
+//
+//	var button = form.find('button[type="submit"]._clicked');
+//	data[button.attr('name')] = button.val();
+//
+//	var inputs = form.find('input');
+//	$.each(inputs, function(i, e) {
+//		var input = $(e);
+//		var name = input.attr('name');
+//		var val = input.val();
+//		if (input.attr('type') !== 'checkbox' || input.prop('checked')) {
+//			if (name.endsWith('[]')) {
+//				if (!data[name]) {
+//					data[name] = [];
+//				}
+//				data[name].push(val);
+//			} else {
+//				data[name] = val;
+//			}
+//		}
+//	});
+//
+//	var selects = form.find('select');
+//	$.each(selects, function(i, e) {
+//		data[$(e).attr('name')] = $(e).val();
+//	});
+//
+//	var texts = form.find('textarea');
+//	$.each(texts, function(i, e) {
+//		data[$(e).attr('name')] = $(e).val();
+//	});
+//
+//	var formId = form.attr('id');
+//	if (formId) {
+//		$('*[form="' + formId + '"]');
+//	}

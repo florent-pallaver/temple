@@ -33,28 +33,31 @@ final class ClassLoader {
 	}
 
 	private function loadLast() {
-		$c = null;
 		$className = end($this->stack);
+		$paths = [];
+		$loadedPath = null;
 		foreach (self::$resolvers as $r) {
 			$path = $r->getClassPath($className);
 			$paths[] = $path;
 			if (is_readable($path)) {
+				$loadedPath = $path;
 				$this->logger->finest('loading ' . $path);
 				require_once $path;
-				$this->logger->debug($className . ' auto loaded');
-				$c = new \ReflectionClass($className);
+				$this->logger->fine($className . ' auto loaded');
 				break;
 			}
 		}
-		if ($c) {
-			array_pop($this->stack);
+		array_pop($this->stack);
+		try {
+			$c = new \ReflectionClass($className);
 			if (!$c->isTrait()) {
 				$this->toInit[] = $c;
 			}
 			$this->initLoadedClasses();
-		} else {
-			throw new \ErrorException("Unable to load class $className\nClass path does not contain any of [" .
-			implode(', ', $paths) . "]\nCheck the namespace and/or the class file name...");
+		} catch (Exception $e) {
+			$msg = $loadedPath ? "Unable to load $className\n$loadedPath has been loaded but it does not contain a definition of $className" : "Unable to load $className\nClass path does not contain any of [" . implode(', ', $paths)
+					. "]\nCheck the namespace and/or the file name...";
+			throw new \Exception($msg, 0, $e);
 		}
 	}
 
@@ -78,7 +81,7 @@ final class ClassLoader {
 				$rm->setAccessible(true);
 				$rm->invoke(null);
 				$rm->setAccessible(false);
-				$this->logger->debug($rc->getName() . '::' .$rm->getName() . ' executed');
+				$this->logger->fine($rc->getName() . '::' . $rm->getName() . ' executed');
 			}
 		}
 	}

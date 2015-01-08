@@ -9,6 +9,8 @@ namespace temple\data\persistence\model\validation;
  */
 class ValidationException extends \temple\TempleException {
 
-	
+	public function __construct($msg) {
+		parent::__construct($msg);
+	}
 	
 }

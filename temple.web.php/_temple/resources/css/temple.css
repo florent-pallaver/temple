@@ -3,11 +3,16 @@
     Author     : florent
 */
 
+* {
+	word-wrap: break-word ;
+}
+
 #_templeAlerts {
 	position: fixed ;
 	left:50% ;
 	z-index: 2000;
 	top: 120px;
+	max-width: 50%;
 }
 
 #_templeAlerts div.alert {
@@ -38,10 +43,13 @@ main {
 	font-size: 20px ;
 }
 
-a.btn,
-button.btn, 
+.btn,
 ul.dropdown-menu li a,
-ul._checkboxes li label {
+ul._checkboxes li label,
+ol.breadcrumb li a,
+.modal-title,
+.control-label, 
+th {
 	text-transform: capitalize ;
 }
 
@@ -53,4 +61,70 @@ ul._checkboxes li label {
 ul._checkboxes li label:active,
 ul._checkboxes li label:hover {
 	background-color: lightgray ;
+}
+
+nav.navbar img {
+	max-height: 100% ;
+}
+
+.panel-body form button[type='submit'],
+.modal-body form button[type='submit'] {
+	float:right ;
+	margin-left: 5px ;
+}
+
+.modal-footer {
+	margin-top: 0 ;
+}
+
+input[type="file"].form-control {
+	border: 0 ;
+	border-radius: 0;
+	box-shadow: none ;
+	height: auto;
+	padding-left: 0 ;
+	padding-right: 0 ;
+}
+
+option[value=""] {
+	font-style: italic ;
+}
+
+.blockCentered {
+	float: none ;
+	margin-left: auto ; 
+	margin-right: auto ; 
+}
+
+.help-block {
+	text-align: right ;
+	font-style: italic;
+}
+
+label.required:after {
+	content: " *" ;
+	color: red ;
+}
+
+button.btn.before:before,
+button.btn.after:after,
+label.btn.before:before, 
+label.btn.after:after {
+	font-family: 'Glyphicons Halflings';
+	content: "\e157" ;
+}
+button.btn.before.active:before,
+button.btn.after.active:after,
+label.btn.before.active:before,
+label.btn.after.active:after {
+	content: "\e067" ;
+}
+button.btn.after:after,
+label.btn.after:after {
+	margin-left: 5px ;
+}
+
+.panel .panel-title a {
+	display: inline-block ;
+	width: 100% ;
 }

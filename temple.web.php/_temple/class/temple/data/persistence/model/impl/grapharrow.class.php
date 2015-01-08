@@ -48,7 +48,7 @@ class GraphArrow {
 		$this->mapping = $mapping ;
 		$this->node = $node ;
 		$this->cyclic = $cyclic ;
-		$this->traversable = $mapping instanceof ManyToOne || $mapping instanceof OneToOne ;
+		$this->traversable = ($mapping instanceof ManyToOne || $mapping instanceof OneToOne) ;
 	}
 
 	/**

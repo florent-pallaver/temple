@@ -51,7 +51,7 @@ abstract class Driver {
 
 	const UPDATE_FORMAT = "UPDATE %s \nSET %s" ;
 
-	const DELETE_FORMAT = 'DELETE FROM %s' ;
+	const DELETE_FORMAT = 'DELETE %s FROM %s' ;
 
 	const WHERE_FORMAT = "\nWHERE %s" ;
 
@@ -84,7 +84,6 @@ abstract class Driver {
 	*/
 	public final function query(Query $query) {
 		$sql = $this->toSQLString($query) ;
-		\temple\Logger::getInstance()->debug("SQL Query:\n" . $sql) ;
 		return $this->sqlQuery($sql) ;
 	}
 
@@ -93,7 +92,7 @@ abstract class Driver {
 	 *
 	 * @param string $query
 	 * @return QueryResult the result of this Query.
-	 * @throws DBException TODOC
+	 * @throws DBException only TODOC
 	*/
 	public abstract function sqlQuery($sqlQuery) ;
 
@@ -104,7 +103,6 @@ abstract class Driver {
 	 */
 	public abstract function escape($string) ;
 	
-	// TODO escape character !
 	/**
 	 * TODOC
 	 *
@@ -164,7 +162,8 @@ abstract class Driver {
 
 	protected function deleteQuery(Delete $query, &$format, &$params) {
 		$format = self::DELETE_FORMAT ;
-		$params = [$query->getTable()] ;
+		$t = $query->getTable() ;
+		$params = [$t->getAlias(), $t] ;
 	}
 
 	protected function insertQuery(Insert $q, &$format, &$params) {

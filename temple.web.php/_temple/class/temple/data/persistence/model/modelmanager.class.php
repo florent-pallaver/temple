@@ -14,6 +14,14 @@ abstract class ModelManager {
 	public abstract function getMetamodel(\ReflectionClass $class) ;
 	
 	/**
+	 * 
+	 * @param \ReflectionClass $class
+	 * @param type $id
+	 * @return Model
+	 */
+	public abstract function getProxy(\ReflectionClass $class, $id) ;
+	
+	/**
 	 * TODOC
 	 *
 	 * @param unknown $modelClassName
@@ -33,6 +41,14 @@ abstract class ModelManager {
 	public abstract function findByFilter(Filter $filter) ;
 
 	/**
+	 * 
+	 * @param ReflectionClass $class
+	 * @param type $sql
+	 * @return array
+	 */
+	public abstract function findByRawQuery(\ReflectionClass $class, $sql) ;
+	
+	/**
 	 * @param Filter $filter Description
 	 * @return boolean
 	 */
@@ -42,7 +58,7 @@ abstract class ModelManager {
 	 * TODOC
 	 *
 	 * @param Model $model
-	 * @return
+	 * @return scalar the generated id
 	 */
 	public abstract function persist(Model $model) ;
 
@@ -73,12 +89,12 @@ abstract class ModelManager {
 	/**
 	 * TODOC
 	 *
-	 * @param unknown $modelClassName
-	 * @param unknown $id
-	 * @return
-	 * @throws
+	 * @param Key $key
+	 * @param mixed $value
+	 * @return int the count deleted model
+	 * @throws \temple\data\persistence\db\DBException
 	 */
-	public abstract function deleteById(\ReflectionClass $modelClass, $id) ;
+	public abstract function deleteByKey(Key $key, $value) ;
 
 	/**
 	 * TODOC

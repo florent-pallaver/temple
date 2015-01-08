@@ -22,7 +22,7 @@ class HTMLString extends AbstractHTMLElement {
 	 * @param boolean $formatted - TODOC
 	 */
 	public function __construct($string, $formatted = false) {
-		$this->string = $string ;
+		$this->string = strval($string) ;
 		$this->formattedString = $formatted ? $string : NULL ;
 	}
 

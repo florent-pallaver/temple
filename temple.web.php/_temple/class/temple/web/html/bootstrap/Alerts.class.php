@@ -14,9 +14,9 @@ class Alerts extends AbstractComponent {
 	
 	const ID = '_templeAlerts' ;
 	
-	private static $icons = ['ok-sign', 'info-sign', 'warning-sign', 'exclamation-sign'];
+	private static $icons = ['exclamation-sign', 'warning-sign', 'info-sign', 'ok-sign'];
 
-	private static $variant = ['success', 'info', 'warning', 'danger'] ;
+	private static $variant = ['danger', 'warning', 'info', 'success'] ;
 	
 	public function __construct() {
 		parent::__construct('div');

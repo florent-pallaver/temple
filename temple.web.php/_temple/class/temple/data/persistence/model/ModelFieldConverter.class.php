@@ -3,6 +3,7 @@
 namespace temple\data\persistence\model;
 
 use ReflectionClass ;
+use ReflectionProperty ;
 
 /**
  * Description of ModelFieldConverter
@@ -18,9 +19,21 @@ class ModelFieldConverter extends AbstractFieldConverter {
 	 */
 	private $modelClass ;
 	
+	/**
+	 *
+	 * @var \ReflectionProperty
+	 */
+	private $property ;
+	
+	/**
+	 * @var \ReflectionClass
+	 */
+	private $proxyClass ;
+	
 	protected function __construct(ReflectionClass $modelClass) {
 		parent::__construct();
 		$this->modelClass = $modelClass ;
+		$this->proxyClass = new \ReflectionClass(ProxyGenerator::PROXY_NAMESPACE . $modelClass->getName() . 'Proxy') ;
 	}
 	
 	protected function toDBValue0($notNullValue) {
@@ -29,11 +42,12 @@ class ModelFieldConverter extends AbstractFieldConverter {
 
 	protected function toPHPValue0($notNullValue) {
 		if(is_object($notNullValue) && $this->modelClass->isInstance($notNullValue)) {
-			return $notNullValue ;
+			$o = $notNullValue ;
 		} else {
-			\temple\Logger::getInstance()->debug($notNullValue) ;
-			// generate proxy
+			$o = $this->proxyClass->newInstance() ;
+			$o->proxyInit($this->property, $model, $notNullValue) ;
 		}
+		return $o ;
 	}
 
 	/**
@@ -47,6 +61,6 @@ class ModelFieldConverter extends AbstractFieldConverter {
 		}
 		return self::$instances[$n] ;
 	}
-	
+
 	
 }

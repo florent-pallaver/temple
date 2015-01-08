@@ -49,8 +49,8 @@ final class Messages implements SessionListener {
 	}
 
 	public function register($msg, Status $status, Exception $e = null) {
-		$m = $e ? sprintf(self::$CAUSE_FORMAT, $msg, $e->getMessage()) : $msg;
-		$this->registry[$status->getOrdinal()][] = $m;
+		$m = $e ? sprintf(self::$CAUSE_FORMAT, $msg, $e->getMessage()) : strval($msg);
+		$this->registry[$status ? $status->getOrdinal() : 0][] = $m;
 	}
 
 	/**

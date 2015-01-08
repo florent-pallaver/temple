@@ -14,11 +14,12 @@ class ScalarFieldConverter extends AbstractFieldConverter {
 	use \temple\Singleton;
 
 	protected function toDBValue0($notNullValue) {
-		if(!is_scalar($notNullValue)) {
-			$type = gettype($notNullValue) ;
-			throw new \temple\ConfigurationException("value of type $type is not a scalar, set an appropriate FieldConverter") ;
+		if (!is_scalar($notNullValue)) {
+			$type = gettype($notNullValue);
+			throw new \temple\ConfigurationException("value of type $type is not a scalar, set an appropriate FieldConverter");
 		}
-		return is_string($notNullValue) ? '\'' . Driver::getInstance()->escape($notNullValue) . '\'' : $notNullValue;
+		return is_string($notNullValue) ? '\'' . Driver::getInstance()->escape($notNullValue) . '\'' :
+				(is_bool($notNullValue) ? intval($notNullValue) : $notNullValue);
 	}
 
 	protected function toPHPValue0($notNullValue) {

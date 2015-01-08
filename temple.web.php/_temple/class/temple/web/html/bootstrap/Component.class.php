@@ -15,4 +15,10 @@ interface Component extends \temple\web\html\HTMLElement {
 	 */
 //	function setJQueryField() ;
 	
+	/**
+	 * @param mixed $help
+	 * @return Component
+	 */
+	function setHelp($help) ;
+
 }

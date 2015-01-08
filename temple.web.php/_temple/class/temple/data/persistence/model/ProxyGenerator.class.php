@@ -2,7 +2,7 @@
 
 namespace temple\data\persistence\model;
 
-use temple\util\fs\Directory ;
+use temple\util\io\Directory ;
 
 /**
  * Description of ProxyGenerator
@@ -31,7 +31,7 @@ namespace temple\_generated\%1$s ;
 /**
  * Generated class, dot not modify
  */
-class %2$sProxy extends %1$s\%2$s {
+class %2$sProxy extends \%1$s\%2$s {
 
 	use \temple\data\persistence\model\ModelProxy ;
 	
@@ -46,17 +46,17 @@ EOD;
 	private $dir ;
 	
 	private function __construct() {
-		$this->dir = new \temple\util\fs\Directory(TEMPLE_CLASS_PATH . 'temple/_generated') ;
+		$this->dir = new \temple\util\io\Directory(TEMPLE_CLASS_PATH . 'temple/_generated') ;
 	}
 
 	public function generate(\ReflectionClass $c) {
 		$ns = $c->getNamespaceName() ;
 		$cn = $c->getShortName() ;
 		
-		$proxyDir = new \temple\util\fs\Directory(str_replace('\\', DIRECTORY_SEPARATOR , $ns), $this->dir) ;
-		$proxyFile = new \temple\util\fs\File($cn . 'Proxy' . \temple\ClassLoader::SUFFIX, $proxyDir) ;
+		$proxyDir = new \temple\util\io\Directory(str_replace('\\', DIRECTORY_SEPARATOR , $ns), $this->dir) ;
+		$proxyFile = new \temple\util\io\File($cn . 'Proxy' . \temple\ClassLoader::SUFFIX, $proxyDir) ;
 		
-		$classFile = new \temple\util\fs\File($c->getFileName()) ;
+		$classFile = new \temple\util\io\File($c->getFileName()) ;
 		
 		$pft = $proxyFile->getLastModificationTime() ;
 		if(!$pft || $classFile->getLastModificationTime()->getTimestamp() > $pft->getTimestamp()) {
@@ -65,7 +65,7 @@ EOD;
 				if(!($m->isFinal() || $m->isStatic() || $m->isConstructor() || $m->isDestructor())) {
 					$parameters = [] ;
 					foreach($m->getParameters() as $p) {
-						$parameters[] = $p->getName() ;
+						$parameters[] = '$' . $p->getName() ;
 					}
 					$methods .= sprintf(self::$methodProxyFormat, $m->getName(), implode(', ', $parameters)) ;
 				}

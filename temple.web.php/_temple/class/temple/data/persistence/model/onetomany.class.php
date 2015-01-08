@@ -10,4 +10,17 @@ namespace temple\data\persistence\model ;
  */
 final class OneToMany extends AbstractRelationMapping {
 
+	public function setPHPValue(Model $m, $value) {
+		$o = null ;
+		if($value !== null) {
+			if(is_array($value)) {
+				$o = $value ;
+			} else {
+				$o = new proxy\ArrayProxy($this->to, $m->getId()) ;
+			}
+		}
+		$this->setValue($m, $o) ;
+		return $o ;
+	}
+	
 }

@@ -7,18 +7,14 @@ namespace temple\data;
  *
  * @author florent
  */
-class Status {
+final class Status {
 
 	use \temple\Enum ;
 	
 	/**
 	 * @var Status
 	 */
-	public static $SUCCESS ;
-	/**
-	 * @var Status
-	 */
-	public static $INFO ;
+	public static $ERROR ;
 	/**
 	 * @var Status
 	 */
@@ -26,6 +22,10 @@ class Status {
 	/**
 	 * @var Status
 	 */
-	public static $ERROR ;
+	public static $INFO ;
+	/**
+	 * @var Status
+	 */
+	public static $SUCCESS ;
 	
 }

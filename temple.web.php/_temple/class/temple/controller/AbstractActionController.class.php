@@ -2,7 +2,6 @@
 
 namespace temple\controller;
 
-use temple\Logger ;
 use temple\view\JSONResult ;
 use temple\data\Status ;
 
@@ -19,10 +18,13 @@ abstract class AbstractActionController extends AbstractRequestController {
 
 	private $reload ;
 	
-	public function __construct($includeMessages = true, $reload = false) {
+	private $goTo ;
+	
+	public function __construct($includeMessages = true, $reload = false, $goTo = '') {
 		parent::__construct();
-		$this->includeMessages = $includeMessages ;
+		$this->includeMessages = !$reload && $includeMessages ;
 		$this->reload = $reload ;
+		$this->goTo = $goTo ;
 	}
 
 	/**
@@ -35,7 +37,15 @@ abstract class AbstractActionController extends AbstractRequestController {
 	}
 
 	/**
+	 * @param type $goTo
+	 */
+	protected final function setGoTo($goTo) {
+		$this->goTo = $goTo ;
+	}
+	
+	/**
 	 * @throws \temple\controller\ActionException
+	 * @throws \temple\data\persistence\db\DBException 
 	 */
 	protected abstract function processRequest() ;
 	
@@ -43,12 +53,14 @@ abstract class AbstractActionController extends AbstractRequestController {
 		try {
 			$this->processRequest() ;
 			$r = Status::$SUCCESS ;
+			$im = $this->includeMessages ;
 		} catch (\Exception $e) {
-			Logger::getInstance()->debug("Exception:\n" . $e->getTraceAsString()) ;
+			\temple\ExceptionHandler::log($e) ;
 			$this->error($e->getMessage(), $e->getPrevious()) ;
 			$r = Status::$ERROR ;
+			$im = true ;
 		}
-		return new JSONResult($r, $this->includeMessages, $this->data, $this->reload) ;
+		return new JSONResult($r, $im, $this->data, $this->reload, false, $this->goTo) ;
 	}
 	
 }

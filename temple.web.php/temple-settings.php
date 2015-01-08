@@ -12,12 +12,20 @@ if(!defined('TEMPLE_CLASS_PATH')) {
 	define('TEMPLE_CLASS_PATH', TEMPLE_ROOT_PATH . 'class' . DIRECTORY_SEPARATOR) ;
 }
 
+if(!defined('TEMPLE_RESOURCE_PATH')) {
+	define('TEMPLE_RESOURCE_PATH', TEMPLE_ROOT_PATH . 'resources' . DIRECTORY_SEPARATOR) ;
+}
+
 if(!defined('CUSTOM_ROOT_PATH')) {
 	define('CUSTOM_ROOT_PATH', ROOT_PATH . '_custom' . DIRECTORY_SEPARATOR) ;
 }
 
 if(!defined('CUSTOM_CLASS_PATH')) {
 	define('CUSTOM_CLASS_PATH', CUSTOM_ROOT_PATH . 'class' . DIRECTORY_SEPARATOR) ;
+}
+
+if(!defined('CUSTOM_RESOURCE_PATH')) {
+	define('CUSTOM_RESOURCE_PATH', CUSTOM_ROOT_PATH . 'resources' . DIRECTORY_SEPARATOR) ;
 }
 
 // Load useful functions

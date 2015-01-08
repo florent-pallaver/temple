@@ -124,7 +124,7 @@ class HTMLNode extends AbstractHTMLElement {
 		if($value === NULL) {
 			unset($this->attributes[$key]) ;
 		} else {
-			$this->attributes[$key] = $value ;
+			$this->attributes[$key] = htmlentities($value) ;
 		}
 		return $this ;
 	}

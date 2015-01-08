@@ -21,6 +21,11 @@ interface Metamodel {
 	function getRelationMappings() ;
 
 	function getMappings() ;
+
+	/**
+	 * @return Key
+	 */
+	function getPrimaryKey() ;
 	
 	/**
 	 * TODOC

@@ -73,7 +73,7 @@ final class URL {
         if($this->parameters) {
             $params = array() ;
             foreach ($this->parameters as $key => $value) {
-                $params[] = $key . '=' . urlencode($value) ;
+                $params[] = $value === null ? $key : ($key . '=' . urlencode($value)) ;
             }
             $str .= '?' . implode('&', $params) ;
         }
@@ -106,4 +106,16 @@ final class URL {
         return $url ;
     }
 
+	/**
+	 * 
+	 * @param string $path - the aboslute path to link to, starts with /
+	 * @param array $parameters
+	 * @param type $anchor
+	 * @return URL
+	 */
+	public static function createLocal($path, array $parameters = [], $anchor = '') {
+		return self::create(sprintf('http%s://%s%s', $_SERVER['HTTPS'] ? 's' : '', $_SERVER['HTTP_HOST'], $path), 
+			$parameters, $anchor) ;
+	}
+	
 }

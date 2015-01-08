@@ -37,5 +37,9 @@ class SelectManyCheckbox extends ItemList implements FormField {
 			}
 		}
 	}
+
+	public function isRequired() {
+		return false;
+	}
 	
 }

@@ -34,11 +34,6 @@ class NavbarVariant {
 	/**
 	 * @var NavbarVariant
 	 */
-	public static $BRAND;
-
-	/**
-	 * @var NavbarVariant
-	 */
 	public static $BTN;
 
 	/**

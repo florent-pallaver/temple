@@ -9,7 +9,7 @@ namespace temple\controller;
  */
 final class ActionException extends \temple\TempleException {
 
-    const MSG_FORMAT = "Unable to %s.%s%s\nPlease contact us if this error unexpectedly persists." ;
+    const MSG_FORMAT = "<strong>Unable to %s.</strong>\n%s%s\n\n<em>Please contact us if this error unexpectedly persists</em>." ;
     
     /**
      * 
