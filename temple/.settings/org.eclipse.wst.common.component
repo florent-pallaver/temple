@@ -26,10 +26,10 @@
         <dependent-module archiveName="temple.credentials.ejb.client.jar" deploy-path="/lib" handle="module:/resource/temple.credentials.ejb.client/temple.credentials.ejb.client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="signarkJPA.jar" deploy-path="/lib" handle="module:/resource/signarkJPA/signarkJPA">
+        <dependent-module archiveName="cdi-api.jar" deploy-path="/lib" handle="module:/classpath/lib//home/flominou/Work/servers/glassfish4/glassfish/modules/cdi-api.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="cdi-api.jar" deploy-path="/lib" handle="module:/classpath/lib//home/flominou/Work/servers/glassfish4/glassfish/modules/cdi-api.jar">
+        <dependent-module archiveName="signark.model.jar" deploy-path="/lib" handle="module:/resource/signark.model/signark.model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

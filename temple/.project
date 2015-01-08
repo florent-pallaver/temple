@@ -11,7 +11,7 @@
 		<project>temple.cdi</project>
 		<project>temple.web.client</project>
 		<project>temple.credentials.ejb.client</project>
-		<project>signarkJPA</project>
+		<project>signark.model</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
