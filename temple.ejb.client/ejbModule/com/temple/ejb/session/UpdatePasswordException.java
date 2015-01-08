@@ -19,6 +19,6 @@ public final class UpdatePasswordException extends EntityException {
 	 * @param e - the cause of this exception
 	 */
 	public UpdatePasswordException(Exception e) {
-		super(LocaleViewable.NO_PARAMETER, e);
+		super(LocaleViewable.NO_PARAMETERS, e);
 	}
 }

@@ -4,14 +4,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
+import com.temple.AbstractTempleBean;
 import com.temple.LocalizedTempleException;
 import com.temple.Module;
-import com.temple.bean.AbstractTempleBean;
 import com.temple.view.LocaleStringView;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -26,7 +26,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param summary
 	 */
 	protected void addInfo(String summary) {
@@ -35,7 +35,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param id
 	 * @param summary
 	 */
@@ -45,7 +45,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param summary
 	 */
 	protected void addWarning(String summary) {
@@ -54,7 +54,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param id
 	 * @param summary
 	 */
@@ -64,7 +64,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param e
 	 */
 	protected void addError(Exception e) {
@@ -73,7 +73,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param slv
 	 */
 	protected void addError(LocaleStringView slv) {
@@ -82,7 +82,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param id
 	 * @param slv
 	 */
@@ -92,7 +92,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param summary
 	 */
 	protected void addError(String summary) {
@@ -101,7 +101,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param id
 	 * @param summary
 	 */
@@ -111,7 +111,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param e
 	 */
 	protected void addFatal(LocalizedTempleException e) {
@@ -120,7 +120,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param summary
 	 */
 	protected void addFatal(String summary) {
@@ -129,7 +129,7 @@ public abstract class AbstractTempleWebBean extends AbstractTempleBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param id
 	 * @param summary
 	 */

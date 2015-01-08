@@ -9,7 +9,7 @@ import com.temple.model.filter.FindMaxFilter;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -19,7 +19,7 @@ public @interface GenerateIntegerId {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	Class<? extends FindMaxFilter<Integer>> value();

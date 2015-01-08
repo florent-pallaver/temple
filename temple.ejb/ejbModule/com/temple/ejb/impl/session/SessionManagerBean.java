@@ -6,8 +6,8 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+import com.temple.AbstractTempleBean;
 import com.temple.Module;
-import com.temple.bean.AbstractTempleBean;
 import com.temple.cdi.CDIApplicationParameter;
 import com.temple.cdi.CDIApplicationParameter.Type;
 import com.temple.cdi.TempleBean;
@@ -15,7 +15,7 @@ import com.temple.cdi.request.SignInEvent;
 import com.temple.cdi.session.SessionBean;
 import com.temple.cdi.util.ClassWrapper;
 import com.temple.credentials.ejb.model.CredentialsManager;
-import com.temple.credentials.ejb.model.IncorrectPasswordException;
+import com.temple.credentials.ejb.model.IncorrectPassException;
 import com.temple.credentials.ejb.model.LoginNotFoundException;
 import com.temple.ejb.model.FindEntityException;
 import com.temple.ejb.model.TempleEntityManager;
@@ -70,7 +70,7 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 			this.signInEvent.fire(new SignInEvent(u));
 		} catch (final FindEntityException | LoginNotFoundException e) {
 			throw new UserNotFoundException(login, e);
-		} catch (final IncorrectPasswordException e) {
+		} catch (final IncorrectPassException e) {
 			throw new com.temple.ejb.session.IncorrectPasswordException(e);
 		}
 	}

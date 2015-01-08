@@ -4,8 +4,8 @@ import javax.ejb.PostActivate;
 import javax.ejb.PrePassivate;
 import javax.ejb.Remove;
 
+import com.temple.AbstractTempleBean;
 import com.temple.Module;
-import com.temple.bean.AbstractTempleBean;
 import com.temple.ejb.TempleManager;
 
 /**

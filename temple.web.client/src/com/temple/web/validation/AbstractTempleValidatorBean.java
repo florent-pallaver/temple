@@ -2,8 +2,8 @@ package com.temple.web.validation;
 
 import javax.faces.validator.Validator;
 
+import com.temple.AbstractTempleBean;
 import com.temple.Module;
-import com.temple.bean.AbstractTempleBean;
 
 /**
  * TODOC

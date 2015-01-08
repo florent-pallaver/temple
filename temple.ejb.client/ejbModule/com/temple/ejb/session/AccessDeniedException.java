@@ -4,8 +4,8 @@ import com.temple.model.User;
 import com.temple.model.access.AccessType;
 
 /**
- * Exception thrown whenever an {@link User} tries to access an Object and is not allowed to.
- * 
+ * Exception thrown whenever an {@link User} tries to perform an action on an Object and is not allowed to.
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -22,7 +22,7 @@ public final class AccessDeniedException extends SessionException {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param p - the access type that is not allowed.
 	 */
 	public AccessDeniedException(AccessType p) {

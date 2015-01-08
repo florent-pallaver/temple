@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -23,7 +23,7 @@ public final class IdentifierGeneratorHelper {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param c
 	 * @param ig
 	 */
@@ -33,11 +33,21 @@ public final class IdentifierGeneratorHelper {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param e
 	 * @return
 	 */
 	public final Serializable newId(TempleEntity e) {
-		return this.generators.get(e.getClass()).newId(e);
+		return this.getGenerator(e).newId(e);
+	}
+
+	private IdentifierGenerator getGenerator(TempleEntity e) {
+		IdentifierGenerator generator;
+		Class<?> c = e.getClass();
+		do {
+			generator = this.generators.get(c);
+			c = c.getSuperclass();
+		} while (generator == null && c != null);
+		return generator;
 	}
 }

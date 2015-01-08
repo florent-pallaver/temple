@@ -47,7 +47,7 @@ public enum SessionActionType implements ActionType<DefaultAccessType> {
 
 	@Override
 	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETER;
+		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

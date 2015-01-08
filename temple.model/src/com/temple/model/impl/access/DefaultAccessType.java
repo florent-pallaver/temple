@@ -31,7 +31,7 @@ public enum DefaultAccessType implements AccessType {
 
 	@Override
 	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETER;
+		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

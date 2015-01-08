@@ -12,7 +12,7 @@ import com.temple.web.cdi.WebRequestParameter.Type;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -37,7 +37,7 @@ public class NavigationBean extends AbstractRequestBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	public String getTitleKey() {

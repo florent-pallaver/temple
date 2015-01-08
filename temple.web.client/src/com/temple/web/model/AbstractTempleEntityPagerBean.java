@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.temple.web.model;
 
@@ -8,19 +8,18 @@ import java.util.List;
 import com.temple.LocaleViewableTempleException;
 import com.temple.ejb.model.PartialResults;
 import com.temple.model.TempleEntity;
-import com.temple.model.filter.EntityFilter;
-import com.temple.util.Pageable;
+import com.temple.model.filter.PageableEntityFilter;
 import com.temple.web.cdi.request.AbstractRequestBean;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  * @param <M>
  */
-public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends EntityFilter<M> & Pageable> extends AbstractRequestBean implements
-		TempleEntityPagerBean<M, F> {
+public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends PageableEntityFilter<M>> extends AbstractRequestBean implements
+TempleEntityPagerBean<M, F> {
 
 	// @Inject
 	// private Conversation conversation;
@@ -32,14 +31,14 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F ex
 
 	protected List<M> results = null;
 
-	AbstractTempleEntityPagerBean() {
+	protected AbstractTempleEntityPagerBean() {
 		this(null);
 	}
 
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param filter
 	 */
 	protected AbstractTempleEntityPagerBean(F filter) {
@@ -55,11 +54,12 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F ex
 	@Override
 	public List<M> getAll() {
 		if (this.results == null) {
-			this.info("Getting all");
+			this.debug("Getting all");
 			try {
 				final PartialResults<M> page = this.getFirstPage();
 				this.results = page.getAll();
 				this.totalCount = page.getTotalCount();
+				this.info(this.results.size() + " entities out of " + this.totalCount);
 			} catch (final LocaleViewableTempleException e) {
 				this.addErrorMessage(e);
 				this.results = null;

@@ -17,7 +17,7 @@ public abstract class SignInException extends EJBException {
 	 * Constructor
 	 */
 	protected SignInException() {
-		super(LocaleViewable.NO_PARAMETER);
+		super(LocaleViewable.NO_PARAMETERS);
 	}
 
 	/**

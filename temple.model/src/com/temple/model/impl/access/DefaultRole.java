@@ -50,7 +50,7 @@ public enum DefaultRole implements Role {
 
 	@Override
 	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETER;
+		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

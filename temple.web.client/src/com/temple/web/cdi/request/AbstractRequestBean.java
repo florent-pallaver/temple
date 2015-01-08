@@ -4,6 +4,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import com.temple.LocaleViewableTempleException;
 import com.temple.cdi.TempleBean;
@@ -13,7 +14,7 @@ import com.temple.web.cdi.AbstractTempleWebBean;
 /**
  * TODOC
  * To be implemented by class in scope request cause the binding cause inconsistent behavior
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -27,32 +28,65 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	@TempleBean
 	private LanguageBean languageBean;
 
+	@Inject
+	private HttpServletRequest req;
+
+	protected Integer getIntegerParam(String key) {
+		final String value = this.req.getParameter(key);
+		return value != null ? Integer.valueOf(value) : null;
+	}
+
+	protected Integer[] getIntegerArrayParam(String key) {
+		final Integer[] ints;
+		final String[] values = this.req.getParameterValues(key);
+		if (values != null) {
+			ints = new Integer[values.length];
+			for (int i = values.length; i-- > 0;) {
+				ints[i] = Integer.valueOf(values[i]);
+			}
+		} else {
+			ints = new Integer[0];
+		}
+		return ints;
+	}
+
 	protected void addWarningMessage(String clientId, String key, Object... parameters) {
 		this.addWarning(clientId == null ? AbstractRequestBean.warningMessagesClientId : clientId, this.languageBean.getString(key, parameters));
 	}
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param e
 	 */
 	protected void addErrorMessage(LocaleViewableTempleException e) {
-		this.addErrorMessage(AbstractRequestBean.errorMessagesClientId, e);
+		this.addErrorMessage(AbstractRequestBean.errorMessagesClientId, e, true);
 	}
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param e
 	 */
 	protected void addErrorMessage(String clientId, LocaleViewableTempleException e) {
-		this.logThrowable(e);
+		this.addErrorMessage(clientId, e, true);
+	}
+
+	/**
+	 * TODOC
+	 *
+	 * @param e
+	 */
+	protected void addErrorMessage(String clientId, LocaleViewableTempleException e, boolean logException) {
+		if (logException) {
+			this.logThrowable(e);
+		}
 		this.addError(clientId, this.languageBean.getString(e));
 	}
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param context
 	 * @param component
 	 * @param messageKey
@@ -64,7 +98,7 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param clientId
 	 * @param messageKey
 	 * @param parameters
@@ -75,7 +109,7 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param clientId
 	 * @param e
 	 */

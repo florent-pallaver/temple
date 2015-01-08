@@ -8,24 +8,25 @@ import javax.persistence.criteria.Root;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  */
 public interface EntityKey<E extends TempleEntity> extends Serializable {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	Class<E> getEntityClass();
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param cb
 	 * @param from
+	 * @param values
 	 * @return
 	 */
-	Predicate[] createPredicates(CriteriaBuilder cb, Root<E> from);
+	Predicate[] createPredicates(CriteriaBuilder cb, Root<E> from, Serializable[] values);
 }

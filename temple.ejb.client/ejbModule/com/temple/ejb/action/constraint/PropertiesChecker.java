@@ -41,7 +41,7 @@ public abstract class PropertiesChecker<C extends Annotation> implements Checker
 			if (!this.isValid(p.getValue())) {
 				Object[] lps = this.getLocaleParameters();
 				if (lps == null) {
-					lps = LocaleViewable.NO_PARAMETER;
+					lps = LocaleViewable.NO_PARAMETERS;
 				}
 				Object[] flps = new Object[lps.length + 1];
 				flps[0] = p;

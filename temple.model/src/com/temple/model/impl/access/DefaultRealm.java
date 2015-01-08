@@ -37,7 +37,7 @@ public enum DefaultRealm implements Realm {
 
 	@Override
 	public final Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETER;
+		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

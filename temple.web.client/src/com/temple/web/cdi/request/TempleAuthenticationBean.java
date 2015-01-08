@@ -16,11 +16,11 @@ import com.temple.ejb.session.SignInException;
 /**
  * TODOC
  * Bean to use to register any data relative to the current session
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
-@Named("authenticationBean")
+@Named("AuthenticationBean")
 @Model
 @TempleBean
 public class TempleAuthenticationBean extends AbstractRequestBean implements AuthenticationBean {
@@ -28,14 +28,14 @@ public class TempleAuthenticationBean extends AbstractRequestBean implements Aut
 	@EJB
 	private SessionManager sessionManager;
 
-	private String login;
+	protected String name;
 
-	private String password;
+	protected String pass;
 
 	@Override
 	public void signIn() {
 		try {
-			this.sessionManager.signIn(this.login, this.password);
+			this.sessionManager.signIn(this.name, this.pass);
 		} catch (final SignInException e) {
 			this.addErrorMessage(e);
 		}
@@ -62,31 +62,31 @@ public class TempleAuthenticationBean extends AbstractRequestBean implements Aut
 	 * @return the login
 	 */
 	public String getLogin() {
-		return this.login;
+		return this.name;
 	}
 
 	/**
 	 * Sets the login
-	 * 
+	 *
 	 * @param login the login to set
 	 */
 	public void setLogin(String login) {
-		this.login = login;
+		this.name = login;
 	}
 
 	/**
-	 * @return the password
+	 * @return the pass
 	 */
-	public String getPassword() {
-		return this.password;
+	public String getPass() {
+		return this.pass;
 	}
 
 	/**
-	 * Sets the password
-	 * 
-	 * @param password the password to set
+	 * Sets the pass
+	 *
+	 * @param pass the pass to set
 	 */
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPass(String password) {
+		this.pass = password;
 	}
 }

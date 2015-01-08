@@ -1,6 +1,7 @@
 package com.temple.ejb.impl.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -21,9 +22,11 @@ import com.temple.ejb.model.TempleEntityManager;
 import com.temple.ejb.model.UpdateException;
 import com.temple.model.EntityKey;
 import com.temple.model.TempleEntity;
+import com.temple.model.UniqueEntityKey;
 import com.temple.model.filter.AbstractPageableEntityFilter;
 import com.temple.model.filter.EntityFilter;
 import com.temple.model.filter.FindMaxFilter;
+import com.temple.model.filter.PageableEntityFilter;
 
 /**
  * TODOC
@@ -48,14 +51,21 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public <E extends TempleEntity> List<E> findByKey(EntityKey<E> k) throws FindEntityException {
-		final Class<E> entityClass = k.getEntityClass();
+	public <E extends TempleEntity> List<E> findByKey(EntityKey<E> ek, Serializable... values) throws FindEntityException {
+		final Class<E> entityClass = ek.getEntityClass();
 		final CriteriaQuery<E> q = this.cb.createQuery(entityClass);
 		try {
-			return this.em.createQuery(q.where(k.createPredicates(this.cb, q.from(entityClass)))).getResultList();
+			return this.em.createQuery(q.where(ek.createPredicates(this.cb, q.from(entityClass), values))).getResultList();
 		} catch (final PersistenceException e) {
-			throw new FindEntityException(entityClass, k, e);
+			throw new FindEntityException(entityClass, ek, e);
 		}
+	}
+
+	@Override
+	public <E extends TempleEntity> E findByKey(UniqueEntityKey<E> uek, Serializable... values) throws FindEntityException {
+		final EntityKey<E> ek = uek;
+		final List<E> es = this.findByKey(ek, values);
+		return es.isEmpty() ? null : es.get(0);
 	}
 
 	@Override
@@ -70,7 +80,7 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public long findCount(AbstractPageableEntityFilter<?> filter) throws FindEntityException {
+	public long findCount(PageableEntityFilter<?> filter) throws FindEntityException {
 		try {
 			return filter.createCountQuery(this.em).getSingleResult().longValue();
 		} catch (final PersistenceException e) {
@@ -105,8 +115,8 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 
 	@Override
 	public void persist(TempleEntity po, boolean flush) throws EntityException {
-		if (this.isInfoLoggable()) {
-			this.info("about to persist " + po);
+		if (this.isDebugLoggable()) {
+			this.debug("about to persist " + po);
 		}
 		try {
 			this.em.persist(po);
@@ -140,6 +150,15 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 
 	@Override
 	public void update(TempleEntity... tes) throws UpdateException {
+		this.update0(Arrays.asList(tes));
+	}
+
+	@Override
+	public void update(Collection<? extends TempleEntity> tes) throws UpdateException {
+		this.update0(tes);
+	}
+
+	private void update0(Iterable<? extends TempleEntity> tes) throws UpdateException {
 		for (final TempleEntity te : tes) {
 			try {
 				this.em.merge(te);
@@ -150,11 +169,34 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
+	public void refresh(TempleEntity... tes) {
+		Arrays.stream(tes).forEach(te -> this.refresh0(te));
+	}
+
+	@Override
+	public void refresh(Collection<? extends TempleEntity> tes) {
+		tes.stream().forEach(te -> this.refresh0(te));
+	}
+
+	private void refresh0(TempleEntity te) {
+		if (te != null) {
+			this.em.refresh(te);
+		}
+	}
+
+	@Override
 	public void delete(TempleEntity po) throws EntityException {
 		try {
 			this.em.remove(po);
 		} catch (final PersistenceException e) {
 			throw new EntityException(po, e);
+		}
+	}
+
+	@Override
+	public void delete(Collection<? extends TempleEntity> tes) throws EntityException {
+		for (final TempleEntity te : tes) {
+			this.delete(te);
 		}
 	}
 
@@ -170,13 +212,13 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public <E extends TempleEntity> int deleteByKey(EntityKey<E> k) throws EntityException {
-		final Class<E> entityClass = k.getEntityClass();
+	public <E extends TempleEntity> int deleteByKey(EntityKey<E> ek, Serializable... values) throws EntityException {
+		final Class<E> entityClass = ek.getEntityClass();
 		final CriteriaDelete<E> q = this.cb.createCriteriaDelete(entityClass);
 		try {
-			return this.em.createQuery(q.where(k.createPredicates(this.cb, q.from(entityClass)))).executeUpdate();
+			return this.em.createQuery(q.where(ek.createPredicates(this.cb, q.from(entityClass), values))).executeUpdate();
 		} catch (final PersistenceException e) {
-			throw new EntityException(entityClass, k, e);
+			throw new EntityException(entityClass, ek, e);
 		}
 	}
 }

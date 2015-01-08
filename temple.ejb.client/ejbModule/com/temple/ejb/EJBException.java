@@ -20,7 +20,7 @@ public abstract class EJBException extends LocaleViewableTempleException {
 	 * @param cause - the cause of this exception
 	 */
 	protected EJBException(Throwable cause) {
-		this(LocaleViewable.NO_PARAMETER, cause);
+		this(LocaleViewable.NO_PARAMETERS, cause);
 	}
 
 	/**

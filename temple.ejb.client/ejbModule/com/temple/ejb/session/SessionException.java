@@ -17,7 +17,7 @@ public abstract class SessionException extends EJBException {
 	 * Constructor.
 	 */
 	protected SessionException() {
-		super(LocaleViewable.NO_PARAMETER);
+		super(LocaleViewable.NO_PARAMETERS);
 	}
 
 	/**

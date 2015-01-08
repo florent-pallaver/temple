@@ -11,7 +11,7 @@ import javax.inject.Qualifier;
 
 /**
  * Qualifier for request parameters.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -33,8 +33,14 @@ public @interface WebRequestParameter {
 	Type type();
 
 	/**
+	 * @return the key of the request parameter, overrides index if both are defined.
+	 */
+	@Nonbinding
+	String key() default "";
+
+	/**
 	 * TODOC
-	 * 
+	 *
 	 * @author Florent Pallaver
 	 * @version 1.0
 	 */

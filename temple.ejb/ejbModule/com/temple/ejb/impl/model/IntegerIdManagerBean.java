@@ -10,6 +10,7 @@ import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.persistence.Entity;
 import javax.persistence.metamodel.ManagedType;
 
 import com.temple.ejb.model.IdentifierManager;
@@ -20,7 +21,7 @@ import com.temple.model.filter.FindMaxFilter;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -39,8 +40,15 @@ public class IntegerIdManagerBean extends AbstractEntityManagerBean implements I
 	@Override
 	@Lock(LockType.WRITE)
 	public Integer newId(TempleEntity e) {
-		final Class<?> c = e.getClass();
-		final Integer nextId = Integer.valueOf(this.lastIds.get(c).intValue() + 1);
+		Integer i = null;
+		Class<?> c = e.getClass();
+		do {
+			i = this.lastIds.get(c);
+			if (i == null) {
+				c = c.getSuperclass();
+			}
+		} while (i == null && c != null);
+		final Integer nextId = Integer.valueOf(i + 1);
 		this.lastIds.put(c, nextId);
 		return nextId;
 	}
@@ -51,15 +59,21 @@ public class IntegerIdManagerBean extends AbstractEntityManagerBean implements I
 		for (final ManagedType<?> mt : this.em.getMetamodel().getManagedTypes()) {
 			final Class<?> mc = mt.getJavaType();
 			final GenerateIntegerId a = mc.getAnnotation(GenerateIntegerId.class);
+			// generate ids on entities only
 			if (a != null) {
-				try {
-					final FindMaxFilter<Integer> fma = a.value().newInstance();
-					final Integer maxId = fma.createMaxQuery(this.em).getSingleResult();
-					this.lastIds.put(mc, maxId == null ? Integer.valueOf(0) : maxId);
-					this.info(mc + " " + maxId);
-					IdentifierGeneratorHelper.instance.register(mc, this.self);
-				} catch (InstantiationException | IllegalAccessException e) {
-					this.error(e);
+				if (mc.isAnnotationPresent(Entity.class)) {
+					try {
+						final FindMaxFilter<Integer> fma = a.value().newInstance();
+						final Integer maxId = fma.createMaxQuery(this.em).getSingleResult();
+						this.lastIds.put(mc, maxId == null ? Integer.valueOf(0) : maxId);
+						this.info(mc + " max id = " + maxId);
+						IdentifierGeneratorHelper.instance.register(mc, this.self);
+					} catch (InstantiationException | IllegalAccessException e) {
+						this.error(e);
+					}
+				} else {
+					this.warning(mc.getName()
+							+ " has annotation @com.temple.model.GenerateIntegerId but does not have the @javax.persistence.Entity annotation.");
 				}
 			}
 		}

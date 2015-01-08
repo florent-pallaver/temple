@@ -1,6 +1,7 @@
 package com.temple.ejb.impl.action;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 
 import com.temple.Module;
@@ -13,7 +14,7 @@ import com.temple.util.ImmutableMap;
 
 /**
  * Base implementation of {@link Action}.
- * 
+ *
  * @author cr9z1k
  * @version 1.0
  */
@@ -29,7 +30,7 @@ public class DefaultAction<AT extends ActionType<DefaultAccessType>> extends Def
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param at TODOC
 	 * @param key TODOC
 	 * @param values TODOC
@@ -38,8 +39,7 @@ public class DefaultAction<AT extends ActionType<DefaultAccessType>> extends Def
 		super(at.key(), values, Module.EJB);
 		this.id = id;
 		this.actionType = at;
-		final String[] keys = new String[values.length];
-		for (int i = values.length; i-- > 0; keys[i] = values[i].getLocaleKey()) {}
+		final String[] keys = Arrays.stream(values).map(p -> p.getLocaleKey()).toArray(String[]::new);
 		this.properties = new ImmutableMap<>(keys, values);
 	}
 

@@ -6,25 +6,24 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
-import com.temple.Module;
-import com.temple.bean.AbstractTempleBean;
 import com.temple.cdi.ApplicationBean;
 import com.temple.cdi.CDISessionParameter;
+import com.temple.web.cdi.AbstractTempleWebBean;
 import com.temple.web.cdi.WebConfiguration;
 import com.temple.web.cdi.WebRequestParameter;
 import com.temple.web.cdi.WebRequestParameter.Type;
 
 /**
  * Producer for every request related data.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
 @ApplicationScoped
-// TODO rename
-public class RequestProducer extends AbstractTempleBean {
+public class RequestParametersProducer extends AbstractTempleWebBean {
 
 	private final int pageParameterIndex;
 
@@ -35,8 +34,8 @@ public class RequestProducer extends AbstractTempleBean {
 	private final List<String> sessionPages;
 
 	@Inject
-	RequestProducer(@ApplicationBean WebConfiguration config) {
-		super(Module.WEB);
+	RequestParametersProducer(@ApplicationBean WebConfiguration config) {
+		super();
 		this.pageParameterIndex = config.getPageParameterIndex();
 		this.homePage = config.getHomePage();
 		this.commonPages = config.getCommonPages();
@@ -50,8 +49,11 @@ public class RequestProducer extends AbstractTempleBean {
 	@Dependent
 	@WebRequestParameter(type = Type.STRING)
 	String getStringRequestParameter(InjectionPoint ip, @RequestParameters List<String> parameters) {
-		final int i = ip.getAnnotated().getAnnotation(WebRequestParameter.class).index();
-		final String p = parameters.size() > i ? parameters.get(i) : null;
+		final WebRequestParameter annotation = ip.getAnnotated().getAnnotation(WebRequestParameter.class);
+		final String key = annotation.key().trim();
+		final int i = annotation.index();
+		final String p = key != null && key.length() > 0 ? FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(key)
+				: parameters.size() > i ? parameters.get(i) : null;
 		return p;
 	}
 

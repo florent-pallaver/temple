@@ -6,7 +6,7 @@ import com.temple.model.TempleEntity;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  */
 public class PageableResults<E extends TempleEntity> implements PartialResults<E> {
@@ -20,7 +20,7 @@ public class PageableResults<E extends TempleEntity> implements PartialResults<E
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param entities
 	 * @param filter
 	 * @param totalCount
@@ -30,6 +30,19 @@ public class PageableResults<E extends TempleEntity> implements PartialResults<E
 		super();
 		this.entities = entities;
 		this.totalCount = totalCount;
+	}
+
+	/**
+	 * Constructor.
+	 * TODOC
+	 * 
+	 * @param entities
+	 * @param totalCount
+	 */
+	public PageableResults(List<E> entities, long totalCount) {
+		super();
+		this.entities = entities;
+		this.totalCount = (int) totalCount;
 	}
 
 	@Override

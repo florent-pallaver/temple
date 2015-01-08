@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.temple.ejb.model;
 
@@ -8,19 +8,20 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.Local;
-import javax.xml.registry.FindException;
 
 import com.temple.ejb.TempleManager;
 import com.temple.model.EntityKey;
 import com.temple.model.TempleEntity;
+import com.temple.model.UniqueEntityKey;
 import com.temple.model.filter.AbstractPageableEntityFilter;
 import com.temple.model.filter.EntityFilter;
 import com.temple.model.filter.FindMaxFilter;
+import com.temple.model.filter.PageableEntityFilter;
 
 /**
  * TODOC
  * Is meant to be used locally as real interaction with clients shouldn't be made through this interface.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -29,7 +30,7 @@ public interface TempleEntityManager extends TempleManager {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param c
 	 * @param id
 	 * @return
@@ -37,24 +38,34 @@ public interface TempleEntityManager extends TempleManager {
 	 */
 	// <E extends TempleEntity> E findReferenceById(Class<E> c, Serializable id) throws FindEntityException;
 	/**
-	 * @param clazz
-	 * @param id
-	 * @return
-	 * @throws FindException
+	 * Finds an {@link TempleEntity entity} given its id.
+	 *
+	 * @param clazz an entity class
+	 * @param id an id
+	 * @return the entity with given class and id, <code>null</code> if none exists
+	 * @throws FindEntityException if an error occurs while trying to find the entity
 	 */
 	<E extends TempleEntity> E findById(Class<E> clazz, Serializable id) throws FindEntityException;
 
 	/**
-	 * @param clazz
-	 * @param nk
+	 * @param ek
+	 * @param values
 	 * @return
-	 * @throws FindException
+	 * @throws FindEntityException
 	 */
-	<E extends TempleEntity> List<E> findByKey(EntityKey<E> nk) throws FindEntityException;
+	<E extends TempleEntity> List<E> findByKey(EntityKey<E> ek, Serializable... values) throws FindEntityException;
+
+	/**
+	 * @param ek
+	 * @param values
+	 * @return
+	 * @throws FindEntityException
+	 */
+	<E extends TempleEntity> E findByKey(UniqueEntityKey<E> ek, Serializable... values) throws FindEntityException;
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param algo
 	 * @return
 	 * @throws FindEntityException
@@ -63,16 +74,16 @@ public interface TempleEntityManager extends TempleManager {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param filter
 	 * @return
 	 * @throws FindEntityException
 	 */
-	long findCount(AbstractPageableEntityFilter<?> filter) throws FindEntityException;
+	long findCount(PageableEntityFilter<?> filter) throws FindEntityException;
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param ref
 	 * @return
 	 * @throws FindEntityException - if an error occurs while trying to find the entities matching the filter
@@ -81,7 +92,7 @@ public interface TempleEntityManager extends TempleManager {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param filter
 	 * @return
 	 * @throws FindEntityException
@@ -95,7 +106,7 @@ public interface TempleEntityManager extends TempleManager {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param tes
 	 * @throws EntityException
 	 */
@@ -103,7 +114,7 @@ public interface TempleEntityManager extends TempleManager {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param po
 	 * @param flush
 	 * @throws EntityException
@@ -116,9 +127,36 @@ public interface TempleEntityManager extends TempleManager {
 	void update(TempleEntity... tes) throws UpdateException;
 
 	/**
+	 * @param tes
+	 */
+	void update(Collection<? extends TempleEntity> tes) throws UpdateException;
+
+	/**
+	 * TODOC
+	 *
+	 * @param tes
+	 */
+	void refresh(TempleEntity... tes);
+
+	/**
+	 * TODOC
+	 *
+	 * @param tes
+	 */
+	void refresh(Collection<? extends TempleEntity> tes);
+
+	/**
 	 * @param po
 	 */
 	void delete(TempleEntity po) throws EntityException;
+
+	/**
+	 * TODOC
+	 *
+	 * @param tes
+	 * @throws EntityException
+	 */
+	void delete(Collection<? extends TempleEntity> tes) throws EntityException;
 
 	/**
 	 * @param clazz
@@ -127,8 +165,12 @@ public interface TempleEntityManager extends TempleManager {
 	void deleteById(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException;
 
 	/**
-	 * @param po
-	 * @param nk
+	 * TODOC
+	 *
+	 * @param ek
+	 * @param values
+	 * @return
+	 * @throws EntityException
 	 */
-	<E extends TempleEntity> int deleteByKey(EntityKey<E> nk) throws EntityException;
+	<E extends TempleEntity> int deleteByKey(EntityKey<E> ek, Serializable... values) throws EntityException;
 }

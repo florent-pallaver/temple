@@ -29,6 +29,6 @@ public final class NotNullConstraintChecker extends PropertiesChecker<NotNullCon
 
 	@Override
 	protected Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETER;
+		return LocaleViewable.NO_PARAMETERS;
 	}
 }

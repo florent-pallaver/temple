@@ -10,7 +10,7 @@ import javax.inject.Qualifier;
 
 /**
  * Qualifier for web application parameters.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -27,7 +27,7 @@ public @interface WebApplicationParameter {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @author Florent Pallaver
 	 * @version 1.0
 	 */
