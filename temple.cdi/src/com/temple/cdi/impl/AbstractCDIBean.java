@@ -1,7 +1,8 @@
 package com.temple.cdi.impl;
 
+import com.temple.AbstractTempleBean;
 import com.temple.Module;
-import com.temple.bean.AbstractTempleBean;
+import com.temple.cdi.TempleCDIBean;
 
 /**
  * TODOC
@@ -9,12 +10,19 @@ import com.temple.bean.AbstractTempleBean;
  * @author Florent Pallaver
  * @version 1.0
  */
-public abstract class AbstractCDIBean extends AbstractTempleBean {
+public abstract class AbstractCDIBean extends AbstractTempleBean implements TempleCDIBean {
 
 	/**
 	 * Constructor.
 	 */
 	protected AbstractCDIBean() {
 		super(Module.CDI);
+	}
+
+	@Override
+	public void touch() {
+		if (this.isDebugLoggable()) {
+			this.debug("touched");
+		}
 	}
 }

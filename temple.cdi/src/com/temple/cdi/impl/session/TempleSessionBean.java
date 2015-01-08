@@ -10,8 +10,8 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.temple.AbstractTempleBean;
 import com.temple.Module;
-import com.temple.bean.AbstractTempleBean;
 import com.temple.cdi.CDISessionParameter;
 import com.temple.cdi.CDISessionParameter.Type;
 import com.temple.cdi.TempleBean;

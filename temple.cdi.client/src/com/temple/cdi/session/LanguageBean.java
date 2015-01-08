@@ -1,15 +1,16 @@
 package com.temple.cdi.session;
 
+import com.temple.cdi.TempleCDIBean;
 import com.temple.util.human.Language;
 import com.temple.view.LocaleViewable;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
-public interface LanguageBean {
+public interface LanguageBean extends TempleCDIBean {
 
 	/**
 	 * @return the {@link Language} currently in use.
@@ -18,14 +19,14 @@ public interface LanguageBean {
 
 	/**
 	 * Sets the current {@link Language}
-	 * 
+	 *
 	 * @param language the {@link Language} to set
 	 */
 	void setCurrentLanguage(Language language);
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param lv
 	 * @return
 	 */
@@ -33,7 +34,7 @@ public interface LanguageBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param key
 	 * @param objects
 	 * @return
@@ -42,7 +43,7 @@ public interface LanguageBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param lv
 	 * @return
 	 */
@@ -50,7 +51,7 @@ public interface LanguageBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param key
 	 * @param objects
 	 * @return
