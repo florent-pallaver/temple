@@ -19,6 +19,16 @@ public abstract class AbstractCDIBean extends AbstractTempleBean implements Temp
 		super(Module.CDI);
 	}
 
+	/**
+	 * Constructor.
+	 * TODOC
+	 * 
+	 * @param module
+	 */
+	protected AbstractCDIBean(Module module) {
+		super(module);
+	}
+
 	@Override
 	public void touch() {
 		if (this.isDebugLoggable()) {

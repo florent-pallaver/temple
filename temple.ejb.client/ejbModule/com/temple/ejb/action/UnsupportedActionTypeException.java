@@ -5,7 +5,7 @@ import com.temple.Module;
 
 /**
  * Thrown when an {@link ActionType} is not supported by the application.
- * 
+ *
  * @author Florent
  */
 public final class UnsupportedActionTypeException extends LocaleViewableTempleException {
@@ -14,11 +14,11 @@ public final class UnsupportedActionTypeException extends LocaleViewableTempleEx
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param parameters
 	 * @param module
 	 */
 	public UnsupportedActionTypeException(Class<?> type) {
-		super(new Object[] { type }, Module.EJB);
+		super(new Object[]{ type }, Module.SERVICE);
 	}
 }

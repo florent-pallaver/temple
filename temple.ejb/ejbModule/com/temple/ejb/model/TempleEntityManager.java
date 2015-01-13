@@ -146,9 +146,17 @@ public interface TempleEntityManager extends TempleManager {
 	void refresh(Collection<? extends TempleEntity> tes);
 
 	/**
+	 * @param clazz
+	 * @param ids
+	 */
+	void delete(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException;
+
+	/**
 	 * @param po
 	 */
-	void delete(TempleEntity po) throws EntityException;
+	default void delete(TempleEntity po) throws EntityException {
+		this.delete(po.getClass(), po.getId());
+	}
 
 	/**
 	 * TODOC
@@ -156,13 +164,11 @@ public interface TempleEntityManager extends TempleManager {
 	 * @param tes
 	 * @throws EntityException
 	 */
-	void delete(Collection<? extends TempleEntity> tes) throws EntityException;
-
-	/**
-	 * @param clazz
-	 * @param ids
-	 */
-	void deleteById(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException;
+	default void delete(Collection<? extends TempleEntity> tes) throws EntityException {
+		for (final TempleEntity te : tes) {
+			this.delete(te.getClass(), te.getId());
+		}
+	}
 
 	/**
 	 * TODOC

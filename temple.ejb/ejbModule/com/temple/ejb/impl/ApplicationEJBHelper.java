@@ -17,7 +17,7 @@ import com.temple.view.LocaleViewable;
 
 /**
  * TODOC
- * 
+ *
  * @author cr9z1k
  * @version 1.0
  */
@@ -80,7 +80,7 @@ public class ApplicationEJBHelper extends AbstractManagerBean {
 		}
 	}
 
-	private static final class ActionCreator {
+	static final class ActionCreator {
 
 		private final ActionType<DefaultAccessType> actionType;
 
@@ -108,7 +108,7 @@ public class ApplicationEJBHelper extends AbstractManagerBean {
 			for (int i = pl; i-- > 0;) {
 				ps[i] = new DefaultProperty(this.propertyKeyPrefix + this.propertiesKey[i]);
 			}
-			return new DefaultAction(id, this.actionType, ps);
+			return new DefaultAction<>(id, this.actionType, ps);
 		}
 	}
 }

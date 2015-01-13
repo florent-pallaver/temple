@@ -26,6 +26,24 @@ public abstract class AbstractTempleBean extends AbstractLogger {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param prefix
+	 */
+	protected AbstractTempleBean(String loggerName) {
+		this(loggerName, Integer.toString(AbstractTempleBean.nextId++));
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param prefix
+	 */
+	protected AbstractTempleBean(String loggerName, String logPrefix) {
+		super(loggerName, logPrefix);
+	}
+
+	/**
+	 * Constructor.
 	 * TODOC
 	 *
 	 * @param module
@@ -42,7 +60,7 @@ public abstract class AbstractTempleBean extends AbstractLogger {
 	 * @param module
 	 */
 	protected AbstractTempleBean(String prefix, Module module) {
-		super(prefix, module);
+		super(module.packageName, prefix);
 	}
 
 	@PreDestroy

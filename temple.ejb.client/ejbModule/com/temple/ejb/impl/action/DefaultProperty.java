@@ -8,7 +8,7 @@ import com.temple.impl.view.DefaultLocaleViewable;
 
 /**
  * Base implementation of a {@link Property}.
- * 
+ *
  * @author cr9z1k
  * @version 1.0
  */
@@ -20,7 +20,7 @@ public class DefaultProperty extends DefaultLocaleViewable implements Property {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param l TODOC
 	 * @param key TODOC
 	 */
@@ -29,7 +29,7 @@ public class DefaultProperty extends DefaultLocaleViewable implements Property {
 	}
 
 	private DefaultProperty(String key, Serializable[] value) {
-		super(key, value, Module.EJB);
+		super(key, value, Module.SERVICE);
 		if (key == null) {
 			throw new IllegalArgumentException("The parameter \"key\" can't be null.");
 		}

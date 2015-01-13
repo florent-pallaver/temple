@@ -9,7 +9,7 @@ import com.temple.model.filter.FindMaxFilter;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  */
 public class FindEntityException extends EntityException {
@@ -19,7 +19,7 @@ public class FindEntityException extends EntityException {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param clazz
 	 * @param key
 	 */
@@ -30,7 +30,7 @@ public class FindEntityException extends EntityException {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param clazz
 	 * @param key
 	 * @param cause
@@ -42,7 +42,7 @@ public class FindEntityException extends EntityException {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param key
 	 * @param cause
 	 */
@@ -53,7 +53,7 @@ public class FindEntityException extends EntityException {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param clazz
 	 * @param cause
 	 */
@@ -64,7 +64,7 @@ public class FindEntityException extends EntityException {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param filter
 	 * @param cause
 	 */
@@ -75,11 +75,11 @@ public class FindEntityException extends EntityException {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param algo
 	 * @param cause
 	 */
-	public FindEntityException(FindMaxFilter algo, Throwable cause) {
+	public FindEntityException(FindMaxFilter<?> algo, Throwable cause) {
 		super(new Object[]{ algo }, cause);
 	}
 }

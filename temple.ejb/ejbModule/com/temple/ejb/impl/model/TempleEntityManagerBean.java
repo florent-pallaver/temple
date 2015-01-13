@@ -180,28 +180,14 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 
 	private void refresh0(TempleEntity te) {
 		if (te != null) {
-			this.em.refresh(te);
+			// TOTHINK il semble que contains retourne toujours false ...
+			final TempleEntity tr = this.em.contains(te) ? te : this.em.getReference(te.getClass(), te.getId());
+			this.em.refresh(tr);
 		}
 	}
 
 	@Override
-	public void delete(TempleEntity po) throws EntityException {
-		try {
-			this.em.remove(po);
-		} catch (final PersistenceException e) {
-			throw new EntityException(po, e);
-		}
-	}
-
-	@Override
-	public void delete(Collection<? extends TempleEntity> tes) throws EntityException {
-		for (final TempleEntity te : tes) {
-			this.delete(te);
-		}
-	}
-
-	@Override
-	public void deleteById(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException {
+	public void delete(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException {
 		for (final Serializable id : ids) {
 			try {
 				this.em.remove(this.em.getReference(clazz, id));

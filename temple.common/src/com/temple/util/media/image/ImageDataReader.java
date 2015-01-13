@@ -46,7 +46,7 @@ public class ImageDataReader extends AbstractLogger {
 			dim[0] = this.reader.getWidth(0);
 			dim[1] = this.reader.getHeight(0);
 		} catch (final IOException e) {
-			this.logThrowable("Unable to get dimension from photo", e);
+			this.throwable("Unable to get dimension from photo", e);
 		}
 		return dim;
 	}

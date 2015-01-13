@@ -101,12 +101,12 @@ public final class TempleLogger extends AbstractLogger {
 	}
 
 	@Override
-	public void logThrowable(Throwable t) {
-		super.logThrowable(t);
+	public void throwable(Throwable t) {
+		super.throwable(t);
 	}
 
 	@Override
-	public void logThrowable(String msg, Throwable t) {
-		super.logThrowable(msg, t);
+	public void throwable(String msg, Throwable t) {
+		super.throwable(msg, t);
 	}
 }

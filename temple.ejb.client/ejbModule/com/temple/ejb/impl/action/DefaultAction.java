@@ -36,7 +36,7 @@ public class DefaultAction<AT extends ActionType<DefaultAccessType>> extends Def
 	 * @param values TODOC
 	 */
 	public DefaultAction(Serializable id, AT at, Property[] values) {
-		super(at.key(), values, Module.EJB);
+		super(at.key(), values, Module.SERVICE);
 		this.id = id;
 		this.actionType = at;
 		final String[] keys = Arrays.stream(values).map(p -> p.getLocaleKey()).toArray(String[]::new);

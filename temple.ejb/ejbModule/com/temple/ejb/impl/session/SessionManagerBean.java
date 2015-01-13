@@ -29,7 +29,7 @@ import com.temple.model.TempleUser;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -55,7 +55,7 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 	private SessionBean currentSession;
 
 	SessionManagerBean() {
-		super(Module.EJB);
+		super(Module.SERVICE);
 	}
 
 	@Override

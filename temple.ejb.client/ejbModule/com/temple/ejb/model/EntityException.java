@@ -2,7 +2,7 @@ package com.temple.ejb.model;
 
 import java.io.Serializable;
 
-import com.temple.ejb.EJBException;
+import com.temple.ejb.ServiceException;
 import com.temple.model.TempleEntity;
 
 /**
@@ -11,7 +11,7 @@ import com.temple.model.TempleEntity;
  * @author Florent Pallaver
  * @version 1.0
  */
-public class EntityException extends EJBException {
+public class EntityException extends ServiceException {
 
 	private static final long serialVersionUID = 1L;
 

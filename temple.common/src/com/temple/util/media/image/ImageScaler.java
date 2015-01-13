@@ -39,7 +39,7 @@ public class ImageScaler extends AbstractLogger {
 			this.writer.setOutput(ImageIO.createImageOutputStream(dst));
 			this.writer.write(dstImg);
 		} catch (final Exception e) {
-			this.logThrowable("Unable to scale image", e);
+			this.throwable("Unable to scale image", e);
 		}
 	}
 

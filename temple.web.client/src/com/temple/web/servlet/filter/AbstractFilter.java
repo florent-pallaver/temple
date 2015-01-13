@@ -16,7 +16,7 @@ import com.temple.util.AbstractLogger;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -26,7 +26,7 @@ public abstract class AbstractFilter extends AbstractLogger implements Filter {
 	 * Constructor.
 	 */
 	protected AbstractFilter() {
-		super(Module.WEB);
+		super(Module.WEB.logger.getName());
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public abstract class AbstractFilter extends AbstractLogger implements Filter {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return <code>true</code> if chain.doFilter should be called after this method resolved, <code>false</code>

@@ -53,6 +53,6 @@ public enum ModelActionType implements ActionType<DefaultAccessType> {
 
 	@Override
 	public Module getBundle() {
-		return Module.EJB;
+		return Module.SERVICE;
 	}
 }

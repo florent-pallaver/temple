@@ -52,6 +52,6 @@ public enum SessionActionType implements ActionType<DefaultAccessType> {
 
 	@Override
 	public Module getBundle() {
-		return Module.EJB;
+		return Module.SERVICE;
 	}
 }

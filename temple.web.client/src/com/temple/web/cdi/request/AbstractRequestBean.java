@@ -31,6 +31,11 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	@Inject
 	private HttpServletRequest req;
 
+	protected boolean getBooleanParam(String key) {
+		final String value = this.req.getParameter(key);
+		return value != null && value.equals("1");
+	}
+
 	protected Integer getIntegerParam(String key) {
 		final String value = this.req.getParameter(key);
 		return value != null ? Integer.valueOf(value) : null;
@@ -79,7 +84,7 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	 */
 	protected void addErrorMessage(String clientId, LocaleViewableTempleException e, boolean logException) {
 		if (logException) {
-			this.logThrowable(e);
+			this.throwable(e);
 		}
 		this.addError(clientId, this.languageBean.getString(e));
 	}
@@ -114,7 +119,7 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 	 * @param e
 	 */
 	protected void addFatal(String clientId, Exception e) {
-		this.logThrowable(e);
+		this.throwable(e);
 		this.addErrorMessage(null, "com.pc.fatal");
 	}
 }

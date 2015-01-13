@@ -10,7 +10,7 @@ import com.temple.ejb.TempleManager;
 
 /**
  * Base implementation of {@link TempleRemoteEJB}.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -18,8 +18,8 @@ public abstract class AbstractManagerBean extends AbstractTempleBean implements 
 
 	private static final long serialVersionUID = 1L;
 
-	protected AbstractManagerBean() {
-		super(Module.EJB);
+	public AbstractManagerBean() {
+		super(Module.SERVICE);
 	}
 
 	@Override

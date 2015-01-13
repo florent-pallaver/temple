@@ -85,11 +85,11 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 	}
 
 	protected final void logThrowable(Throwable t) {
-		this.logger.logThrowable(t);
+		this.logger.throwable(t);
 	}
 
 	protected final void logThrowable(String msg, Throwable t) {
-		this.logger.logThrowable(msg, t);
+		this.logger.throwable(msg, t);
 	}
 
 	protected final void addError(LocaleViewableTempleException e) {

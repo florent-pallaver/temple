@@ -1,6 +1,6 @@
 package com.temple.ejb.session;
 
-import com.temple.ejb.EJBException;
+import com.temple.ejb.ServiceException;
 import com.temple.view.LocaleViewable;
 
 /**
@@ -9,7 +9,7 @@ import com.temple.view.LocaleViewable;
  * @author Florent Pallaver
  * @version 1.0
  */
-public abstract class SignInException extends EJBException {
+public abstract class SignInException extends ServiceException {
 
 	private static final long serialVersionUID = 1L;
 

@@ -12,25 +12,33 @@ public abstract class AbstractLogger {
 	private final Logger logger;
 
 	protected AbstractLogger() {
-		this(Module.DEFAULT);
+		this((String) null);
 	}
 
 	protected AbstractLogger(String prefix) {
-		this(prefix, Module.DEFAULT);
+		this(null, prefix);
 	}
 
+	@Deprecated
 	protected AbstractLogger(Module module) {
 		this(null, module);
 	}
 
+	@Deprecated
 	protected AbstractLogger(String prefix, Module module) {
 		this(prefix, module, null);
 	}
 
+	@Deprecated
 	protected AbstractLogger(String prefix, Module module, String suffix) {
 		final String s = suffix == null ? this.getClass().getSimpleName() : suffix;
 		this.prefix = s + (prefix == null ? " " : " " + prefix + " - ");
 		this.logger = Logger.getLogger(module.packageName + '.' + s);
+	}
+
+	protected AbstractLogger(String loggerName, String prefix) {
+		this.prefix = prefix == null ? null : " " + prefix + " - ";
+		this.logger = Logger.getLogger(loggerName == null ? this.getClass().getName() : loggerName);
 	}
 
 	protected boolean isDebugLoggable() {
@@ -65,19 +73,23 @@ public abstract class AbstractLogger {
 		this.log(Level.SEVERE, arg0);
 	}
 
-	protected void logThrowable(Throwable t) {
-		this.logThrowable(t.getMessage(), t);
+	protected void throwable(Throwable t) {
+		this.throwable(t.getMessage(), t);
 	}
 
-	protected void logThrowable(String msg, Throwable t) {
+	protected void throwable(String msg, Throwable t) {
 		this.logger.log(Level.SEVERE, msg, t);
 	}
 
 	private void log(Level l, Object toLog) {
-		final StringBuilder msg = new StringBuilder(this.prefix);
 		if (toLog != null) {
-			msg.append(toLog.toString());
+			final Object log;
+			if (this.prefix == null) {
+				log = toLog;
+			} else {
+				log = new StringBuilder(this.prefix).append(toLog.toString());
+			}
+			this.logger.log(l, log.toString());
 		}
-		this.logger.log(l, msg.toString());
 	}
 }

@@ -6,7 +6,7 @@ import com.temple.view.LocaleBundle;
 
 /**
  * Enumeration of the existing modules in this application.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -25,8 +25,15 @@ public enum Module implements LocaleBundle {
 	MODEL("model"),
 	/**
 	 * The EJB module.
+	 *
+	 * @deprecated use {@link Module#SERVICE} instead
 	 */
+	@Deprecated
 	EJB("ejb"),
+	/**
+	 * The Service module.
+	 */
+	SERVICE("service"),
 	/**
 	 * The web module.
 	 */
@@ -59,7 +66,7 @@ public enum Module implements LocaleBundle {
 	private Module(String moduleName) {
 		final String suffix = moduleName == null ? "" : '.' + moduleName;
 		// FIXME change how the bundle are retrieved
-		this.packageName = Config.get(Config.ROOT_PACKAGE, Module.DEFAULT_ROOT_PACKAGE) + suffix;
+		this.packageName = Module.DEFAULT_ROOT_PACKAGE + suffix;
 		this.bundleBaseName = LocaleBundle.BASE_NAME_PREFIX + suffix + '.' + LocaleBundle.DEFAULT_LOCALE_FILE_NAME;
 		this.logger = Logger.getLogger(this.packageName);
 	}

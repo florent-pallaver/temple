@@ -59,7 +59,7 @@ public class UnixStreamMetadataFactory extends AbstractCDIBean implements Stream
 				this.error(pb.command() + " failed with exit code " + termination);
 			}
 		} catch (final IOException | InterruptedException e) {
-			this.logThrowable(e);
+			this.throwable(e);
 		} finally {
 			if (stat != null) {
 				stat.delete();

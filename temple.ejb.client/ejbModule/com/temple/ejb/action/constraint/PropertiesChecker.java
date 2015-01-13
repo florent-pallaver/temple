@@ -11,7 +11,7 @@ import com.temple.view.LocaleViewable;
 
 /**
  * TODOC
- * 
+ *
  * @author cr9z1k
  * @version 1.0
  * @param <C>
@@ -24,7 +24,7 @@ public abstract class PropertiesChecker<C extends Annotation> implements Checker
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param keys
 	 * @param constraint
 	 */
@@ -36,17 +36,17 @@ public abstract class PropertiesChecker<C extends Annotation> implements Checker
 	@Override
 	public final void check(Action<?> a) throws ConstraintException {
 		final Map<String, Property> ps = a.getProperties();
-		for (String k : this.keys) {
+		for (final String k : this.keys) {
 			final Property p = ps.get(k);
 			if (!this.isValid(p.getValue())) {
 				Object[] lps = this.getLocaleParameters();
 				if (lps == null) {
 					lps = LocaleViewable.NO_PARAMETERS;
 				}
-				Object[] flps = new Object[lps.length + 1];
+				final Object[] flps = new Object[lps.length + 1];
 				flps[0] = p;
 				System.arraycopy(lps, 0, flps, 1, lps.length);
-				throw new ConstraintException(this.suffix, flps, Module.EJB);
+				throw new ConstraintException(this.suffix, flps, Module.SERVICE);
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public abstract class PropertiesChecker<C extends Annotation> implements Checker
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	protected abstract Object[] getLocaleParameters();

@@ -68,7 +68,7 @@ public class UnixVideoProcessor extends AbstractCDIBean implements VideoProcesso
 				// this.delete(thumbnails[i]);
 				// }
 			} catch (final IOException e) {
-				this.logThrowable(e);
+				this.throwable(e);
 			}
 		}
 	}
@@ -100,7 +100,7 @@ public class UnixVideoProcessor extends AbstractCDIBean implements VideoProcesso
 					this.error(pb.command() + " failed with exit code " + termination);
 				}
 			} catch (final IOException | InterruptedException e) {
-				this.logThrowable(e);
+				this.throwable(e);
 			}
 		} else {
 			this.error(dir.getAbsolutePath() + " does not exist and unable to create it");

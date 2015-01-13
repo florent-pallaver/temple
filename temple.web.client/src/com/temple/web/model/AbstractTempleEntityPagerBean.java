@@ -18,6 +18,7 @@ import com.temple.web.cdi.request.AbstractRequestBean;
  * @version 1.0
  * @param <M>
  */
+// FIXME shouldn't extends AbstractRequestBean
 public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends PageableEntityFilter<M>> extends AbstractRequestBean implements
 TempleEntityPagerBean<M, F> {
 
