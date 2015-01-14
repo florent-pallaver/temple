@@ -1,4 +1,4 @@
-package com.temple.util.media.image;
+package com.temple.util.file.media.image;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

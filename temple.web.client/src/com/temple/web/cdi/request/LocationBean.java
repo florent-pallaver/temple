@@ -11,13 +11,15 @@ import com.temple.util.geo.Country;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
 @Model
 @TempleBean
 public class LocationBean extends AbstractRequestBean {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Location[] empty = {};
 
@@ -26,7 +28,7 @@ public class LocationBean extends AbstractRequestBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	public Location[] getAllRegions() {
@@ -40,7 +42,7 @@ public class LocationBean extends AbstractRequestBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	public Location[] getAllCities(int regionId) {

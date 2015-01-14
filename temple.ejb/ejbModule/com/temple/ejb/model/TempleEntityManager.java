@@ -42,6 +42,23 @@ public interface TempleEntityManager extends TempleManager {
 	 *
 	 * @param clazz an entity class
 	 * @param id an id
+	 * @return the entity with given class and id
+	 * @throws FindEntityException if an error occurs while trying to find the entity or if none exists with the given
+	 *             id.
+	 */
+	default <E extends TempleEntity> E get(Class<E> clazz, Serializable id) throws FindEntityException {
+		final E e = this.findById(clazz, id);
+		if (e == null) {
+			throw new FindEntityException(clazz, id);
+		}
+		return e;
+	}
+
+	/**
+	 * Finds an {@link TempleEntity entity} given its id.
+	 *
+	 * @param clazz an entity class
+	 * @param id an id
 	 * @return the entity with given class and id, <code>null</code> if none exists
 	 * @throws FindEntityException if an error occurs while trying to find the entity
 	 */
@@ -86,7 +103,7 @@ public interface TempleEntityManager extends TempleManager {
 	 *
 	 * @param ref
 	 * @return
-	 * @throws FindEntityException - if an error occurs while trying to find the entities matching the filter
+	 * @throws FindEntityException if an error occurs while trying to find the entities matching the filter
 	 */
 	<E extends TempleEntity> List<E> findByFilter(EntityFilter<E> ref) throws FindEntityException;
 
@@ -124,7 +141,7 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * @param tes
 	 */
-	void update(TempleEntity... tes) throws UpdateException;
+	void merge(TempleEntity... tes) throws UpdateException;
 
 	/**
 	 * @param tes

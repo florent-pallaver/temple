@@ -1,4 +1,4 @@
-package com.temple.util.media.image;
+package com.temple.util.file.media.image;
 
 import java.io.File;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 
 import com.temple.Module;
-import com.temple.util.media.Codec;
+import com.temple.util.file.media.Codec;
 
 /**
  * TODOC

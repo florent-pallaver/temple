@@ -1,15 +1,9 @@
 package com.temple.web.cdi.request;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.temple.LocaleViewableTempleException;
-import com.temple.cdi.TempleBean;
-import com.temple.cdi.session.LanguageBean;
-import com.temple.web.cdi.AbstractTempleWebBean;
+import com.temple.web.cdi.session.AbstractSessionBean;
 
 /**
  * TODOC
@@ -18,15 +12,9 @@ import com.temple.web.cdi.AbstractTempleWebBean;
  * @author Florent Pallaver
  * @version 1.0
  */
-public abstract class AbstractRequestBean extends AbstractTempleWebBean {
+public abstract class AbstractRequestBean extends AbstractSessionBean {
 
-	private static final String warningMessagesClientId = "warningMessages";
-
-	private static final String errorMessagesClientId = "errorMessages";
-
-	@Inject
-	@TempleBean
-	private LanguageBean languageBean;
+	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private HttpServletRequest req;
@@ -53,73 +41,5 @@ public abstract class AbstractRequestBean extends AbstractTempleWebBean {
 			ints = new Integer[0];
 		}
 		return ints;
-	}
-
-	protected void addWarningMessage(String clientId, String key, Object... parameters) {
-		this.addWarning(clientId == null ? AbstractRequestBean.warningMessagesClientId : clientId, this.languageBean.getString(key, parameters));
-	}
-
-	/**
-	 * TODOC
-	 *
-	 * @param e
-	 */
-	protected void addErrorMessage(LocaleViewableTempleException e) {
-		this.addErrorMessage(AbstractRequestBean.errorMessagesClientId, e, true);
-	}
-
-	/**
-	 * TODOC
-	 *
-	 * @param e
-	 */
-	protected void addErrorMessage(String clientId, LocaleViewableTempleException e) {
-		this.addErrorMessage(clientId, e, true);
-	}
-
-	/**
-	 * TODOC
-	 *
-	 * @param e
-	 */
-	protected void addErrorMessage(String clientId, LocaleViewableTempleException e, boolean logException) {
-		if (logException) {
-			this.throwable(e);
-		}
-		this.addError(clientId, this.languageBean.getString(e));
-	}
-
-	/**
-	 * TODOC
-	 *
-	 * @param context
-	 * @param component
-	 * @param messageKey
-	 */
-	protected void addErrorMessage(FacesContext context, UIComponent component, String messageKey) {
-		((UIInput) component).setValid(false);
-		this.addError(component.getClientId(context), this.languageBean.getString(messageKey));
-	}
-
-	/**
-	 * TODOC
-	 *
-	 * @param clientId
-	 * @param messageKey
-	 * @param parameters
-	 */
-	protected void addErrorMessage(String clientId, String messageKey, Object... parameters) {
-		this.addError(clientId == null ? AbstractRequestBean.errorMessagesClientId : clientId, this.languageBean.getString(messageKey, parameters));
-	}
-
-	/**
-	 * TODOC
-	 *
-	 * @param clientId
-	 * @param e
-	 */
-	protected void addFatal(String clientId, Exception e) {
-		this.throwable(e);
-		this.addErrorMessage(null, "com.pc.fatal");
 	}
 }

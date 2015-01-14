@@ -1,6 +1,6 @@
-package com.temple.util.media.stream;
+package com.temple.util.file.media.stream;
 
-import com.temple.util.media.Codec;
+import com.temple.util.file.media.Codec;
 
 /**
  * TODOC
@@ -8,8 +8,10 @@ import com.temple.util.media.Codec;
  * @author Florent Pallaver
  * @version 1.0
  */
-public enum AudioCodec implements Codec {
-	MP3("audio/mpeg", ".mp3");
+public enum VideoCodec implements Codec {
+	H264("video/mp4", ".mp4"),
+	VP8("video/webm", ".webm"),
+	THEORA("video/ogg", ".ogv");
 
 	/**
 	 * TODOC
@@ -21,7 +23,7 @@ public enum AudioCodec implements Codec {
 	 */
 	public final String extension;
 
-	private AudioCodec(String mimeType, String extension) {
+	private VideoCodec(String mimeType, String extension) {
 		this.mimeType = mimeType;
 		this.extension = extension;
 	}

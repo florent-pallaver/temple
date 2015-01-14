@@ -20,6 +20,8 @@ import com.temple.web.cdi.WebRequestParameter.Type;
 @TempleBean
 public class NavigationBean extends AbstractRequestBean {
 
+	private static final long serialVersionUID = 1L;
+
 	@Inject
 	@ApplicationBean
 	private WebConfiguration webConfig;

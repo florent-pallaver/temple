@@ -73,7 +73,7 @@ public abstract class AbstractLogger {
 		this.log(Level.SEVERE, arg0);
 	}
 
-	protected void throwable(Throwable t) {
+	protected void thrown(Throwable t) {
 		this.throwable(t.getMessage(), t);
 	}
 

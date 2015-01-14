@@ -1,5 +1,7 @@
 package com.temple.model.filter;
 
+import java.io.Serializable;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,8 +27,6 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 	 */
 	public static final short DEFAULT_MAX_COUNT = 40;
 
-	private final SingularAttribute<? super E, ?> countedField;
-
 	@ToString
 	private int offset;
 
@@ -41,8 +41,8 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 	 * @param offset
 	 * @param maxCount
 	 */
-	protected AbstractPageableEntityFilter(Class<E> entityClass, SingularAttribute<? super E, ?> countedField) {
-		this(entityClass, countedField, AbstractPageableEntityFilter.DEFAULT_MAX_COUNT);
+	protected AbstractPageableEntityFilter(Class<E> entityClass) {
+		this(entityClass, AbstractPageableEntityFilter.DEFAULT_MAX_COUNT);
 	}
 
 	/**
@@ -53,9 +53,8 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 	 * @param offset
 	 * @param perPageCount
 	 */
-	protected AbstractPageableEntityFilter(Class<E> entityClass, SingularAttribute<? super E, ?> countedField, short perPageCount) {
+	protected AbstractPageableEntityFilter(Class<E> entityClass, short perPageCount) {
 		super(entityClass);
-		this.countedField = countedField;
 		this.setPerPageCount(perPageCount);
 	}
 
@@ -102,12 +101,19 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 	public final TypedQuery<Long> createCountQuery(EntityManager em) {
 		final CriteriaBuilder cb = em.getCriteriaBuilder();
 		final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		final Root<E> root = cq.from(this.entityClass);
-		cq.select(cb.count(root.get(this.countedField)));
+		final Root<E> root = cq.from(this.getEntityClass());
+		cq.select(cb.count(root.get(this.getCountedField())));
 		this.completeCriteriaQuery(cq, cb, root);
 		final TypedQuery<Long> q = em.createQuery(cq);
 		return q;
 	}
+
+	/**
+	 * TODOC {@link SingularAttribute} is not {@link Serializable}
+	 * 
+	 * @return
+	 */
+	protected abstract SingularAttribute<? super E, ?> getCountedField();
 
 	/**
 	 * TODOC

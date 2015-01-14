@@ -11,9 +11,9 @@ import javax.json.JsonReader;
 import com.temple.cdi.ImplementationStrategy;
 import com.temple.cdi.OperatingSystem;
 import com.temple.cdi.impl.AbstractCDIBean;
-import com.temple.util.media.stream.StreamMetadataFactory;
-import com.temple.util.media.stream.VideoMetadata;
-import com.temple.util.media.stream.VideoStreamException;
+import com.temple.util.file.media.stream.StreamMetadataFactory;
+import com.temple.util.file.media.stream.VideoMetadata;
+import com.temple.util.file.media.stream.VideoStreamException;
 
 /**
  * TODOC
@@ -59,7 +59,7 @@ public class UnixStreamMetadataFactory extends AbstractCDIBean implements Stream
 				this.error(pb.command() + " failed with exit code " + termination);
 			}
 		} catch (final IOException | InterruptedException e) {
-			this.throwable(e);
+			this.thrown(e);
 		} finally {
 			if (stat != null) {
 				stat.delete();

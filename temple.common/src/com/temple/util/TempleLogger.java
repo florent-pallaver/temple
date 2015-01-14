@@ -29,6 +29,16 @@ public final class TempleLogger extends AbstractLogger {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param loggerName
+	 * @param prefix
+	 */
+	public TempleLogger(String loggerName, String prefix) {
+		super(loggerName, prefix);
+	}
+
+	/**
+	 * Constructor.
 	 * TODOC
 	 *
 	 * @param module
@@ -51,7 +61,7 @@ public final class TempleLogger extends AbstractLogger {
 	/**
 	 * Constructor.
 	 * TODOC
-	 * 
+	 *
 	 * @param prefix
 	 * @param module
 	 * @param suffix
@@ -101,8 +111,8 @@ public final class TempleLogger extends AbstractLogger {
 	}
 
 	@Override
-	public void throwable(Throwable t) {
-		super.throwable(t);
+	public void thrown(Throwable t) {
+		super.thrown(t);
 	}
 
 	@Override

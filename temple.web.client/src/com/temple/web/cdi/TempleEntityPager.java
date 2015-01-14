@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.temple.web.model;
+package com.temple.web.cdi;
 
 import java.util.List;
 
@@ -15,8 +12,9 @@ import com.temple.util.Pageable;
  * @author Florent Pallaver
  * @version 1.0
  * @param <M>
+ * @param <F>
  */
-public interface TempleEntityPagerBean<M extends TempleEntity, F extends EntityFilter<M>> extends Pageable {
+public interface TempleEntityPager<M extends TempleEntity, F extends EntityFilter<M>> extends Pageable {
 
 	/**
 	 * @return the filter
@@ -25,14 +23,14 @@ public interface TempleEntityPagerBean<M extends TempleEntity, F extends EntityF
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	List<M> getAll();
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param index - an index
 	 * @return <code>null</code> if no result, the object at the position <code>index % results.size()</code>
 	 */
@@ -40,7 +38,7 @@ public interface TempleEntityPagerBean<M extends TempleEntity, F extends EntityF
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @return
 	 */
 	int getPageCount();

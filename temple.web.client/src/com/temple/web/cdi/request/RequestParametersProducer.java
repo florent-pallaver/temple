@@ -63,11 +63,11 @@ public class RequestParametersProducer extends AbstractTempleWebBean {
 	Integer getIntegerRequestParameter(InjectionPoint ip, @RequestParameters List<String> parameters) {
 		final String p = this.getStringRequestParameter(ip, parameters);
 		Integer i = null;
-		if (p != null) {
+		if (!(p == null || p.isEmpty())) {
 			try {
 				i = Integer.valueOf(p);
 			} catch (final NumberFormatException e) {
-				this.warning(p + " is not an integer - " + e.getMessage());
+				this.info(p + " is not an integer - " + e.getMessage());
 			}
 		}
 		return i;

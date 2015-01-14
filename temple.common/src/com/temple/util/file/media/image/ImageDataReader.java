@@ -1,4 +1,4 @@
-package com.temple.util.media.image;
+package com.temple.util.file.media.image;
 
 import java.io.File;
 import java.io.IOException;

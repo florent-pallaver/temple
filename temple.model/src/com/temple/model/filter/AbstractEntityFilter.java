@@ -26,9 +26,14 @@ public abstract class AbstractEntityFilter<E extends TempleEntity> implements En
 	private static final long serialVersionUID = 1L;
 
 	@ToString
-	protected final Class<E> entityClass;
+	private final Class<E> entityClass;
 
 	private final List<FilterOrder<? super E>> orderBy;
+
+	// Serializable
+	protected AbstractEntityFilter() {
+		this(null);
+	}
 
 	/**
 	 * Constructor.
@@ -40,6 +45,13 @@ public abstract class AbstractEntityFilter<E extends TempleEntity> implements En
 		super();
 		this.entityClass = entityClass;
 		this.orderBy = new ArrayList<>();
+	}
+
+	/**
+	 * @return the entityClass
+	 */
+	protected Class<E> getEntityClass() {
+		return this.entityClass;
 	}
 
 	/**

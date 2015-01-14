@@ -15,7 +15,7 @@ import com.temple.ejb.impl.AbstractManagerBean;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -38,7 +38,7 @@ public abstract class AbstractEntityManagerBean extends AbstractManagerBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @author Florent Pallaver
 	 * @version 1.0
 	 * @param <X>
@@ -47,7 +47,7 @@ public abstract class AbstractEntityManagerBean extends AbstractManagerBean {
 
 		/**
 		 * TODOC
-		 * 
+		 *
 		 * @param cb
 		 * @param root
 		 */

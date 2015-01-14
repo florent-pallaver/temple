@@ -1,4 +1,4 @@
-package com.temple.util.media.stream;
+package com.temple.util.file.media.stream;
 
 import java.io.Serializable;
 

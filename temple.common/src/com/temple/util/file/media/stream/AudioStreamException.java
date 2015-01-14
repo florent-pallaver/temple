@@ -1,9 +1,9 @@
-package com.temple.util.media.stream;
+package com.temple.util.file.media.stream;
 
 import java.io.File;
 
 import com.temple.Module;
-import com.temple.util.media.MediaException;
+import com.temple.util.file.media.MediaException;
 
 /**
  * TODOC
@@ -11,7 +11,7 @@ import com.temple.util.media.MediaException;
  * @author Florent Pallaver
  * @version 1.0
  */
-public class VideoStreamException extends MediaException {
+public class AudioStreamException extends MediaException {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,7 @@ public class VideoStreamException extends MediaException {
 	 *
 	 * @param file
 	 */
-	public VideoStreamException(File file) {
+	public AudioStreamException(File file) {
 		super(new Object[]{ file }, Module.DEFAULT);
 	}
 }

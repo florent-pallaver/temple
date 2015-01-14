@@ -1,15 +1,15 @@
 /**
  *
  */
-package com.temple.web.model;
+package com.temple.web.cdi.session;
 
 import java.util.List;
 
-import com.temple.LocaleViewableTempleException;
+import com.temple.ejb.ServiceException;
 import com.temple.ejb.model.PartialResults;
 import com.temple.model.TempleEntity;
 import com.temple.model.filter.PageableEntityFilter;
-import com.temple.web.cdi.request.AbstractRequestBean;
+import com.temple.web.cdi.TempleEntityPager;
 
 /**
  * TODOC
@@ -18,9 +18,10 @@ import com.temple.web.cdi.request.AbstractRequestBean;
  * @version 1.0
  * @param <M>
  */
-// FIXME shouldn't extends AbstractRequestBean
-public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends PageableEntityFilter<M>> extends AbstractRequestBean implements
-TempleEntityPagerBean<M, F> {
+public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends PageableEntityFilter<M>> extends AbstractSessionBean implements
+		TempleEntityPager<M, F> {
+
+	private static final long serialVersionUID = 1L;
 
 	// @Inject
 	// private Conversation conversation;
@@ -61,7 +62,7 @@ TempleEntityPagerBean<M, F> {
 				this.results = page.getAll();
 				this.totalCount = page.getTotalCount();
 				this.info(this.results.size() + " entities out of " + this.totalCount);
-			} catch (final LocaleViewableTempleException e) {
+			} catch (final ServiceException e) {
 				this.addErrorMessage(e);
 				this.results = null;
 				this.totalCount = 0;
@@ -72,7 +73,7 @@ TempleEntityPagerBean<M, F> {
 		return this.results;
 	}
 
-	protected abstract PartialResults<M> getFirstPage() throws LocaleViewableTempleException;
+	protected abstract PartialResults<M> getFirstPage() throws ServiceException;
 
 	@Override
 	public M getResult(int index) {

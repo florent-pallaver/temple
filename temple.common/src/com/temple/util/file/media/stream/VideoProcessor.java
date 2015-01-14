@@ -1,9 +1,9 @@
-package com.temple.util.media.stream;
+package com.temple.util.file.media.stream;
 
 import java.io.File;
 import java.io.Serializable;
 
-import com.temple.util.media.MediaIndex;
+import com.temple.util.file.media.MediaIndex;
 
 /**
  * TODOC

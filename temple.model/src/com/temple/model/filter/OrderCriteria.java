@@ -1,7 +1,5 @@
 package com.temple.model.filter;
 
-import java.io.Serializable;
-
 import javax.persistence.metamodel.SingularAttribute;
 
 import com.temple.model.TempleEntity;
@@ -12,10 +10,9 @@ import com.temple.model.TempleEntity;
  * @author Florent Pallaver
  * @version 1.0
  */
-public class OrderCriteria<E extends TempleEntity> implements Serializable {
+public class OrderCriteria<E extends TempleEntity> {
 
-	private static final long serialVersionUID = 1L;
-
+	// FIXME In EclipseLink SingularAttribute isn't Serializable
 	public final SingularAttribute<? super E, ?> field;
 
 	public final boolean asc;

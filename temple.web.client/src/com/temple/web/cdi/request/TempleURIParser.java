@@ -25,6 +25,8 @@ import com.temple.web.cdi.WebApplicationParameter.Type;
 @TempleBean
 public class TempleURIParser extends AbstractRequestBean implements URIParser {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String pathSeparator = "/";
 
 	private final int offset;

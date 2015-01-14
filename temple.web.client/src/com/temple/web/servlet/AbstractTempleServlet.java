@@ -26,13 +26,14 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 	@TempleBean
 	protected LanguageBean lb;
 
-	private final TempleLogger logger = new TempleLogger(this.getClass().getSimpleName(), Module.WEB, this.getClass().getSimpleName());
+	private final TempleLogger logger = new TempleLogger(Module.WEB.packageName, this.getClass().getSimpleName());
 
 	/**
 	 * Constructor.
 	 */
 	protected AbstractTempleServlet() {}
 
+	// TODO code à factoriser
 	protected final Integer getIntegerParam(HttpServletRequest req, String key) {
 		final String value = req.getParameter(key);
 		return value != null ? Integer.valueOf(value) : null;
@@ -85,7 +86,7 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 	}
 
 	protected final void logThrowable(Throwable t) {
-		this.logger.throwable(t);
+		this.logger.thrown(t);
 	}
 
 	protected final void logThrowable(String msg, Throwable t) {
@@ -94,9 +95,9 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 
 	protected final void addError(LocaleViewableTempleException e) {
 		FacesContext.getCurrentInstance() //
-				.addMessage(null, //
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, //
-								this.lb.getString(e), //
-								this.lb.getDetailedString(e)));
+		.addMessage(null, //
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, //
+						this.lb.getString(e), //
+						this.lb.getDetailedString(e)));
 	}
 }

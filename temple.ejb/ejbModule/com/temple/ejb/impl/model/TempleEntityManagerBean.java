@@ -43,6 +43,9 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 
 	@Override
 	public <E extends TempleEntity> E findById(Class<E> clazz, Serializable id) throws FindEntityException {
+		if (id == null) {
+			throw new FindEntityException(clazz, id);
+		}
 		try {
 			return this.em.find(clazz, id);
 		} catch (final PersistenceException e) {
@@ -149,7 +152,7 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public void update(TempleEntity... tes) throws UpdateException {
+	public void merge(TempleEntity... tes) throws UpdateException {
 		this.update0(Arrays.asList(tes));
 	}
 

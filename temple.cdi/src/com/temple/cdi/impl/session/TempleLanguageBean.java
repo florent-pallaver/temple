@@ -12,9 +12,11 @@ import com.temple.cdi.CDIConfiguration;
 import com.temple.cdi.TempleBean;
 import com.temple.cdi.impl.AbstractCDIBean;
 import com.temple.cdi.session.LanguageBean;
+import com.temple.impl.view.DefaultLocaleStringView;
 import com.temple.impl.view.DefaultLocaleViewable;
 import com.temple.util.human.Language;
 import com.temple.view.LocaleBundle;
+import com.temple.view.LocaleStringView;
 import com.temple.view.LocaleStringViewHelper;
 import com.temple.view.LocaleViewable;
 
@@ -56,6 +58,11 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 		this.currentLanguage = language;
 		// FIXME shouldn't be here !
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(language.getLocale());
+	}
+
+	@Override
+	public LocaleStringView getStringView(LocaleViewable lv) {
+		return new DefaultLocaleStringView(this.currentLanguage, lv);
 	}
 
 	@Override

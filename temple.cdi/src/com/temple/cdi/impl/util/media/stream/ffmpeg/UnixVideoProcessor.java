@@ -10,17 +10,17 @@ import javax.inject.Inject;
 import com.temple.cdi.ImplementationStrategy;
 import com.temple.cdi.OperatingSystem;
 import com.temple.cdi.impl.AbstractCDIBean;
-import com.temple.util.media.Codec;
-import com.temple.util.media.MediaIndex;
-import com.temple.util.media.image.ImageAppender;
-import com.temple.util.media.image.ImageCodec;
-import com.temple.util.media.image.ImageScaler;
-import com.temple.util.media.image.MaxDimensionScaleStrategy;
-import com.temple.util.media.stream.StreamMetadataFactory;
-import com.temple.util.media.stream.VideoMetadata;
-import com.temple.util.media.stream.VideoProcessor;
-import com.temple.util.media.stream.VideoStreamException;
-import com.temple.util.media.stream.VideoStreamMetadata;
+import com.temple.util.file.media.Codec;
+import com.temple.util.file.media.MediaIndex;
+import com.temple.util.file.media.image.ImageAppender;
+import com.temple.util.file.media.image.ImageCodec;
+import com.temple.util.file.media.image.ImageScaler;
+import com.temple.util.file.media.image.MaxDimensionScaleStrategy;
+import com.temple.util.file.media.stream.StreamMetadataFactory;
+import com.temple.util.file.media.stream.VideoMetadata;
+import com.temple.util.file.media.stream.VideoProcessor;
+import com.temple.util.file.media.stream.VideoStreamException;
+import com.temple.util.file.media.stream.VideoStreamMetadata;
 
 /**
  * TODOC
@@ -68,7 +68,7 @@ public class UnixVideoProcessor extends AbstractCDIBean implements VideoProcesso
 				// this.delete(thumbnails[i]);
 				// }
 			} catch (final IOException e) {
-				this.throwable(e);
+				this.thrown(e);
 			}
 		}
 	}
@@ -100,7 +100,7 @@ public class UnixVideoProcessor extends AbstractCDIBean implements VideoProcesso
 					this.error(pb.command() + " failed with exit code " + termination);
 				}
 			} catch (final IOException | InterruptedException e) {
-				this.throwable(e);
+				this.thrown(e);
 			}
 		} else {
 			this.error(dir.getAbsolutePath() + " does not exist and unable to create it");

@@ -9,7 +9,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.temple.util.media.Codec;
+import com.temple.util.file.media.Codec;
 
 /**
  * Base servlet implementation class to serve a file

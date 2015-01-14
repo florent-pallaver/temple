@@ -1,7 +1,7 @@
 package com.temple.cdi.impl.util.media.stream.ffmpeg;
 
 import com.temple.util.ToString;
-import com.temple.util.media.stream.AudioStreamMetadata;
+import com.temple.util.file.media.stream.AudioStreamMetadata;
 
 /**
  * TODOC

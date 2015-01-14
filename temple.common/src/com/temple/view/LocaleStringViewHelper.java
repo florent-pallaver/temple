@@ -1,6 +1,7 @@
 package com.temple.view;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -11,7 +12,7 @@ import com.temple.util.human.Language;
 
 /**
  * Helper class for {@link LocaleView}s.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  * @see #createLocaleString(LocaleViewable, SupportedLanguage, boolean)
@@ -24,7 +25,7 @@ public final class LocaleStringViewHelper {
 	 * Creates a localized String for the given {@link SupportedLanguage} using the {@link Module#bundleBaseName the
 	 * module
 	 * default locale bundle} of the given {@link LocaleViewable}.
-	 * 
+	 *
 	 * @param lv - a {@link LocaleViewable}.
 	 * @param l - a {@link SupportedLanguage}.
 	 * @param detailed - <code>true</code> if the detailed localized String is wanted, <code>false</code> otherwise.
@@ -40,7 +41,9 @@ public final class LocaleStringViewHelper {
 			}
 			final String lk = localeKey.toString();
 			try {
-				localizedString = LocaleStringViewHelper.findResourceBundle(lv.getBundle(), l.getLocale()).getString(lk);
+				final ResourceBundle rb = LocaleStringViewHelper.findResourceBundle(lv.getBundle(), l.getLocale());
+				final boolean containsKey = rb.containsKey(lk);
+				localizedString = containsKey ? rb.getString(lk) : lk;
 				final Object[] localeParameters = lv.getLocaleParameters();
 				if (localeParameters.length > 0) {
 					final Object[] localizedStringParameters = new Object[localeParameters.length];
@@ -55,10 +58,11 @@ public final class LocaleStringViewHelper {
 							localizedStringParameters[i] = lp.toString();
 						}
 					}
-					localizedString = MessageFormat.format(localizedString, localizedStringParameters);
+					localizedString = containsKey ? MessageFormat.format(localizedString, localizedStringParameters) : localizedString
+							+ Arrays.toString(localizedStringParameters);
 				}
 			} catch (final Exception e) {
-				Module.DEFAULT.logger.log(Level.WARNING, "Unable to find key : '" + lk + "'");
+				Module.DEFAULT.logger.log(Level.WARNING, "Unable to find key : '" + lk + "' in " + lv.getBundle().getBaseName());
 				localizedString = lk;
 			}
 		}
@@ -71,9 +75,11 @@ public final class LocaleStringViewHelper {
 		try {
 			rb = ResourceBundle.getBundle(m.getBaseName(), l);
 		} catch (final MissingResourceException e) {
-			Module.DEFAULT.logger.log(Level.WARNING, "The bundle of the module {0} cannot be found, the default module will be used.", m);
+			if (Module.DEFAULT.logger.isLoggable(Level.WARNING)) {
+				Module.DEFAULT.logger.log(Level.WARNING, "The bundle of the module {0} cannot be found, the default module will be used.", m);
+				Module.DEFAULT.logger.warning(e.getMessage());
+			}
 			rb = ResourceBundle.getBundle(Module.DEFAULT.bundleBaseName, l);
-			e.printStackTrace();
 		}
 		return rb;
 	}

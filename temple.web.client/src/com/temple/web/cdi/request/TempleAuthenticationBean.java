@@ -25,6 +25,8 @@ import com.temple.ejb.session.SignInException;
 @TempleBean
 public class TempleAuthenticationBean extends AbstractRequestBean implements AuthenticationBean {
 
+	private static final long serialVersionUID = 1L;
+
 	@EJB
 	private SessionManager sessionManager;
 

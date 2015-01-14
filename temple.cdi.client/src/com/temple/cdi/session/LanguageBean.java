@@ -2,6 +2,7 @@ package com.temple.cdi.session;
 
 import com.temple.cdi.TempleCDIBean;
 import com.temple.util.human.Language;
+import com.temple.view.LocaleStringView;
 import com.temple.view.LocaleViewable;
 
 /**
@@ -57,4 +58,12 @@ public interface LanguageBean extends TempleCDIBean {
 	 * @return
 	 */
 	String getDetailedString(String key, Object... objects);
+
+	/**
+	 * TODOC
+	 * 
+	 * @param lv
+	 * @return
+	 */
+	LocaleStringView getStringView(LocaleViewable lv);
 }
