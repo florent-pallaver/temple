@@ -40,7 +40,7 @@ public interface CredentialsManager extends Serializable {
 	 * @param login
 	 * @param pass
 	 * @param userId
-	 * @throws SignUpException
+	 * @throws com.temple.credentials.ejb.model.CreateUserIdentityException
 	 */
 	void createIdentity(String login, String pass, int userId) throws CreateUserIdentityException;
 
@@ -53,6 +53,6 @@ public interface CredentialsManager extends Serializable {
 	 * @throws UpdateUserIdentityException
 	 * @throws IncorrectPassException
 	 */
-	void updatePass(int userId, String current, String nevv) throws UpdateUserIdentityException, IncorrectPassException;
+	void updatePass(Integer userId, String current, String nevv) throws UpdateUserIdentityException, IncorrectPassException;
 	// TODO reset pass
 }

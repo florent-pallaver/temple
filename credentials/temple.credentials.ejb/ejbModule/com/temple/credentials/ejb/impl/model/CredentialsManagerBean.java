@@ -61,10 +61,10 @@ public class CredentialsManagerBean implements CredentialsManager {
 	}
 
 	@Override
-	public void updatePass(int userId, String current, String nevv) throws IncorrectPassException, UpdateUserIdentityException {
+	public void updatePass(Integer userId, String current, String nevv) throws IncorrectPassException, UpdateUserIdentityException {
 		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		final CriteriaQuery<DefaultUserIdentity> cq = cb.createQuery(DefaultUserIdentity.class);
-		cq.where(cb.equal(cq.from(DefaultUserIdentity.class).get(DefaultUserIdentity_.userId), Integer.valueOf(userId)));
+		cq.where(cb.equal(cq.from(DefaultUserIdentity.class).get(DefaultUserIdentity_.userId), userId));
 		try {
 			final DefaultUserIdentity ui = this.em.createQuery(cq).getSingleResult();
 			this.checkPassword(ui, current);
@@ -84,7 +84,7 @@ public class CredentialsManagerBean implements CredentialsManager {
 		}
 	}
 
-	private final String crypt(String login, String salt, String rawPass) {
+	private String crypt(String login, String salt, String rawPass) {
 		return Security.SHA512Base64CryptAlgorithm.instance.encrypt(salt + rawPass + login);
 	}
 }
