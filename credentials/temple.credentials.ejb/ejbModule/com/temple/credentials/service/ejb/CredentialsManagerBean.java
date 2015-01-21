@@ -1,4 +1,4 @@
-package com.temple.credentials.ejb.impl.model;
+package com.temple.credentials.service.ejb;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -8,13 +8,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
-import com.temple.credentials.ejb.model.CreateUserIdentityException;
-import com.temple.credentials.ejb.model.CredentialsManager;
-import com.temple.credentials.ejb.model.IncorrectPassException;
-import com.temple.credentials.ejb.model.LoginNotFoundException;
-import com.temple.credentials.ejb.model.UpdateUserIdentityException;
-import com.temple.credentials.model.impl.access.DefaultUserIdentity;
-import com.temple.credentials.model.impl.access.DefaultUserIdentity_;
+import com.temple.credentials.service.CreateUserIdentityException;
+import com.temple.credentials.service.CredentialsManager;
+import com.temple.credentials.service.IncorrectPassException;
+import com.temple.credentials.service.LoginNotFoundException;
+import com.temple.credentials.service.UpdateUserIdentityException;
+import com.temple.credentials.model.DefaultUserIdentity;
+import com.temple.credentials.model.DefaultUserIdentity_;
 import com.temple.util.TempleUtil;
 import com.temple.util.security.Security;
 

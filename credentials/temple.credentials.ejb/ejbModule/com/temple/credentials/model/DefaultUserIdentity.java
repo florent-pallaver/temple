@@ -1,4 +1,4 @@
-package com.temple.credentials.model.impl.access;
+package com.temple.credentials.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,9 +6,9 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
-import com.temple.credentials.model.access.UserIdentity;
 import com.temple.util.TempleUtil;
 import com.temple.util.ToString;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -19,7 +19,7 @@ import com.temple.util.ToString;
 @Entity
 @Table(name = DefaultUserIdentity.TABLE_NAME, indexes = { @Index(name = DefaultUserIdentity.USER_ID_INDEX_NAME,
 columnList = DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
-public class DefaultUserIdentity implements UserIdentity {
+public class DefaultUserIdentity implements Serializable {
 
 	static final String TABLE_NAME = "user_identities";
 
@@ -59,6 +59,7 @@ public class DefaultUserIdentity implements UserIdentity {
 	 * @param login
 	 * @param encryptedPass
 	 * @param salt
+	 * @param userId
 	 */
 	public DefaultUserIdentity(String login, String encryptedPass, String salt, int userId) {
 		super();
@@ -68,17 +69,25 @@ public class DefaultUserIdentity implements UserIdentity {
 		this.userId = userId;
 	}
 
-	@Override
+	/**
+	 * @return the login (or user name) used to authenticate the user linked to this identity.
+	 */
 	public String getLogin() {
 		return this.login;
 	}
 
-	@Override
+	/**
+	 * @return the encrypted pass
+	 */
 	public String getEncryptedPass() {
 		return this.pass;
 	}
 
-	@Override
+	/**
+	 * Sets the encrypted pass
+	 *
+	 * @param pass the encrypted pass to set
+	 */
 	public void setEncryptedPass(String pass) {
 		this.pass = pass;
 	}
@@ -90,7 +99,9 @@ public class DefaultUserIdentity implements UserIdentity {
 		return this.salt;
 	}
 
-	@Override
+	/**
+	 * @return the id of the user linked to this identity
+	 */
 	public int getUserId() {
 		return this.userId;
 	}

@@ -1,4 +1,4 @@
-package com.temple.credentials.ejb.model;
+package com.temple.credentials.service;
 
 import java.io.Serializable;
 
@@ -40,7 +40,7 @@ public interface CredentialsManager extends Serializable {
 	 * @param login
 	 * @param pass
 	 * @param userId
-	 * @throws com.temple.credentials.ejb.model.CreateUserIdentityException
+	 * @throws com.temple.credentials.service.CreateUserIdentityException
 	 */
 	void createIdentity(String login, String pass, int userId) throws CreateUserIdentityException;
 

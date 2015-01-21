@@ -1,4 +1,4 @@
-package com.temple.credentials.model.impl.access;
+package com.temple.credentials.model;
 
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;

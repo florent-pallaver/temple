@@ -1,4 +1,4 @@
-package com.temple.credentials.ejb.model;
+package com.temple.credentials.service;
 
 import com.temple.LocaleViewableTempleException;
 import com.temple.Module;
