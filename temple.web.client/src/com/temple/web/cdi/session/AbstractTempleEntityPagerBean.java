@@ -5,10 +5,10 @@ package com.temple.web.cdi.session;
 
 import java.util.List;
 
-import com.temple.ejb.ServiceException;
-import com.temple.ejb.model.PartialResults;
 import com.temple.model.TempleEntity;
 import com.temple.model.filter.PageableEntityFilter;
+import com.temple.service.ServiceException;
+import com.temple.service.model.PartialResults;
 import com.temple.web.cdi.TempleEntityPager;
 
 /**

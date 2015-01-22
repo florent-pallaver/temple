@@ -2,8 +2,8 @@ package com.temple.web.cdi.application;
 
 import java.io.Serializable;
 
-import com.temple.ejb.ServiceCaller;
-import com.temple.ejb.ServiceException;
+import com.temple.service.ServiceCaller;
+import com.temple.service.ServiceException;
 import com.temple.web.cdi.AbstractTempleWebBean;
 
 /**

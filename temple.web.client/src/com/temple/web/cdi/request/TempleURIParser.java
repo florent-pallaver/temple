@@ -10,7 +10,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.temple.cdi.TempleBean;
+import com.temple.service.cdi.TempleBean;
 import com.temple.web.cdi.WebApplicationParameter;
 import com.temple.web.cdi.WebApplicationParameter.Type;
 

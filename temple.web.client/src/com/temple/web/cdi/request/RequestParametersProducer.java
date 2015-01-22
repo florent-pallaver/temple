@@ -9,8 +9,8 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
-import com.temple.cdi.ApplicationBean;
-import com.temple.cdi.CDISessionParameter;
+import com.temple.service.cdi.ApplicationBean;
+import com.temple.service.cdi.CDISessionParameter;
 import com.temple.web.cdi.AbstractTempleWebBean;
 import com.temple.web.cdi.WebConfiguration;
 import com.temple.web.cdi.WebRequestParameter;

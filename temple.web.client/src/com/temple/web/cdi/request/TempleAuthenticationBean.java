@@ -8,10 +8,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import com.temple.cdi.TempleBean;
-import com.temple.cdi.request.AuthenticationBean;
-import com.temple.ejb.session.SessionManager;
-import com.temple.ejb.session.SignInException;
+import com.temple.service.cdi.TempleBean;
+import com.temple.service.session.SessionManager;
+import com.temple.service.session.SignInException;
 
 /**
  * TODOC
@@ -20,10 +19,10 @@ import com.temple.ejb.session.SignInException;
  * @author Florent Pallaver
  * @version 1.0
  */
-@Named("AuthenticationBean")
+@Named("authenticationBean")
 @Model
 @TempleBean
-public class TempleAuthenticationBean extends AbstractRequestBean implements AuthenticationBean {
+public class TempleAuthenticationBean extends AbstractRequestBean {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +33,6 @@ public class TempleAuthenticationBean extends AbstractRequestBean implements Aut
 
 	protected String pass;
 
-	@Override
 	public void signIn() {
 		try {
 			this.sessionManager.signIn(this.name, this.pass);
@@ -43,7 +41,6 @@ public class TempleAuthenticationBean extends AbstractRequestBean implements Aut
 		}
 	}
 
-	@Override
 	public void signOut() {
 		this.sessionManager.signOut();
 		final ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -55,7 +52,6 @@ public class TempleAuthenticationBean extends AbstractRequestBean implements Aut
 		}
 	}
 
-	@Override
 	public boolean isSignedIn() {
 		return this.sessionManager.isSignedIn();
 	}

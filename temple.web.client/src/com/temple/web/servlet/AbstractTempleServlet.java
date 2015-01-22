@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.temple.LocaleViewableTempleException;
 import com.temple.Module;
-import com.temple.cdi.TempleBean;
-import com.temple.cdi.session.LanguageBean;
+import com.temple.service.cdi.TempleBean;
+import com.temple.service.cdi.session.LanguageBean;
 import com.temple.util.TempleLogger;
 
 /**

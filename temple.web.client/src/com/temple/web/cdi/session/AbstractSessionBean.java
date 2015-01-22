@@ -9,9 +9,9 @@ import javax.inject.Inject;
 
 import com.temple.LocaleViewableTempleException;
 import com.temple.LocalizedTempleException;
-import com.temple.cdi.TempleBean;
-import com.temple.cdi.session.LanguageBean;
-import com.temple.ejb.ServiceException;
+import com.temple.service.ServiceException;
+import com.temple.service.cdi.TempleBean;
+import com.temple.service.cdi.session.LanguageBean;
 import com.temple.view.LocaleStringView;
 import com.temple.web.cdi.application.AbstractApplicationBean;
 

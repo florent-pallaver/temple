@@ -4,8 +4,8 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
-import com.temple.cdi.ApplicationBean;
-import com.temple.cdi.TempleBean;
+import com.temple.service.cdi.ApplicationBean;
+import com.temple.service.cdi.TempleBean;
 import com.temple.web.cdi.WebConfiguration;
 import com.temple.web.cdi.WebRequestParameter;
 import com.temple.web.cdi.WebRequestParameter.Type;

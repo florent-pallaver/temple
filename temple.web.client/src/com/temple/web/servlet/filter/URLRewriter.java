@@ -10,8 +10,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.temple.cdi.ApplicationBean;
-import com.temple.cdi.TempleBean;
+import com.temple.service.cdi.ApplicationBean;
+import com.temple.service.cdi.TempleBean;
 import com.temple.web.cdi.WebConfiguration;
 import com.temple.web.cdi.request.URIParser;
 
