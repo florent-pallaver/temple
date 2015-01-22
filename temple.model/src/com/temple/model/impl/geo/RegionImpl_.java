@@ -6,7 +6,7 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2013-11-11T19:24:41.700+1100")
+@Generated(value="Dali", date="2015-01-22T16:45:15.967+0100")
 @StaticMetamodel(RegionImpl.class)
 public class RegionImpl_ extends AbstractGeoEntity_ {
 	public static volatile SingularAttribute<RegionImpl, RegionId> id;

@@ -1,7 +1,7 @@
 package com.temple.model.impl.access;
 
-import com.sun.faces.application.resource.Resource;
 import com.temple.Module;
+import com.temple.model.Resource;
 import com.temple.model.access.AccessType;
 import com.temple.view.LocaleViewable;
 import com.temple.view.LocaleViewableHelper;
@@ -14,11 +14,11 @@ import com.temple.view.LocaleViewableHelper;
  */
 public enum DefaultAccessType implements AccessType {
 	/**
-	 * Any {@link Action} that consists in modifying the content of a {@link Resource}.
+	 * Any Action that consists in modifying the content of a {@link Resource}.
 	 */
 	WRITE,
 	/**
-	 * Any {@link Action} that consists in consulting the content of a {@link Resource}.
+	 * Any Action that consists in consulting the content of a {@link Resource}.
 	 */
 	READ;
 
