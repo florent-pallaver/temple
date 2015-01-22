@@ -13,8 +13,8 @@ import com.temple.credentials.service.CredentialsManager;
 import com.temple.credentials.service.IncorrectPassException;
 import com.temple.credentials.service.LoginNotFoundException;
 import com.temple.credentials.service.UpdateUserIdentityException;
-import com.temple.credentials.model.DefaultUserIdentity;
-import com.temple.credentials.model.DefaultUserIdentity_;
+import com.temple.credentials.model.UserIdentity;
+import com.temple.credentials.model.UserIdentity_;
 import com.temple.util.TempleUtil;
 import com.temple.util.security.Security;
 
@@ -39,7 +39,7 @@ public class CredentialsManagerBean implements CredentialsManager {
 
 	@Override
 	public int findUserId(String login, String pass) throws LoginNotFoundException, IncorrectPassException {
-		final DefaultUserIdentity ui = this.em.find(DefaultUserIdentity.class, login);
+		final UserIdentity ui = this.em.find(UserIdentity.class, login);
 		if (ui == null) {
 			throw new LoginNotFoundException(login);
 		}
@@ -51,7 +51,7 @@ public class CredentialsManagerBean implements CredentialsManager {
 	public void createIdentity(String login, String rawPass, int userId) throws CreateUserIdentityException {
 		final String salt = TempleUtil.base64Encode(new String(Security.randomCharArray(CredentialsManagerBean.SALT_LENGTH)));
 		final String crypt = this.crypt(login, salt, rawPass);
-		final DefaultUserIdentity ui = new DefaultUserIdentity(login, crypt, salt, userId);
+		final UserIdentity ui = new UserIdentity(login, crypt, salt, userId);
 		try {
 			this.em.persist(ui);
 			this.em.flush(); // to be sure to catch every exception
@@ -63,10 +63,10 @@ public class CredentialsManagerBean implements CredentialsManager {
 	@Override
 	public void updatePass(Integer userId, String current, String nevv) throws IncorrectPassException, UpdateUserIdentityException {
 		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
-		final CriteriaQuery<DefaultUserIdentity> cq = cb.createQuery(DefaultUserIdentity.class);
-		cq.where(cb.equal(cq.from(DefaultUserIdentity.class).get(DefaultUserIdentity_.userId), userId));
+		final CriteriaQuery<UserIdentity> cq = cb.createQuery(UserIdentity.class);
+		cq.where(cb.equal(cq.from(UserIdentity.class).get(UserIdentity_.userId), userId));
 		try {
-			final DefaultUserIdentity ui = this.em.createQuery(cq).getSingleResult();
+			final UserIdentity ui = this.em.createQuery(cq).getSingleResult();
 			this.checkPassword(ui, current);
 			ui.setEncryptedPass(this.crypt(ui.getLogin(), ui.getSalt(), nevv));
 			this.em.merge(ui);
@@ -78,7 +78,7 @@ public class CredentialsManagerBean implements CredentialsManager {
 		}
 	}
 
-	private void checkPassword(DefaultUserIdentity ui, String pass) throws IncorrectPassException {
+	private void checkPassword(UserIdentity ui, String pass) throws IncorrectPassException {
 		if (!ui.getEncryptedPass().equals(this.crypt(ui.getLogin(), ui.getSalt(), pass))) {
 			throw new IncorrectPassException();
 		}

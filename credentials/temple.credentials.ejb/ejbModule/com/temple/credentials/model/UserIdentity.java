@@ -17,15 +17,15 @@ import java.io.Serializable;
  * @version 1.0
  */
 @Entity
-@Table(name = DefaultUserIdentity.TABLE_NAME, indexes = { @Index(name = DefaultUserIdentity.USER_ID_INDEX_NAME,
-columnList = DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
-public class DefaultUserIdentity implements Serializable {
+@Table(name = UserIdentity.TABLE_NAME, indexes = { @Index(name = UserIdentity.USER_ID_INDEX_NAME,
+columnList = UserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
+public class UserIdentity implements Serializable {
 
 	static final String TABLE_NAME = "user_identities";
 
 	static final String USER_ID_INDEX_COLUMN_LIST = "USER_ID";
 
-	static final String USER_ID_INDEX_NAME = "U_" + DefaultUserIdentity.TABLE_NAME + "_" + DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST;
+	static final String USER_ID_INDEX_NAME = "U_" + UserIdentity.TABLE_NAME + "_" + UserIdentity.USER_ID_INDEX_COLUMN_LIST;
 
 	static final int LOGIN_MAX_LENGTH = 32;
 
@@ -37,20 +37,20 @@ public class DefaultUserIdentity implements Serializable {
 
 	@ToString
 	@Id
-	@Column(nullable = false, updatable = false, length = DefaultUserIdentity.LOGIN_MAX_LENGTH)
+	@Column(nullable = false, updatable = false, length = UserIdentity.LOGIN_MAX_LENGTH)
 	private String login;
 
-	@Column(nullable = false, length = DefaultUserIdentity.PASSWORD_MAX_LENGTH)
+	@Column(nullable = false, length = UserIdentity.PASSWORD_MAX_LENGTH)
 	private String pass;
 
-	@Column(nullable = false, updatable = false, length = DefaultUserIdentity.SALT_MAX_LENGTH)
+	@Column(nullable = false, updatable = false, length = UserIdentity.SALT_MAX_LENGTH)
 	private String salt;
 
 	@ToString
-	@Column(name = DefaultUserIdentity.USER_ID_INDEX_COLUMN_LIST, nullable = false, updatable = false)
+	@Column(name = UserIdentity.USER_ID_INDEX_COLUMN_LIST, nullable = false, updatable = false)
 	private int userId;
 
-	protected DefaultUserIdentity() {}
+	protected UserIdentity() {}
 
 	/**
 	 * Constructor.
@@ -61,7 +61,7 @@ public class DefaultUserIdentity implements Serializable {
 	 * @param salt
 	 * @param userId
 	 */
-	public DefaultUserIdentity(String login, String encryptedPass, String salt, int userId) {
+	public UserIdentity(String login, String encryptedPass, String salt, int userId) {
 		super();
 		this.login = login;
 		this.pass = encryptedPass;
@@ -113,7 +113,7 @@ public class DefaultUserIdentity implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		return this == obj || obj instanceof DefaultUserIdentity && this.userId == ((DefaultUserIdentity) obj).userId;
+		return this == obj || obj instanceof UserIdentity && this.userId == ((UserIdentity) obj).userId;
 	}
 
 	@Override
