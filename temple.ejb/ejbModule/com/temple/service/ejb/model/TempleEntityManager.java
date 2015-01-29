@@ -3,12 +3,6 @@
  */
 package com.temple.service.ejb.model;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
-import javax.ejb.Local;
-
 import com.temple.model.EntityKey;
 import com.temple.model.TempleEntity;
 import com.temple.model.UniqueEntityKey;
@@ -21,6 +15,10 @@ import com.temple.service.model.EntityException;
 import com.temple.service.model.FindEntityException;
 import com.temple.service.model.PageableResults;
 import com.temple.service.model.UpdateException;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+import javax.ejb.Local;
 
 /**
  * TODOC
@@ -44,6 +42,7 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * Finds an {@link TempleEntity entity} given its id.
 	 *
+	 * @param <E>
 	 * @param clazz an entity class
 	 * @param id an id
 	 * @return the entity with given class and id
@@ -61,6 +60,7 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * Finds an {@link TempleEntity entity} given its id.
 	 *
+	 * @param <E>
 	 * @param clazz an entity class
 	 * @param id an id
 	 * @return the entity with given class and id, <code>null</code> if none exists
@@ -69,6 +69,7 @@ public interface TempleEntityManager extends TempleManager {
 	<E extends TempleEntity> E findById(Class<E> clazz, Serializable id) throws FindEntityException;
 
 	/**
+	 * @param <E>
 	 * @param ek
 	 * @param values
 	 * @return
@@ -77,6 +78,7 @@ public interface TempleEntityManager extends TempleManager {
 	<E extends TempleEntity> List<E> findByKey(EntityKey<E> ek, Serializable... values) throws FindEntityException;
 
 	/**
+	 * @param <E>
 	 * @param ek
 	 * @param values
 	 * @return
@@ -87,6 +89,7 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * TODOC
 	 *
+	 * @param <F>
 	 * @param algo
 	 * @return
 	 * @throws FindEntityException
@@ -105,6 +108,7 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * TODOC
 	 *
+	 * @param <E>
 	 * @param ref
 	 * @return
 	 * @throws FindEntityException if an error occurs while trying to find the entities matching the filter
@@ -114,6 +118,7 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * TODOC
 	 *
+	 * @param <E>
 	 * @param filter
 	 * @return
 	 * @throws FindEntityException
@@ -122,6 +127,7 @@ public interface TempleEntityManager extends TempleManager {
 
 	/**
 	 * @param po
+	 * @throws EntityException
 	 */
 	void persist(TempleEntity po) throws EntityException;
 
@@ -144,11 +150,13 @@ public interface TempleEntityManager extends TempleManager {
 
 	/**
 	 * @param tes
+	 * @throws com.temple.service.model.UpdateException
 	 */
 	void merge(TempleEntity... tes) throws UpdateException;
 
 	/**
 	 * @param tes
+	 * @throws com.temple.service.model.UpdateException
 	 */
 	void update(Collection<? extends TempleEntity> tes) throws UpdateException;
 
@@ -169,11 +177,13 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * @param clazz
 	 * @param ids
+	 * @throws com.temple.service.model.EntityException
 	 */
 	void delete(Class<? extends TempleEntity> clazz, Serializable... ids) throws EntityException;
 
 	/**
 	 * @param po
+	 * @throws com.temple.service.model.EntityException
 	 */
 	default void delete(TempleEntity po) throws EntityException {
 		this.delete(po.getClass(), po.getId());
@@ -194,6 +204,7 @@ public interface TempleEntityManager extends TempleManager {
 	/**
 	 * TODOC
 	 *
+	 * @param <E>
 	 * @param ek
 	 * @param values
 	 * @return

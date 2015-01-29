@@ -7,6 +7,7 @@ import com.temple.model.TempleEntity;
  * TODOC
  *
  * @author Florent Pallaver
+ * @param <E>
  */
 public abstract class AbstractEntityKey<E extends TempleEntity> implements EntityKey<E> {
 
@@ -19,8 +20,6 @@ public abstract class AbstractEntityKey<E extends TempleEntity> implements Entit
 	 * TODOC
 	 *
 	 * @param entityClass
-	 * @param values
-	 * @param predicateCreators
 	 */
 	protected AbstractEntityKey(Class<E> entityClass) {
 		super();
