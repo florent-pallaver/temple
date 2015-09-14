@@ -56,7 +56,7 @@ class TabPanel extends AbstractComponent implements \temple\web\html\RenderObser
 			->addCssClass($this->fade ? 'fade' : null) ;
 
 		$this->contents->addChild($div->addChild($this->toHTMLElement($content)));
-		$this->tabs->addItem(AnchorLink::create($div, $title)
+		$this->tabs->addItem(AnchorLink::create0($div, $title)
 				->setAttribute('role', 'tab')
 				->setData(['toggle' => 'tab']));
 		return $this;

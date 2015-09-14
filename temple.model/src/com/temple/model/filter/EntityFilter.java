@@ -1,11 +1,9 @@
 package com.temple.model.filter;
 
+import com.temple.model.TempleEntity;
 import java.io.Serializable;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-
-import com.temple.model.TempleEntity;
 
 /**
  * TODOC
@@ -22,5 +20,5 @@ public interface EntityFilter<E extends TempleEntity> extends Serializable {
 	 * @param em
 	 * @return
 	 */
-	TypedQuery<E> createTypedQuery(EntityManager em);
+	TypedQuery<? extends E> createTypedQuery(EntityManager em);
 }

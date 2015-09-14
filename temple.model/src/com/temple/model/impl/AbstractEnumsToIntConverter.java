@@ -1,7 +1,5 @@
 package com.temple.model.impl;
 
-import java.util.Arrays;
-
 import javax.persistence.AttributeConverter;
 
 /**
@@ -11,49 +9,21 @@ import javax.persistence.AttributeConverter;
  * 
  * @author Florent Pallaver
  * @version 1.0
+ * @param <E>
  */
-public abstract class AbstractEnumsToIntConverter<E extends Enum<E>> implements AttributeConverter<E[], Long> {
-
-	private final E[] all;
+public abstract class AbstractEnumsToIntConverter<E extends Enum<E>> extends AbstractEnumsToNumberConverter<E, Integer> {
 
 	/**
 	 * Constructor.
+	 * @param all TODOC
 	 */
 	protected AbstractEnumsToIntConverter(E[] all) {
-		this.all = all;
+		super(all) ;
 	}
 
 	@Override
-	public Long convertToDatabaseColumn(E[] attribute) {
-		final Long value;
-		if (attribute != null) {
-			long m = 0;
-			for (int i = attribute.length; i-- > 0;) {
-				m |= 1 << attribute[i].ordinal();
-			}
-			value = Long.valueOf(m);
-		} else {
-			value = null;
-		}
-		return value;
+	protected Integer castMask(Long mask) {
+		return mask.intValue() ;
 	}
 
-	@Override
-	public E[] convertToEntityAttribute(Long dbData) {
-		E[] e;
-		if (dbData != null) {
-			e = this.all.clone();
-			final long mask = dbData.longValue();
-			int j = 0;
-			for (int i = 0, l = this.all.length; i < l; i++) {
-				if ((mask >> i & 1) == 1) {
-					e[j++] = this.all[i];
-				}
-			}
-			e = Arrays.copyOf(e, j);
-		} else {
-			e = Arrays.copyOf(this.all, 0);
-		}
-		return e;
-	}
 }

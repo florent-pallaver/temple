@@ -2,7 +2,6 @@ package com.temple.model.impl.access;
 
 import com.temple.Module;
 import com.temple.model.access.Role;
-import com.temple.view.LocaleViewable;
 import com.temple.view.LocaleViewableHelper;
 
 /**
@@ -46,11 +45,6 @@ public enum DefaultRole implements Role {
 	@Override
 	public String getLocaleKey() {
 		return this.key;
-	}
-
-	@Override
-	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

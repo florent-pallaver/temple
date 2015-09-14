@@ -2,7 +2,7 @@ package com.temple.service.ejb.action.constraint;
 
 import com.temple.LocaleViewableTempleException;
 import com.temple.Module;
-import com.temple.util.Valuable;
+import java.io.Serializable;
 
 /**
  * Exception thrown by {@link Validator}s.
@@ -22,7 +22,7 @@ public final class ConstraintException extends LocaleViewableTempleException {
 	 * @param parameters - objects used to complete the views of this exception.
 	 * @param module - the module of this exception.
 	 */
-	public ConstraintException(String keySuffix, Object[] parameters, Module module) {
+	public ConstraintException(String keySuffix, Serializable[] parameters, Module module) {
 		this(keySuffix, parameters, module, null);
 	}
 
@@ -34,7 +34,7 @@ public final class ConstraintException extends LocaleViewableTempleException {
 	 * @param module - the module of this exception.
 	 * @param cause - the cause of this exception
 	 */
-	public ConstraintException(String keySuffix, Object[] parameters, Module module, Throwable cause) {
+	public ConstraintException(String keySuffix, Serializable[] parameters, Module module, Throwable cause) {
 		super(keySuffix, parameters, module, cause);
 	}
 }

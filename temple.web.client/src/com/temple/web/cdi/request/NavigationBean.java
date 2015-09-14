@@ -5,7 +5,7 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
 import com.temple.service.cdi.ApplicationBean;
-import com.temple.service.cdi.TempleBean;
+import com.temple.service.cdi.TempleObject;
 import com.temple.web.cdi.WebConfiguration;
 import com.temple.web.cdi.WebRequestParameter;
 import com.temple.web.cdi.WebRequestParameter.Type;
@@ -17,7 +17,7 @@ import com.temple.web.cdi.WebRequestParameter.Type;
  * @version 1.0
  */
 @Model
-@TempleBean
+@TempleObject
 public class NavigationBean extends AbstractRequestBean {
 
 	private static final long serialVersionUID = 1L;

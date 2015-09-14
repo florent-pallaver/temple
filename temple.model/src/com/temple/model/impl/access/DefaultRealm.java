@@ -4,7 +4,6 @@ import com.temple.Module;
 import com.temple.model.Resource;
 import com.temple.model.User;
 import com.temple.model.access.Realm;
-import com.temple.view.LocaleViewable;
 import com.temple.view.LocaleViewableHelper;
 
 /**
@@ -33,11 +32,6 @@ public enum DefaultRealm implements Realm {
 	@Override
 	public final String getLocaleKey() {
 		return this.key;
-	}
-
-	@Override
-	public final Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

@@ -65,6 +65,7 @@ final class Messages implements SessionListener {
 	 * @return array - all the registered messages and empty the internal array
 	 */
 	public function popAll() {
+//		\temple\Logger::getInstance()->severe('popping : ' . count($this->registry)) ;
 		$r = $this->registry;
 		$this->registry = [];
 		return $r;
@@ -73,6 +74,7 @@ final class Messages implements SessionListener {
 	public function sessionClosing() {
 		// Saves every unpoped messages to the session
 		if ($this->registry && $this->session->isActive()) {
+//		\temple\Logger::getInstance()->severe('saving messages : ' . count($this->registry)) ;
 			$this->session->set(self::$sessionKey, $this->popAll());
 		}
 	}

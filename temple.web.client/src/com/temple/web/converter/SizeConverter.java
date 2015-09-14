@@ -12,7 +12,7 @@ import javax.faces.convert.Converter;
  */
 public class SizeConverter implements Converter {
 
-	private static final String[] units = { "", "K", "M", "G", "T", "E" };
+	private static final String[] units = { "", "k", "M", "G", "T", "P" };
 
 	private static final double[] factors = { Math.pow(1000, 0), Math.pow(1000, 1), Math.pow(1000, 2), Math.pow(1000, 3), Math.pow(1000, 4), Math.pow(1000, 5) };
 

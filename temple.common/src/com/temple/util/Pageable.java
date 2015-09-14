@@ -23,7 +23,7 @@ public interface Pageable {
 	void setPerPageCount(short count);
 
 	/**
-	 * @return the page (first page is 0)
+	 * @return the page (first page is 1)
 	 */
 	int getPage();
 

@@ -12,7 +12,7 @@ TempleAlert.ICONS = ['exclamation-sign', 'warning-sign', 'info-sign', 'ok-sign']
 TempleAlert.ALERTS_DIV = $('#_templeAlerts');
 TempleAlert.ID_PREFIX = '_templeAlert';
 TempleAlert.ID_SUFFIX = 0;
-TempleAlert.AUTO_DISMISS_TIMEOUT = 3000;
+TempleAlert.AUTO_DISMISS_TIMEOUT = 5000;
 TempleAlert.SUCCESS_STATUS = 3;
 
 TempleAlert.autoClose = function(selector) {

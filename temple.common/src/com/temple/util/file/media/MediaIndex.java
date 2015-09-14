@@ -73,7 +73,7 @@ public interface MediaIndex {
 	/**
 	 * TODOC
 	 *
-	 * @param ownerId
+	 * @param mediaId
 	 * @return
 	 */
 	default File getDirectory(Serializable mediaId) {

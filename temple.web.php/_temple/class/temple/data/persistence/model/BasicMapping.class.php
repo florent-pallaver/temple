@@ -33,6 +33,9 @@ class BasicMapping extends AbstractMapping {
 	}
 			
 	public final function getDBValue(Model $m) {
+		if($this->logger->isFinestLoggable()) {
+			$this->logger->finest('Getting value for field ' . $this->field->getName()) ;
+		}
 		$v = $this->getValue($m) ;
 		foreach($this->constraints as $c) {
 			$c->validate($v) ;
@@ -41,7 +44,13 @@ class BasicMapping extends AbstractMapping {
 	}
 
 	public final function setPHPValue(Model $m, $value) {
+		if($this->logger->isFinestLoggable()) {
+			$this->logger->finest('Setting value for field ' . $this->field->getName()) ;
+		}
 		$v = $this->converter->toPHPValue($value) ;
+		if($this->logger->isFinestLoggable()) {
+			$this->logger->finest('Value to set : ' . _str($v)) ;
+		}
 		$this->setValue($m, $v) ;
 		return $v ;
 	}
@@ -58,5 +67,20 @@ class BasicMapping extends AbstractMapping {
 	public static final function createDateTime(\ReflectionProperty $field, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
 		return new BasicMapping($field, $insertable, $updatable, DateTimeFieldConverter::getInstance(), $constraints, $colName) ;
 	}
+
+	/**
+	 * 
+	 * @param \ReflectionProperty $field
+	 * @param \ReflectionClass $enumClass
+	 * @param boolean $insertable
+	 * @param boolean $updatable
+	 * @param array $constraints
+	 * @param string $colName
+	 * @return \temple\data\persistence\model\BasicMapping
+	 */
+	public static final function createEnum(\ReflectionProperty $field, \ReflectionClass $enumClass, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
+		return new BasicMapping($field, $insertable, $updatable, EnumFieldConverter::getInstance($enumClass), $constraints, $colName) ;
+	}
+
 	
 }

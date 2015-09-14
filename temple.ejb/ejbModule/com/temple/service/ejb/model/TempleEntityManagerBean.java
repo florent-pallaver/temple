@@ -1,11 +1,18 @@
 package com.temple.service.ejb.model;
 
+import com.temple.model.EntityKey;
+import com.temple.model.TempleEntity;
+import com.temple.model.UniqueEntityKey;
+import com.temple.model.filter.EntityFilter;
+import com.temple.model.filter.FindMaxFilter;
+import com.temple.model.filter.PageableEntityFilter;
+import com.temple.service.model.EntityException;
+import com.temple.service.model.FindEntityException;
+import com.temple.service.model.UpdateException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -14,18 +21,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
-
-import com.temple.model.EntityKey;
-import com.temple.model.TempleEntity;
-import com.temple.model.UniqueEntityKey;
-import com.temple.model.filter.AbstractPageableEntityFilter;
-import com.temple.model.filter.EntityFilter;
-import com.temple.model.filter.FindMaxFilter;
-import com.temple.model.filter.PageableEntityFilter;
-import com.temple.service.model.EntityException;
-import com.temple.service.model.FindEntityException;
-import com.temple.service.model.PageableResults;
-import com.temple.service.model.UpdateException;
 
 /**
  * TODOC
@@ -83,15 +78,21 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 
 	@Override
 	public long findCount(PageableEntityFilter<?> filter) throws FindEntityException {
+		if(this.isDebugLoggable()) {
+			this.debug(filter);
+		}
 		try {
-			return filter.createCountQuery(this.em).getSingleResult().longValue();
+			return filter.createCountQuery(this.em).getSingleResult();
 		} catch (final PersistenceException e) {
 			throw new FindEntityException(filter, e);
 		}
 	}
 
 	@Override
-	public <E extends TempleEntity> List<E> findByFilter(EntityFilter<E> filter) throws FindEntityException {
+	public <E extends TempleEntity> List<? extends E> findByFilter(EntityFilter<E> filter) throws FindEntityException {
+		if(this.isDebugLoggable()) {
+			this.debug(filter);
+		}
 		try {
 			return filter.createTypedQuery(this.em).getResultList();
 		} catch (final PersistenceException e) {
@@ -99,16 +100,16 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 		}
 	}
 
-	@Override
-	public <E extends TempleEntity> PageableResults<E> getFirstPage(AbstractPageableEntityFilter<E> filter) throws FindEntityException {
-		try {
-			final int total = filter.createCountQuery(this.em).getSingleResult().intValue();
-			final List<E> entities = total > 0 ? filter.createTypedQuery(this.em).getResultList() : Collections.<E> emptyList();
-			return new PageableResults<>(entities, total);
-		} catch (final PersistenceException e) {
-			throw new FindEntityException(filter, e);
-		}
-	}
+//	@Override
+//	public <E extends TempleEntity> PageableResults<? extends E> getFirstPage(PageableEntityFilter<E> filter) throws FindEntityException {
+//		final long total = this.findCount(filter) ;
+//		try {
+//			final List<? extends E> entities = total > 0 ? filter.createTypedQuery(this.em).getResultList() : Collections.emptyList();
+//			return new PageableResults<>(entities, total);
+//		} catch (final PersistenceException e) {
+//			throw new FindEntityException(filter, e);
+//		}
+//	}
 
 	@Override
 	public void persist(TempleEntity po) throws EntityException {
@@ -131,8 +132,8 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 					this.debug("flush done");
 				}
 			}
-			if (this.isInfoLoggable()) {
-				this.info("persisted " + po);
+			if (this.isDebugLoggable()) {
+				this.debug("persisted " + po);
 			}
 		} catch (final PersistenceException e) {
 			throw new EntityException(po, e);
@@ -142,9 +143,7 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	@Override
 	public void persist(Collection<? extends TempleEntity> tes) throws EntityException {
 		try {
-			for (final TempleEntity te : tes) {
-				this.em.persist(te);
-			}
+			tes.stream().forEach(te -> this.em.persist(te)) ;
 		} catch (final Exception e) {
 			throw new EntityException(e);
 		}

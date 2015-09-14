@@ -3,7 +3,6 @@ package com.temple.model.impl.access;
 import com.temple.Module;
 import com.temple.model.Resource;
 import com.temple.model.access.AccessType;
-import com.temple.view.LocaleViewable;
 import com.temple.view.LocaleViewableHelper;
 
 /**
@@ -27,11 +26,6 @@ public enum DefaultAccessType implements AccessType {
 	@Override
 	public String getLocaleKey() {
 		return this.localeKey;
-	}
-
-	@Override
-	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

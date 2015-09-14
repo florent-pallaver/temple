@@ -31,7 +31,7 @@ class AnchorLink extends Link implements \temple\web\html\RenderObserver {
 	 * @param type $cssClass
 	 * @return \temple\web\html\bootstrap\AnchorLink
 	 */
-	public static function create(HTMLNode $toNode, $content, $cssClass = null) {
+	public static function create0(HTMLNode $toNode, $content, $cssClass = null) {
 		return new AnchorLink($toNode, ComponentFactory::toHTMLElement($content), $cssClass) ;
 	}
 	

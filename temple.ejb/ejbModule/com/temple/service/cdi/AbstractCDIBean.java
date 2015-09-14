@@ -17,7 +17,7 @@ public abstract class AbstractCDIBean extends AbstractTempleBean implements Temp
 	 * Constructor.
 	 */
 	protected AbstractCDIBean() {
-		super(Module.CDI);
+		super(Module.SERVICE);
 	}
 
 	/**

@@ -2,6 +2,7 @@ package com.temple.impl.view;
 
 import com.temple.view.LocaleBundle;
 import com.temple.view.LocaleViewable;
+import java.io.Serializable;
 
 /**
  * Default implementation of {@link LocaleViewable}.
@@ -14,11 +15,16 @@ public class DefaultLocaleViewable implements LocaleViewable {
 
 	private final String key;
 
-	private final Object[] parameters;
+	private Serializable[] parameters;
 
 	private final LocaleBundle bundle;
 
-	public DefaultLocaleViewable(String key, Object[] parameters, LocaleBundle module) {
+	// proxyability
+	DefaultLocaleViewable() {
+		this(null, null, null) ;
+	}
+	
+	public DefaultLocaleViewable(String key, Serializable[] parameters, LocaleBundle module) {
 		super();
 		this.key = key;
 		this.parameters = parameters;
@@ -31,10 +37,14 @@ public class DefaultLocaleViewable implements LocaleViewable {
 	}
 
 	@Override
-	public Object[] getLocaleParameters() {
+	public Serializable[] getLocaleParameters() {
 		return this.parameters;
 	}
 
+	protected void setParameters(Serializable... parameters) {
+		this.parameters = parameters;
+	}
+	
 	@Override
 	public LocaleBundle getBundle() {
 		return this.bundle;

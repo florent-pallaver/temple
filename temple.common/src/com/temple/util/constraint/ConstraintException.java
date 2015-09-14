@@ -3,6 +3,7 @@ package com.temple.util.constraint;
 import com.temple.LocaleViewableTempleException;
 import com.temple.Module;
 import com.temple.view.LocaleViewable;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -30,7 +31,7 @@ public abstract class ConstraintException extends LocaleViewableTempleException 
 	 * 
 	 * @param parameters
 	 */
-	public ConstraintException(Object[] parameters) {
+	public ConstraintException(Serializable[] parameters) {
 		super(parameters, Module.DEFAULT);
 	}
 
@@ -41,7 +42,7 @@ public abstract class ConstraintException extends LocaleViewableTempleException 
 	 * @param parameters
 	 * @param cause
 	 */
-	public ConstraintException(Object[] parameters, Throwable cause) {
+	public ConstraintException(Serializable[] parameters, Throwable cause) {
 		super(parameters, Module.DEFAULT, cause);
 	}
 

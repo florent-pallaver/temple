@@ -1,5 +1,7 @@
 package com.temple.util.constraint;
 
+import java.io.Serializable;
+
 
 /**
  * TODOC
@@ -15,7 +17,8 @@ public class LengthException extends ConstraintException {
 	 * Constructor.
 	 * TODOC
 	 * 
-	 * @param parameters
+	 * @param string
+	 * @param max
 	 */
 	public LengthException(String string, int max) {
 		this(string, 0, max);
@@ -30,6 +33,6 @@ public class LengthException extends ConstraintException {
 	 * @param max
 	 */
 	public LengthException(String string, int min, int max) {
-		super(new Object[]{ string, Integer.valueOf(min), Integer.valueOf(max) });
+		super(new Serializable[]{ string, min, max });
 	}
 }

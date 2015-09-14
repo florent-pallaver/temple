@@ -1,13 +1,11 @@
 package com.temple.model.geo;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
 import com.temple.util.TempleUtil;
 import com.temple.util.ToString;
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
  * TODOC
@@ -35,7 +33,7 @@ public class LocationId implements Serializable {
 	/**
 	 * Constructor.
 	 */
-	public LocationId() {}
+	protected LocationId() {}
 
 	/**
 	 * Constructor.

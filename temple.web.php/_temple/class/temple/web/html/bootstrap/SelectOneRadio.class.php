@@ -9,6 +9,8 @@ namespace temple\web\html\bootstrap;
  */
 class SelectOneRadio extends AbstractFormField {
 
+	private static $defaultCssVariant ;
+		
 	private $name;
 	private $required;
 	private $radios;
@@ -39,7 +41,11 @@ class SelectOneRadio extends AbstractFormField {
 	public function isRequired() {
 		return $this->required;
 	}
-
+	
+	/**
+	 * 
+	 * @return array an array containing all the radio inputs within this components
+	 */
 	public function getRadios() {
 		return $this->radios;
 	}
@@ -53,7 +59,7 @@ class SelectOneRadio extends AbstractFormField {
 	}
 
 	public function addButtonOption($value, $label, $labelCssClass = null, CssVariant $labelCssVariant = null) {
-		$lcv = _dif($labelCssVariant, CssVariant::$PRIMARY) ;
+		$lcv = _dif($labelCssVariant, self::$defaultCssVariant) ;
 		return $this->addOption($value, $label, $labelCssClass . ' ' . $lcv->compose('btn')) ;
 	}
 	
@@ -76,14 +82,31 @@ class SelectOneRadio extends AbstractFormField {
 	 * 
 	 * @param type $name
 	 * @param array $options
+	 * @param mixed value
+	 * @param string $radioCssClass
+	 * @param array $optionVariants a CssVariant array
+	 * @param boolean $required
 	 * @return SelectOneRadio
 	 */
-	public static function createButtonGroup($name, array $options, $value = null, $radioCssClass = null, array $optionVariants = []) {
-		$sor = new SelectOneRadio($name, 'btn-group', $radioCssClass);
+	public static function createButtonGroup($name, array $options, $value = null, $radioCssClass = null, array $optionVariants = [], 
+			$required = true) {
+		$sor = new SelectOneRadio($name, 'btn-group', $radioCssClass, $required);
 		foreach ($options as $v => $label) {
-			$sor->addButtonOption($v, $label, 'before' . ($v == $value ? ' active' : ''), _iod($optionVariants, $v));
+			$sor->addButtonOption($v, $label, ($value !== null && $v == $value ? 'active' : NULL), _iod($optionVariants, $v));
 		}
 		return $sor->setValue($value)->setData(['toggle' => 'buttons']);
 	}
 
+	/**
+	 * 
+	 * @param \temple\web\html\bootstrap\CssVariant $variant
+	 */
+	public static function setDefaultCssVariant(CssVariant $variant) {
+		self::$defaultCssVariant = $variant ;
+	}
+	
+	private static function _init() {
+		self::$defaultCssVariant = CssVariant::$PRIMARY ;
+	}
+	
 }

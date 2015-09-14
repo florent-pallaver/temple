@@ -1,12 +1,12 @@
 package com.temple.util.file;
 
+import com.temple.util.AbstractLogger;
+import com.temple.util.file.media.Codec;
 import java.io.File;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import com.temple.util.AbstractLogger;
 
 /**
  * TODOC
@@ -20,6 +20,8 @@ public class LocalUploadedFile extends AbstractLogger implements UploadedFile {
 
 	private final String name;
 
+	private final String extension ;
+	
 	private File file;
 
 	/**
@@ -30,16 +32,34 @@ public class LocalUploadedFile extends AbstractLogger implements UploadedFile {
 	 * @param pf
 	 */
 	public LocalUploadedFile(String name, File pf) {
+		this(name, pf, null);
+	}
+
+	/**
+	 * Constructor.
+	 * TODOC
+	 *
+	 * @param name
+	 * @param pf
+	 * @param codec
+	 */
+	public LocalUploadedFile(String name, File pf, Codec codec) {
 		super();
 		final String fileName = name.trim();
 		final int endIndex = fileName.lastIndexOf('.');
 		this.name = endIndex > 0 ? fileName.substring(0, endIndex) : fileName;
+		this.extension = endIndex > 0 ? fileName.substring(endIndex) : "";
 		this.file = pf;
 	}
 
 	@Override
 	public final String getName() {
 		return this.name;
+	}
+
+	@Override
+	public String getExtension() {
+		return this.extension;
 	}
 
 	@Override

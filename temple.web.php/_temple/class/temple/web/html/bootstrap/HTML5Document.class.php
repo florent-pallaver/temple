@@ -68,7 +68,7 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 	 * @param type $icon
 	 * @param type $title
 	 * @param \temple\web\html\HTMLElement $body
-	 * @param type $cssClass
+	 * @param string $cssClass
 	 * @param \temple\web\html\HTMLElement $footer
 	 * @return \temple\web\html\bootstrap\Modal
 	 */
@@ -79,7 +79,10 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 	}
 
 	public function addScript($script) {
-		
+		$this->getBody()->getChild(self::$scriptsKey)
+				->addElement(NF::createScriptNode()
+						->addChild(new \temple\web\html\HTMLString($script, true))) ;
+		return $this ;
 	}
 
 	public function addScriptLink($src) {

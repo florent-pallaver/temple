@@ -13,8 +13,8 @@ import com.temple.view.LocaleViewableHelper;
 public enum Gender implements LocaleViewable {
 	FEMALE,
 	MALE,
-	TRANS_FEMALE,
-	TRANS_MALE,
+	TRANS_FEMALE, // once a male now a female
+	TRANS_MALE, // once a female now a male
 	OTHER;
 
 	private final String localeKey = LocaleViewableHelper.createLocaleKey(this);
@@ -22,11 +22,6 @@ public enum Gender implements LocaleViewable {
 	@Override
 	public String getLocaleKey() {
 		return this.localeKey;
-	}
-
-	@Override
-	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

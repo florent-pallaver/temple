@@ -1,9 +1,8 @@
 package com.temple.service.model;
 
-import java.io.Serializable;
-
 import com.temple.model.TempleEntity;
 import com.temple.service.ServiceException;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -18,11 +17,11 @@ public class EntityException extends ServiceException {
 	/**
 	 * Constructor
 	 * 
-	 * @param model
+	 * @param po
 	 * @param cause
 	 */
 	public EntityException(TempleEntity po, Throwable cause) {
-		this(new Object[]{ po == null ? "null Entity object" : po.toString() }, cause);
+		this(new Serializable[]{ po == null ? "null Entity object" : po.toString() }, cause);
 	}
 
 	/**
@@ -34,7 +33,7 @@ public class EntityException extends ServiceException {
 	 * @param cause
 	 */
 	public EntityException(Class<? extends TempleEntity> c, Serializable id, Throwable cause) {
-		this(new Object[]{ c == null ? null : c.getName(), id }, cause);
+		this(new Serializable[]{ c == null ? null : c.getName(), id }, cause);
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class EntityException extends ServiceException {
 	 * @param parameters
 	 * @param cause
 	 */
-	public EntityException(Object[] parameters, Throwable cause) {
+	public EntityException(Serializable[] parameters, Throwable cause) {
 		super(parameters, cause);
 	}
 

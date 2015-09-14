@@ -1,7 +1,8 @@
 package com.temple.model.filter;
 
+import com.temple.model.TempleEntity;
+import com.temple.util.ToString;
 import java.io.Serializable;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -9,23 +10,21 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
-import com.temple.model.TempleEntity;
-import com.temple.util.ToString;
-
 /**
  * TODOC
  *
  * @author Florent Pallaver
  * @version 1.0
+ * @param <E>
  */
-public abstract class AbstractPageableEntityFilter<E extends TempleEntity> extends AbstractEntityFilter<E> implements PageableEntityFilter<E> {
+public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> extends AbstractDynamicFilter<E> implements PageableEntityFilter<E> {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * TODOC
 	 */
-	public static final short DEFAULT_MAX_COUNT = 40;
+	public static final short DEFAULT_MAX_COUNT = 5; // 30
 
 	@ToString
 	private int offset;
@@ -33,50 +32,48 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 	@ToString
 	private short maxCount;
 
+	@ToString
+	private boolean maxCountIgnored = false ;
+	
 	/**
 	 * Constructor.
-	 * TODOC
-	 *
-	 * @param entityClass
-	 * @param offset
-	 * @param maxCount
 	 */
-	protected AbstractPageableEntityFilter(Class<E> entityClass) {
-		this(entityClass, AbstractPageableEntityFilter.DEFAULT_MAX_COUNT);
+	protected AbstractDynamicPageableFilter() {
+		this(AbstractDynamicPageableFilter.DEFAULT_MAX_COUNT);
 	}
 
 	/**
 	 * Constructor.
 	 * TODOC
 	 *
-	 * @param entityClass
-	 * @param offset
 	 * @param perPageCount
 	 */
-	protected AbstractPageableEntityFilter(Class<E> entityClass, short perPageCount) {
-		super(entityClass);
+	protected AbstractDynamicPageableFilter(short perPageCount) {
+		super();
 		this.setPerPageCount(perPageCount);
 	}
 
 	@Override
-	public final int getPage() {
-		return this.offset / this.maxCount;
+	public int getPage() {
+		return 1 + this.offset / this.maxCount;
 	}
 
 	@Override
-	public final void setPage(int page) {
-		this.offset = page > 0 ? page * this.maxCount : 0;
+	public void setPage(int page) {
+		this.offset = page > 1 ? (page - 1) * this.maxCount : 0;
 	}
 
 	@Override
-	public final void nextPage() {
+	public void nextPage() {
 		this.offset += this.maxCount;
 	}
 
 	@Override
-	public final void previousPage() {
-		if (this.maxCount >= this.offset) {
+	public void previousPage() {
+		if (this.maxCount <= this.offset) {
 			this.offset -= this.maxCount;
+		} else {
+			this.offset = 0 ;
 		}
 	}
 
@@ -87,10 +84,18 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 
 	@Override
 	public void setPerPageCount(short count) {
-		this.maxCount = this.maxCount > 0 ? this.maxCount : AbstractPageableEntityFilter.DEFAULT_MAX_COUNT;
+		this.maxCount = count > 0 ? count : AbstractDynamicPageableFilter.DEFAULT_MAX_COUNT;
 		this.offset = 0;
 	}
 
+	/**
+	 * TODOC
+	 * @param i 
+	 */
+	protected final void setMaxCountIgnored(boolean i) {
+		this.maxCountIgnored = i ;
+	}
+	
 	/**
 	 * TODOC
 	 *
@@ -98,12 +103,12 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 	 * @return
 	 */
 	@Override
-	public final TypedQuery<Long> createCountQuery(EntityManager em) {
+	public TypedQuery<Long> createCountQuery(EntityManager em) {
 		final CriteriaBuilder cb = em.getCriteriaBuilder();
 		final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		final Root<E> root = cq.from(this.getEntityClass());
+		final Root<? extends E> root = cq.from(this.getEntityClass());
 		cq.select(cb.count(root.get(this.getCountedField())));
-		this.completeCriteriaQuery(cq, cb, root);
+		cq.where(this.createWherePredicate(cb, root)) ;
 		final TypedQuery<Long> q = em.createQuery(cq);
 		return q;
 	}
@@ -122,13 +127,15 @@ public abstract class AbstractPageableEntityFilter<E extends TempleEntity> exten
 	 * @return
 	 */
 	@Override
-	public final TypedQuery<E> createTypedQuery(EntityManager em) {
-		final TypedQuery<E> q = super.createTypedQuery(em);
+	public TypedQuery<? extends E> createTypedQuery(EntityManager em) {
+		final TypedQuery<? extends E> q = super.createTypedQuery(em);
 		if (this.offset > 0) {
 			q.setFirstResult(this.offset);
 		}
-		// maxCount always > 0
-		q.setMaxResults(this.maxCount);
+		if(!maxCountIgnored) {
+			// maxCount always > 0
+			q.setMaxResults(this.maxCount);
+		}
 		return q;
 	}
 }

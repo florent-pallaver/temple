@@ -1,11 +1,10 @@
 package com.temple.service.model;
 
-import java.io.Serializable;
-
 import com.temple.model.EntityKey;
 import com.temple.model.TempleEntity;
 import com.temple.model.filter.EntityFilter;
 import com.temple.model.filter.FindMaxFilter;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -47,7 +46,7 @@ public class FindEntityException extends EntityException {
 	 * @param cause
 	 */
 	public FindEntityException(EntityKey<?> key, Throwable cause) {
-		super(new Object[]{ key }, cause);
+		super(new Serializable[]{ key }, cause);
 	}
 
 	/**
@@ -58,7 +57,7 @@ public class FindEntityException extends EntityException {
 	 * @param cause
 	 */
 	public FindEntityException(Class<? extends TempleEntity> clazz, Throwable cause) {
-		super(new Object[]{ clazz.getName() }, cause);
+		super(new Serializable[]{ clazz.getName() }, cause);
 	}
 
 	/**
@@ -69,7 +68,7 @@ public class FindEntityException extends EntityException {
 	 * @param cause
 	 */
 	public FindEntityException(EntityFilter<? extends TempleEntity> filter, Throwable cause) {
-		super(new Object[]{ filter }, cause);
+		super(new Serializable[]{ filter }, cause);
 	}
 
 	/**
@@ -80,6 +79,6 @@ public class FindEntityException extends EntityException {
 	 * @param cause
 	 */
 	public FindEntityException(FindMaxFilter<?> algo, Throwable cause) {
-		super(new Object[]{ algo }, cause);
+		super(new Serializable[]{ algo }, cause);
 	}
 }

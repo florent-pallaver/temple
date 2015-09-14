@@ -16,6 +16,8 @@ final class JSONResult implements Renderable, \JsonSerializable {
 	
 	private $data ;
 	
+	private $feedbacks ;
+	
 	private $messages ;
 
 	private $reload ;
@@ -24,9 +26,10 @@ final class JSONResult implements Renderable, \JsonSerializable {
 	
 	private $goTo ;
 	
-	function __construct(Status $status, $messages = true, array $data = [], $reload = false, $resetForm = false, $goTo = '') {
+	function __construct(Status $status, $messages = true, array $data = [], array $feedbacks =[], $reload = false, $resetForm = false, $goTo = '') {
 		$this->status = $status ? $status->getOrdinal() : 0 ;
 		$this->data = $data;
+		$this->feedbacks = $feedbacks ;
 		$this->messages = $messages ? Messages::getInstance()->popAll() : [] ;
 		$this->reload = $reload ;
 		$this->resetForm = $resetForm ;
@@ -34,7 +37,7 @@ final class JSONResult implements Renderable, \JsonSerializable {
 	}
 
 	public function jsonSerialize() {
-		return ['status'=>$this->status, 'data'=>$this->data, 'messages'=>$this->messages, 
+		return ['status'=>$this->status, 'data'=>$this->data, 'feedbacks'=>  $this->feedbacks, 'messages'=>$this->messages, 
 			'reload'=>$this->reload, 'resetForm'=>$this->resetForm, 'goTo'=>$this->goTo] ;
 	}
 

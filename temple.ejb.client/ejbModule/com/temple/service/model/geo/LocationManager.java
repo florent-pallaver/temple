@@ -1,4 +1,4 @@
-package com.temple.service.geo;
+package com.temple.service.model.geo;
 
 import com.temple.model.geo.Location;
 import com.temple.model.geo.LocationId;

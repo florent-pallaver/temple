@@ -1,8 +1,7 @@
 package com.temple.service.model;
 
-import java.io.Serializable;
-
 import com.temple.model.TempleEntity;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -10,6 +9,7 @@ import com.temple.model.TempleEntity;
  * @author Florent Pallaver
  */
 // TODO implement
+@Deprecated
 public class ScrollableResults<E extends TempleEntity> implements Serializable {
 
 	private static final long serialVersionUID = 1L;

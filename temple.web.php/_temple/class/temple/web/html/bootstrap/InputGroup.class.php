@@ -2,6 +2,7 @@
 
 namespace temple\web\html\bootstrap;
 
+// FIXME should extend Input and have a special render 
 /**
  * Description of InputGroup
  *
@@ -60,6 +61,14 @@ final class InputGroup extends AbstractGroup implements FormField {
 
 	/**
 	 * 
+	 * @return Input
+	 */
+	public function getInput() {
+		return $this->getChild(self::$inputKey) ;
+	}
+	
+	/**
+	 * 
 	 * @param type $pre
 	 * @return \temple\web\html\HTMLElementList
 	 */
@@ -68,17 +77,17 @@ final class InputGroup extends AbstractGroup implements FormField {
 	}
 
 	public function setForm($formId) {
-		$this->getChild(self::$inputKey)->setForm($formId) ;
+		$this->getInput()->setForm($formId) ;
 		return $this ;
 	}
 
 	public function setValue($value) {
-		$this->getChild(self::$inputKey)->setValue($value) ;
+		$this->getInput()->setValue($value) ;
 		return $this ;
 	}
 
 	public function isRequired() {
-		return $this->getChild(self::$inputKey)->isRequired() ;
+		return $this->getInput()->isRequired() ;
 	}
 	
 	/**

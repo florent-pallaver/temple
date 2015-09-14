@@ -67,6 +67,10 @@ class Button extends AbstractFormField {
 				;
 	}
 
+	public static function createSubmit2($icon, $text, CssVariant $variant = null, $name = 'submit') {
+		$b = new Button(self::TYPE_SUBMIT, InnerText::create($text), _dif($variant, CssVariant::$PRIMARY)) ;
+		return $b->setName('action')->addCssClass('glyphicon glyphicon-' . $icon)->setAttribute('value', $name) ;
+	}
 	/**
 	 * 
 	 * @param \temple\web\html\bootstrap\InnerText $innerText

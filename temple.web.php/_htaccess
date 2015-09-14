@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/(_temple|_custom|logs|index\.php)
+RewriteRule ^([^/]+)/?(([^/]+/?)*)$ index.php?_VIEW=$1&_PATH=$2&_ACTION=%{QUERY_STRING} [L]

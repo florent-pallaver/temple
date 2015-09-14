@@ -1,16 +1,14 @@
 package com.temple.web.cdi.request;
 
+import com.temple.service.cdi.TempleObject;
+import com.temple.service.session.SessionManager;
+import com.temple.service.session.SignInException;
 import java.io.IOException;
-
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-
-import com.temple.service.cdi.TempleBean;
-import com.temple.service.session.SessionManager;
-import com.temple.service.session.SignInException;
 
 /**
  * TODOC
@@ -21,7 +19,7 @@ import com.temple.service.session.SignInException;
  */
 @Named("authenticationBean")
 @Model
-@TempleBean
+@TempleObject
 public class TempleAuthenticationBean extends AbstractRequestBean {
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +35,7 @@ public class TempleAuthenticationBean extends AbstractRequestBean {
 		try {
 			this.sessionManager.signIn(this.name, this.pass);
 		} catch (final SignInException e) {
-			this.addErrorMessage(e);
+			this.addError(e);
 		}
 	}
 
@@ -48,7 +46,7 @@ public class TempleAuthenticationBean extends AbstractRequestBean {
 		try {
 			ec.redirect(ec.getApplicationContextPath() + "/");
 		} catch (final IOException e) {
-			this.addError(e);
+			this.thrown(e);
 		}
 	}
 

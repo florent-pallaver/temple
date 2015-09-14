@@ -24,4 +24,15 @@ public interface GeoLocatable extends Nameable {
 	 * @return the altitude (in meters) of this object.
 	 */
 	int getAltitude();
+	
+	/**
+	 * @return {@code true} if this geographically located object is located inside a {@link Country}, {@code false} otherwise.
+	 */
+//	boolean isInsideCountry() ;
+	
+	/**
+	 * 
+	 * @return the {@link Country} this located object is inside, {@code null} if this located object is not in any {@link Country}.
+	 */
+//	Country getCountry() ;
 }

@@ -9,15 +9,6 @@ namespace temple\web\html\bootstrap;
  */
 class LabeledCheckbox extends AbstractFormField {
 
-	const TYPE_HIDDEN = 'hidden';
-	const TYPE_TEXT = 'text';
-	const TYPE_SECRET = 'password';
-	const TYPE_RADIO = 'radio';
-	const TYPE_CHECKBOX = 'checkbox';
-	const TYPE_FILE = 'file';
-	const TYPE_EMAIL = 'email';
-	const TYPE_NUMBER = 'number';
-
 	/**
 	 * @var Input
 	 */
@@ -64,9 +55,8 @@ class LabeledCheckbox extends AbstractFormField {
 	 * @param type $cssClass
 	 * @return LabeledCheckbox
 	 */
-	public static function create($label, $name, $value, $before = true, $cssClass = null) {
+	public static function create($label, $name, $value = 1, $before = true, $cssClass = null) {
 		return new LabeledCheckbox($label, $name, $value, $before, $cssClass) ;
 	}
-	
 	
 }

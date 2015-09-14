@@ -1,15 +1,13 @@
 package com.temple.util.file.media.image;
 
+import com.temple.Module;
+import com.temple.util.file.media.Codec;
 import java.io.File;
 import java.util.Iterator;
 import java.util.logging.Level;
-
 import javax.activation.FileTypeMap;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
-
-import com.temple.Module;
-import com.temple.util.file.media.Codec;
 
 /**
  * TODOC
@@ -76,7 +74,7 @@ public enum ImageCodec implements Codec {
 			}
 		}
 		if (Module.DEFAULT.logger.isLoggable(Level.WARNING)) {
-			Module.DEFAULT.logger.warning(mft + " does not seems to be a MIME image type");
+			Module.DEFAULT.logger.log(Level.WARNING, "{0} does not seems to be a MIME image type", mft);
 		}
 		return null;
 	}

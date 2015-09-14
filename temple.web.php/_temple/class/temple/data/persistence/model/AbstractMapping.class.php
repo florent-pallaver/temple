@@ -7,7 +7,7 @@ namespace temple\data\persistence\model;
  *
  * @author florent
  */
-abstract class AbstractMapping implements Mapping {
+abstract class AbstractMapping extends \temple\WithLogger implements Mapping {
 
 	/**
 	 * @var \ReflectionProperty
@@ -21,6 +21,7 @@ abstract class AbstractMapping implements Mapping {
 	private $updatable ;
 	
 	public function __construct(\ReflectionProperty $field, $insertable, $updatable) {
+		parent::__construct() ;
 		$this->field = $field ;
 		$this->pop = $field->isPrivate() || $field->isProtected() ;
 		$this->insertable = $insertable ;

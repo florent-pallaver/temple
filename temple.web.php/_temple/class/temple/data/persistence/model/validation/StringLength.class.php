@@ -9,7 +9,7 @@ namespace temple\data\persistence\model\validation;
  */
 class StringLength implements \temple\data\persistence\model\FieldConstraint {
 
-	private static $msg = 'the given string is %s characters long and should be between %s and %s long' ;
+	private static $msg = 'the given string is %s characters long but it must be between %s and %s long' ;
 	
 	private $min ;
 	

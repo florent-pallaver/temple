@@ -7,7 +7,7 @@ import javax.enterprise.context.ApplicationScoped;
 
 import com.temple.model.TempleUser;
 import com.temple.service.cdi.AbstractCDIBean;
-import com.temple.service.cdi.TempleBean;
+import com.temple.service.cdi.TempleObject;
 
 /**
  * TODOC
@@ -17,7 +17,7 @@ import com.temple.service.cdi.TempleBean;
  */
 // TOTHINK See if can use interceptor or such
 @ApplicationScoped
-@TempleBean
+@TempleObject
 public class ApplicationManagerBean extends AbstractCDIBean implements ApplicationManager {
 
 	private static final long serialVersionUID = 1L;

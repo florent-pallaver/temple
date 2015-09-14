@@ -1,10 +1,10 @@
 package com.temple.model.impl.access;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
 import com.temple.Module;
 import com.temple.model.access.AccessRights;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
  * TODOC
@@ -92,7 +92,7 @@ public class DefaultMod implements AccessRights<DefaultAccessType, DefaultRealm>
 	}
 
 	@Override
-	public Object[] getLocaleParameters() {
+	public Serializable[] getLocaleParameters() {
 		final DefaultRealm[] realms = DefaultRealm.values();
 		final AccessRightsEnum[] privileges = new AccessRightsEnum[realms.length];
 		final AccessRightsEnum[] values = AccessRightsEnum.values();

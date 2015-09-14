@@ -6,12 +6,12 @@ package com.temple.service.session;
  * @author Florent Pallaver
  * @version 1.0
  */
-public class NoUserSessionException extends SessionException {
+public class NotSignedInException extends SessionException {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor.
 	 */
-	public NoUserSessionException() {}
+	public NotSignedInException() {}
 }

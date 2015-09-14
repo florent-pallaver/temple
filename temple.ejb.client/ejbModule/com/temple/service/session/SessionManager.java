@@ -40,7 +40,8 @@ public interface SessionManager {
 	/**
 	 * TODOC
 	 * 
-	 * @throws NoUserSessionException
+	 * @return 
+	 * @throws NotSignedInException
 	 */
-	TempleUser getSessionUser() throws NoUserSessionException;
+	TempleUser getSessionUser() throws NotSignedInException;
 }

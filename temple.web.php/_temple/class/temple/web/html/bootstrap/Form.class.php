@@ -19,21 +19,24 @@ class Form extends AbstractComponent {
 	
 	private $fieldCssClass ;
 	
+	private $useCssClasses;
+	
 	/**
 	 * @var \temple\web\html\HTMLNode
 	 */
 	private $lastFieldset ;
-	
-	public function __construct($action, $cssClass = null, $ajax = true, $fieldsetCssClass = null) {
+
+	public function __construct($action, $cssClass = null, $ajax = true, $fieldsetCssClass = null, $disabled = false) {
 		parent::__construct('form', $cssClass);
 		$this->fieldCssClass = null ;
 		$this->labelCssClass = null ;
+		$this->useCssClasses = true ;
 //		$this->getId() ; // forces id generation
 		if($ajax) {
 			$this->addCssClass(self::AJAX_FORM_CLASS) ;
 		}
 		$this->setAttributes(['method'=>'post', 'action' => $action]) ;
-		$this->addNewFieldSet($fieldsetCssClass) ;
+		$this->addNewFieldSet($fieldsetCssClass, $disabled) ;
 	}
 	
 	/**
@@ -47,8 +50,8 @@ class Form extends AbstractComponent {
 	/**
 	 * @return Form
 	 */
-	public function addNewFieldSet($cssClass = null) {
-		$this->lastFieldset = ComponentFactory::createFieldset(true, $cssClass) ;
+	public function addNewFieldSet($cssClass = null, $disabled = false) {
+		$this->lastFieldset = ComponentFactory::createFieldset(true, $cssClass, !$disabled) ;
 		return $this->addChild($this->lastFieldset) ;
 	}
 	
@@ -56,11 +59,20 @@ class Form extends AbstractComponent {
 	 * 
 	 * @param type $jsFunction
 	 * @param array $parameters
-	 * @return \temple\web\html\bootstrap\Form
+	 * @return Form
 	 */
 	public function setSuccessJSCallback($jsFunction, array $parameters = []) {
 		return $this->setData([self::SUCCESS_JS_CALLBACK=>$jsFunction])
 				->setData($parameters) ;
+	}
+	
+	/**
+	 * 
+	 * @param boolean $with
+	 * @return Form
+	 */
+	public function setWithFileUpload($with) {
+		return $this->setAttribute('enctype', $with ? 'multipart/form-data' : null) ;
 	}
 	
 	/**
@@ -71,7 +83,6 @@ class Form extends AbstractComponent {
 	public function addField(\temple\web\html\HTMLNode $comp) {
 		$this->lastFieldset->addChild($comp) ;
 		if(false) {
-			$this->setAttribute('enctype', 'multipart/form-data') ;
 		}
 		return $this ;
 	}
@@ -97,19 +108,80 @@ class Form extends AbstractComponent {
 	}
 	
 	/**
+	 * Toggles use of css classes on labels and fields when adding a form group.
+	 * @return \temple\web\html\bootstrap\Form
+	 */
+	public function toggleCssClassesUse() {
+		$this->useCssClasses = !$this->useCssClasses ;
+		return $this ;
+	}
+	
+	/**
 	 * 
 	 * @param type $label
 	 * @param \temple\web\html\bootstrap\FormField $field
 	 * @param type $labelCssClass
 	 * @param type $fieldCssClass
+	 * @param FormGroup $fg the created FormGroup
 	 * @return Form
 	 */
-	public function addFormGroup($label, FormField $field, $labelCssClass = null, $fieldCssClass = null) {
+	public function addFormGroup($label, FormField $field, $labelCssClass = null, $fieldCssClass = null, FormGroup &$fg = null) {
 		$fg = new FormGroup($field, $label, false) ;
-		$fg->getLabel()->addCssClass(_dif($labelCssClass, $this->labelCssClass))
-				->addCssClass($field->isRequired() ? 'required': null);
-		$fg->getFieldDiv()->addCssClass(_dif($fieldCssClass, $this->fieldCssClass)) ;
+		if($this->useCssClasses) {
+			$fg->getLabel()->addCssClass(_dif($labelCssClass, $this->labelCssClass))
+					->addCssClass($field->isRequired() ? 'required': null);
+			$fg->getFieldDiv()->addCssClass(_dif($fieldCssClass, $this->fieldCssClass)) ;
+		} elseif($field->isRequired()) {
+			$fg->getLabel()	->addCssClass('required');
+		}
 		return $this->addField($fg) ;
+	}
+	
+	/**
+	 * Uses the Input's placeholder as label
+	 * @param \temple\web\html\bootstrap\Input $input
+	 * @param type $labelCssClass
+	 * @param type $fieldCssClass
+	 * @param FormGroup $fg the created FormGroup
+	 * @return Form
+	 */
+	public function addInputInFormGroup(Input $input, $labelCssClass = null, $fieldCssClass = null, FormGroup &$fg = null) {
+		return $this->addFormGroup($input->getAttribute('placeholder'), $input, $labelCssClass, $fieldCssClass, $fg ) ;
+	}
+	
+	/**
+	 * Uses the Input's placeholder as label
+	 * @param \temple\web\html\bootstrap\Input $input
+	 * @param type $labelCssClass
+	 * @param type $fieldCssClass
+	 * @param FormGroup $fg the created FormGroup
+	 * @return Form
+	 */
+	public function addInputGroupInFormGroup(InputGroup $input, $labelCssClass = null, $fieldCssClass = null, FormGroup &$fg = null) {
+		return $this->addFormGroup($input->getInput()->getAttribute('placeholder'), $input, $labelCssClass, $fieldCssClass, $fg ) ;
+	}
+	
+	/**
+	 * Uses the TextArea's placeholder as label
+	 * @param \temple\web\html\bootstrap\TextArea $textArea
+	 * @param type $labelCssClass
+	 * @param type $fieldCssClass
+	 * @param FormGroup $fg the created FormGroup
+	 * @return Form
+	 */
+	public function addTextAreaInFormGroup(TextArea $textArea, $labelCssClass = null, $fieldCssClass = null, FormGroup &$fg = null) {
+		return $this->addFormGroup($textArea->getAttribute('placeholder'), $textArea, $labelCssClass, $fieldCssClass, $fg ) ;
+	}
+	/**
+	 * 
+	 * @param type $action
+	 * @param type $cssClass
+	 * @param type $fieldsetCssClass
+	 * @param boolean $disabled
+	 * @return \temple\web\html\bootstrap\Form
+	 */
+	public static function createAjaxForm($action, $cssClass = null, $fieldsetCssClass = null, $disabled = false) {
+		return new Form($action, $cssClass, true, $fieldsetCssClass, $disabled) ;
 	}
 	
 	/**
@@ -119,18 +191,8 @@ class Form extends AbstractComponent {
 	 * @param type $fieldsetCssClass
 	 * @return \temple\web\html\bootstrap\Form
 	 */
-	public static function createAjaxForm($action, $cssClass = null, $fieldsetCssClass = null) {
-		return new Form($action, $cssClass, true, $fieldsetCssClass) ;
-	}
-	
-	/**
-	 * 
-	 * @param type $action
-	 * @param type $cssClass
-	 * @return \temple\web\html\bootstrap\Form
-	 */
-	public static function createForm($action, $cssClass = null) {
-		return new Form($action, $cssClass, false) ;
+	public static function createForm($action, $cssClass = null, $fieldsetCssClass = null) {
+		return new Form($action, $cssClass, false, $fieldsetCssClass) ;
 	}
 	
 }

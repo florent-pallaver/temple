@@ -29,7 +29,8 @@ class Key {
 	 * Constructor.
 	 * TODOC
 	 *
-	 * @param array $fieldNames
+	 * @param ReflectionClass $entityClass
+	 * @param array | string $columns
 	 * @param boolean $unique
 	 * @param string $name
 	 */

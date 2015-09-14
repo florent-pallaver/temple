@@ -2,6 +2,7 @@ package com.temple.service.session;
 
 import com.temple.model.User;
 import com.temple.model.access.AccessType;
+import java.io.Serializable;
 
 /**
  * Exception thrown whenever an {@link User} tries to perform an action on an Object and is not allowed to.
@@ -26,6 +27,6 @@ public final class AccessDeniedException extends SessionException {
 	 * @param p - the access type that is not allowed.
 	 */
 	public AccessDeniedException(AccessType p) {
-		super(new Object[]{ p });
+		super(new Serializable[]{ p });
 	}
 }

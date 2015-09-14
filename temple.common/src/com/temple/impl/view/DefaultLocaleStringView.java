@@ -7,6 +7,7 @@ import com.temple.view.LocaleBundle;
 import com.temple.view.LocaleStringView;
 import com.temple.view.LocaleStringViewHelper;
 import com.temple.view.LocaleViewable;
+import java.io.Serializable;
 
 /**
  * Default implementation of {@link LocaleStringView}.
@@ -48,7 +49,7 @@ public class DefaultLocaleStringView extends AbstractLocaleView implements Local
 	 * @param parameters - TODOC
 	 * @param bundle - TODOC
 	 */
-	protected DefaultLocaleStringView(Language language, Object[] parameters, LocaleBundle bundle) {
+	protected DefaultLocaleStringView(Language language, Serializable[] parameters, LocaleBundle bundle) {
 		this(language, null, parameters, bundle);
 	}
 
@@ -83,7 +84,7 @@ public class DefaultLocaleStringView extends AbstractLocaleView implements Local
 	 * @param parameters - TODOC
 	 * @param bundle - TODOC
 	 */
-	public DefaultLocaleStringView(Language language, String key, Object[] parameters, LocaleBundle bundle) {
+	public DefaultLocaleStringView(Language language, String key, Serializable[] parameters, LocaleBundle bundle) {
 		super(language);
 		final DefaultLocaleViewable a = new DefaultLocaleViewable(key == null || key.length() < 1 ? this.getClass().getName() : key, parameters, bundle);
 		this.simple = LocaleStringViewHelper.createLocaleString(a, language, false);

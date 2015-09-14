@@ -5,11 +5,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import javax.inject.Qualifier;
 
 /**
- * TODOC
+ * Qualifier for tier dependent implementations.
  *
  * @author Florent Pallaver
  * @version 1.0
@@ -18,17 +17,16 @@ import javax.inject.Qualifier;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER })
-public @interface OperatingSystem {
+public @interface TierDependent {
 
 	/**
-	 * TODOC
+	 * @return the {@link Tier} dependency
 	 */
-	String UNIX = "unix";
-
-	/**
-	 * TODOC
-	 *
-	 * @return
-	 */
-	String value();
+	Tier value();
+	
+	enum Tier {
+		EJB,
+		WEB
+	}
+	
 }

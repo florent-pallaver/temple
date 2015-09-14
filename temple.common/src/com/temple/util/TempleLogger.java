@@ -1,7 +1,5 @@
 package com.temple.util;
 
-import com.temple.Module;
-
 /**
  * TODOC
  *
@@ -28,48 +26,14 @@ public final class TempleLogger extends AbstractLogger {
 	}
 
 	/**
-	 * Constructor.
-	 *
+	 * 
 	 * @param loggerName
-	 * @param prefix
+	 * @param prefix 
 	 */
 	public TempleLogger(String loggerName, String prefix) {
 		super(loggerName, prefix);
 	}
-
-	/**
-	 * Constructor.
-	 * TODOC
-	 *
-	 * @param module
-	 */
-	public TempleLogger(Module module) {
-		super(module);
-	}
-
-	/**
-	 * Constructor.
-	 * TODOC
-	 *
-	 * @param prefix
-	 * @param module
-	 */
-	public TempleLogger(String prefix, Module module) {
-		super(prefix, module);
-	}
-
-	/**
-	 * Constructor.
-	 * TODOC
-	 *
-	 * @param prefix
-	 * @param module
-	 * @param suffix
-	 */
-	public TempleLogger(String prefix, Module module, String suffix) {
-		super(prefix, module, suffix);
-	}
-
+	
 	@Override
 	public boolean isDebugLoggable() {
 		return super.isDebugLoggable();

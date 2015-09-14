@@ -6,14 +6,14 @@ package com.temple.service.session;
  * @author Florent Pallaver
  * @version 1.0
  */
-public final class IncorrectPasswordException extends SignInException {
+public final class IncorrectPassException extends SignInException {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor.
 	 */
-	public IncorrectPasswordException() {
+	public IncorrectPassException() {
 		super();
 	}
 
@@ -23,7 +23,7 @@ public final class IncorrectPasswordException extends SignInException {
 	 * 
 	 * @param cause
 	 */
-	public IncorrectPasswordException(Throwable cause) {
+	public IncorrectPassException(Throwable cause) {
 		super(cause);
 	}
 }

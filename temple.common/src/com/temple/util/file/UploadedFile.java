@@ -20,6 +20,12 @@ public interface UploadedFile extends Serializable {
 
 	/**
 	 * TODOC
+	 * @return 
+	 */
+	String getExtension() ;
+	
+	/**
+	 * TODOC
 	 *
 	 * @return
 	 */

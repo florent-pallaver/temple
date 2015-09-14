@@ -13,10 +13,11 @@ public abstract class LocaleViewableHelper {
 	/**
 	 * TODOC
 	 * 
-	 * @param e
+	 * @param e an enum
 	 * @return
 	 */
 	public static final String createLocaleKey(Enum<?> e) {
 		return e.getClass().getName() + LocaleViewable.DELIMITER + e.name();
 	}
+	
 }

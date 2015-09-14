@@ -20,7 +20,7 @@ class Image {
 		0 => 'an unexpected error on the server occured'
 	];
 	private static $failMsg = "An error occured while processing '%s': %s.";
-	public static $COMPRESSION_QUALITY = 90;
+	public static $COMPRESSION_QUALITY = 95;
 	public static $IMAGE_MAX_WIDTH = 1280;
 	public static $IMAGE_MAX_HEIGHT = 720;
 	public static $THUMBNAIL_DIMENSION = 200;
@@ -50,7 +50,7 @@ class Image {
 	/**
 	 * 
 	 * @param string $dir
-	 * @param string $dest
+	 * @param string $dest without the .jpg extension
 	 * @param int $wid
 	 * @param int $hei
 	 * @return boolean
@@ -91,7 +91,7 @@ class Image {
 	/**
 	 * 
 	 * @param \temple\util\io\Directory $d
-	 * @param string $dest
+	 * @param string $dest 
 	 * @return \temple\util\io\File
 	 * @throws ResourceAccessException
 	 */

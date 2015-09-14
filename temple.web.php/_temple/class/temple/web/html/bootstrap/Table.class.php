@@ -14,21 +14,17 @@ class Table extends AbstractComponent {
 	private static $footKey = '_tfoot|';
 
 	/**
-	 * @var \temple\web\html\HTMLNode
-	 */
-	private $table ;
-	
-	/**
 	 * @var array
 	 */
 	private $cellCssClasses ;
 	
-	public function __construct($cssClass = null) {
-		parent::__construct('div', 'table-responsive');
-		$this->table = ComponentFactory::createComponent('table', 'table')
-				->addCssClass($cssClass)
+	private $renderInResponsiveDiv ;
+	
+	public function __construct($cssClass = null, $responsive = true) {
+		parent::__construct('table', 'table');
+		$this->renderInResponsiveDiv = $responsive ;
+		$this->addCssClass($cssClass)
 				->addChild(ComponentFactory::createComponent('tbody'), self::$bodyKey);
-		$this->addChild($this->table);
 		$this->cellCssClasses = [] ;
 	}
 
@@ -56,7 +52,7 @@ class Table extends AbstractComponent {
 			$tr->addChild(ComponentFactory::createComponent('th', _iod($this->cellCssClasses, $i))
 							->addChild(ComponentFactory::toHTMLElement($t)));
 		}
-		$this->table->addChild(ComponentFactory::createComponent($head ? 'thead' : 'tfoot')
+		$this->addChild(ComponentFactory::createComponent($head ? 'thead' : 'tfoot')
 						->addChild($tr), $head ? self::$headKey : self::$footKey);
 		return $this ;
 	}
@@ -64,7 +60,7 @@ class Table extends AbstractComponent {
 	/**
 	 * 
 	 * @param array $cellsContent
-	 * @param type $cssClass
+	 * @param string $cssClass css class of the row (the <code>&lt;tr&gt;</code> element)
 	 * @return \temple\web\html\bootstrap\Table
 	 */
 	public function addRow(array $cellsContent, $cssClass = null, &$tr = null) {
@@ -73,7 +69,7 @@ class Table extends AbstractComponent {
 			$tr->addChild(ComponentFactory::createComponent('td', _iod($this->cellCssClasses, $i))
 							->addChild(ComponentFactory::toHTMLElement($cc)));
 		}
-		$this->table->getChild(self::$bodyKey)->addChild($tr) ;
+		$this->getChild(self::$bodyKey)->addChild($tr) ;
 		return $this ;
 	}
 
@@ -94,9 +90,18 @@ class Table extends AbstractComponent {
 	public static function create(array $tableVariants = [], $cssClass = null) {
 		$t = new Table($cssClass) ;
 		foreach($tableVariants as $tv) {
-			$t->table->addCssClass($tv) ;
+			$t->addCssClass($tv) ;
 		}
 		return $t ;
+	}
+	
+	public function render() {
+		if($this->renderInResponsiveDiv) {
+			$this->renderInResponsiveDiv = false ;
+			ComponentFactory::createComponent('div', 'table-responsive', $this)->render() ;
+		} else {
+			parent::render();
+		}
 	}
 	
 }

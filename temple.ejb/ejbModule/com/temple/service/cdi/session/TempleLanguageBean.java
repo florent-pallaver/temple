@@ -1,23 +1,21 @@
 package com.temple.service.cdi.session;
 
-import java.io.Serializable;
-
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import com.temple.impl.view.DefaultLocaleStringView;
 import com.temple.impl.view.DefaultLocaleViewable;
 import com.temple.service.cdi.AbstractCDIBean;
 import com.temple.service.cdi.ApplicationBean;
 import com.temple.service.cdi.CDIConfiguration;
-import com.temple.service.cdi.TempleBean;
+import com.temple.service.cdi.TempleObject;
 import com.temple.util.human.Language;
 import com.temple.view.LocaleBundle;
 import com.temple.view.LocaleStringView;
 import com.temple.view.LocaleStringViewHelper;
 import com.temple.view.LocaleViewable;
+import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * TODOC
@@ -27,7 +25,7 @@ import com.temple.view.LocaleViewable;
  */
 @Named("languageBean")
 @SessionScoped
-@TempleBean
+@TempleObject
 public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -70,7 +68,7 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 	}
 
 	@Override
-	public String getString(String key, Object... parameters) {
+	public String getString(String key, Serializable... parameters) {
 		return this.getString(new DefaultLocaleViewable(key, parameters, this.bundle));
 	}
 
@@ -80,7 +78,7 @@ public class TempleLanguageBean extends AbstractCDIBean implements LanguageBean,
 	}
 
 	@Override
-	public String getDetailedString(String key, Object... parameters) {
+	public String getDetailedString(String key, Serializable... parameters) {
 		return this.getDetailedString(new DefaultLocaleViewable(key, parameters, this.bundle));
 	}
 }

@@ -1,9 +1,9 @@
 package com.temple.util.file.media.stream;
 
-import java.io.File;
-
 import com.temple.Module;
 import com.temple.util.file.media.MediaException;
+import java.io.File;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -22,6 +22,6 @@ public class VideoStreamException extends MediaException {
 	 * @param file
 	 */
 	public VideoStreamException(File file) {
-		super(new Object[]{ file }, Module.DEFAULT);
+		super(new Serializable[]{ file }, Module.DEFAULT);
 	}
 }

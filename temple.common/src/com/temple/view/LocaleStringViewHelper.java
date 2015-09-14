@@ -1,14 +1,14 @@
 package com.temple.view;
 
+import com.temple.Module;
+import com.temple.util.human.Language;
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-
-import com.temple.Module;
-import com.temple.util.human.Language;
 
 /**
  * Helper class for {@link LocaleView}s.
@@ -44,7 +44,7 @@ public final class LocaleStringViewHelper {
 				final ResourceBundle rb = LocaleStringViewHelper.findResourceBundle(lv.getBundle(), l.getLocale());
 				final boolean containsKey = rb.containsKey(lk);
 				localizedString = containsKey ? rb.getString(lk) : lk;
-				final Object[] localeParameters = lv.getLocaleParameters();
+				final Serializable[] localeParameters = lv.getLocaleParameters();
 				if (localeParameters.length > 0) {
 					final Object[] localizedStringParameters = new Object[localeParameters.length];
 					for (int i = localeParameters.length; i-- > 0;) {

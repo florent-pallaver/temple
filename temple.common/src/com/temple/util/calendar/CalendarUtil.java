@@ -1,5 +1,7 @@
 package com.temple.util.calendar;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,6 +13,28 @@ import java.util.Date;
  */
 public abstract class CalendarUtil {
 
+	/**
+	 * Date time format as defined in RFC 3339
+	 * <br>
+	 * Example: 2015-02-20T15:21:15-08:00
+	 * @see http://tools.ietf.org/html/rfc3339
+	 */
+	public static final DateFormat HTML_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX") ;
+
+	/**
+	 * Full Date time format
+	 * <br>
+	 * Example: 2020-02-12 21:52:07 
+	 */
+	public static final DateFormat SQL_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+
+	/**
+	 * Simple date format
+	 * <br>
+	 * Example: 2015-03-26
+	 */
+	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	
 	/**
 	 * Finds the nearest {@link Date} to today so that one's age will be at least the given age.
 	 *
@@ -67,5 +91,7 @@ public abstract class CalendarUtil {
 		return ages;
 	}
 
+		
+	
 	private CalendarUtil() {}
 }

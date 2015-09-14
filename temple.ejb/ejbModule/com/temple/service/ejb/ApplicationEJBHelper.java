@@ -23,7 +23,7 @@ import com.temple.view.LocaleViewable;
  */
 // @Local
 // @Singleton
-public class ApplicationEJBHelper extends AbstractManagerBean {
+public class ApplicationEJBHelper extends AbstractEJBBean {
 
 	private static final long serialVersionUID = 1L;
 

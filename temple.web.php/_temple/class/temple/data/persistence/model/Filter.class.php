@@ -84,10 +84,11 @@ class Filter {
 	 * 
 	 * @param Key $modelKey
 	 * @param mixed $value
+	 * @param string comparator
 	 * @return Filter
 	 */
-	public function addKeyCondition(Key $modelKey, $value) {
-		$this->conditions[] = [$modelKey, _eia($value)] ;
+	public function addKeyCondition(Key $modelKey, $value, $comparator = null) {
+		$this->conditions[] = [$modelKey, _eia($value), $comparator] ;
 		return $this ;
 	}
 	

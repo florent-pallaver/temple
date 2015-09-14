@@ -1,9 +1,8 @@
 package com.temple;
 
+import com.temple.util.AbstractLogger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-
-import com.temple.util.AbstractLogger;
 
 /**
  * TODOC
@@ -20,14 +19,14 @@ public abstract class AbstractTempleBean extends AbstractLogger {
 	/**
 	 * Constructor.
 	 */
-	AbstractTempleBean() {
+	protected AbstractTempleBean() {
 		super();
 	}
 
 	/**
 	 * Constructor.
 	 *
-	 * @param prefix
+	 * @param loggerName
 	 */
 	protected AbstractTempleBean(String loggerName) {
 		this(loggerName, Integer.toString(AbstractTempleBean.nextId++));
@@ -36,7 +35,8 @@ public abstract class AbstractTempleBean extends AbstractLogger {
 	/**
 	 * Constructor.
 	 *
-	 * @param prefix
+	 * @param loggerName
+	 * @param logPrefix
 	 */
 	protected AbstractTempleBean(String loggerName, String logPrefix) {
 		super(loggerName, logPrefix);
@@ -60,7 +60,7 @@ public abstract class AbstractTempleBean extends AbstractLogger {
 	 * @param module
 	 */
 	protected AbstractTempleBean(String prefix, Module module) {
-		super(module.packageName, prefix);
+		super(module.packageName  + " " + prefix);
 	}
 
 	@PreDestroy
@@ -73,7 +73,9 @@ public abstract class AbstractTempleBean extends AbstractLogger {
 
 	@PostConstruct
 	protected void postConstruct() {
-		this.debug("Constructed");
+		if(this.isDebugLoggable()) {
+			this.debug("Constructed");
+		}
 		this.creationTime = System.currentTimeMillis();
 	}
 }

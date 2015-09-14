@@ -1,13 +1,12 @@
 package com.temple.service.ejb.action.constraint;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.util.Map;
-
 import com.temple.Module;
 import com.temple.service.ejb.action.Action;
 import com.temple.service.ejb.action.Property;
 import com.temple.view.LocaleViewable;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
  * TODOC
@@ -43,7 +42,7 @@ public abstract class PropertiesChecker<C extends Annotation> implements Checker
 				if (lps == null) {
 					lps = LocaleViewable.NO_PARAMETERS;
 				}
-				final Object[] flps = new Object[lps.length + 1];
+				final Serializable[] flps = new Serializable[lps.length + 1];
 				flps[0] = p;
 				System.arraycopy(lps, 0, flps, 1, lps.length);
 				throw new ConstraintException(this.suffix, flps, Module.SERVICE);

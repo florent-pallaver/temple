@@ -3,13 +3,16 @@
  */
 package com.temple.web.cdi.session;
 
-import java.util.List;
-
 import com.temple.model.TempleEntity;
 import com.temple.model.filter.PageableEntityFilter;
 import com.temple.service.ServiceException;
-import com.temple.service.model.PartialResults;
 import com.temple.web.cdi.TempleEntityPager;
+import com.temple.web.cdi.WebRequestParameter;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 
 /**
  * TODOC
@@ -17,26 +20,37 @@ import com.temple.web.cdi.TempleEntityPager;
  * @author Florent Pallaver
  * @version 1.0
  * @param <M>
+ * @param <F>
  */
-public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends PageableEntityFilter<M>> extends AbstractSessionBean implements
-		TempleEntityPager<M, F> {
+public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F extends PageableEntityFilter<M>> 
+	extends AbstractSessionBean implements TempleEntityPager<M, F> {
 
 	private static final long serialVersionUID = 1L;
 
-	// @Inject
-	// private Conversation conversation;
+	private static final Pattern pattern = Pattern.compile("\\D*(\\d+).*");
+	
 	protected F filter;
 
 	protected int totalCount = 0;
 
 	protected int pageCount = 0;
 
-	protected List<M> results = null;
+	protected List<? extends M> results = null;
 
-	protected AbstractTempleEntityPagerBean() {
-		this(null);
+	private transient int[] pages ;
+	
+	@Inject
+	@WebRequestParameter(index = 1)
+	private Instance<String> page ;
+	
+	@Inject
+	@WebRequestParameter(index = 2)
+	private Instance<Integer> itemId ;
+	
+	// For CDI
+	AbstractTempleEntityPagerBean() {
 	}
-
+	
 	/**
 	 * Constructor.
 	 * TODOC
@@ -54,27 +68,57 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F ex
 	}
 
 	@Override
-	public List<M> getAll() {
-		if (this.results == null) {
-			this.debug("Getting all");
+	public List<? extends M> getAll() {
+		this.ensureResults();
+		return this.results;
+	}
+
+	private void checkPage() {
+		final String pa = this.page.get();
+		if(pa != null && !pa.isEmpty()) {
+			final Matcher m = pattern.matcher(pa);
+			if(m.matches()) {
+				int p = Integer.valueOf(m.group(1)) ;
+				if(p != this.getPage()) {
+					this.setPage(p);
+				}
+			}
+		}
+	}
+	
+	private void ensurePageCount() {
+		if(this.totalCount == 0) {
 			try {
-				final PartialResults<M> page = this.getFirstPage();
-				this.results = page.getAll();
-				this.totalCount = page.getTotalCount();
-				this.info(this.results.size() + " entities out of " + this.totalCount);
-			} catch (final ServiceException e) {
-				this.addErrorMessage(e);
-				this.results = null;
-				this.totalCount = 0;
+				this.totalCount = (int) this.getTotalCount() ;
+			} catch (ServiceException ex) {
+				this.addError(ex);
 			} finally {
 				this.resetPageCount();
 			}
 		}
-		return this.results;
 	}
-
-	protected abstract PartialResults<M> getFirstPage() throws ServiceException;
-
+	
+	private void ensureResults() {
+		if (this.results == null) {
+			if(isDebugLoggable()) {
+				this.debug("Getting results ...");
+			}
+			try {
+				this.results = this.getResults() ;
+			} catch (final ServiceException e) {
+				this.addError(e);
+			}
+		} else if(this.isInfoLoggable()) {
+			this.info("Using cached results");
+		}
+	}
+	
+	protected abstract List<? extends M> getResults() throws ServiceException ;
+	
+	protected abstract long getTotalCount() throws ServiceException ;
+	
+	protected abstract void checkFilterChanged() ;
+	
 	@Override
 	public M getResult(int index) {
 		if (this.results == null) {
@@ -90,9 +134,15 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F ex
 
 	@Override
 	public void setPage(int page) {
-		this.filter.setPage(page > this.pageCount ? page % this.pageCount : page);
+		this.filter.setPage(this.normalize(page));
+		this.results = null ;
 	}
 
+	private int normalize(int page) {
+		this.ensurePageCount();
+		return page < 1 ? this.pageCount : (page > this.pageCount ? page % this.pageCount : page) ;
+	}  
+	
 	@Override
 	public void nextPage() {
 		this.setPage(this.getPage() + 1);
@@ -121,8 +171,40 @@ public abstract class AbstractTempleEntityPagerBean<M extends TempleEntity, F ex
 		}
 	}
 
+	public int getPreviousPage() {
+		return this.normalize(this.getPage() - 1) ;
+	}
+	
+	public int getNextPage() {
+		return this.normalize(this.getPage() + 1) ;
+	}
+	
+	public int[] getPages() {
+		this.checkFilterChanged();
+		this.ensurePageCount();
+		this.checkPage();
+		return this.pages ;
+	}
+	
 	private void resetPageCount() {
 		final short maxCount = this.filter.getPerPageCount();
-		this.pageCount = this.totalCount / maxCount + (this.totalCount % maxCount > 0 ? 1 : 0);
+		this.pageCount = this.totalCount == 0 ? 1 : this.totalCount / maxCount + (this.totalCount % maxCount > 0 ? 1 : 0);
+		this.pages = new int[this.pageCount] ;
+		for(int i = 1 ; i <= this.pageCount ; i++) {
+			this.pages[i-1] = i ;
+		}
 	}
+	
+	public static void main(String[] args) {
+		
+		String[] ps = {"kjdsdmflkm1", "page2", "page-3", "p4", "5", "caca", "one more trip", 
+			"page 5", "5 page 2", "6 6", "page 7 ", "page 9 page", "45lkfd59jkjkjk89" } ;
+		
+		for (String p : ps) {
+			final Matcher m = pattern.matcher(p);
+			System.out.println(m.matches() ? m.group(1) : "---") ;
+		}
+		
+	}
+	
 }

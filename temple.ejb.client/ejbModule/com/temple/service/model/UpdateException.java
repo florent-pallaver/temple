@@ -1,6 +1,7 @@
 package com.temple.service.model;
 
 import com.temple.model.TempleEntity;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -30,7 +31,7 @@ public class UpdateException extends EntityException {
 	 * @param cause
 	 * @param parameters
 	 */
-	public UpdateException(Throwable cause, Object... parameters) {
+	public UpdateException(Throwable cause, Serializable... parameters) {
 		super(parameters, cause);
 	}
 }

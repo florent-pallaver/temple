@@ -4,14 +4,11 @@
 	<comment></comment>
 	<projects>
 		<project>temple.common</project>
-		<project>temple.ejb.client</project>
-		<project>temple.ejb</project>
 		<project>temple.model</project>
-		<project>temple.cdi.client</project>
-		<project>temple.cdi</project>
-		<project>temple.web.client</project>
 		<project>temple.credentials.ejb.client</project>
-		<project>signark.model</project>
+		<project>temple.service</project>
+		<project>temple.service.client</project>
+		<project>temple.web.util</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

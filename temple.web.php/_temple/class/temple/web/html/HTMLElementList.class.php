@@ -56,7 +56,9 @@ class HTMLElementList extends AbstractHTMLElement {
 
 	protected function _render() {
 		foreach($this->elements as $e) {
-			$e->render() ;
+			if($e) {
+				$e->render() ;
+			}
 		}
 	}
     

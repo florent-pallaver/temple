@@ -2,6 +2,7 @@ package com.temple.credentials.service;
 
 import com.temple.LocaleViewableTempleException;
 import com.temple.Module;
+import java.io.Serializable;
 
 /**
  * Base class for credentials exceptions.
@@ -19,7 +20,7 @@ public abstract class CredentialsException extends LocaleViewableTempleException
 	 * 
 	 * @param parameters
 	 */
-	public CredentialsException(Object... parameters) {
+	public CredentialsException(Serializable... parameters) {
 		super(parameters, Module.EJB);
 	}
 
@@ -30,7 +31,7 @@ public abstract class CredentialsException extends LocaleViewableTempleException
 	 * @param parameters
 	 * @param cause
 	 */
-	public CredentialsException(Throwable cause, Object... parameters) {
+	public CredentialsException(Throwable cause, Serializable... parameters) {
 		super(parameters, Module.EJB, cause);
 	}
 }

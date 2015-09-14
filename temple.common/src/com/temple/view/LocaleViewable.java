@@ -1,5 +1,7 @@
 package com.temple.view;
 
+import java.io.Serializable;
+
 /**
  * A LocaleViewable is a {@link Viewable} which requires a Locale to be viewed.
  *
@@ -18,7 +20,7 @@ public interface LocaleViewable extends Viewable {
 	/**
 	 * The constant to use when no parameter is needed in a LocaleViewable.
 	 */
-	Object[] NO_PARAMETERS = {};
+	Serializable[] NO_PARAMETERS = {};
 
 	/**
 	 * @return a key to find a localized string, never <code>null</code>.
@@ -34,7 +36,7 @@ public interface LocaleViewable extends Viewable {
 	 * @return the parameters to complete the localized string.
 	 * @see #NO_PARAMETERS
 	 */
-	default Object[] getLocaleParameters() {
+	default Serializable[] getLocaleParameters() {
 		return LocaleViewable.NO_PARAMETERS;
 	}
 

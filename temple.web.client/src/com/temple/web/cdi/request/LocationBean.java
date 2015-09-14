@@ -1,13 +1,12 @@
 package com.temple.web.cdi.request;
 
+import com.temple.model.geo.Location;
+import com.temple.service.cdi.TempleObject;
+import com.temple.service.model.FindEntityException;
+import com.temple.service.model.geo.LocationManager;
+import com.temple.util.geo.Country;
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
-
-import com.temple.model.geo.Location;
-import com.temple.service.cdi.TempleBean;
-import com.temple.service.geo.LocationManager;
-import com.temple.service.model.FindEntityException;
-import com.temple.util.geo.Country;
 
 /**
  * TODOC
@@ -16,7 +15,7 @@ import com.temple.util.geo.Country;
  * @version 1.0
  */
 @Model
-@TempleBean
+@TempleObject
 public class LocationBean extends AbstractRequestBean {
 
 	private static final long serialVersionUID = 1L;
@@ -31,11 +30,11 @@ public class LocationBean extends AbstractRequestBean {
 	 *
 	 * @return
 	 */
-	public Location[] getAllRegions() {
+	public Location[] getAllRegions(Country c) {
 		try {
-			return this.locationManager.getRegions(Country.AUSTRALIA.ordinal());
+			return this.locationManager.getRegions(c.ordinal());
 		} catch (final FindEntityException e) {
-			this.addErrorMessage(e);
+			this.addError(e);
 			return LocationBean.empty;
 		}
 	}
@@ -45,11 +44,11 @@ public class LocationBean extends AbstractRequestBean {
 	 *
 	 * @return
 	 */
-	public Location[] getAllCities(int regionId) {
+	public Location[] getAllCities(Country c, int regionId) {
 		try {
-			return this.locationManager.getCities(Country.AUSTRALIA.ordinal(), regionId);
+			return this.locationManager.getCities(c.ordinal(), regionId);
 		} catch (final FindEntityException e) {
-			this.addErrorMessage(e);
+			this.addError(e);
 			return LocationBean.empty;
 		}
 	}

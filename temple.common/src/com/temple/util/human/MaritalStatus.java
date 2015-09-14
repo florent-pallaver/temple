@@ -12,10 +12,12 @@ import com.temple.view.LocaleViewableHelper;
  */
 public enum MaritalStatus implements LocaleViewable {
 	SINGLE,
-	IN_A_RELATIONSHIP,
-	IN_A_CIVIL_UNION,
+	RELATIONSHIP,
+	OPEN_RELATIONSHIP,
+	CIVIL_UNION,
+	OPEN_CIVIL_UNION,
 	MARRIED,
-	IN_AN_OPEN_RELATIONSHIP,
+	OPEN_MARRIAGE,
 	SEPARATED,
 	DIVORCED,
 	WIDOWED;
@@ -25,11 +27,6 @@ public enum MaritalStatus implements LocaleViewable {
 	@Override
 	public String getLocaleKey() {
 		return this.localeKey;
-	}
-
-	@Override
-	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

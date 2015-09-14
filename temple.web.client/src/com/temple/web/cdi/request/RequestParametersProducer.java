@@ -1,20 +1,17 @@
 package com.temple.web.cdi.request;
 
-import java.util.List;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-
 import com.temple.service.cdi.ApplicationBean;
 import com.temple.service.cdi.CDISessionParameter;
 import com.temple.web.cdi.AbstractTempleWebBean;
 import com.temple.web.cdi.WebConfiguration;
 import com.temple.web.cdi.WebRequestParameter;
 import com.temple.web.cdi.WebRequestParameter.Type;
+import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 /**
  * Producer for every request related data.
@@ -22,7 +19,7 @@ import com.temple.web.cdi.WebRequestParameter.Type;
  * @author Florent Pallaver
  * @version 1.0
  */
-@ApplicationScoped
+@Dependent
 public class RequestParametersProducer extends AbstractTempleWebBean {
 
 	private final int pageParameterIndex;
@@ -77,7 +74,7 @@ public class RequestParametersProducer extends AbstractTempleWebBean {
 	@Dependent
 	@WebRequestParameter(type = Type.BOOLEAN)
 	Boolean getBooleanRequestParameter(InjectionPoint ip, @RequestParameters List<String> parameters) {
-		return Boolean.valueOf(this.getStringRequestParameter(ip, parameters) != null);
+		return this.getStringRequestParameter(ip, parameters) != null;
 	}
 
 	@Produces

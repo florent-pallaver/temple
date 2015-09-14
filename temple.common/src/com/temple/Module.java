@@ -1,8 +1,7 @@
 package com.temple;
 
-import java.util.logging.Logger;
-
 import com.temple.view.LocaleBundle;
+import java.util.logging.Logger;
 
 /**
  * Enumeration of the existing modules in this application.
@@ -15,10 +14,6 @@ public enum Module implements LocaleBundle {
 	 * The default module.
 	 */
 	DEFAULT(null),
-	/**
-	 * The CDI module!
-	 */
-	CDI("cdi"),
 	/**
 	 * The Model module.
 	 */

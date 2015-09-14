@@ -27,17 +27,20 @@ class Navbar extends AbstractComponent {
 	 */
 	private $collapse ;
 	
-	public function __construct(HTMLElement $brand, array $variants = []) {
+	public function __construct(HTMLElement $brand, array $variants = [], $cssClass = null) {
 		parent::__construct('nav', 'navbar');
-		$this->setAttribute('role', 'navigation') ;
+		$this->addCssClass($cssClass)->setAttribute('role', 'navigation') ;
 		foreach($variants as $var) {
 			$this->addCssClass($var);
 		}
 		$this->header = CF::createComponent('div', 'navbar-header') ;
 		$this->collapse = CF::createComponent('div', 'collapse navbar-collapse') ;
-		$this->addChild(CF::createDiv('container')
+		$this
+//				->addChild(CF::createDiv('container')
 				->addChild($this->header->addChild(new Link('/', $brand, 'navbar-brand')))
-			->addChild($this->collapse));
+			->addChild($this->collapse)
+//				)
+			;
 	}
 
 	/**

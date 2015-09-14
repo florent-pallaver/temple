@@ -1,7 +1,6 @@
 package com.temple.model.impl;
 
 import java.util.Arrays;
-
 import javax.persistence.AttributeConverter;
 
 /**
@@ -11,39 +10,58 @@ import javax.persistence.AttributeConverter;
  * 
  * @author Florent Pallaver
  * @version 1.0
+ * @param <E>
+ * @param <T>
  */
-public abstract class AbstractEnumsToIntConverter<E extends Enum<E>> implements AttributeConverter<E[], Long> {
+public abstract class AbstractEnumsToNumberConverter<E extends Enum<E>, T extends Number> implements AttributeConverter<E[], T> {
 
 	private final E[] all;
 
 	/**
 	 * Constructor.
+	 * @param all TODOC
 	 */
-	protected AbstractEnumsToIntConverter(E[] all) {
+	protected AbstractEnumsToNumberConverter(E[] all) {
 		this.all = all;
 	}
 
+	/**
+	 * TODOC
+	 * @param mask
+	 * @return 
+	 */
+	protected abstract T castMask(Long mask) ;
+	
+	/**
+	 * TODOC
+	 * @param dbValue
+	 * @return 
+	 */
+	protected long toMask(T dbValue)  {
+		return dbValue.longValue() ;
+	}
+	
 	@Override
-	public Long convertToDatabaseColumn(E[] attribute) {
+	public final T convertToDatabaseColumn(E[] attribute) {
 		final Long value;
 		if (attribute != null) {
 			long m = 0;
 			for (int i = attribute.length; i-- > 0;) {
 				m |= 1 << attribute[i].ordinal();
 			}
-			value = Long.valueOf(m);
+			value = m;
 		} else {
 			value = null;
 		}
-		return value;
+		return this.castMask(value);
 	}
 
 	@Override
-	public E[] convertToEntityAttribute(Long dbData) {
+	public final E[] convertToEntityAttribute(T dbData) {
 		E[] e;
 		if (dbData != null) {
 			e = this.all.clone();
-			final long mask = dbData.longValue();
+			final long mask = this.toMask(dbData) ;
 			int j = 0;
 			for (int i = 0, l = this.all.length; i < l; i++) {
 				if ((mask >> i & 1) == 1) {

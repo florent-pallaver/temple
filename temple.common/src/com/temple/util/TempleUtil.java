@@ -6,8 +6,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
-
+import java.util.stream.Collectors;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -340,21 +341,19 @@ public abstract class TempleUtil {
 	 * @return
 	 */
 	public static final String toString(Object o) {
-		final StringBuilder sb = new StringBuilder(o.getClass().getName()).append('[');
+		final StringBuilder sb = new StringBuilder(o.getClass().getName()) ;
 		final AnnotatedField<ToString>[] fields = Lazy.toStringFieldsCache.getFields(o.getClass());
-		final int l = fields.length;
-		if (l > 0) {
-			sb.append(fields[0].field.getName()).append(':').append(TempleUtil.getString(o, fields[0].field));
-			for (int i = 1; i < l; i++) {
-				sb.append(", ").append(fields[i].field.getName()).append(':').append(TempleUtil.get(o, fields[i].field));
-			}
-		}
-		return sb.append(']').toString();
+		final List<?> values = Arrays.stream(fields).parallel().map(field -> {
+				final Object value = TempleUtil.getString(o, field.field);
+				return field.annotation.renderIfNull() || value != null ? field.field.getName() + ':'  + value : null ;
+			}).filter(s -> s != null).collect(Collectors.toList()) ;
+		return sb.append(values).toString();
 	}
-
-	private static final Object getString(Object o, Field f) {
+	
+	private static Object getString(Object o, Field f) {
 		final Class<?> type = f.getType();
-		return type.isArray() && !type.getComponentType().isPrimitive() ? Arrays.toString((Object[]) TempleUtil.get(o, f)) : TempleUtil.get(o, f);
+		final Object value = TempleUtil.get(o, f);
+		return type.isArray() && !type.getComponentType().isPrimitive() ? Arrays.toString((Object[]) value) : value;
 	}
 
 	private static final class Lazy {

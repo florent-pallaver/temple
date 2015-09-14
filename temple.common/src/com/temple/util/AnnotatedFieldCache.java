@@ -29,9 +29,6 @@ public final class AnnotatedFieldCache<A extends Annotation> extends AbstractLog
 	public AnnotatedFieldCache(Class<A> annotationClass) {
 		super(annotationClass.getName());
 		this.annotationClass = annotationClass;
-		if (this.isInfoLoggable()) {
-			this.info("Cache initialized");
-		}
 	}
 
 	/**
@@ -43,8 +40,8 @@ public final class AnnotatedFieldCache<A extends Annotation> extends AbstractLog
 	public AnnotatedField<A>[] getFields(Class<?> c) {
 		AnnotatedField<A>[] toStringFields = this.cache.get(c);
 		if (toStringFields == null) {
-			if (this.isInfoLoggable()) {
-				this.info("Finding annotated fields in " + c);
+			if (this.isDebugLoggable()) {
+				this.debug("Finding annotated fields in " + c);
 			}
 			final List<AnnotatedField<A>> fields = new ArrayList<>();
 			for (final Field f : c.getDeclaredFields()) {

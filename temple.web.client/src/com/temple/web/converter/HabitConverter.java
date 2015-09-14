@@ -1,10 +1,9 @@
 package com.temple.web.converter;
 
+import com.temple.util.human.Habit;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-
-import com.temple.util.human.Habit;
 
 /**
  * TODOC
@@ -16,14 +15,9 @@ public class HabitConverter implements Converter {
 
 	private final Habit[] all = Habit.values();
 
-	/**
-	 * Constructor.
-	 */
-	public HabitConverter() {}
-
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {
-		return this.all[Integer.valueOf(arg2).intValue()];
+		return this.all[Integer.parseInt(arg2)];
 	}
 
 	@Override

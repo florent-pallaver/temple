@@ -4,32 +4,20 @@
         <dependent-module archiveName="temple.common.jar" deploy-path="/lib" handle="module:/resource/temple.common/temple.common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="temple.ejb.client.jar" deploy-path="/lib" handle="module:/resource/temple.ejb.client/temple.ejb.client">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.ejb.jar" deploy-path="/" handle="module:/resource/temple.ejb/temple.ejb">
-            <dependent-object/>
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="temple.model.jar" deploy-path="/lib" handle="module:/resource/temple.model/temple.model">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.cdi.client.jar" deploy-path="/lib" handle="module:/resource/temple.cdi.client/temple.cdi.client">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.cdi.jar" deploy-path="/lib" handle="module:/resource/temple.cdi/temple.cdi">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.web.client.jar" deploy-path="/lib" handle="module:/resource/temple.web.client/temple.web.client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="temple.credentials.ejb.client.jar" deploy-path="/lib" handle="module:/resource/temple.credentials.ejb.client/temple.credentials.ejb.client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="cdi-api.jar" deploy-path="/lib" handle="module:/classpath/lib//home/flominou/Work/servers/glassfish4/glassfish/modules/cdi-api.jar">
+        <dependent-module archiveName="temple.service.jar" deploy-path="/" handle="module:/resource/temple.service/temple.service">
+            <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="signark.model.jar" deploy-path="/lib" handle="module:/resource/signark.model/signark.model">
+        <dependent-module archiveName="temple.service.client.jar" deploy-path="/lib" handle="module:/resource/temple.service.client/temple.service.client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.web.util.jar" deploy-path="/lib" handle="module:/resource/temple.web.util/temple.web.util">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

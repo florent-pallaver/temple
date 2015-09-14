@@ -21,6 +21,13 @@ final class InnerText extends \temple\web\html\HTMLElementList {
 	 */
 	private static $CARET ;
 
+	/**
+	 * 
+	 * @param type $icon
+	 * @param type $text
+	 * @param boolean $caret
+	 * @param boolean $formatted
+	 */
 	public function __construct($icon, $text = null, $caret = false, $formatted = false) {
 		parent::__construct();
 		if($icon) {

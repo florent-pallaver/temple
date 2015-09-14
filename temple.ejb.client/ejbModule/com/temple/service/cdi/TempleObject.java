@@ -5,12 +5,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import javax.inject.Qualifier;
 
 /**
- * Qualifier for Temple framework's beans.
- * TODOC
+ * Qualifier for Temple framework's beans and objects.
  * 
  * @author Florent Pallaver
  * @version 1.0
@@ -19,4 +17,4 @@ import javax.inject.Qualifier;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER })
-public @interface TempleBean {}
+public @interface TempleObject {}

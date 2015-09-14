@@ -43,13 +43,14 @@ main {
 	font-size: 20px ;
 }
 
-.btn,
-ul.dropdown-menu li a,
-ul._checkboxes li label,
-ol.breadcrumb li a,
-.modal-title,
-.control-label, 
-th {
+.btn span:first-letter,
+.btn:first-letter,
+ul.dropdown-menu li a:first-letter,
+ul._checkboxes li label:first-letter,
+ol.breadcrumb li a:first-letter,
+.modal-title:first-letter,
+.control-label:first-letter, 
+th:first-letter {
 	text-transform: capitalize ;
 }
 
@@ -106,21 +107,22 @@ label.required:after {
 	color: red ;
 }
 
-button.btn.before:before,
-button.btn.after:after,
-label.btn.before:before, 
-label.btn.after:after {
+.checkboxed-before button.btn:before,
+.checkboxed-after button.btn:after,
+.checkboxed-before label.btn:before, 
+.checkboxed-after label.btn:after {
 	font-family: 'Glyphicons Halflings';
 	content: "\e157" ;
 }
-button.btn.before.active:before,
-button.btn.after.active:after,
-label.btn.before.active:before,
-label.btn.after.active:after {
+.checkboxed-before button.btn.active:before,
+.checkboxed-after button.btn.active:after,
+.checkboxed-before label.btn.active:before,
+.checkboxed-after label.btn.active:after {
 	content: "\e067" ;
 }
-button.btn.after:after,
-label.btn.after:after {
+
+.checkboxed-after button.btn:after,
+.checkboxed-after label.btn:after {
 	margin-left: 5px ;
 }
 

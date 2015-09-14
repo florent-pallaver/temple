@@ -18,7 +18,7 @@ class Modal extends AbstractComponent {
 	 */
 	private static $close;
 
-	public function __construct($icon, $title, HTMLElement $body, HTMLElement $footer = null, $cssClass = '') {
+	public function __construct($icon, $title, HTMLElement $body, HTMLElement $footer = null, $cssClass = '', $modalTitleSize = 4) {
 		parent::__construct('div', 'modal fade');
 		$mf = $footer ? CF::createComponent('div', 'modal-footer')->addChild($footer): null ;
 		$this->addChild(CF::createComponent('div', 'modal-dialog')
@@ -26,7 +26,7 @@ class Modal extends AbstractComponent {
 						->addChild(CF::createComponent('div', 'modal-content')
 								->addChild(CF::createComponent('div', 'modal-header')
 										->addChild(self::$close)
-										->addChild(CF::createComponent('h4', 'modal-title')
+										->addChild(CF::createComponent('h' . $modalTitleSize, 'modal-title')
 												->addChild(new InnerText($icon, $title))))
 								->addChild(CF::createComponent('div', 'modal-body')
 										->addChild($body))

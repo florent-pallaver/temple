@@ -6,7 +6,8 @@ use temple\data\Status ;
 use temple\data\Messages ;
 
 /**
- * Description of Alerts
+ * Util component to display messages<br>
+ * Add this component to your bootstrap html5 document in order to add an alert for every messages in your session.
  *
  * @author florent
  */
@@ -38,7 +39,7 @@ class Alerts extends AbstractComponent {
 				->addChild(Button::create(InnerText::create('&times;', true))
 						->addCssClass('close')
 						->setAttributes(['data-dismiss'=>'alert', 'aria-hidden'=>'true']))
-				->addChild(new InnerText(self::$icons[$k], nl2br($msg))) ;
+				->addChild(new InnerText(self::$icons[$k], nl2br($msg), false, true)) ;
 		$this->addChild($alert) ;
 	}
 }

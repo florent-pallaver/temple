@@ -1,58 +1,48 @@
 package com.temple.model.filter;
 
+import com.temple.model.TempleEntity;
+import com.temple.util.TempleUtil;
+import com.temple.util.ToString;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import com.temple.model.TempleEntity;
-import com.temple.util.TempleUtil;
-import com.temple.util.ToString;
 
 /**
  * TODOC
  *
  * @author Florent Pallaver
  * @version 1.0
+ * @param <E>
  */
-public abstract class AbstractEntityFilter<E extends TempleEntity> implements EntityFilter<E> {
+public abstract class AbstractDynamicFilter<E extends TempleEntity> implements EntityFilter<E> {
 
 	private static final long serialVersionUID = 1L;
 
 	@ToString
-	private final Class<E> entityClass;
-
 	private final List<FilterOrder<? super E>> orderBy;
 
-	// Serializable
-	protected AbstractEntityFilter() {
-		this(null);
-	}
+	private transient CriteriaQuery<? extends E> rootQuery;
 
 	/**
 	 * Constructor.
-	 * TODOC
-	 *
-	 * @param entityClass
 	 */
-	protected AbstractEntityFilter(Class<E> entityClass) {
+	protected AbstractDynamicFilter() {
 		super();
-		this.entityClass = entityClass;
 		this.orderBy = new ArrayList<>();
 	}
 
 	/**
-	 * @return the entityClass
+	 * @return the entityClass to filter
 	 */
-	protected Class<E> getEntityClass() {
-		return this.entityClass;
-	}
+	protected abstract Class<? extends E> getEntityClass();
 
 	/**
 	 * @return the orderBy
@@ -88,26 +78,40 @@ public abstract class AbstractEntityFilter<E extends TempleEntity> implements En
 	 * @return
 	 */
 	@Override
-	public TypedQuery<E> createTypedQuery(EntityManager em) {
+	public TypedQuery<? extends E> createTypedQuery(EntityManager em) {
 		final CriteriaBuilder cb = em.getCriteriaBuilder();
-		final CriteriaQuery<E> cq = cb.createQuery(this.entityClass);
-		final Root<E> root = cq.from(this.entityClass);
-		this.completeCriteriaQuery(cq, cb, root);
+		final Class<? extends E> ec = this.getEntityClass();
+		this.rootQuery = cb.createQuery(ec);
+		final Root<? extends E> root = this.rootQuery.from(ec);
+		this.rootQuery.where(this.createWherePredicate(cb, root));
+		this.aggregate(cb, root);
 		final int size = this.orderBy.size();
 		if (size > 0) {
-			final Order[] orders = new Order[size];
-			for (int i = size; i-- > 0;) {
-				final OrderCriteria<? super E> criteria = this.orderBy.get(i).getCriteria();
+			final List<Order> collect = this.orderBy.stream().filter(o -> o.accepts(ec)).map(o -> {
+				final OrderCriteria<? super E> criteria = o.getCriteria();
 				final Path<?> field = root.get(criteria.field);
-				orders[i] = criteria.asc ? cb.asc(field) : cb.desc(field);
-			}
-			cq.orderBy(orders);
+				return criteria.asc ? cb.asc(field) : cb.desc(field);
+			}).collect(Collectors.toList());
+			this.rootQuery.orderBy(collect);
 		}
-		final TypedQuery<E> q = em.createQuery(cq);
+		final TypedQuery<? extends E> q = em.createQuery(this.rootQuery);
 		return q;
 	}
 
-	protected abstract void completeCriteriaQuery(CriteriaQuery<?> cq, CriteriaBuilder cb, final Root<? extends E> root);
+	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root);
+
+	/**
+	 * For group by and having clauses ...
+	 *
+	 * @param cb
+	 * @param root
+	 */
+	protected void aggregate(CriteriaBuilder cb, Root<? extends E> root) {
+	}
+
+	protected CriteriaQuery<? extends E> getRootQuery() {
+		return this.rootQuery;
+	}
 
 	@Override
 	public String toString() {

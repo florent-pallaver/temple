@@ -2,6 +2,8 @@
 
 namespace temple\controller;
 
+use temple\controller\AbstractRequestControllerLocale as L ;
+
 /**
  * Description of AbstractController
  *
@@ -31,6 +33,15 @@ abstract class AbstractRequestController extends AbstractController {
 	 */
 	protected static $_notEmptyNotHTML = ['notEmpty' => true, 'escapeHTML' => false];
 
+	protected final function redirect($to ='/', $ensureSession = true) {
+		$session = \temple\data\Session::getInstance() ;
+		if($ensureSession) {
+			session_start() ;
+			$session->end();
+		}
+		header('location: ' . $to) ;
+	}
+	
 	protected final function getBooleanGetParam($name) {
 		return $this->getBooleanParam(INPUT_GET, $name);
 	}
@@ -81,7 +92,7 @@ abstract class AbstractRequestController extends AbstractController {
 				}
 			}
 			if ($max > 0 && count($_FILES[$name]['error']) > $max) {
-				$this->info("Only $max files can be uploaded at a time, the extra ones have been ignored.");
+				$this->info(sprintf(L::INFO_FILES_LIMIT, $max));
 			}
 		} else {
 			$params = &$_FILES[$name];
@@ -144,9 +155,17 @@ abstract class AbstractRequestController extends AbstractController {
 	}
 
 	private final function paramFailed($name) {
-		$this->failure("Parameter $name is incorrect.");
+		$this->failure(sprintf(L::FAIL_INCORRECT_FIELD, $name));
 	}
 
+	/**
+	 * Throws an ActionException causing this controller to fail.
+	 * 
+	 * @param string $reason the reason why this controller failed
+	 * @param string $hint an hint in order to avoid the failure
+	 * @param \Exception $e the exception which caused the failure
+	 * @throws ActionException always
+	 */
 	protected final function failure($reason = null, $hint = '', \Exception $e = null) {
 		throw new ActionException($this->getActionDescription(), $reason, $hint, $e);
 	}
@@ -179,20 +198,20 @@ abstract class AbstractRequestController extends AbstractController {
 		return \temple\web\mail\Mailer::getInstance() ;
 	}
 	
-	protected final function getCheckedDate($key) {
+	protected final function getCheckedDate($key, $pattern, $minAge = 0) {
 		$birthdate = trim($this->getStringPostParam($key));
 		$bdate = null;
 		if (strlen($birthdate) > 0) {
 			// $ as delimiter cause / is in the pattern
-			if (preg_match('$' . \paris\model\Profile::BIRTHDATE_PATTERN . '$', $birthdate, $date)) {
-				$bdate = '19' . $date[9] . '-' . $this->trailZero($date[5]) . '-' . $this->trailZero($date[1]);
+			if (preg_match('$' . $pattern . '$', $birthdate, $date)) {
+				$bdate = $date[9] . '-' . $this->trailZero($date[5]) . '-' . $this->trailZero($date[1]);
 				$age = \paris\model\ModelHelper::getAge($bdate);
-				if ($age < 18) {
+				if ($minAge > 0 && $age < $minAge) {
 					$bdate = null;
-					$this->warning("'$birthdate' is not a valid birthdate.\nIf you are not at least 18 you are breaking the terms and conditions of use of this website.");
+					$this->warning(sprintf(L::WARN_AGE, $birthdate, $minAge));
 				}
 			} else {
-				$this->warning("'$birthdate' is not a valid birthdate.\nPlease remember that the format is DAY/MONTH/YEAR or DAY-MONTH-YEAR. For instance 15-5-84 if you were born the 15th of May in 1984.");
+				$this->warning(sprintf(L::WARN_INVALID_DATE, $birthdate));
 			}
 		}
 		return $bdate;
@@ -207,13 +226,15 @@ abstract class AbstractRequestController extends AbstractController {
 		return $s;
 	}
 
+	// FIXME revoir les fonctions pour qu'elles incluent les noms des paramètres
+	// FIXME revoir les fonctions pour que les feedbacks soient sur les champs
+	
 	/**
 	 * TODOC 
 	 * 
 	 * @param type $key
 	 * @param type $maxLength
 	 * @param type $paramName
-	 * @param type $notEmpty
 	 * @return string
 	 * @throws ActionException if $notEmpty is true and the checked string is empty
 	 */
@@ -225,20 +246,20 @@ abstract class AbstractRequestController extends AbstractController {
 			$r = _iod($options, 'replacement', '');
 			$str = preg_replace($pattern, $r, $str, -1, $c);
 			if ($c && $paramName) {
-				$this->info("$paramName '$str' contained invalid characters, they have been replaced.");
+				$this->info(sprintf(L::INFO_INVALID_CHARS, $paramName, $str));
 			}
 		}
 		if (_iod($options, 'escapeHTML', true)) {
 			$str = htmlspecialchars($str, ENT_QUOTES);
 		}
 		if (_iod($options, 'notEmpty', false) && strlen($str) == 0) {
-			$this->failure("The field '$paramName' cannot be empty.");
+			$this->failure(sprintf(L::FAIL_EMPTY_FIELD, $paramName));
 		}
 //		$e = $this->escapeSQL($str) ;
 		if ($maxLength > 0 && strlen($str) > $maxLength) {
 			$str = substr($str, 0, $maxLength);
 			if ($paramName) {
-				$this->info("The field '$paramName' exceeded the $maxLength characters length limit and has been truncated.");
+				$this->info(sprintf(L::INFO_MAX_LENGTH, $paramName, $maxLength));
 			}
 		}
 		return $str;
@@ -248,5 +269,5 @@ abstract class AbstractRequestController extends AbstractController {
 //		}
 //		return $str;
 	}
-
+	
 }

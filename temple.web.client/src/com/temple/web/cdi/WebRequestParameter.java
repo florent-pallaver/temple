@@ -5,7 +5,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
 
@@ -30,7 +29,7 @@ public @interface WebRequestParameter {
 	/**
 	 * @return the type of this request parameter is.
 	 */
-	Type type();
+	Type type() default Type.STRING;
 
 	/**
 	 * @return the key of the request parameter, overrides index if both are defined.

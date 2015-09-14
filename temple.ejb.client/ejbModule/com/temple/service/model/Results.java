@@ -1,9 +1,8 @@
 package com.temple.service.model;
 
+import com.temple.model.TempleEntity;
 import java.io.Serializable;
 import java.util.List;
-
-import com.temple.model.TempleEntity;
 
 /**
  * TODOC
@@ -11,6 +10,7 @@ import com.temple.model.TempleEntity;
  * @author Florent Pallaver
  * @version 1.0
  */
+@Deprecated
 public interface Results<E extends TempleEntity> extends Serializable {
 
 	/**

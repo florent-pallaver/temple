@@ -8,7 +8,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 
-import com.temple.Module;
 import com.temple.util.AbstractLogger;
 
 /**
@@ -22,7 +21,7 @@ public final class ImageAppender extends AbstractLogger {
 	public static final ImageAppender instance = new ImageAppender();
 
 	private ImageAppender() {
-		super(Module.DEFAULT);
+		super();
 	}
 
 	public void appendHorizontally(File[] images, File dest, ImageCodec destType) throws IOException {

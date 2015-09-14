@@ -51,13 +51,13 @@ abstract class AbstractComponent extends \temple\web\html\HTMLNode implements Co
 		return $this->setAttribute('name', $name) ;
 	}
 	
+	/**
+	 * 
+	 * @param mixed $help 
+	 * @return \temple\web\html\bootstrap\AbstractComponent
+	 */
 	public function setHelp($help) {
-		if($help) {
-			$this->help = ComponentFactory::createComponent('small', 'help-block')
-					->addChild(ComponentFactory::toHTMLElement($help)) ;
-		} else {
-			$this->help = null ;
-		}
+		$this->help = $help ? ComponentFactory::createComponent('small', 'help-block', $help) : null ;
 		return $this ;
 	}
 	

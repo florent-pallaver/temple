@@ -31,3 +31,12 @@ function _dif($v, $d) {
 function _eia($v) {
 	return $v === null ? null : (is_array($v) ? $v : [$v]) ;
 }
+
+/**
+ * Returns a string version of a param
+ * @param mixed $v
+ * @return string
+ */
+function _str($v) {
+	return is_array($v) ? print_r($v, true) : strval($v) ;
+}

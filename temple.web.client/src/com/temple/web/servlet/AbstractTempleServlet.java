@@ -1,16 +1,14 @@
 package com.temple.web.servlet;
 
+import com.temple.LocaleViewableTempleException;
+import com.temple.service.cdi.TempleObject;
+import com.temple.service.cdi.session.LanguageBean;
+import com.temple.util.TempleLogger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-
-import com.temple.LocaleViewableTempleException;
-import com.temple.Module;
-import com.temple.service.cdi.TempleBean;
-import com.temple.service.cdi.session.LanguageBean;
-import com.temple.util.TempleLogger;
 
 /**
  * TODOC
@@ -23,20 +21,33 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	@TempleBean
+	@TempleObject
 	protected LanguageBean lb;
 
-	private final TempleLogger logger = new TempleLogger(Module.WEB.packageName, this.getClass().getSimpleName());
+	private final TempleLogger logger = new TempleLogger();
 
 	/**
 	 * Constructor.
 	 */
-	protected AbstractTempleServlet() {}
+	protected AbstractTempleServlet() {
+	}
 
 	// TODO code à factoriser
 	protected final Integer getIntegerParam(HttpServletRequest req, String key) {
 		final String value = req.getParameter(key);
-		return value != null ? Integer.valueOf(value) : null;
+		Integer i = null;
+		if (value != null) {
+			try {
+				i = Integer.valueOf(value);
+			} catch (Exception ignored) {
+			}
+		}
+		return i;
+	}
+
+	protected final boolean getBooleanParam(HttpServletRequest req, String key) {
+		Integer i = getIntegerParam(req, key);
+		return i != null && i == 1;
 	}
 
 	protected final Integer[] getIntegerArrayParam(HttpServletRequest req, String key) {
@@ -95,9 +106,9 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 
 	protected final void addError(LocaleViewableTempleException e) {
 		FacesContext.getCurrentInstance() //
-		.addMessage(null, //
-				new FacesMessage(FacesMessage.SEVERITY_ERROR, //
-						this.lb.getString(e), //
-						this.lb.getDetailedString(e)));
+				.addMessage(null, //
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, //
+								this.lb.getString(e), //
+								this.lb.getDetailedString(e)));
 	}
 }

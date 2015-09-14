@@ -1,28 +1,20 @@
-package com.temple.service.ejb.model.geo;
+package com.temple.service.cdi.request;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-
-import com.temple.model.geo.City;
-import com.temple.model.geo.CityId;
-import com.temple.model.geo.GeoEntity;
-import com.temple.model.geo.Region;
-import com.temple.model.geo.RegionId;
-import com.temple.model.impl.geo.CityImpl;
-import com.temple.model.impl.geo.CityImpl_;
-import com.temple.model.impl.geo.RegionImpl;
-import com.temple.model.impl.geo.RegionImpl_;
-import com.temple.service.ejb.model.AbstractEntityManagerBean;
-import com.temple.service.geo.GeoManager;
-import com.temple.service.model.FindEntityException;
+import com.temple.model.geo.CountryDivisionEntity;
+import com.temple.model.geo.HumanSettlementEntity;
+import com.temple.model.geo.geonames.AdministrativeDivision;
+import com.temple.model.geo.geonames.filter.CountryAreaFilter;
+import com.temple.model.geo.geonames.Feature;
+import com.temple.model.geo.geonames.PopulatedPlace;
+import com.temple.service.ServiceException;
+import com.temple.service.cdi.AbstractCDIBean;
+import com.temple.service.cdi.TempleObject;
+import com.temple.service.model.ModelManager;
+import com.temple.service.model.geo.GeoEntityManager;
 import com.temple.util.geo.Country;
+import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 /**
  * TODOC
@@ -30,61 +22,44 @@ import com.temple.util.geo.Country;
  * @author Florent Pallaver
  * @version 1.0
  */
-@Stateless
-@Local(GeoManager.class)
-public class GeoManagerBean extends AbstractEntityManagerBean implements GeoManager {
+@RequestScoped
+@TempleObject
+public class GeoEntityManagerBean extends AbstractCDIBean implements GeoEntityManager {
 
 	private static final long serialVersionUID = 1L;
 
+	@Inject
+	@TempleObject
+	private ModelManager mm ;
+	
 	@Override
-	public Region findRegion(RegionId regionId) throws FindEntityException {
-		return this.find(RegionImpl.class, regionId);
-	}
-
-	@Override
-	public Region[] findRegions(final Country country) throws FindEntityException {
-		final List<RegionImpl> regions = this.find(RegionImpl.class, new WhereAlgo<RegionImpl>() {
-
-			@Override
-			public Predicate getWherePredicate(CriteriaBuilder cb, Path<RegionImpl> root) {
-				return cb.equal(root.get(RegionImpl_.country), country);
-			}
-		});
-		return regions.toArray(new Region[regions.size()]);
+	public List<? extends CountryDivisionEntity> findCountryDivisions(Country c) throws ServiceException {
+		final CountryAreaFilter<AdministrativeDivision> adf = new CountryAreaFilter(AdministrativeDivision.class);
+		adf.setCountry(c);
+		adf.setFeatures(Feature.ADM1);
+		return this.mm.find(adf)  ;
 	}
 
 	@Override
-	public City findCity(CityId cityId) throws FindEntityException {
-		return this.find(CityImpl.class, cityId);
+	public List<? extends CountryDivisionEntity> findCountryDivisions(int parentId) throws ServiceException {
+		final CountryAreaFilter<AdministrativeDivision> adf = new CountryAreaFilter(AdministrativeDivision.class);
+		adf.setParentId(parentId);
+		return this.mm.find(adf) ;
 	}
 
 	@Override
-	public City[] findCities(final RegionId regionId) throws FindEntityException {
-		final List<CityImpl> cities = this.find(CityImpl.class, new WhereAlgo<CityImpl>() {
-
-			@Override
-			public Predicate getWherePredicate(CriteriaBuilder cb, Path<CityImpl> root) {
-				return cb.equal(root.get(CityImpl_.region).get(RegionImpl_.id), regionId);
-			}
-		});
-		return cities.toArray(new City[cities.size()]);
+	public List<? extends HumanSettlementEntity> findHumanSettlements(Country c) throws ServiceException {
+		final CountryAreaFilter<PopulatedPlace> cdf = new CountryAreaFilter(PopulatedPlace.class);
+		cdf.setCountry(c);
+		return this.mm.find(cdf) ;
+		
 	}
 
-	public <GE extends GeoEntity> List<GE> find(Class<GE> c, WhereAlgo<GE> algo) throws FindEntityException {
-		final CriteriaQuery<GE> cq = this.cb.createQuery(c);
-		cq.where(algo.getWherePredicate(this.cb, cq.from(c)));
-		try {
-			return this.em.createQuery(cq).getResultList();
-		} catch (final Exception e) {
-			throw new FindEntityException(CityImpl.class, e);
-		}
+	@Override
+	public List<? extends HumanSettlementEntity> findHumanSettlements(int parentId) throws ServiceException {
+		final CountryAreaFilter<PopulatedPlace> cdf = new CountryAreaFilter(PopulatedPlace.class);
+		cdf.setParentId(parentId);
+		return this.mm.find(cdf) ;
 	}
 
-	private <GE extends GeoEntity> GE find(Class<GE> c, Serializable id) throws FindEntityException {
-		try {
-			return this.em.find(c, id);
-		} catch (final Exception e) {
-			throw new FindEntityException(c, id, e);
-		}
-	}
 }

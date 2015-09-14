@@ -4,6 +4,7 @@ namespace temple\controller;
 
 use temple\URL;
 use temple\Logger;
+use temple\ClassLoader ;
 
 /**
  * Description of MainController
@@ -14,10 +15,11 @@ final class MainController extends AbstractRequestController {
 
 	use \temple\Singleton;
 
+	public static $locale = 'en' ;
+	public static $defaultLocale = 'en' ;
 	public static $namespace = 'controller';
 	private static $suffix = 'Controller';
 	private static $defaultView = 'home';
-	private static $defaultAction = 'createResponse';
 	private static $viewNames = [];
 
 	public function getActionDescription() {
@@ -41,33 +43,34 @@ final class MainController extends AbstractRequestController {
 	 */
 	private function getResponse() {
 		$vn = self::$defaultView;
+		$a = $this->getStringGetParam(URL::ACTION_PARAMETER, self::$defaultEmpty) ;
 		$viewName = $this->getStringGetParam(URL::VIEW_PARAMETER, self::$defaultEmpty);
 		if ($viewName) {
-			if (array_search($viewName, self::$viewNames) !== false) {
+			// the view name does not matter when we're doing an action (ie $a == true)
+			if ($a || array_search($viewName, self::$viewNames) !== false) {
 				$vn = &$viewName;
 			}
 		}
-		$cn = self::$namespace . '\\' . strtoupper($vn{0}) . substr($vn, 1) . self::$suffix;
+		if($this->logger->isDebugLoggable()) {
+			$this->logger->debug("request view = '$viewName' used view = '$vn' action = '$a'") ;
+		}
+		$cn = self::$namespace . '\\' . ($a ? ($vn . '\\'. strtoupper($a{0}) . substr($a, 1)) : (strtoupper($vn{0}) . substr($vn, 1))) . self::$suffix;
+		// specify locale before creating response and causing any exception
+		// FIXME un peu pourri comme impl !
+		ClassLoader::add(TEMPLE_LOCALE_PATH . self::$locale . DIRECTORY_SEPARATOR, false) ;
+		ClassLoader::add(CUSTOM_LOCALE_PATH . self::$locale . DIRECTORY_SEPARATOR, false, '.php') ;
+		if(self::$locale !== self::$defaultLocale) {
+			ClassLoader::add(TEMPLE_LOCALE_PATH . self::$defaultLocale . DIRECTORY_SEPARATOR, false) ;
+			ClassLoader::add(CUSTOM_LOCALE_PATH . self::$defaultLocale . DIRECTORY_SEPARATOR, false, '.php') ;
+		}
 		try {
 			$c = new \ReflectionClass($cn);
 			$i = $c->newInstance();
+			return $i->createResponse() ;
 		} catch (\Exception $e) {
-			$this->failure("An error occured while trying to create context '$vn'.", '', $e);
+			// TODO la failure n'est pas correcte si causée par createResponse
+			$this->failure("Internal error while trying to create context '$vn'.", '', $e);
 		}
-		$an = _dif($this->getStringGetParam(URL::ACTION_PARAMETER, self::$defaultEmpty), self::$defaultAction);
-        $ee = null ;
-		try {
-			if(strpos($an, '__') !== 0) { // no magic methods call
-				$m = $c->getMethod($an);
-				if ($m->isPublic() && !$m->isStatic()) {
-					return $m->invoke($i) ;
-				}
-			}
-		} catch (\Exception $e) {
-			\temple\ExceptionHandler::log($e) ;
-            $ee = $e ;
-		}
-		$this->failure("An error occured while trying to run action '$an' within context '$vn'.", '', $ee) ;
 	}
 
 	public static function configure(array $viewNames, $defaultView = null) {

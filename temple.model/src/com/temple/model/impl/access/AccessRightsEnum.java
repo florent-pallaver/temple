@@ -51,11 +51,6 @@ public enum AccessRightsEnum implements LocaleViewable {
 	}
 
 	@Override
-	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
-	}
-
-	@Override
 	public Module getBundle() {
 		return Module.MODEL;
 	}

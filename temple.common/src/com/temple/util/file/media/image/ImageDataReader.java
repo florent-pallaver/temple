@@ -1,15 +1,12 @@
 package com.temple.util.file.media.image;
 
+import com.temple.util.AbstractLogger;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-
-import com.temple.Module;
-import com.temple.util.AbstractLogger;
 
 /**
  * TODOC
@@ -22,7 +19,7 @@ public class ImageDataReader extends AbstractLogger {
 	final ImageReader reader;
 
 	ImageDataReader(String imageMimeType) throws RuntimeException {
-		super(Module.DEFAULT);
+		super();
 		final Iterator<ImageReader> it = ImageIO.getImageReadersByMIMEType(imageMimeType);
 		if (!it.hasNext()) {
 			throw new RuntimeException("No ImageReader available for type " + imageMimeType);
@@ -52,10 +49,11 @@ public class ImageDataReader extends AbstractLogger {
 	}
 
 	@Override
-	protected void finalize() {
+	protected void finalize() throws Throwable {
 		if (this.isDebugLoggable()) {
 			this.debug("about to be garbage collected");
 		}
 		this.reader.dispose();
+		super.finalize();
 	}
 }

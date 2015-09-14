@@ -2,6 +2,7 @@ package com.temple;
 
 import com.temple.view.LocaleBundle;
 import com.temple.view.LocaleViewable;
+import java.io.Serializable;
 
 /**
  * Base class for <strong>checked</strong> exceptions of this application.
@@ -15,7 +16,7 @@ public abstract class LocaleViewableTempleException extends AbstractTempleExcept
 
 	private final String key;
 
-	private final Object[] parameters;
+	private final Serializable[] parameters;
 
 	private final LocaleBundle module;
 
@@ -35,7 +36,7 @@ public abstract class LocaleViewableTempleException extends AbstractTempleExcept
 	 * @param parameters - objects used to complete the views of this exception.
 	 * @param module - the module of this exception.
 	 */
-	protected LocaleViewableTempleException(Object[] parameters, LocaleBundle module) {
+	protected LocaleViewableTempleException(Serializable[] parameters, LocaleBundle module) {
 		this(parameters, module, null);
 	}
 
@@ -46,7 +47,7 @@ public abstract class LocaleViewableTempleException extends AbstractTempleExcept
 	 * @param module - the module of this exception.
 	 * @param cause - the cause of this exception
 	 */
-	protected LocaleViewableTempleException(Object[] parameters, LocaleBundle module, Throwable cause) {
+	protected LocaleViewableTempleException(Serializable[] parameters, LocaleBundle module, Throwable cause) {
 		this(null, parameters, module, cause);
 	}
 
@@ -57,7 +58,7 @@ public abstract class LocaleViewableTempleException extends AbstractTempleExcept
 	 * @param parameters - objects used to complete the views of this exception.
 	 * @param module - the module of this exception.
 	 */
-	protected LocaleViewableTempleException(String keySuffix, Object[] parameters, LocaleBundle module) {
+	protected LocaleViewableTempleException(String keySuffix, Serializable[] parameters, LocaleBundle module) {
 		this(keySuffix, parameters, module, null);
 	}
 
@@ -69,7 +70,7 @@ public abstract class LocaleViewableTempleException extends AbstractTempleExcept
 	 * @param keySuffix - the suffix to add to the locale key.
 	 * @param cause - the cause of this exception
 	 */
-	protected LocaleViewableTempleException(String keySuffix, Object[] parameters, LocaleBundle module, Throwable cause) {
+	protected LocaleViewableTempleException(String keySuffix, Serializable[] parameters, LocaleBundle module, Throwable cause) {
 		super(cause);
 		if (module == null) {
 			throw new IllegalArgumentException("The module parameter cannot be null.");
@@ -102,7 +103,7 @@ public abstract class LocaleViewableTempleException extends AbstractTempleExcept
 	}
 
 	@Override
-	public final Object[] getLocaleParameters() {
+	public final Serializable[] getLocaleParameters() {
 		return this.parameters;
 	}
 

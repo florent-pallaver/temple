@@ -1,5 +1,6 @@
 package com.temple.web.cdi;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -45,4 +46,10 @@ public interface WebConfiguration {
 	 * @return
 	 */
 	String getStaticResourcePathPrefix();
+	
+	/**
+	 * TODOC
+	 * @return 
+	 */
+	File getTempFolder() ;
 }

@@ -109,6 +109,5 @@ final class Session extends SessionHandler implements SessionHandlerInterface {
 	public function gc($maxlifetime) {
 		return parent::gc($maxlifetime);
 	}
-
 	
 }

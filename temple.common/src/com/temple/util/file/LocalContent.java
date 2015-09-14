@@ -27,6 +27,14 @@ public class LocalContent implements Content {
 		this.file = file;
 	}
 
+	/**
+	 * 
+	 * @param filePath 
+	 */
+	public LocalContent(String filePath) {
+		this(new File(filePath)) ;
+	}
+	
 	@Override
 	public final long getSize() {
 		return this.file.length();

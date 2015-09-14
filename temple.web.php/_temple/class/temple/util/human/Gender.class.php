@@ -31,4 +31,8 @@ final class Gender {
 	 */
 	public static $OTHER ;
 	
+	public function __toString() {
+		return GenderLocale::$all[$this->getOrdinal()] ;
+	}
+	
 }

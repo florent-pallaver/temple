@@ -2,6 +2,7 @@ package com.temple.service.ejb.action;
 
 import com.temple.LocaleViewableTempleException;
 import com.temple.Module;
+import java.io.Serializable;
 
 /**
  * Thrown when an {@link ActionType} is not supported by the application.
@@ -15,10 +16,9 @@ public final class UnsupportedActionTypeException extends LocaleViewableTempleEx
 	/**
 	 * Constructor
 	 *
-	 * @param parameters
-	 * @param module
+	 * @param type TODOC
 	 */
 	public UnsupportedActionTypeException(Class<?> type) {
-		super(new Object[]{ type }, Module.SERVICE);
+		super(new Serializable[]{ type }, Module.SERVICE);
 	}
 }

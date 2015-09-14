@@ -1,7 +1,8 @@
 package com.temple.service.ejb.model;
 
+import com.temple.service.cdi.TempleObject;
+import com.temple.service.ejb.AbstractEJBBean;
 import java.io.Serializable;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -9,22 +10,18 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 
-import com.temple.service.cdi.CDIRequestParameter;
-import com.temple.service.cdi.CDIRequestParameter.Type;
-import com.temple.service.ejb.AbstractManagerBean;
-
 /**
  * TODOC
  *
  * @author Florent Pallaver
  * @version 1.0
  */
-public abstract class AbstractEntityManagerBean extends AbstractManagerBean {
+public abstract class AbstractEntityManagerBean extends AbstractEJBBean {
 
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	@CDIRequestParameter(Type.ENTITY_MANAGER)
+	@TempleObject
 	protected EntityManager em;
 
 	protected CriteriaBuilder cb;
@@ -43,6 +40,7 @@ public abstract class AbstractEntityManagerBean extends AbstractManagerBean {
 	 * @version 1.0
 	 * @param <X>
 	 */
+	@FunctionalInterface
 	protected static interface WhereAlgo<X extends Serializable> {
 
 		/**
@@ -50,6 +48,7 @@ public abstract class AbstractEntityManagerBean extends AbstractManagerBean {
 		 *
 		 * @param cb
 		 * @param root
+		 * @return 
 		 */
 		Predicate getWherePredicate(CriteriaBuilder cb, Path<X> root);
 	}

@@ -76,7 +76,19 @@ final class CssVariant {
 	 * @var CssVariant
 	 */
 	public static $PRIMARY_LG ;
-	
+	/**
+	 * @var CssVariant
+	 */
+	public static $SUCCESS_XS ;
+	/**
+	 * @var CssVariant
+	 */
+	public static $SUCCESS_SM ;
+	/**
+	 * @var CssVariant
+	 */
+	public static $SUCCESS_LG ;
+
 	private $components = null ;
 	
 	/**

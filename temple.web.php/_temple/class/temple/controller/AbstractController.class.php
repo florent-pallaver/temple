@@ -10,9 +10,11 @@ use temple\data\Messages ;
  *
  * @author florent
  */
-abstract class AbstractController implements Controller {
+abstract class AbstractController extends \temple\WithLogger implements Controller {
 
-	public function __construct() {}
+	public function __construct() {
+		parent::__construct() ;
+	}
 
 	protected final function success($msg) {
 		Messages::getInstance()->success($msg) ;

@@ -1,15 +1,13 @@
 package com.temple.web.servlet;
 
+import com.temple.util.file.media.Codec;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.temple.util.file.media.Codec;
 
 /**
  * Base servlet implementation class to serve a file
@@ -24,11 +22,11 @@ public abstract class AbstractFileServlet extends AbstractTempleServlet {
 	 * Constructor.
 	 * TODOC
 	 *
-	 * @param mimeType
+	 * @param codec
 	 */
-	protected AbstractFileServlet(Codec mt) {
+	protected AbstractFileServlet(Codec codec) {
 		super();
-		this.mimeType = mt.getMimeType();
+		this.mimeType = codec.getMimeType();
 	}
 
 	@Override
@@ -71,7 +69,7 @@ public abstract class AbstractFileServlet extends AbstractTempleServlet {
 			if (this.isDebugLoggable()) {
 				this.debug(f + " not readable");
 			}
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
 

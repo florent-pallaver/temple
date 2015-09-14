@@ -6,14 +6,12 @@ package com.temple.service.ejb.model;
 import com.temple.model.EntityKey;
 import com.temple.model.TempleEntity;
 import com.temple.model.UniqueEntityKey;
-import com.temple.model.filter.AbstractPageableEntityFilter;
 import com.temple.model.filter.EntityFilter;
 import com.temple.model.filter.FindMaxFilter;
 import com.temple.model.filter.PageableEntityFilter;
 import com.temple.service.TempleManager;
 import com.temple.service.model.EntityException;
 import com.temple.service.model.FindEntityException;
-import com.temple.service.model.PageableResults;
 import com.temple.service.model.UpdateException;
 import java.io.Serializable;
 import java.util.Collection;
@@ -113,7 +111,7 @@ public interface TempleEntityManager extends TempleManager {
 	 * @return
 	 * @throws FindEntityException if an error occurs while trying to find the entities matching the filter
 	 */
-	<E extends TempleEntity> List<E> findByFilter(EntityFilter<E> ref) throws FindEntityException;
+	<E extends TempleEntity> List<? extends E> findByFilter(EntityFilter<E> ref) throws FindEntityException;
 
 	/**
 	 * TODOC
@@ -123,7 +121,7 @@ public interface TempleEntityManager extends TempleManager {
 	 * @return
 	 * @throws FindEntityException
 	 */
-	<E extends TempleEntity> PageableResults<E> getFirstPage(AbstractPageableEntityFilter<E> filter) throws FindEntityException;
+//	<E extends TempleEntity> PageableResults<? extends E> getFirstPage(PageableEntityFilter<E> filter) throws FindEntityException;
 
 	/**
 	 * @param po

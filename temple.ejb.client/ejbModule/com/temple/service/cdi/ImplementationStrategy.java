@@ -5,7 +5,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import javax.inject.Qualifier;
 
 /**
@@ -21,10 +20,20 @@ import javax.inject.Qualifier;
 public @interface ImplementationStrategy {
 
 	/**
-	 * TODOC
+	 * Implementation based on the <strong>ffmpeg</strong> program
 	 */
 	String FFMEG = "ffmpeg";
 
+	/**
+	 * Implementation based on the <strong>file</strong> program
+	 */
+	String FILE = "file" ;
+	
+	/**
+	 * Implementation based on <a href="http://geonames.org/"><strong>geonames.org</strong></a>
+	 */
+	String GEONAMES = "geonames" ;
+	
 	/**
 	 * TODOC
 	 *

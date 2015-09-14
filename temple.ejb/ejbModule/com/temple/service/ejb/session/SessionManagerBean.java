@@ -13,7 +13,7 @@ import com.temple.credentials.service.IncorrectPassException;
 import com.temple.credentials.service.LoginNotFoundException;
 import com.temple.model.TempleUser;
 import com.temple.service.cdi.CDIApplicationParameter;
-import com.temple.service.cdi.TempleBean;
+import com.temple.service.cdi.TempleObject;
 import com.temple.service.cdi.CDIApplicationParameter.Type;
 import com.temple.service.cdi.request.SignInEvent;
 import com.temple.service.cdi.session.SessionBean;
@@ -21,7 +21,7 @@ import com.temple.service.cdi.util.ClassWrapper;
 import com.temple.service.ejb.model.TempleEntityManager;
 import com.temple.service.model.FindEntityException;
 import com.temple.service.session.AccessDeniedException;
-import com.temple.service.session.NoUserSessionException;
+import com.temple.service.session.NotSignedInException;
 import com.temple.service.session.SessionException;
 import com.temple.service.session.SessionManager;
 import com.temple.service.session.SignInException;
@@ -51,7 +51,7 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 	private Event<SignInEvent> signInEvent;
 
 	@Inject
-	@TempleBean
+	@TempleObject
 	private SessionBean currentSession;
 
 	protected SessionManagerBean() {
@@ -72,7 +72,7 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 		} catch (final FindEntityException | LoginNotFoundException e) {
 			throw new UserNotFoundException(login, e);
 		} catch (final IncorrectPassException e) {
-			throw new com.temple.service.session.IncorrectPasswordException(e);
+			throw new com.temple.service.session.IncorrectPassException(e);
 		}
 	}
 
@@ -94,10 +94,10 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 	}
 
 	@Override
-	public TempleUser getSessionUser() throws NoUserSessionException {
+	public TempleUser getSessionUser() throws NotSignedInException {
 		final TempleUser user = this.currentSession.getUser();
 		if (user == null) {
-			throw new NoUserSessionException();
+			throw new NotSignedInException();
 		}
 		return user;
 	}

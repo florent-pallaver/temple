@@ -2,6 +2,8 @@
 
 namespace temple\controller;
 
+use temple\controller\ActionLocale as L ;
+
 /**
  * Description of ActionException
  *
@@ -9,8 +11,6 @@ namespace temple\controller;
  */
 final class ActionException extends \temple\TempleException {
 
-    const MSG_FORMAT = "<strong>Unable to %s.</strong>\n%s%s\n\n<em>Please contact us if this error unexpectedly persists</em>." ;
-    
     /**
      * 
      * @param string $failedAction
@@ -18,7 +18,7 @@ final class ActionException extends \temple\TempleException {
      * @param string $hint
      */
     public function __construct($failedAction, $reason = '', $hint = '', \Exception $cause = null) {
-        parent::__construct(sprintf(self::MSG_FORMAT, $failedAction, self::nl($reason), self::nl($hint)), 0, $cause);
+        parent::__construct(sprintf(L::MSG_FORMAT, $failedAction, self::nl($reason), self::nl($hint)), 0, $cause);
     }
     
     // prepend a new line if string not empty

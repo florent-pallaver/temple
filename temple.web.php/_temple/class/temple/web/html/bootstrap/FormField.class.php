@@ -15,7 +15,7 @@ interface FormField extends FormComponent {
 	function setValue($value) ;
 
 	/**
-	 * @return boolean
+	 * @return boolean TODOC
 	 */
 	function isRequired() ;
 }

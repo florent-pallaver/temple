@@ -1,18 +1,16 @@
 package com.temple.web.cdi.request;
 
+import com.temple.service.cdi.TempleObject;
+import com.temple.web.cdi.WebApplicationParameter;
+import com.temple.web.cdi.WebApplicationParameter.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-
-import com.temple.service.cdi.TempleBean;
-import com.temple.web.cdi.WebApplicationParameter;
-import com.temple.web.cdi.WebApplicationParameter.Type;
 
 /**
  * TODOC
@@ -22,7 +20,7 @@ import com.temple.web.cdi.WebApplicationParameter.Type;
  */
 // FORMAT = /page/[objectId/]
 @RequestScoped
-@TempleBean
+@TempleObject
 public class TempleURIParser extends AbstractRequestBean implements URIParser {
 
 	private static final long serialVersionUID = 1L;

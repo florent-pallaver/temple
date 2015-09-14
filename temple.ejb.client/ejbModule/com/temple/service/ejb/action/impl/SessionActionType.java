@@ -6,7 +6,6 @@ import com.temple.model.impl.access.DefaultAccessType;
 import com.temple.service.ejb.action.ActionType;
 import com.temple.service.ejb.action.PropertyDescription;
 import com.temple.util.human.Language;
-import com.temple.view.LocaleViewable;
 import com.temple.view.LocaleViewableHelper;
 
 public enum SessionActionType implements ActionType<DefaultAccessType> {
@@ -43,11 +42,6 @@ public enum SessionActionType implements ActionType<DefaultAccessType> {
 	@Override
 	public String getLocaleKey() {
 		return this.localeKey;
-	}
-
-	@Override
-	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

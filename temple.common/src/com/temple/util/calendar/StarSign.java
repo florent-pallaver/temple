@@ -1,11 +1,10 @@
 package com.temple.util.calendar;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import com.temple.Module;
 import com.temple.view.LocaleViewable;
 import com.temple.view.LocaleViewableHelper;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Enumeration of the 12 Western Star Signs.
@@ -66,11 +65,6 @@ public enum StarSign implements LocaleViewable {
 	@Override
 	public String getLocaleKey() {
 		return this.localeKey;
-	}
-
-	@Override
-	public Object[] getLocaleParameters() {
-		return LocaleViewable.NO_PARAMETERS;
 	}
 
 	@Override

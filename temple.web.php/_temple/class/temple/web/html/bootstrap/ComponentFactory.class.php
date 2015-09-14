@@ -37,9 +37,9 @@ abstract class ComponentFactory {
 	public static $CLEARFIX ;
 
 	/**
-	 * 
-	 * @param mixed $x
-	 * @return \temple\web\html\HTMLElement
+	 * Makes an \temple\web\html\HTMLElement out of a given variable.
+	 * @param mixed $x some value
+	 * @return \temple\web\html\HTMLElement 
 	 */
 	public static function toHTMLElement($x) {
 		if ($x instanceof \temple\web\html\HTMLElement) {
@@ -75,7 +75,7 @@ abstract class ComponentFactory {
 
 	/**
 	 * 
-	 * @param type $text
+	 * @param string $text
 	 * @param type $cssClass
 	 * @param type $formatted
 	 * @return \temple\web\html\HTMLNode
@@ -125,10 +125,13 @@ abstract class ComponentFactory {
 	 * 
 	 * @return \temple\web\html\HTMLNode
 	 */
-	public static function createFieldset($disabled = true, $cssClass = null) {
-		return self::createComponent('fieldset', Component::JQUERYFIELD_CSS_CLASS)
-						->addCssClass($cssClass)
+	public static function createFieldset($disabled = true, $cssClass = null, $jquery = true) {
+		$f = self::createComponent('fieldset', $cssClass)
 						->setAttribute('disabled', $disabled ? 'disabled' : null);
+		if($jquery) {
+			$f->addCssClass(Component::JQUERYFIELD_CSS_CLASS) ;
+		}
+		return $f ;
 	}
 
 	private static function _init() {

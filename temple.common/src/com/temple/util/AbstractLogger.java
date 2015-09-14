@@ -3,8 +3,6 @@ package com.temple.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.temple.Module;
-
 public abstract class AbstractLogger {
 
 	private final String prefix;
@@ -17,23 +15,6 @@ public abstract class AbstractLogger {
 
 	protected AbstractLogger(String prefix) {
 		this(null, prefix);
-	}
-
-	@Deprecated
-	protected AbstractLogger(Module module) {
-		this(null, module);
-	}
-
-	@Deprecated
-	protected AbstractLogger(String prefix, Module module) {
-		this(prefix, module, null);
-	}
-
-	@Deprecated
-	protected AbstractLogger(String prefix, Module module, String suffix) {
-		final String s = suffix == null ? this.getClass().getSimpleName() : suffix;
-		this.prefix = s + (prefix == null ? " " : " " + prefix + " - ");
-		this.logger = Logger.getLogger(module.packageName + '.' + s);
 	}
 
 	protected AbstractLogger(String loggerName, String prefix) {
@@ -69,6 +50,12 @@ public abstract class AbstractLogger {
 		this.log(Level.WARNING, arg0);
 	}
 
+	/**
+	 * Logs the string representation of the given object as {
+	 *
+	 * @Level#SEVERE severe}
+	 * @param arg0
+	 */
 	protected void error(Object arg0) {
 		this.log(Level.SEVERE, arg0);
 	}
@@ -79,6 +66,33 @@ public abstract class AbstractLogger {
 
 	protected void throwable(String msg, Throwable t) {
 		this.logger.log(Level.SEVERE, msg, t);
+	}
+
+	protected void report(Throwable t) {
+		this.sendReport();
+		this.thrown(t);
+	}
+
+	protected void report(Object o) {
+		this.sendReport();
+		this.error(o);
+	}
+
+	private void sendReport() {
+		// FIXME
+	}
+
+	/**
+	 * Ignores a {
+	 *
+	 * @Throwable}. It will be logged only if Level.ALL is loggable.
+	 * @param t the {
+	 * @Throwable} to ignore
+	 */
+	protected void ignored(Throwable t) {
+		if (this.logger.isLoggable(Level.ALL)) {
+			this.logger.log(Level.ALL, "Throwable ignored", t);
+		}
 	}
 
 	private void log(Level l, Object toLog) {

@@ -4,6 +4,7 @@ import com.temple.service.cdi.TempleCDIBean;
 import com.temple.util.human.Language;
 import com.temple.view.LocaleStringView;
 import com.temple.view.LocaleViewable;
+import java.io.Serializable;
 
 /**
  * TODOC
@@ -40,7 +41,7 @@ public interface LanguageBean extends TempleCDIBean {
 	 * @param objects
 	 * @return
 	 */
-	String getString(String key, Object... objects);
+	String getString(String key, Serializable... objects);
 
 	/**
 	 * TODOC
@@ -57,7 +58,7 @@ public interface LanguageBean extends TempleCDIBean {
 	 * @param objects
 	 * @return
 	 */
-	String getDetailedString(String key, Object... objects);
+	String getDetailedString(String key, Serializable... objects);
 
 	/**
 	 * TODOC

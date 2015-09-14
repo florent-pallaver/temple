@@ -18,7 +18,7 @@ class Panel extends AbstractComponent {
 		$this->addCompositeCssClass('panel', $variant ? $variant : CssVariant::$DEFAULT);
 		if($a) {
 			$parent = CF::createDiv('panel-collapse collapse')->addCssClass($shown ? 'in' : null);
-			$t = AnchorLink::create($parent, $title)
+			$t = AnchorLink::create0($parent, $title)
 				->setData(['toggle'=>'collapse', 'parent'=>'#'.$a->getId()]);
 		} else {
 			$parent = $this ;

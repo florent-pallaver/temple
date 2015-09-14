@@ -1,10 +1,9 @@
 package com.temple.web.cdi;
 
-import java.util.List;
-
 import com.temple.model.TempleEntity;
 import com.temple.model.filter.EntityFilter;
 import com.temple.util.Pageable;
+import java.util.List;
 
 /**
  * TODOC
@@ -26,7 +25,7 @@ public interface TempleEntityPager<M extends TempleEntity, F extends EntityFilte
 	 *
 	 * @return
 	 */
-	List<M> getAll();
+	List<? extends M> getAll();
 
 	/**
 	 * TODOC

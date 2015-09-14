@@ -1,7 +1,6 @@
 package com.temple.model.filter;
 
 import java.io.Serializable;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
@@ -10,6 +9,7 @@ import javax.persistence.TypedQuery;
  * 
  * @author Florent Pallaver
  * @version 1.0
+ * @param <F>
  */
 public interface FindMaxFilter<F extends Serializable> extends Serializable {
 

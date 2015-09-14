@@ -14,4 +14,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ToString {
 	// boolean withFieldName() default true;
+	
+	/**
+	 * @return whether to render this field if it is <code>null</code>, default to <code>false</code>
+	 */
+	boolean renderIfNull() default false ;
 }
