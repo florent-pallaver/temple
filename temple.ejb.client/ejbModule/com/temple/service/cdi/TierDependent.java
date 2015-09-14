@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * Qualifier for request parameter.
  * TODOC
  *
  * @author Florent Pallaver
@@ -19,16 +18,17 @@ import javax.inject.Qualifier;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER })
-public @interface CDIRequestParameter {
+public @interface OperatingSystem {
+
+	/**
+	 * TODOC
+	 */
+	String UNIX = "unix";
 
 	/**
 	 * TODOC
 	 *
 	 * @return
 	 */
-	Type value();
-
-	public static enum Type {
-		ENTITY_MANAGER,
-	}
+	String value();
 }
