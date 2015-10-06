@@ -26,7 +26,7 @@ final class Messages implements SessionListener {
 		$this->registry = [];
 		$this->session = Session::getInstance();
 		$this->session->addListener($this) ;
-		if ($this->session->isActive() && $this->session->keyExists(self::$sessionKey)) {
+		if ($this->session->keyExists(self::$sessionKey)) {
 			$this->registry = $this->session->get(self::$sessionKey);
 			$this->session->set(self::$sessionKey, null);
 		}

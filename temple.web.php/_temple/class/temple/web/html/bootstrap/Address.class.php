@@ -39,7 +39,7 @@ class Address extends AbstractComponent {
 	 * @return Address
 	 */
 	public function addDefinition(Abbr $abbr, $value, $withBr = true) {
-		return $this->addLine(new HTMLElementList([$abbr, new HTMLString(': '), CF::toHTMLElement($value)]), $withBr) ;
+		return $this->addLine([$abbr, ': ', $value], $withBr) ;
 	}
 
 	/**
@@ -52,10 +52,9 @@ class Address extends AbstractComponent {
 	 */
 	public static function create($name, $line1 = null , $line2 = null, $withBr = true) {
 		$a = new Address() ;
-		return $a->addLine(CF::createComponent('strong')
-				->addChild(CF::toHTMLElement($name)))
+		return $a->addLine(CF::createComponent('strong', null, $name))
 				->addLine($line1)
-				->addLine($line2, $withBr);
+				->addLine($line2, $withBr) ;
 	}
 	
 }

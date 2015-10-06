@@ -36,10 +36,8 @@ class Navbar extends AbstractComponent {
 		$this->header = CF::createComponent('div', 'navbar-header') ;
 		$this->collapse = CF::createComponent('div', 'collapse navbar-collapse') ;
 		$this
-//				->addChild(CF::createDiv('container')
-				->addChild($this->header->addChild(new Link('/', $brand, 'navbar-brand')))
+			->addChild($this->header->addChild(new Link('/', $brand, 'navbar-brand')))
 			->addChild($this->collapse)
-//				)
 			;
 	}
 
@@ -55,15 +53,10 @@ class Navbar extends AbstractComponent {
 	 * 
 	 * @return \temple\web\html\bootstrap\Navbar
 	 */
-	public function addToggleButton() {
-		$this->header
-				->addChild(Button::create()
-				->addCssClass('navbar-toggle')
-				->setData(['toggle'=>'collapse', 'target'=> '#'.$this->getToggleDiv()->getId()])
-				->addChild(CF::createComponent('span', 'sr-only')->addChild(InnerText::create('Toggle Navigation'))) 
-				->addChild(CF::createComponent('span', 'icon-bar')) 
-				->addChild(CF::createComponent('span', 'icon-bar')) 
-				->addChild(CF::createComponent('span', 'icon-bar'))) ;
+	public function addToggleButton($menuIcon = 'menu-hamburger', CssVariant $variant = null) {
+		$this->header->addChild(Button::create([$this->createIcon($menuIcon), $this->createHTMLNode('span', 'sr-only', 'Toggle Navigation')], $variant)
+					->addCssClass('navbar-toggle')
+					->setData(['toggle'=>'collapse', 'target'=> '#'.$this->getToggleDiv()->getId()])) ;
 		return $this ;
 	}
 	

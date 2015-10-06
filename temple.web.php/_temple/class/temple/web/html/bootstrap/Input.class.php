@@ -20,16 +20,19 @@ class Input extends AbstractFormField {
 	const TYPE_RANGE = 'range';
 	const TYPE_SEARCH = 'search';
 	const TYPE_TELEPHONE = 'tel';
+	const TYPE_DATE = 'date';
 
 	const ACCEPT_ALL = '*/*' ;
 	const ACCEPT_VIDEO = 'video/*' ;
 	const ACCEPT_IMAGE = 'image/*' ;
 	const ACCEPT_AUDIO = 'audio/*' ;
 	const ACCEPT_PDF = 'application/pdf' ;
+	const ACCEPT_ZIP = 'application/zip' ;
 	
 	public function __construct($name, $type, $placeholder, $required = false, $cssClass = 'form-control') {
 		parent::__construct('input', $cssClass);
 		$this->setName($name)
+				->setTitle($placeholder)
 				->setAttribute('type', $type)
 				->setAttribute('placeholder', $placeholder)
 				->setRequired($required);
@@ -76,6 +79,19 @@ class Input extends AbstractFormField {
 	public static function create($name, $placeholder, $required = false, $cssClass = 'form-control') {
 		return new Input($name, self::TYPE_TEXT, $placeholder, $required, $cssClass);
 	}
+
+	/**
+	 * 
+	 * @param string $name
+	 * @param string $placeholder
+	 * @param boolean $required
+	 * @param string $cssClass
+	 * @return \temple\web\html\bootstrap\Input
+	 */
+	public static function createDate($name, $placeholder, $required = false, $cssClass = 'form-control') {
+		return new Input($name, self::TYPE_DATE, $placeholder, $required, $cssClass);
+	}
+
 
 	/**
 	 * 

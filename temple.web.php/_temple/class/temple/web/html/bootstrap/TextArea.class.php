@@ -14,11 +14,22 @@ class TextArea extends AbstractFormField {
 	public function __construct($name, $placeholder, $rowCount = self::DEFAULT_ROWS_COUNT, $required = false, $cssClass = 'form-control') {
 		parent::__construct('textarea', $cssClass);
 		$this->setName($name)
+				->setTitle($placeholder)
 				->setAttribute('placeholder', $placeholder)
 				->setAttribute('rows', $rowCount)
 				->setRequired($required);
 	}
 
+	/**
+	 * 
+	 * @param boolean $readOnly
+	 * @return \temple\web\html\bootstrap\TextArea
+	 */
+	public function setReadOnly($readOnly = true) {
+		$this->setAttribute('readonly', $readOnly ? 'readonly' : null) ;
+		return $this ;
+	}
+	
 	public function setValue($value) {
 		$this->addChild(new \temple\web\html\HTMLString($value, false), 'value') ;
 		return $this;

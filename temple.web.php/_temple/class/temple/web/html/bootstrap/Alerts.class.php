@@ -15,8 +15,6 @@ class Alerts extends AbstractComponent {
 	
 	const ID = '_templeAlerts' ;
 	
-	private static $icons = ['exclamation-sign', 'warning-sign', 'info-sign', 'ok-sign'];
-
 	private static $variant = ['danger', 'warning', 'info', 'success'] ;
 	
 	public function __construct() {
@@ -36,10 +34,10 @@ class Alerts extends AbstractComponent {
 	private function addAlert($msg, $k) {
 		$alert = ComponentFactory::createComponent('div', 'fade in alert alert-dismissable alert-'.self::$variant[$k])
 				->setAttribute('tabindex', '-1') 
-				->addChild(Button::create(InnerText::create('&times;', true))
+				->addChild(Button::create(new \temple\web\html\HTMLString('&times;', true))
 						->addCssClass('close')
 						->setAttributes(['data-dismiss'=>'alert', 'aria-hidden'=>'true']))
-				->addChild(new InnerText(self::$icons[$k], nl2br($msg), false, true)) ;
+				->addChild($this->createIconedText($this->getAlertIcon($k), $msg)) ;
 		$this->addChild($alert) ;
 	}
 }

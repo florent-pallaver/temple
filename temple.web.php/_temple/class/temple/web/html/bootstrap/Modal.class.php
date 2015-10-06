@@ -26,8 +26,7 @@ class Modal extends AbstractComponent {
 						->addChild(CF::createComponent('div', 'modal-content')
 								->addChild(CF::createComponent('div', 'modal-header')
 										->addChild(self::$close)
-										->addChild(CF::createComponent('h' . $modalTitleSize, 'modal-title')
-												->addChild(new InnerText($icon, $title))))
+										->addChild(CF::createComponent('h' . $modalTitleSize, 'modal-title', $this->createIconedText($icon, $title))))
 								->addChild(CF::createComponent('div', 'modal-body')
 										->addChild($body))
 								->addChild($mf)));
@@ -48,7 +47,7 @@ class Modal extends AbstractComponent {
 	
 	private static function _init() {
 		self::$close = new HN('button', ['type' => 'button', 'class' => 'close', 'aria-hidden' => 'true'], ['dismiss' => 'modal']);
-		self::$close->addChild(InnerText::create('&times', true));
+		self::$close->addChild(new \temple\web\html\HTMLString('&times', true));
 	}
 
 }

@@ -49,7 +49,8 @@ class Dropdown extends AbstractComponent {
 	private function getItemList() {
 		$child = $this->getChild(self::LIST_KEY);
 		if (!$child) {
-			$child = $this->addNode(ItemList::createUnordered('dropdown-menu'), self::LIST_KEY);
+			$child = ItemList::createUnordered('dropdown-menu') ;
+			$this->addChild($child, self::LIST_KEY);
 		}
 		return $child;
 	}
@@ -65,7 +66,7 @@ class Dropdown extends AbstractComponent {
 	public static function createButton($icon, $text, CssVariant $variant = null, $cssClass = null) {
 		$d = new Dropdown('div', $cssClass);
 		return $d->addCssClass('btn-group')
-						->addChild(Button::create(new InnerText($icon, $text, true), $variant)
+						->addChild(Button::create([\temple\web\html\IconFactory::getInstance()->createText($icon, $text), ComponentFactory::$CARET], $variant)
 								->addCssClass('dropdown-toggle')
 								->setData(['toggle' => 'dropdown']));
 	}
@@ -78,7 +79,7 @@ class Dropdown extends AbstractComponent {
 	 */
 	public static function createNavLink($icon, $text) {
 		$d = new Dropdown('li', 'dropdown');
-		return $d->addChild(Link::create('#', new InnerText($icon, $text, true), 'dropdown-toggle')
+		return $d->addChild(Link::create('#', [\temple\web\html\IconFactory::getInstance()->createText($icon, $text), ComponentFactory::$CARET], 'dropdown-toggle')
 								->setData(['toggle' => 'dropdown']));
 	}
 

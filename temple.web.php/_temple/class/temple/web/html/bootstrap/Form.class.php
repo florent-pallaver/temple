@@ -128,11 +128,8 @@ class Form extends AbstractComponent {
 	public function addFormGroup($label, FormField $field, $labelCssClass = null, $fieldCssClass = null, FormGroup &$fg = null) {
 		$fg = new FormGroup($field, $label, false) ;
 		if($this->useCssClasses) {
-			$fg->getLabel()->addCssClass(_dif($labelCssClass, $this->labelCssClass))
-					->addCssClass($field->isRequired() ? 'required': null);
+			$fg->getLabel()->addCssClass(_dif($labelCssClass, $this->labelCssClass)) ;
 			$fg->getFieldDiv()->addCssClass(_dif($fieldCssClass, $this->fieldCssClass)) ;
-		} elseif($field->isRequired()) {
-			$fg->getLabel()	->addCssClass('required');
 		}
 		return $this->addField($fg) ;
 	}

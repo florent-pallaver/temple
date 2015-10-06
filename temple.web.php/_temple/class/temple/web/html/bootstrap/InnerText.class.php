@@ -2,6 +2,8 @@
 
 namespace temple\web\html\bootstrap;
 
+use temple\web\html\fontawesome\Icon ;
+
 use temple\web\html\HTMLNode as HN ;
 use temple\web\html\HTMLString as HS ;
 
@@ -9,6 +11,7 @@ use temple\web\html\HTMLString as HS ;
  * Description of InnerText
  *
  * @author florent
+ * @deprecated since version alpha
  */
 final class InnerText extends \temple\web\html\HTMLElementList {
 
@@ -34,16 +37,16 @@ final class InnerText extends \temple\web\html\HTMLElementList {
 			$this->addElement(new Icon($icon), self::ICON_KEY) ;
 		}
 		if($text) {
-			if($icon) {
-				$this->addElement(HS::$NBSP) ;
-			}
+//			if($icon) {
+//				$this->addElement(HS::$NBSP) ;
+//			}
 			$span = new HN('span') ;
 			$this->addElement($span->addChild(new HS($text, $formatted)), self::TEXT_KEY) ;
 		}
 		if($caret) {
-			if($icon || $text) {
-				$this->addElement(HS::$NBSP) ;
-			}
+//			if($icon || $text) {
+//				$this->addElement(HS::$NBSP) ;
+//			}
 			$this->addElement(self::$CARET) ;
 		}
 	}

@@ -6,7 +6,7 @@ namespace temple\web\html\bootstrap;
  *
  * @author florent
  */
-interface Component extends \temple\web\html\HTMLElement {
+interface Component extends \temple\web\html\FrameworkComponent {
 	
 	const JQUERYFIELD_CSS_CLASS = '_jqueryField' ;
 	
@@ -21,4 +21,16 @@ interface Component extends \temple\web\html\HTMLElement {
 	 */
 	function setHelp($help) ;
 
+	/**
+	 * @return string
+	 */
+	function getTitle() ;
+	
+	/**
+	 * @param string $title
+	 * @return Component
+	 */
+	function setTitle($title) ;
+
+	
 }

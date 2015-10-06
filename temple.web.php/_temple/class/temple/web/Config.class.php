@@ -13,6 +13,8 @@ abstract class Config {
 
 	const CUSTOM_RESOURCE_PATH = '/_custom/resources/';
 
+	// FIXME we should load the modules here and manage them from here
+	
 	private function __construct() {}
 	
 }

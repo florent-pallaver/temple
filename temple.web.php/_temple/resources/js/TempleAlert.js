@@ -34,7 +34,7 @@ TempleAlert.prototype.show = function() {
 		TempleAlert.ALERTS_DIV.prepend('<div id="' + this.divId + '" class="fade in alert alert-dismissable alert-' +
 				TempleAlert.LEVELS[this.index] + '">' +
 				'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-				'<span class="glyphicon glyphicon-' + TempleAlert.ICONS[this.index] + '"></span> ' +
+				'<span class="glyphicon glyphicon-' + TempleAlert.ICONS[this.index] + '" aria-hidden="true"></span> ' +
 				this.msg.replace(/\n/g, '<br />') + '</div>');
 		if (this.index === TempleAlert.SUCCESS_STATUS) {
 			TempleAlert.autoClose('#' + this.divId) ;

@@ -3,6 +3,7 @@
 namespace temple\web\html\bootstrap;
 
 use temple\web\html\HTMLElement ;
+use temple\web\html\HTMLUtil ;
 
 /**
  * Description of Link
@@ -41,21 +42,31 @@ class Link extends AbstractComponent {
 	 * @return \temple\web\html\bootstrap\Link
 	 */
 	public static function create($href, $content, $cssClass = null) {
-		return new Link($href, ComponentFactory::toHTMLElement($content), $cssClass) ;
+		return new Link($href, HTMLUtil::toHTMLElement($content), $cssClass) ;
 	}
 	
 	/**
 	 * 
 	 * @param type $href
-	 * @param \temple\web\html\HTMLElement $e
+	 * @param mixed $e
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
 	 * @param type $cssClass
 	 * @return Link
 	 */
-	public static function createButton($href, HTMLElement $e = null, CssVariant $variant = null, $cssClass = null) {
-		$l = new Link($href, $e) ;
+	public static function createButton($href, $e = null, CssVariant $variant = null, $cssClass = null) {
+		$l = new Link($href, HTMLUtil::toHTMLElement($e)) ;
 		$v = _dif($variant, CssVariant::$DEFAULT) ;
 		return $l->addCssClass($cssClass)->addCompositeCssClass('btn', $v) ;
+	}
+	
+	/**
+	 * 
+	 * @param string $email
+	 * @param string $cssClass
+	 * @return \temple\web\html\bootstrap\Link
+	 */
+	public static function createEmail($email, $cssClass=null) {
+		return new Link('mailto:'.$email, HTMLUtil::toHTMLElement($email), $cssClass) ;
 	}
 	
 }

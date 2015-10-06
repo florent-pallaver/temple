@@ -9,6 +9,7 @@ use temple\web\html\HTMLElement ;
  * Description of HTML5Document
  *
  * @author florent
+ * @deprecated since version alpha charger les assets dans un HTML5Document plutot
  */
 class HTML5Document extends \temple\web\html\HTML5Document {
 
@@ -16,30 +17,36 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 	const MAIN_ID = '_documentMain';
 	const FOOTER_ID = '_documentFooter';
 
+        public static $BOOTSTRAP_VERSION = 'gaillards' ;
+        public static $FONT_AWESOME_VERSION = '4_4_0' ;
+        public static $JQUERY_VERSION = '2_1_1' ;
+        
 	private static $modalsKey = '_modals|' ;
 	private static $scriptsKey = '_scripts|' ;
 	
-	public function __construct($title, $author = '', $description = '') {
+	public function __construct($title, $author = '', $description = '', $headerClass = 'container') {
 		parent::__construct($title, $author, $description);
 		$rp = \temple\web\Config::TEMPLE_RESOURCE_PATH ;
 		$this->addMeta('viewport', 'width=device-width, initial-scale=1.0') ;
-		$this->addCssLink($rp . 'bootstrap/3_3_1/css/bootstrap.min.css')
+		$this->addCssLink($rp . 'bootstrap/' . self::$BOOTSTRAP_VERSION . '/css/bootstrap.min.css')
+				->addCssLink($rp . 'font-awesome/' . self::$FONT_AWESOME_VERSION . '/css/font-awesome.min.css')
 				->addCssLink($rp . 'css/temple.min.css');
 		$this->getBody()
-				->addChild(NF::createNode('header', ['class'=>'container', 'id'=>self::HEADER_ID]), self::HEADER_ID) 
+				->addChild(NF::createNode('header', ['class'=> $headerClass, 'id'=>self::HEADER_ID]), self::HEADER_ID) 
 				->addChild(NF::createNode('main', ['class'=>'container', 'id'=>self::MAIN_ID]), self::MAIN_ID) 
 				->addChild(NF::createNode('footer', ['class'=>'container', 'id'=>self::FOOTER_ID]), self::FOOTER_ID) 
 				->addChild(new \temple\web\html\HTMLElementList(), self::$modalsKey)
 				->addChild(new \temple\web\html\HTMLElementList(), self::$scriptsKey)
 			;
-		$this->getMain()->addChild(new AnchorLink($this->getBody(), new InnerText('chevron-up'), '_backToTop')) ;
-		$this->addScriptLink($rp . 'jquery/2_1_1/js/jquery.min.js') ;
+		$this->getMain()->addChild(new AnchorLink($this->getBody(), \temple\web\html\IconFactory::getInstance()->createIcon('chevron-up'), '_backToTop')) ;
+		$this->addScriptLink($rp . 'jquery/' . self::$JQUERY_VERSION . '/js/jquery.min.js') ;
 //		$this->addScriptLink('//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js') ;
-		$this->addScriptLink($rp . 'bootstrap/3_3_1/js/bootstrap.min.js') ;
+		$this->addScriptLink($rp . 'bootstrap/' . self::$BOOTSTRAP_VERSION . '/js/bootstrap.min.js') ;
 		$this->addScriptLink($rp . 'js/jqueryField.min.js') ;
 		$this->addScriptLink($rp . 'js/backToTop.min.js') ;
 		$this->addScriptLink($rp . 'js/TempleAlert.min.js') ;
 		$this->addScriptLink($rp . 'js/TempleForm.min.js') ;
+		$this->addScript('TempleForm.CONFIRM_MESSAGE = \'' . \temple\view\ViewLocale::CONFIRM_MESSAGE . '\' ;') ;
 	}
 
 	/**

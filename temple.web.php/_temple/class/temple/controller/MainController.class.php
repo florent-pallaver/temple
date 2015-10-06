@@ -15,10 +15,7 @@ final class MainController extends AbstractRequestController {
 
 	use \temple\Singleton;
 
-	public static $locale = 'en' ;
-	public static $defaultLocale = 'en' ;
-	public static $namespace = 'controller';
-	private static $suffix = 'Controller';
+	private static $suffix = Config::CONTROLLER_CLASS_SUFFIX ;
 	private static $defaultView = 'home';
 	private static $viewNames = [];
 
@@ -54,14 +51,14 @@ final class MainController extends AbstractRequestController {
 		if($this->logger->isDebugLoggable()) {
 			$this->logger->debug("request view = '$viewName' used view = '$vn' action = '$a'") ;
 		}
-		$cn = self::$namespace . '\\' . ($a ? ($vn . '\\'. strtoupper($a{0}) . substr($a, 1)) : (strtoupper($vn{0}) . substr($vn, 1))) . self::$suffix;
+		$cn = Config::$CONTROLLERS_BASE_NAMESPACE . '\\' . ($a && $a != Config::$VIEW_ACTION ? ($vn . '\\'. _fctuc($a)) : _fctuc($vn)) . self::$suffix;
 		// specify locale before creating response and causing any exception
 		// FIXME un peu pourri comme impl !
-		ClassLoader::add(TEMPLE_LOCALE_PATH . self::$locale . DIRECTORY_SEPARATOR, false) ;
-		ClassLoader::add(CUSTOM_LOCALE_PATH . self::$locale . DIRECTORY_SEPARATOR, false, '.php') ;
-		if(self::$locale !== self::$defaultLocale) {
-			ClassLoader::add(TEMPLE_LOCALE_PATH . self::$defaultLocale . DIRECTORY_SEPARATOR, false) ;
-			ClassLoader::add(CUSTOM_LOCALE_PATH . self::$defaultLocale . DIRECTORY_SEPARATOR, false, '.php') ;
+		ClassLoader::add(TEMPLE_LOCALE_PATH . Config::$LOCALE . DIRECTORY_SEPARATOR, false) ;
+		ClassLoader::add(CUSTOM_LOCALE_PATH . Config::$LOCALE . DIRECTORY_SEPARATOR, false, '.php') ;
+		if(Config::$LOCALE !== Config::$DEFAULT_LOCALE) {
+			ClassLoader::add(TEMPLE_LOCALE_PATH . Config::$DEFAULT_LOCALE . DIRECTORY_SEPARATOR, false) ;
+			ClassLoader::add(CUSTOM_LOCALE_PATH . Config::$DEFAULT_LOCALE . DIRECTORY_SEPARATOR, false, '.php') ;
 		}
 		try {
 			$c = new \ReflectionClass($cn);

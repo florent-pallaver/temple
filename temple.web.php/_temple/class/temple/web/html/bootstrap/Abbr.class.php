@@ -23,4 +23,5 @@ class Abbr extends AbstractComponent {
 		$a = new Abbr($cssClass) ;
 		return $a->setTitle($title)->addChild(ComponentFactory::toHTMLElement($abbr)) ;
 	}
+
 }

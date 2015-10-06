@@ -90,13 +90,12 @@ class ModelManagerImpl extends ModelManager {
 
 	public function findByFilter(Filter $filter) {
 		$gn = GraphNode::getInstance($filter->getModelClass()) ;
-		$ac = $this->qf->newAndCondition() ;
+		$sq = $gn->newSelect($this->qf->newAndCondition(), $filter->getMaxCount(), $filter->getOffset()) ;
 		foreach($filter->getKeyConditions() as $kv) {
-			$ac->addComparison($this->qf->newKeyComparison($kv[0], $kv[1], null, $kv[2])) ;
+			$sq->getCondition()->addComparison($this->qf->newKeyComparison($kv[0], $kv[1], $sq->getTable(), $kv[2])) ;
 		}
-		$sq = $gn->newSelect($ac, $filter->getMaxCount(), $filter->getOffset()) ;
 		foreach($filter->getOrders() as $o) {
-			$sq->addOrderBy($o) ;
+			$this->addOrderBy($sq, $o[0], $o[1]) ;
 		}
 		$result = $this->driver->query($sq) ;
 		$rows = $result->getRows() ;
@@ -106,6 +105,14 @@ class ModelManagerImpl extends ModelManager {
 		}
 		// load relations
 		return $models ;
+	}
+	
+	private function addOrderBy(\temple\data\persistence\db\query\ConditionnedQuery $cq, Key $k, $asc) {
+//			$sq->addOrderBy(new \temple\data\persistence\db\query\OrderBy($o[0], $o[1])) ;
+		$t = $cq->getTable() ;
+		foreach ($k->getColumnNames() as $cn) {
+			$cq->addOrderBy(new \temple\data\persistence\db\query\OrderBy(new \temple\data\persistence\db\query\Field($cn, $t), $asc));
+		}
 	}
 
 	public function findByRawQuery(ReflectionClass $class, $sql) {
@@ -182,7 +189,8 @@ class ModelManagerImpl extends ModelManager {
 	}
 
 	public function delete(Model $model) {
-		return $this->deleteByKey($model->getClass(), $model->getId()) ;
+		$pk = $model->getClass()->getMethod('getPK')->invoke(null) ;
+		return $this->deleteByKey($pk, $model->getId()) ;
 	}
 
 	public function deleteAll(array $models) {

@@ -13,9 +13,14 @@ use temple\web\html\bootstrap\CssVariant;
  */
 class Panel extends AbstractComponent {
 
+	/**
+	 * @var CssVariant
+	 */
+	public static $DEFAULT_VARIANT ;
+	
 	public function __construct($title, HTMLElement $body = null, HTMLElement $footer = null, CssVariant $variant = null, Accordion $a = null, $shown = true) {
 		parent::__construct('div');
-		$this->addCompositeCssClass('panel', $variant ? $variant : CssVariant::$DEFAULT);
+		$this->addCompositeCssClass('panel', $variant ? $variant : self::$DEFAULT_VARIANT);
 		if($a) {
 			$parent = CF::createDiv('panel-collapse collapse')->addCssClass($shown ? 'in' : null);
 			$t = AnchorLink::create0($parent, $title)
@@ -50,7 +55,7 @@ class Panel extends AbstractComponent {
 	 * @return \temple\web\html\bootstrap\Panel
 	 */
 	public static function create($icon, $title, HTMLElement $body = null, HTMLElement $footer = null, CssVariant $variant = null) {
-		return new Panel($icon || $title ? new InnerText($icon, $title) : null, $body, $footer, $variant);
+		return new Panel($icon || $title ? \temple\web\html\IconFactory::getInstance()->createText($icon, $title) : null, $body, $footer, $variant);
 	}
 
 	/**
@@ -72,6 +77,10 @@ class Panel extends AbstractComponent {
 	 */
 	public static function createEmpty($icon, $title, CssVariant $variant = null) {
 		return self::create($icon, $title, null, null, $variant) ;
+	}
+	
+	private static function _init() {
+		self::$DEFAULT_VARIANT = CssVariant::$DEFAULT ;
 	}
 	
 }

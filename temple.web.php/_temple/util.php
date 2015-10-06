@@ -40,3 +40,21 @@ function _eia($v) {
 function _str($v) {
 	return is_array($v) ? print_r($v, true) : strval($v) ;
 }
+
+/**
+ * First Char To Lower Case
+ * @param string $s a string
+ * @return string the given string with its first char tin lower case
+ */
+function _fctlc($s) {
+    return strtolower($s{0}) . substr($s, 1) ;
+}
+
+/**
+ * First Char To Upper Case
+ * @param string $s a string
+ * @return string the given string with its first char tin lower case
+ */
+function _fctuc($s) {
+    return strtoupper($s{0}) . substr($s, 1) ;
+}

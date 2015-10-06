@@ -36,6 +36,11 @@ class HTML5Document implements HTMLDocument {
 		return $this->head->getChild(self::$titleKey) ;
 	}
 	
+	public final function setTitle($title) {
+		$this->head->addChild(HTMLNodeFactory::createNodeWithString('title', $title), self::$titleKey) ;
+		return $this ;
+	}
+	
 	public final function getHead() {
 		return $this->head;
 	}
@@ -53,6 +58,22 @@ class HTML5Document implements HTMLDocument {
 		if($content) {
 			$this->head->addChild(new HTMLNode('meta', ['name'=>$name, 'content'=>$content])) ;
 		}
+		return $this ;
+	}
+	
+	/**
+	 * 
+	 * @param mixed $url
+	 * @param string $type
+	 * @return \temple\web\html\HTML5Document
+	 */
+	public final function addFavIcon($url, $type='image/png') {
+		$l = new HTMLNode('link') ;
+		$this->head->addChild($l->setAttributes([
+			'rel'=>'icon',
+			'type'=>$type,
+			'href'=>strval($url)
+		])) ;
 		return $this ;
 	}
 	

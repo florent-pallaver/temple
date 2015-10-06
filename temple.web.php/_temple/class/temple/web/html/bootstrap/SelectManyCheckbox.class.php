@@ -17,8 +17,7 @@ class SelectManyCheckbox extends ItemList implements FormField {
 		$this->checkboxes = [] ;
 		foreach($options as $k => $v) {
 			$i = Input::createCheckbox($name . '[]', $k) ;
-			$this->addItem(ComponentFactory::createComponent('label')
-					->addChild($i)->addChild(InnerText::create($v)));
+			$this->addItem(ComponentFactory::createComponent('label', null, [$i, $v]));
 			$this->checkboxes[$k] = $i ;
 		}
 		$this->setValue($value) ;

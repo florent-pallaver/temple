@@ -7,7 +7,7 @@ namespace temple\util;
  *
  * @author florent
  */
-class ArraySet extends AbstractCollection {
+class ArraySet extends AbstractCollection implements Set {
 
 	/**
 	 * 

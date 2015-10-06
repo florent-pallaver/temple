@@ -7,7 +7,7 @@ namespace temple\web\html\bootstrap;
  *
  * @author florent
  */
-abstract class AbstractComponent extends \temple\web\html\HTMLNode implements Component {
+abstract class AbstractComponent extends \temple\web\html\AbstractFrameworkComponent implements Component {
 
 	/**
 	 * @var \temple\web\html\HTMLNode
@@ -33,13 +33,16 @@ abstract class AbstractComponent extends \temple\web\html\HTMLNode implements Co
 		return $this ;
 	}
 	
-	/**
-	 * 
-	 * @param string $title
-	 * @return AbstractComponent
-	 */
+	public final function getTitle() {
+		return $this->getAttribute('title') ;
+	}
+	
 	public final function setTitle($title) {
 		return $this->setAttribute('title', $title) ;
+	}
+	
+	public function getName() {
+		return $this->getAttribute('name') ;
 	}
 	
 	/**
@@ -69,13 +72,6 @@ abstract class AbstractComponent extends \temple\web\html\HTMLNode implements Co
 	}
 	
 	/**
-	 * @return \temple\web\html\HTMLElement
-	 */
-	protected final function toHTMLElement($x) {
-		return ComponentFactory::toHTMLElement($x) ;
-	}
-	
-	/**
 	 * 
 	 * @param type $nodeName
 	 * @param type $cssClass
@@ -84,6 +80,22 @@ abstract class AbstractComponent extends \temple\web\html\HTMLNode implements Co
 	 */
 	protected final function createHTMLNode($nodeName, $cssClass = null, $content = null) {
 		return ComponentFactory::createComponent($nodeName, $cssClass, $content) ;
+	}
+	
+	/**
+	 * 
+	 * @return AbstractComponent
+	 */
+	public final function pullLeft() {
+		return $this->addCssClass('pull-left') ;
+	}
+	
+	/**
+	 * 
+	 * @return AbstractComponent
+	 */
+	public final function pullRight() {
+		return $this->addCssClass('pull-right') ;
 	}
 	
 }

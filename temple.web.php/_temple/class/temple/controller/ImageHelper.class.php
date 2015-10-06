@@ -23,7 +23,7 @@ class ImageHelper {
 	private static $failMsg = 'Upload of file &quot;%s&quot; failed, because %s.';
 	public static $COMPRESSION_QUALITY = 90;
 	public static $IMAGE_MAX_WIDTH = 1280;
-	public static $IMAGE_MAX_HEIGHT = 720;
+	public static $IMAGE_MAX_HEIGHT = 1280;
 	public static $THUMBNAIL_DIMENSION = 200;
 
 	/**

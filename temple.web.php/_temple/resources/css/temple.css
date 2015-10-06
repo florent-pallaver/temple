@@ -9,20 +9,35 @@
 
 #_templeAlerts {
 	position: fixed ;
-	left:50% ;
 	z-index: 2000;
 	top: 120px;
-	max-width: 50%;
+	left: 0 ;
+	width: 100%;
 }
 
 #_templeAlerts div.alert {
 	position: relative ;
-	left: -50% ;
-	min-width: 400px ;
 	z-index: 400 ;
 	border-width: 3px;
+	min-width: 320px ;
+	margin-right: auto ;
+	margin-left: auto ;
+	width: 50% ;
 }
 
+@media (min-width: 768px) {
+	#_templeAlerts {
+		left: 50% ;
+		max-width: 50%;
+	}
+	#_templeAlerts div.alert {
+		left: -50% ;
+		max-width: 60%; 
+		min-width: 400px ;
+	}
+}
+
+#_templeAlerts div.alert .fa,
 #_templeAlerts div.alert .glyphicon {
 	font-size: 20px ;
 }
@@ -129,4 +144,12 @@ label.required:after {
 .panel .panel-title a {
 	display: inline-block ;
 	width: 100% ;
+}
+
+/* Bigger buttons in small devices ... */
+.btn { font-size: 1.2em ; }
+.btn.btn-lg { font-size: 1.6em ; }
+@media (min-width:768px) {
+	.btn { font-size: 1em ; }
+	.btn.btn-lg { font-size: 1.3em ; }
 }

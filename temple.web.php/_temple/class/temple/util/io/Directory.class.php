@@ -33,4 +33,33 @@ class Directory extends AbstractFileSystemResource {
 		}
 	}
 
+	public function deleteRecursive() {
+		foreach($this->getEntries() as $e) {
+			if($e instanceof File) {
+				$e->delete() ;
+			} else {
+				$e->deleteRecursive() ;
+			}
+		}
+		$this->delete() ;
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getEntries() {
+		if(!$this->isReadable()) {
+			throw new ResourceAccessException($this) ;
+		}
+		$entries = [] ;
+		$p = $this->getAbsolutePath() ;
+		foreach(scandir($p, SCANDIR_SORT_NONE) as $e) {
+			if($e != '.' && $e != '..') {
+				$f = $p . '/' . $e ;
+				$entries[] = is_dir($f) ? new Directory($e, $this) : new File($e, $this) ;
+			}
+		}
+		return $entries ;
+	}
+	
 }

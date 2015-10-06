@@ -21,18 +21,13 @@ final class InputGroup extends AbstractGroup implements FormField {
 				->addChild(new \temple\web\html\HTMLElementList(), self::$post);
 	}
 
-	/**
-	 * 
-	 * @param \temple\web\html\bootstrap\InnerText $it
-	 * @param type $pre
-	 * @return \temple\web\html\bootstrap\InputGroup
-	 */
-	public function addInnerText(InnerText $it, $pre = false) {
+	private function addInnerText($it, $pre = false) {
 		$this->getElementList($pre)
-				->addElement(ComponentFactory::createComponent('span', 'input-group-addon')
-						->addChild($it));
+				->addElement(ComponentFactory::createComponent('span', 'input-group-addon', $this->toHTMLElement($it))
+						);
 		return $this;
 	}
+	
 	/**
 	 * 
 	 * @param type $icon
@@ -41,8 +36,7 @@ final class InputGroup extends AbstractGroup implements FormField {
 	 */
 	public function addIcon($icon, $pre = false) {
 		$this->getElementList($pre)
-				->addElement(ComponentFactory::createComponent('span', 'input-group-addon')
-						->addChild(new InnerText($icon)));
+				->addElement(ComponentFactory::createComponent('span', 'input-group-addon', $this->createIcon($icon, [\temple\web\html\fontawesome\IconVariation::$FW])));
 		return $this;
 	}
 	
@@ -93,15 +87,15 @@ final class InputGroup extends AbstractGroup implements FormField {
 	/**
 	 * 
 	 * @param \temple\web\html\bootstrap\Input $input
-	 * @param \temple\web\html\bootstrap\InnerText $it
+	 * @param mixed $iconText
 	 * @param type $pre
 	 * @param \temple\web\html\bootstrap\CssVariant $cv
 	 * @param type $cssClass
 	 * @return InputGroup
 	 */
-	public static function create(Input $input, InnerText $it, $pre = true, CssVariant $cv = null, $cssClass = null) {
+	public static function create(Input $input, $iconText, $pre = true, CssVariant $cv = null, $cssClass = null) {
 		$ig = new InputGroup($input, $cv, $cssClass) ;
-		return $ig->addInnerText($it, $pre) ;
+		return $ig->addInnerText($iconText, $pre) ;
 	}
 	
 	/**

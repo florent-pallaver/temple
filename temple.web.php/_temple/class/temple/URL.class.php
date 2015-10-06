@@ -67,7 +67,7 @@ final class URL {
 	public function __toString() {
 		$str = $this->script;
 		if ($this->parameters) {
-			$params = array();
+			$params = [];
 			foreach ($this->parameters as $key => $value) {
 				$params[] = $value === null ? $key : ($key . '=' . urlencode($value));
 			}

@@ -2,7 +2,7 @@
 
 namespace temple\controller;
 
-use temple\controller\AbstractRequestControllerLocale as L ;
+use temple\controller\AbstractRequestControllerLocale as L;
 
 /**
  * Description of AbstractController
@@ -32,16 +32,103 @@ abstract class AbstractRequestController extends AbstractController {
 	 * @var array
 	 */
 	protected static $_notEmptyNotHTML = ['notEmpty' => true, 'escapeHTML' => false];
+	private $icon;
+	private $name;
 
-	protected final function redirect($to ='/', $ensureSession = true) {
-		$session = \temple\data\Session::getInstance() ;
-		if($ensureSession) {
-			session_start() ;
+	public function __construct($icon = null, $name = null) {
+		parent::__construct() ;
+		$this->icon = _dif($icon, 'th-large');
+		if ($name) {
+			$this->name = $name;
+		} else {
+			$s = substr(static::class, strrpos(static::class, '\\') + 1);
+			$this->name = substr($s, 0, strlen($s) - strlen(Config::CONTROLLER_CLASS_SUFFIX));
+		}
+	}
+
+	public function getIcon() {
+		return $this->icon;
+	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	protected final function redirect($to = '/', $ensureSession = true) {
+		$session = \temple\data\Session::getInstance();
+		if ($ensureSession) {
+//            session_start();
 			$session->end();
 		}
-		header('location: ' . $to) ;
+		header('location: ' . $to);
+		exit();
+	}
+
+	/**
+	 * 
+	 * @param type $type
+	 * @param type $key
+	 * @param type $maxLength
+	 * @param type $minLength
+	 * @param type $autoCrop
+	 * @param type $filter
+	 * @return string
+	 */
+	protected final function requestString($type, $key, $maxLength, $minLength = 0, $autoCrop = false, $filter = FILTER_DEFAULT) {
+		$str = $this->checkValue(filter_input($type, $key, $filter), $key, $minLength > 0);
+		if ($str !== null) {
+			if (strlen($str) < $minLength) {
+				$this->setFeedback($key, sprintf(L::FAIL_MIN_LENGTH, $minLength));
+				$str = null;
+			} else {
+				if ($maxLength > 0 && strlen($str) > $maxLength) {
+					if ($autoCrop) {
+						$str = substr($str, 0, $maxLength);
+					} else {
+						$this->setFeedback($key, sprintf(L::FAIL_MAX_LENGTH, $maxLength));
+						$str = null;
+					}
+				}
+			}
+		}
+		return $str;
+	}
+
+	protected final function requestInt($type, $key, $required = false, $min = null, $max = null) {
+        $options = [];
+        if ($min !== null) {
+            $options['min_range'] = $min;
+        }
+        if ($max !== null) {
+            $options['max_range'] = $max;
+        }
+        $i = filter_input($type, $key, FILTER_VALIDATE_INT, $options);
+        return $this->checkValue($i, $key, $required);
+    }
+
+	
+	// check FALSE and NULL only to return NULL only if value is one of those
+	private function checkValue($value, $key, $required) {
+		if (($value === FALSE || $value === NULL)) {
+			if ($required) {
+				// generic message here cause we don't know what might have cause the error
+				$this->setFeedback($key);
+			}
+			$value = NULL;
+		}
+		return $value;
+	}
+
+	protected final function queryString($key, $maxLength = 0, $minLength = 0, $autoCrop = false) {
+		return $this->requestString(INPUT_GET, $key, $maxLength, $minLength, $autoCrop);
+	}
+
+	protected final function queryInt($key, $min = null, $max = null, $required = false) {
+		return $this->requestInt(INPUT_GET, $key, $required, $min, $max) ;
 	}
 	
+	// DEPRECATED
+
 	protected final function getBooleanGetParam($name) {
 		return $this->getBooleanParam(INPUT_GET, $name);
 	}
@@ -82,7 +169,7 @@ abstract class AbstractRequestController extends AbstractController {
 		if (!isset($_FILES[$name])) {
 			$this->paramFailed($name);
 		}
-		if(is_array($_FILES[$name]['error'])) {
+		if (is_array($_FILES[$name]['error'])) {
 			$params = [];
 			foreach ($_FILES[$name] as $k => $values) {
 				foreach ($values as $i => $v) {
@@ -118,9 +205,9 @@ abstract class AbstractRequestController extends AbstractController {
 	}
 
 	private final function getEnumParam($type, $name, \ReflectionClass $enumClass, array $options) {
-		$ordinal = $this->getNumberParam($type, $name, ['default'=>-1], false) ;
-		$e = $enumClass->getMethod('getByOrdinal')->invoke(null, $ordinal) ;
-		if($e) {
+		$ordinal = $this->getNumberParam($type, $name, ['default' => -1], false);
+		$e = $enumClass->getMethod('getByOrdinal')->invoke(null, $ordinal);
+		if ($e) {
 			return $e;
 		}
 		if (array_key_exists('default', $options)) {
@@ -128,7 +215,7 @@ abstract class AbstractRequestController extends AbstractController {
 		}
 		$this->paramFailed($name);
 	}
-	
+
 	private final function getStringParam($type, $name, array $options) {
 		$str = filter_input($type, $name);
 		if ($str !== null && is_string($str)) {
@@ -195,9 +282,9 @@ abstract class AbstractRequestController extends AbstractController {
 	 * @return \temple\web\mail\Mailer
 	 */
 	protected final function getMailer() {
-		return \temple\web\mail\Mailer::getInstance() ;
+		return \temple\web\mail\Mailer::getInstance();
 	}
-	
+
 	protected final function getCheckedDate($key, $pattern, $minAge = 0) {
 		$birthdate = trim($this->getStringPostParam($key));
 		$bdate = null;
@@ -228,7 +315,7 @@ abstract class AbstractRequestController extends AbstractController {
 
 	// FIXME revoir les fonctions pour qu'elles incluent les noms des paramètres
 	// FIXME revoir les fonctions pour que les feedbacks soient sur les champs
-	
+
 	/**
 	 * TODOC 
 	 * 
@@ -269,5 +356,5 @@ abstract class AbstractRequestController extends AbstractController {
 //		}
 //		return $str;
 	}
-	
+
 }

@@ -90,10 +90,12 @@ TempleForm.prototype.submit = function() {
 			.always(this.submitAlways);
 };
 
+TempleForm.CONFIRM_MESSAGE = 'Are you sure you want to do this action?' ;
+
 TempleForm.spySubmits = function() {
 
 	$('button[type="submit"]').on('click', function(event) {
-		if(!$(this).hasClass('_confirm') || confirm('Are you sure you want to do this action?')) {
+		if(!$(this).hasClass('_confirm') || confirm(TempleForm.CONFIRM_MESSAGE)) {
 			$(this).addClass('_clicked');
 		} else {
 			this.blur() ;

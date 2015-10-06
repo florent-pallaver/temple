@@ -10,7 +10,7 @@ namespace temple\data\persistence\db\query ;
 interface Query {
 
 	/**
-	 * @return Table - the table this query is to be executed on.
+	 * @return Table the table this query is to be executed on.
 	 */
 	function getTable() ;
 

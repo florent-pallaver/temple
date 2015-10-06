@@ -41,4 +41,13 @@ abstract class AbstractHTMLElement implements HTMLElement {
 		return $this->toString() ;
 	}
 	
+	/**
+	 * 
+	 * @param mixed $x
+	 * @return HTMLElement
+	 */
+	protected final function toHTMLElement($x) {
+		return HTMLUtil::toHTMLElement($x) ;
+	}
+	
 }

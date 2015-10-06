@@ -24,6 +24,10 @@ class SelectOneRadio extends AbstractFormField {
 		$this->radioCssClass = $radioCssClass;
 	}
 
+	public function getName() {
+		return $this->name;
+	}
+		
 	/**
 	 * 
 	 * @param type $value

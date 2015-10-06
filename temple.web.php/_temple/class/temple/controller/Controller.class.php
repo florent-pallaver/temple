@@ -7,9 +7,14 @@ namespace temple\controller;
  * 
  * @author florent
  */
-interface Controller {
+interface Controller extends \temple\util\Nameable, \temple\util\Iconable {
 
 	/**
+	 * @return array
+	 */
+	function getLocales() ;
+	
+    /**
 	 * @return string 
 	 */
 	function getActionDescription() ;

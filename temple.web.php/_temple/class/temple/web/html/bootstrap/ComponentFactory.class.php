@@ -40,26 +40,10 @@ abstract class ComponentFactory {
 	 * Makes an \temple\web\html\HTMLElement out of a given variable.
 	 * @param mixed $x some value
 	 * @return \temple\web\html\HTMLElement 
+	 * @deprecated use same method in HTMLElement
 	 */
 	public static function toHTMLElement($x) {
-		if ($x instanceof \temple\web\html\HTMLElement) {
-			$e = $x;
-		} elseif($x instanceof \DateTime) {
-			$e = new HS($x->format('l, d F Y, g:i a')) ;
-		} elseif ($x !== null) {
-			if(is_array($x)) {
-				$a = [] ;
-				foreach ($x as $k=>$v) {
-					$a[$k] = self::toHTMLElement($v) ;
-				}
-				$e = new \temple\web\html\HTMLElementList($a) ;
-			} else {
-				$e = new HS($x);
-			}
-		} else {
-			$e = null;
-		}
-		return $e;
+		return \temple\web\html\HTMLUtil::toHTMLElement($x) ;
 	}
 
 	/**
@@ -134,6 +118,16 @@ abstract class ComponentFactory {
 		return $f ;
 	}
 
+	/**
+	 * 
+	 * @param type $src
+	 * @param type $alt
+	 * @return \temple\web\html\HTMLNode
+	 */
+	public static function createImage($src, $alt='') {
+		return NF::createImgNode($src, $alt) ;
+	}
+	
 	private static function _init() {
 		self::$CARET = NF::createNodeWithClass('span', 'caret');
 		self::$CARET_BUTTON = NF::createNode('button', ['class' => 'btn btn-primary dropdown-toggle'], ['toggle' => 'dropdown'])->addChild(self::$CARET);

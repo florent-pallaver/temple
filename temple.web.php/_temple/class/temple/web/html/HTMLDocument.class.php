@@ -16,6 +16,13 @@ interface HTMLDocument extends \temple\view\Renderable {
 	function getTitle() ;
 	
 	/**
+	 * 
+	 * @param string $title
+	 * @return \temple\web\html\HTMLDocument
+	 */
+	function setTitle($title) ;
+
+	/**
 	 * @return HTMLNode
 	 */
 	function getHead() ;

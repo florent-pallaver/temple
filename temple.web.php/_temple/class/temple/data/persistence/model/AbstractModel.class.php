@@ -13,13 +13,9 @@ abstract class AbstractModel implements Model {
 
 	use EntityCommon;
 
-	/**
-	 * @var Key
-	 */
-	public static $ID_PRIMARY_KEY ;
-	
 	private $id;
 
+	// must be public so that subclasses don't have to declare a constructor
 	public function __construct() {}
 
 	public final function getId() {
@@ -49,7 +45,6 @@ abstract class AbstractModel implements Model {
 	}
 
 	private static function _init() {
-		self::$ID_PRIMARY_KEY = new Key(self::_class(), 'id', true, Key::PRIMARY_KEY_NAME) ;
 		self::$mappings['id'] = new BasicMapping(self::_property('id'), true, false);
 	}
 	

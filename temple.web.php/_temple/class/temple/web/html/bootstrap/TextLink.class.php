@@ -18,7 +18,7 @@ final class TextLink extends Link {
 	 */
 	public function __construct($href, $icon, $text, $cssClass = null) {
 		parent::__construct($href, null, $cssClass) ;
-		$this->addChild(new InnerText($icon, $text)) ;
+		$this->addChild($this->createIconedText($icon, $text)) ;
 	}
 
 }

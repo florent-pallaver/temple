@@ -16,6 +16,9 @@ abstract class AbstractRequestControllerLocale {
 	const WARN_AGE = '\'%1$s\' is not a valid birthdate.\nIf you are not at least %2$d you are breaking the terms and conditions of use of this website.';
 	const WARN_INVALID_DATE = '\'%s\' is not a valid date.';
 	
+	const FAIL_MIN_AGE = 'Minimum allowed age is %s.' ;
+	const FAIL_MAX_AGE = 'Maximum allowed age is %s.' ;
+	
 	const FAIL_INCORRECT_FIELD = 'This field is incorrect.';
 	const FAIL_EMPTY_FIELD = 'This field cannot be empty.';
 

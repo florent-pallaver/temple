@@ -34,8 +34,7 @@ abstract class ModelManager {
 	/**
 	 * TODOC
 	 *
-	 * @param unknown $modelClassName
-	 * @param Filter $pagination
+	 * @param Filter $filter
 	 * @return array
 	 */
 	public abstract function findByFilter(Filter $filter) ;
@@ -91,7 +90,7 @@ abstract class ModelManager {
 	 *
 	 * @param Key $key
 	 * @param mixed $value
-	 * @return int the count deleted model
+	 * @return int the count of deleted model
 	 * @throws \temple\data\persistence\db\DBException
 	 */
 	public abstract function deleteByKey(Key $key, $value) ;
