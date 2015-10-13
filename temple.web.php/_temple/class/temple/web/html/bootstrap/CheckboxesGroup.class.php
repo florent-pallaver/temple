@@ -32,7 +32,10 @@ class CheckboxesGroup extends AbstractFormField {
 	 */
 	public function setValue($value) {
 		// TODO revoir algo
-		$values = is_array($value) ? $value : [$value] ;
+		$values = _eia($value) ;
+		foreach($values as $k => $v) {
+			
+		}
 		foreach($this->checkboxes as $v => $cb) {
 			$cb->setAttribute('checked', in_array($v, $values) ? 'checked' : null) ;
 		}
