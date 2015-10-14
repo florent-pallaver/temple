@@ -7,9 +7,7 @@ namespace temple\util\human\sport ;
  *
  * @author florent
  */
-final class RugbyUnionPosition {
-
-	use \temple\Enum;
+final class RugbyUnionPosition extends \temple\Enumeration {
 
 	/**
 	 * @var RugbyUnionPosition

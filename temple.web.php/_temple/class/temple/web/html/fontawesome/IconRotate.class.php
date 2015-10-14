@@ -7,9 +7,7 @@ namespace temple\web\html\fontawesome;
  *
  * @author flominou
  */
-final class IconRotate {
-	
-	use \temple\Enum ;
+final class IconRotate extends \temple\Enumeration {
 	
 	/**
 	 * 90° rotation

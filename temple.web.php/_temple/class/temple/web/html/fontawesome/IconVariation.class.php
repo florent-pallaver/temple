@@ -7,9 +7,7 @@ namespace temple\web\html\fontawesome;
  *
  * @author flominou
  */
-final class IconVariation implements \temple\web\html\IconVariation {
-	
-	use \temple\Enum ;
+final class IconVariation extends \temple\Enumeration implements \temple\web\html\IconVariation {
 	
 	/**
 	 * fixes the width of the icon

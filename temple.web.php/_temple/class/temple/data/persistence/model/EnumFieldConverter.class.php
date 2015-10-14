@@ -19,9 +19,9 @@ class EnumFieldConverter extends AbstractFieldConverter {
 	 */
 	private $enumClass ;
 	
-	protected function __construct(\ReflectionClass $enumClass) {
+	protected function __construct($enumClass) {
 		parent::__construct() ;
-		$this->enumClass = $enumClass;
+		$this->enumClass = new \ReflectionClass($enumClass);
 	}
 	
 	protected function toDBValue0($notNullValue) {
@@ -29,20 +29,20 @@ class EnumFieldConverter extends AbstractFieldConverter {
 	}
 
 	protected function toPHPValue0($notNullValue) {
+		\temple\Logger::getInstance()->debug('getByOrdinal ' . $this->enumClass->name) ;
 		return $this->enumClass->getMethod(self::GET_BY_ORDINAL_METHOD)->invoke(null, $notNullValue) ;
 	}
 
 	/**
 	 * 
-	 * @param \ReflectionClass $enumClass
+	 * @param string $enumClass
 	 * @return FieldConverter
 	 */
-	public static function getInstance(\ReflectionClass $enumClass) {
-		$en = $enumClass->getName() ;
-		if(!isset(self::$converters[$en])) {
-			self::$converters[$en] = new EnumFieldConverter($enumClass) ;
+	public static function getInstance($enumClass) {
+		if(!isset(self::$converters[$enumClass])) {
+			self::$converters[$enumClass] = new EnumFieldConverter($enumClass) ;
 		}
-		return self::$converters[$en] ;
+		return self::$converters[$enumClass] ;
 	}
 	
 }

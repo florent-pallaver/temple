@@ -7,9 +7,7 @@ namespace temple\web\html\bootstrap;
  *
  * @author florent
  */
-class NavbarVariant {
-
-	use \temple\Enum;
+class NavbarVariant extends \temple\Enumeration {
 
 	/**
 	 * @var NavbarVariant

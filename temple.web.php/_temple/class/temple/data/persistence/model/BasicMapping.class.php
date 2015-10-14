@@ -78,7 +78,7 @@ class BasicMapping extends AbstractMapping {
 	 * @param string $colName
 	 * @return \temple\data\persistence\model\BasicMapping
 	 */
-	public static final function createEnum(\ReflectionProperty $field, \ReflectionClass $enumClass, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
+	public static final function createEnum(\ReflectionProperty $field, $enumClass, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
 		return new BasicMapping($field, $insertable, $updatable, EnumFieldConverter::getInstance($enumClass), $constraints, $colName) ;
 	}
 

@@ -8,25 +8,91 @@ namespace temple;
  * If in need to define your own <code>_init()</code> function, make sure to call <code>self::_enumInit()</code> to perform the initialization provided by this trait.
  * @author florent
  */
-interface Enumeration {
+abstract class Enumeration implements \Serializable {
 
-	/**
-	 * TODOC
-	 */
-	function getOrdinal() ;
-
-	/**
-	 * TODOC
-	 */
-	function getName() ;
+	/** @var array */
+	private static $_all = [] ;
 	
-	function __toString() ;
+	/** @var number */
+	private $ordinal;
+
+	/** @var string */
+	private $name;
+
+	protected function __construct($name) {
+		if(!isset(self::$_all[static::class])) {
+			self::$_all[static::class] = [] ;
+		}
+		$this->ordinal = count(self::$_all[static::class]) ;
+		$this->name = $name ;
+		self::$_all[static::class][] = $this ;
+	}
+
+	/**
+	 * @return int
+	 */
+	public final function getOrdinal() {
+		return $this->ordinal;
+	}
+
+	/**
+	 * @return string
+	 */
+	public final function getName() {
+		return $this->name;
+	}
+
+	public function __toString() {
+		return $this->name ;
+	}
 	
 	/**
 	 * 
-	 * @param type $other
+	 * @param mixed $other
 	 * @return boolean
 	 */
-	function equals($other) ;
+	public final function equals($other) {
+		return (static::class === get_class($other)) && ($this->ordinal === $other->ordinal) ;
+	}
+	
+	public function serialize() {
+		return $this->ordinal . ':' . $this->name ;
+	}
 
+	public function unserialize($serialized) {
+		$e = explode(':', $serialized) ;
+		$this->ordinal = $e[0] ;
+		$this->name = $e[1] ;
+	}
+	
+	/**
+	 * TODOC
+	 *
+	 * @return array :
+	 */
+	public static function getAll() {
+		return self::$_all[static::class] ;
+	}
+
+	/**
+	 * 
+	 * @param int $ordinal
+	 * @return 
+	 */
+	public static function getByOrdinal($ordinal) {
+		return _iod(self::$_all[static::class], $ordinal) ;
+	}
+
+	protected static function _initEnumeration() {
+		$c = static::class ;
+		$rc = new \ReflectionClass($c);
+		$sps = $rc->getStaticProperties();
+		foreach ($sps as $n => $sp) {
+			$p = $rc->getProperty($n);
+			if ($p->isPublic()) {
+				$p->setValue(new $c($p->getName()));
+			}
+		}
+	}
+	
 }

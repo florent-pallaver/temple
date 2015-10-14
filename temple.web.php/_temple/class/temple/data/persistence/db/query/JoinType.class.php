@@ -7,9 +7,7 @@ namespace temple\data\persistence\db\query ;
  *
  * @author florent
  */
-final class JoinType {
-
-	use \temple\Enum ;
+final class JoinType extends \temple\Enumeration {
 
 	/**
 	 * @var JoinType

@@ -7,10 +7,8 @@ namespace temple\web\html\bootstrap;
  *
  * @author florent
  */
-final class CssVariant {
+final class CssVariant extends \temple\Enumeration {
 
-	use \temple\Enum ;
-	
 	/**
 	 * Special CssVariant to use when none is needed/wanted.
 	 * @var CssVariant

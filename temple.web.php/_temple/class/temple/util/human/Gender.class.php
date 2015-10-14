@@ -7,9 +7,7 @@ namespace temple\util\human;
  *
  * @author florent
  */
-final class Gender implements \temple\util\Iconable {
-
-	use \temple\Enum;
+final class Gender extends \temple\Enumeration implements \temple\util\Iconable {
 
 	/**
 	 * @var Gender

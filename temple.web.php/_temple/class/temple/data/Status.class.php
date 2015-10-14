@@ -7,10 +7,8 @@ namespace temple\data;
  *
  * @author florent
  */
-final class Status {
+final class Status extends \temple\Enumeration {
 
-	use \temple\Enum ;
-	
 	/**
 	 * @var Status
 	 */

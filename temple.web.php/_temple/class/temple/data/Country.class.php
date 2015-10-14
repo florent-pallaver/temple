@@ -7,9 +7,7 @@ namespace temple\data ;
  *
  * @author florent
  */
-final class Country {
-
-	use \temple\Enum;
+final class Country extends \temple\Enumeration {
 
 	public static $AFGHANISTAN; // 0
 	public static $ALAND_ISLANDS; // 1

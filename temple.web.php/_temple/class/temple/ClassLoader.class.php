@@ -43,7 +43,6 @@ final class ClassLoader {
 				$loadedPath = $path;
 				$this->logger->finest('loading ' . $path . ' from directory ' . getcwd());
 //				$this->logger->finest(file_get_contents($path)) ;
-				
 				include $path;
 				$this->logger->fine($className . ' auto loaded');
 				break;
@@ -67,6 +66,9 @@ final class ClassLoader {
 		if (!$this->stack) {
 			self::$current = null;
 			foreach ($this->toInit as $c) {
+				if($c->isSubclassOf(Enumeration::class)) {
+					$this->runInitMethod($c, 'Enumeration', true) ;
+				}
 				foreach ($c->getTraits() as $t) {
 					$this->runInitMethod($c, $t->getShortName());
 				}
@@ -75,15 +77,17 @@ final class ClassLoader {
 		}
 	}
 
-	private function runInitMethod(\ReflectionClass $rc, $suffix = '') {
+	private function runInitMethod(\ReflectionClass $rc, $suffix = '', $includeOverriden = false) {
 		$mn = self::STATIC_INITIALIZER_METHOD_NAME . $suffix;
 		if ($rc->hasMethod($mn)) {
 			$rm = $rc->getMethod($mn);
-			if ($rm->getDeclaringClass()->getName() === $rc->getName() && $rm->isStatic() && $rm->isPrivate()) {
-				$rm->setAccessible(true);
-				$rm->invoke(null);
-				$rm->setAccessible(false);
-				$this->logger->fine($rc->getName() . '::' . $rm->getName() . ' executed');
+			if($rm->isStatic()) {
+				if ($includeOverriden || ($rm->getDeclaringClass()->getName() === $rc->getName() && $rm->isPrivate())) {
+					$rm->setAccessible(true);
+					$rm->invoke(null);
+					$rm->setAccessible(false);
+					$this->logger->fine($rc->getName() . '::' . $rm->getName() . ' executed');
+				}
 			}
 		}
 	}
