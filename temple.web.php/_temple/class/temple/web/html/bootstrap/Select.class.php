@@ -24,7 +24,7 @@ class Select extends AbstractFormField {
 	public function __construct($name, $cssClass = 'form-control') {
 		parent::__construct('select', $cssClass);
 		$this->setValueCallback = function($v) {
-			$sv = strval($v);
+			$sv = _vts($v);
 			$option = $this->getChild($sv);
 			if ($option) {
 				$option->setAttribute('selected', 'selected');
@@ -40,6 +40,14 @@ class Select extends AbstractFormField {
 		return $this ;
 	}
 
+	/**
+	 * @param boolean $required
+	 * @return Select
+	 */
+	public function setRequired($required) {
+		return $this->setAttribute('required', $required ? 'required' : null);
+	}
+	
 	/**
 	 * 
 	 * @param boolean $m
@@ -83,6 +91,8 @@ class Select extends AbstractFormField {
 		$s = new Select($name) ;
 		if(!$multiple && $noSelectionLabel !== null) {
 			$s->addNullOption($noSelectionLabel);
+		} else {
+			$s->setRequired(true) ;
 		}
 		foreach($all as $nm) {
 			$s->addOption($nm->getId(), $nm->getName()) ;
@@ -102,6 +112,8 @@ class Select extends AbstractFormField {
 		$s = new Select($name) ;
 		if(!$multiple && $noSelectionLabel !== null) {
 			$s->addNullOption($noSelectionLabel);
+		} else {
+			$s->setRequired(true) ;
 		}
 		foreach($all as $e) {
 			$s->addOption($e->getOrdinal(), $e) ;

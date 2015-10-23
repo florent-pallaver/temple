@@ -54,9 +54,8 @@ class Link extends AbstractComponent {
 	 * @return Link
 	 */
 	public static function createButton($href, $e = null, CssVariant $variant = null, $cssClass = null) {
-		$l = new Link($href, HTMLUtil::toHTMLElement($e)) ;
-		$v = _dif($variant, CssVariant::$DEFAULT) ;
-		return $l->addCssClass($cssClass)->addCompositeCssClass('btn', $v) ;
+		$l = Link::create($href, $e, $cssClass) ;
+		return $l->setAttribute('role', 'button')->addCompositeCssClass('btn', _dif($variant, CssVariant::$DEFAULT)) ;
 	}
 	
 	/**
@@ -69,4 +68,13 @@ class Link extends AbstractComponent {
 		return new Link('mailto:'.$email, HTMLUtil::toHTMLElement($email), $cssClass) ;
 	}
 	
+	/**
+	 * 
+	 * @param string $tel
+	 * @param string $cssClass
+	 * @return \temple\web\html\bootstrap\Link
+	 */
+	public static function createTel($tel, $content = null, $cssClass=null) {
+		return new Link('tel:'.$tel, $content === null ? HTMLUtil::toHTMLElement($tel) : $content, $cssClass) ;
+	}
 }

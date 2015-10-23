@@ -3,6 +3,7 @@
 namespace temple\web\html\bootstrap ;
 
 use temple\controller\Config ;
+use temple\controller\Controller ;
 
 /**
  * Description of ViewUtil
@@ -27,6 +28,23 @@ final class ViewUtil {
 
 	/**
 	 * 
+	 * @param mixed $controller  \temple\controller\Controller | string 
+	 * @param boolean $confirm
+	 * @param \temple\web\html\bootstrap\CssVariant $variant
+	 * @param boolean $showText
+	 * @return Button
+	 */
+	public static function createSubmit($controller , $confirm = false, CssVariant $variant = null, $showText = true) {
+		$c = $controller instanceof Controller ? $controller : self::newIntance($controller ) ;
+		$b = Button::createSubmit2($c->getIcon(), $showText ? $c->getName() : '', $variant) ;
+		if($confirm) {
+			$b->setToConfirm() ;
+		}
+		return $b ;
+	}
+	
+	/**
+	 * 
 	 * @param string $controllerClass
 	 * @param array $fields
 	 * @param boolean $confirm
@@ -45,14 +63,10 @@ final class ViewUtil {
 				$f->addFormGroup($all[$field->getName()], $field) ;
 			}
 		}
-		$b = Button::createSubmit2($c->getIcon(), $showText ? $c->getName() : '', $variant) ;
-		if($confirm) {
-			$b->setToConfirm() ;
-		}
-		$f->addField($b) ;
+		$f->addField(self::createSubmit($c, $confirm, $variant, $showText)) ;
 		return $f;
 	}
-
+	
 	/**
 	 * 
 	 * @param string $class

@@ -52,6 +52,10 @@ abstract class Enumeration implements \Serializable {
 	 * @return boolean
 	 */
 	public final function equals($other) {
+		$c = static::class ;
+		Logger::getInstance($c)->info( $other instanceof $c ? strval($this) . ' ' . strval($other) : 'non') ;
+		
+		
 		return (static::class === get_class($other)) && ($this->ordinal === $other->ordinal) ;
 	}
 	
@@ -63,6 +67,13 @@ abstract class Enumeration implements \Serializable {
 		$e = explode(':', $serialized) ;
 		$this->ordinal = $e[0] ;
 		$this->name = $e[1] ;
+	}
+	
+	/**
+	 * @return \ReflectionClass
+	 */
+	public static function _class() {
+		return new \ReflectionClass(static::class) ;
 	}
 	
 	/**

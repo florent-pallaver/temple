@@ -19,6 +19,8 @@ final class MainController extends AbstractRequestController {
 	private static $defaultView = 'home';
 	private static $viewNames = [];
 
+	private static $locales = ['en' => 'en_GB.utf8', 'fr' => 'fr_FR.utf8'] ;
+	
 	public function getActionDescription() {
 		return 'process request';
 	}
@@ -54,6 +56,7 @@ final class MainController extends AbstractRequestController {
 		$cn = Config::$CONTROLLERS_BASE_NAMESPACE . '\\' . ($a && $a != Config::$VIEW_ACTION ? ($vn . '\\'. _fctuc($a)) : _fctuc($vn)) . self::$suffix;
 		// specify locale before creating response and causing any exception
 		// FIXME un peu pourri comme impl !
+		setlocale(LC_TIME, self::$locales[Config::$LOCALE]) ;
 		ClassLoader::add(TEMPLE_LOCALE_PATH . Config::$LOCALE . DIRECTORY_SEPARATOR, false) ;
 		ClassLoader::add(CUSTOM_LOCALE_PATH . Config::$LOCALE . DIRECTORY_SEPARATOR, false, '.php') ;
 		if(Config::$LOCALE !== Config::$DEFAULT_LOCALE) {

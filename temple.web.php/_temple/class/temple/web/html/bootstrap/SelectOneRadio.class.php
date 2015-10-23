@@ -86,21 +86,34 @@ class SelectOneRadio extends AbstractFormField {
 	 * 
 	 * @param type $name
 	 * @param array $options
-	 * @param mixed value
+	 * @param mixed $val Enumeration or int
 	 * @param string $radioCssClass
 	 * @param array $optionVariants a CssVariant array
 	 * @param boolean $required
 	 * @return SelectOneRadio
 	 */
-	public static function createButtonGroup($name, array $options, $value = null, $radioCssClass = null, array $optionVariants = [], 
+	public static function createButtonGroup($name, array $options, $val = null, $radioCssClass = null, array $optionVariants = [], 
 			$required = true) {
 		$sor = new SelectOneRadio($name, 'btn-group', $radioCssClass, $required);
+		$value = _eti($val) ;
 		foreach ($options as $v => $label) {
 			$sor->addButtonOption($v, $label, ($value !== null && $v == $value ? 'active' : NULL), _iod($optionVariants, $v));
 		}
 		return $sor->setValue($value)->setData(['toggle' => 'buttons']);
 	}
 
+	/**
+	 * 
+	 * @param string $name
+	 * @param boolean $val
+	 * @param string $radioCssClass
+	 * @param array $optionVariants
+	 * @return SelectOneRadio
+	 */
+	public static function createYesNoGroup($name, $val = false, $radioCssClass = null, array $optionVariants = []) {
+		return self::createButtonGroup($name, [\temple\CommonLocale::NO, \temple\CommonLocale::YES], $val, $radioCssClass, $optionVariants, true) ;
+	}
+	
 	/**
 	 * 
 	 * @param \temple\web\html\bootstrap\CssVariant $variant

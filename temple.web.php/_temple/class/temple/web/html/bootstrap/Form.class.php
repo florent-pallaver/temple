@@ -80,7 +80,7 @@ class Form extends AbstractComponent {
 	 * @param \temple\web\html\bootstrap\Component $comp
 	 * @return \temple\web\html\bootstrap\Form
 	 */
-	public function addField(\temple\web\html\HTMLNode $comp) {
+	public function addField(\temple\web\html\HTMLElement $comp) {
 		$this->lastFieldset->addChild($comp) ;
 		if(false) {
 		}

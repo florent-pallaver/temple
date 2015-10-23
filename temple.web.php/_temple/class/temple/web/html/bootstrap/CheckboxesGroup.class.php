@@ -31,13 +31,9 @@ class CheckboxesGroup extends AbstractFormField {
 	 * @return CheckboxesGroup
 	 */
 	public function setValue($value) {
-		// TODO revoir algo
-		$values = _eia($value) ;
-		foreach($values as $k => $v) {
-			
-		}
+		$values = self::enumsToInts($value) ;
 		foreach($this->checkboxes as $v => $cb) {
-			$cb->setAttribute('checked', in_array($v, $values) ? 'checked' : null) ;
+			$cb->setAttribute('checked', in_array($v, $values, true) ? 'checked' : null) ;
 		}
 		return $this;
 	}
@@ -58,10 +54,8 @@ class CheckboxesGroup extends AbstractFormField {
 		$r = Input::createCheckbox($this->name, $value)
 				->addCssClass($this->checkboxesCssClass)
 				->setAttribute('autocomplete', 'off') ;
-		$l = ComponentFactory::createComponent('label', $labelCssClass, $r)
-			->addChild(ComponentFactory::toHTMLElement($label));
 		$this->checkboxes[$value] = $r ;
-		return $this->addChild($l, $value) ;
+		return $this->addChild($this->createHTMLNode('label', $labelCssClass, [$r, $label]), $value) ;
 	}
 
 	public function addButtonOption($value, $label, $labelCssClass = null, CssVariant $labelCssVariant = null) {
@@ -95,10 +89,11 @@ class CheckboxesGroup extends AbstractFormField {
 	 */
 	public static function createButtonGroup($name, array $options, array $values = [], $checkboxesCssClass = null, array $optionVariants = []) {
 		$sor = new CheckboxesGroup($name, 'btn-group', $checkboxesCssClass);
+		$ints = self::enumsToInts($values) ;
 		foreach ($options as $v => $label) {
-			$sor->addButtonOption($v, $label, (in_array($v, $values, true) ? 'active' : NULL), _iod($optionVariants, $v));
+			$sor->addButtonOption($v, $label, (in_array($v, $ints) ? 'active' : NULL), _iod($optionVariants, $v));
 		}
-		return $sor->setValue($values)->setData(['toggle' => 'buttons']);
+		return $sor->setValue($ints)->setData(['toggle' => 'buttons']);
 	}
 
 	/**
@@ -107,6 +102,19 @@ class CheckboxesGroup extends AbstractFormField {
 	 */
 	public static function setDefaultCssVariant(CssVariant $variant) {
 		self::$defaultCssVariant = $variant ;
+	}
+	
+	/**
+	 * 
+	 * @param array $enums
+	 * @return array
+	 */
+	private static function &enumsToInts(array $enums) {
+		$ints = [] ;
+		foreach($enums as $v) {
+			$ints[] = _eti($v) ;
+		}
+		return $ints ;
 	}
 	
 	private static function _init() {

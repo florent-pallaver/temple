@@ -52,7 +52,9 @@ TempleForm.prototype.submitDone = function(result) {
 				field.closest('.form-group').addClass('has-error') ;
 				field.after('<small class="help-block _temple_feedback">' + feedbacks[keys[i]] + '</small>' ) ;
 			}
-			this.form[keys[0]].focus() ;
+			if(this.form[keys[0]] && typeof this.form[keys[0]].focus === 'function') {
+				this.form[keys[0]].focus() ;
+			}
 		}
 	}
 };

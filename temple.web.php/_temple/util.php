@@ -58,3 +58,25 @@ function _fctlc($s) {
 function _fctuc($s) {
     return strtoupper($s{0}) . substr($s, 1) ;
 }
+
+/**
+ * Enumeration To Int
+ * @param temple\Enumeration | mixed $e
+ * @return int
+ */
+function _eti($e) {
+	return $e instanceof temple\Enumeration ? $e->getOrdinal() : ($e === null ? $e : intval($e)) ;
+}
+
+/**
+ * Value To Scalar
+ * @param mixed $v
+ * @return ordinal if Enumeration, null if null and strval otherwise
+ */
+function _vts($v) {
+	return $v instanceof temple\Enumeration 
+			? $v->getOrdinal() 
+			: ($v === null 
+					? $v 
+					: strval($v)) ;
+}

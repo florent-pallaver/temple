@@ -114,7 +114,7 @@ abstract class AbstractActionController extends AbstractRequestController {
     }
 
     private function postString0($key, $maxLength, $minLength = 0, $autoCrop = false, $filter = FILTER_DEFAULT) {
-        $str = $this->checkValue(filter_input(INPUT_POST, $key, $filter), $key, $minLength > 0);
+        $str = $this->checkValue(trim(filter_input(INPUT_POST, $key, $filter)), $key, $minLength > 0);
         if ($str !== null) {
             if (strlen($str) < $minLength) {
                 $this->setFeedback($key, sprintf(L::FAIL_MIN_LENGTH, $minLength));

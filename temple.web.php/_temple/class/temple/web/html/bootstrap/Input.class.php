@@ -67,17 +67,27 @@ class Input extends AbstractFormField {
 	public function setMaxLength($max) {
 		return $this->setAttribute('maxlength', $max > 0 ? $max : null);
 	}
+	
+	/**
+	 * @param string $pattern
+	 * @return Input
+	 */
+	public function setPattern($pattern) {
+		return $this->setAttribute('pattern', $pattern) ;
+	}
 
 	/**
 	 * 
-	 * @param type $name
-	 * @param type $placeholder
-	 * @param type $required
-	 * @param type $cssClass
+	 * @param string $name
+	 * @param string $placeholder
+	 * @param boolean $required
+	 * @param int $maxLength
+	 * @param string $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
-	public static function create($name, $placeholder, $required = false, $cssClass = 'form-control') {
-		return new Input($name, self::TYPE_TEXT, $placeholder, $required, $cssClass);
+	public static function create($name, $placeholder, $required = false, $maxLength = 0, $cssClass = 'form-control') {
+		$i = new Input($name, self::TYPE_TEXT, $placeholder, $required, $cssClass) ;
+		return $i->setMaxLength($maxLength) ;
 	}
 
 	/**
@@ -123,14 +133,16 @@ class Input extends AbstractFormField {
 
 	/**
 	 * 
-	 * @param type $name
-	 * @param type $placeholder
-	 * @param type $required
-	 * @param type $cssClass
+	 * @param string $name
+	 * @param string $placeholder
+	 * @param boolean $required
+	 * @param int $maxLength
+	 * @param string $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
-	public static function createTel($name, $placeholder, $required = false, $cssClass = 'form-control') {
-		return new Input($name, self::TYPE_TELEPHONE, $placeholder, $required, $cssClass);
+	public static function createTel($name, $placeholder, $required = false, $maxLength = 0, $cssClass = 'form-control') {
+		$i = new Input($name, self::TYPE_TELEPHONE, $placeholder, $required, $cssClass);
+		return $i->setMaxLength($maxLength) ;
 	}
 	/**
 	 * 

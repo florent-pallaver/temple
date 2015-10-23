@@ -4,7 +4,10 @@ namespace temple\data\persistence\model;
 
 /**
  * Description of Entity
- *
+ * <br>
+ * TODOC
+ * <br>
+ * @see $PK_FIELDS
  * @author florent
  */
 trait Entity {
@@ -21,9 +24,19 @@ trait Entity {
 	 */
 	private static $PK;
 
+	/**
+	 * Default to <code>[id]</code>
+	 * @var array
+	 */
+	private static $PK_FIELDS = ['id'] ;
+	
+	/**
+	 * 
+	 * @return Key
+	 */
 	public static function getPK() {
 		if (!self::$PK) {
-			self::$PK = new Key(self::_class(), ['id'], true);
+			self::$PK = new Key(self::_class(), self::$PK_FIELDS, true);
 		}
 		return self::$PK;
 	}
