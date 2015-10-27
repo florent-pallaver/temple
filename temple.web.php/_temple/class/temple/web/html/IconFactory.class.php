@@ -25,11 +25,11 @@ abstract class IconFactory {
 	 * TODOC
 	 * @param string $name
 	 * @param array $variations array of IconVariation 
-	 * @return FrameworkComponent
+	 * @return FrameworkComponent or null if $anme is null
 	 * @see IconVariation
 	 */
 	public final function createIcon($name, array $variations = []) {
-		return $this->newIcon($name, $variations)->setAttribute('aria-hidden', 'true') ;
+		return $name ? $this->newIcon($name, $variations)->setAttribute('aria-hidden', 'true') : null;
 	}
 	
 	/**

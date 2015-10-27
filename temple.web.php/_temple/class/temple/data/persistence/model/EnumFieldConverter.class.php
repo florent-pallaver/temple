@@ -29,7 +29,7 @@ class EnumFieldConverter extends AbstractFieldConverter {
 	}
 
 	protected function toPHPValue0($notNullValue) {
-		\temple\Logger::getInstance()->debug('getByOrdinal ' . $this->enumClass->name) ;
+//		\temple\Logger::getInstance()->debug('getByOrdinal ' . $this->enumClass->name) ;
 		return $this->enumClass->getMethod(self::GET_BY_ORDINAL_METHOD)->invoke(null, $notNullValue) ;
 	}
 

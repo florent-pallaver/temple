@@ -28,6 +28,10 @@ trait EntityCommon {
 		self::$mappings[$fieldName] = new BasicMapping(self::_property($fieldName), $insertable, $updatable, $converter, $constraints, $colName) ;
 	}
 
+	private static function setDateMapping($fieldName, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
+		self::$mappings[$fieldName] = BasicMapping::createDate(self::_property($fieldName), $insertable, $updatable, $constraints, $colName) ;
+	}
+
 	private static function setDateTimeMapping($fieldName, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
 		self::$mappings[$fieldName] = BasicMapping::createDateTime(self::_property($fieldName), $insertable, $updatable, $constraints, $colName) ;
 	}

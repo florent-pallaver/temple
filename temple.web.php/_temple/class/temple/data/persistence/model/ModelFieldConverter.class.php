@@ -3,7 +3,6 @@
 namespace temple\data\persistence\model;
 
 use ReflectionClass ;
-use ReflectionProperty ;
 
 /**
  * Description of ModelFieldConverter
@@ -45,7 +44,7 @@ class ModelFieldConverter extends AbstractFieldConverter {
 			$o = $notNullValue ;
 		} else {
 			$o = $this->proxyClass->newInstance() ;
-			$o->proxyInit($this->property, $model, $notNullValue) ;
+			$o->proxyInit($this->property, $notNullValue) ;
 		}
 		return $o ;
 	}

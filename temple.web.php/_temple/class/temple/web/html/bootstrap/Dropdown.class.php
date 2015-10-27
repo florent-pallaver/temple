@@ -2,8 +2,6 @@
 
 namespace temple\web\html\bootstrap;
 
-use temple\web\html\HTMLElement as HE;
-
 /**
  * Description of Dropdown
  *
@@ -16,18 +14,18 @@ class Dropdown extends AbstractComponent {
 	/**
 	 * Adds an item to this dropdown
 	 * 
-	 * @param \temple\web\html\HTMLElement $item
+	 * @param mixed $item
 	 * @param string $cssClass
-	 * @return AbstractDropdown
+	 * @return Dropdown
 	 */
-	public function addItem(HE $item = null, $cssClass = null) {
+	public function addItem($item = null, $cssClass = null) {
 		$this->getItemList()->addItem($item, $cssClass);
 		return $this;
 	}
 
 	/**
 	 * 
-	 * @return AbstractDropdown
+	 * @return Dropdown
 	 */
 	public function addDivider() {
 		$this->getItemList()->addDivider();
@@ -37,7 +35,7 @@ class Dropdown extends AbstractComponent {
 	/**
 	 * 
 	 * @param type $header
-	 * @return AbstractDropdown
+	 * @return Dropdown
 	 */
 	public function addHeader($header) {
 		return $this->addItem($this->toHTMLElement($header), 'dropdown-header');
@@ -57,10 +55,10 @@ class Dropdown extends AbstractComponent {
 
 	/**
 	 * 
-	 * @param type $icon
-	 * @param type $text
+	 * @param string $icon
+	 * @param mixed $text
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
-	 * @param type $cssClass
+	 * @param string $cssClass
 	 * @return Dropdown
 	 */
 	public static function createButton($icon, $text, CssVariant $variant = null, $cssClass = null) {
@@ -73,13 +71,12 @@ class Dropdown extends AbstractComponent {
 
 	/**
 	 * 
-	 * @param type $icon
-	 * @param type $text
+	 * @param mixed $content
 	 * @return Dropdown
 	 */
-	public static function createNavLink($icon, $text) {
-		$d = new Dropdown('li', 'dropdown');
-		return $d->addChild(Link::create('#', [\temple\web\html\IconFactory::getInstance()->createText($icon, $text), ComponentFactory::$CARET], 'dropdown-toggle')
+	public static function createNavLink($content) {
+		$d = new Dropdown('li', 'dropdown') ;
+		return $d->addChild(Link::create('#', [$content, ComponentFactory::$CARET], 'dropdown-toggle')
 								->setData(['toggle' => 'dropdown']));
 	}
 

@@ -33,7 +33,7 @@ trait ModelProxy {
 	
 	private function lazyLoad() {
 		if(!$this->instance) {
-			Logger::getInstance('PROXY')->debug('Lazily loading ['.parent::_class()->getName().', '.$this->getId().']');
+			Logger::getInstance('Temple.PROXY')->debug('Lazily loading ['.parent::_class()->getName().', '.$this->getId().']');
 			// setter les fields parents a la place c'est mieux !
 			$this->instance = ModelManager::getInstance()->findByKey(parent::getPK(), $this->getId()) ;
 			if($this->property && $this->holder) {

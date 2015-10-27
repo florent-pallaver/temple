@@ -1,12 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace temple\web\html;
+
+use temple\CommonLocale ;
 
 /**
  * Description of HTMLUtil
@@ -16,6 +12,12 @@ namespace temple\web\html;
 final class HTMLUtil {
 
 	private function __construct() {}
+	
+	/**
+	 * TODOC
+	 * @var type 
+	 */
+	public static $DATE_FORMAT = CommonLocale::DATE_FORMAT; 
 	
 	/**
 	 * Makes an \temple\web\html\HTMLElement out of a given variable.
@@ -28,8 +30,7 @@ final class HTMLUtil {
 		} elseif ($x instanceof \temple\util\Iconable) {
 			$e = IconFactory::getInstance()->createText($x->getIcon(), $x);
 		} elseif ($x instanceof \DateTime) {
-			// FIXME config format !
-			$e = new HS($x->format('l, d F Y, g:i a'));
+			$e = new HTMLString(strftime(self::$DATE_FORMAT, $x->getTimestamp()));
 		} elseif ($x !== null) {
 			if (is_array($x)) {
 				$a = [];

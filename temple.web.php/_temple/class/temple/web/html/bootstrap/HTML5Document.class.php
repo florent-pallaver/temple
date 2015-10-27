@@ -17,9 +17,9 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 	const MAIN_ID = '_documentMain';
 	const FOOTER_ID = '_documentFooter';
 
-        public static $BOOTSTRAP_VERSION = 'gaillards' ;
-        public static $FONT_AWESOME_VERSION = '4_4_0' ;
-        public static $JQUERY_VERSION = '2_1_1' ;
+	public static $BOOTSTRAP_VERSION = '3_3_5' ;
+	public static $FONT_AWESOME_VERSION = '4_4_0' ;
+	public static $JQUERY_VERSION = '2_1_1' ;
         
 	private static $modalsKey = '_modals|' ;
 	private static $scriptsKey = '_scripts|' ;

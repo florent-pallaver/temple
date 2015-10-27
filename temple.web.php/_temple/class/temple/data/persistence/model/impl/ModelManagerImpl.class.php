@@ -169,6 +169,7 @@ class ModelManagerImpl extends ModelManager {
 	}
 
 	public function persistAll(array $models) {
+		throw new \RuntimeException('Not implemented') ;
 	}
 
 	public function update(Model $model) {
@@ -178,7 +179,7 @@ class ModelManagerImpl extends ModelManager {
 	}
 
 	public function updateAll(array $models) {
-
+		throw new \RuntimeException('Not implemented') ;
 	}
 
 	public function deleteByKey(Key $key, $value) {
@@ -194,7 +195,7 @@ class ModelManagerImpl extends ModelManager {
 	}
 
 	public function deleteAll(array $models) {
-
+		throw new \RuntimeException('Not implemented') ;
 	}
 
 }

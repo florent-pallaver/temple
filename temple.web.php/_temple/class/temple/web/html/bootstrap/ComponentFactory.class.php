@@ -51,7 +51,7 @@ abstract class ComponentFactory {
 	 * @param string $nodeName
 	 * @param string $cssClass
 	 * @param mixed $content
-	 * @return \temple\web\html\HTMLNode
+	 * @return \temple\web\html\Node
 	 */
 	public static function createComponent($nodeName, $cssClass = null, $content = null) {
 		return NF::createNodeWithClass($nodeName, $cssClass)->addChild(self::toHTMLElement($content));

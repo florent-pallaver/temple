@@ -2,8 +2,6 @@
 
 namespace temple\web\html\bootstrap;
 
-use temple\web\html\HTMLElement;
-
 /**
  * Description of ItemList
  *
@@ -12,9 +10,10 @@ use temple\web\html\HTMLElement;
 class ItemList extends AbstractComponent {
 
 	/**
+	 * Constructor 
 	 * 
-	 * @param type $nodeType
-	 * @param type $cssClass
+	 * @param boolean $ordered
+	 * @param string $cssClass
 	 */
 	public function __construct($ordered = false, $cssClass = null) {
 		parent::__construct($ordered ? 'ol' : 'ul');
@@ -23,14 +22,14 @@ class ItemList extends AbstractComponent {
 
 	/**
 	 * 
-	 * @param \temple\web\html\HTMLElement $item
-	 * @param type $cssClass
+	 * @param mixed $item
+	 * @param string $cssClass
 	 * @return ItemList
 	 */
-	public final function addItem(HTMLElement $item = null, $cssClass = null) {
+	public final function addItem($item = null, $cssClass = null) {
 		if ($item) {
-			$this->addChild($item instanceof \temple\web\html\HTMLNode && $item->isNode('li') ?
-							$item->addCssClass($cssClass) : new ListItem($item, $cssClass));
+			$this->addChild($item instanceof \temple\web\html\Node && $item->isNode('li') ?
+							$item->addCssClass($cssClass) : new ListItem($this->toHTMLElement($item), $cssClass));
 		}
 		return $this;
 	}

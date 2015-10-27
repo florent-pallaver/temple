@@ -5,16 +5,16 @@ namespace temple\data\persistence\model;
 use temple\util\TempleDateTime ;
 
 /**
- * Description of DateTimeFieldConverter
+ * Description of DateFieldConverter
  *
  * @author florent
  */
-class DateTimeFieldConverter extends AbstractDateFieldConverter {
+class DateFieldConverter extends AbstractDateFieldConverter {
 	
 	use \temple\Singleton ;
 
 	protected function __construct() {
-		parent::__construct(TempleDateTime::SQL_DATE_TIME_FORMAT);
+		parent::__construct(TempleDateTime::SQL_DATE_FORMAT);
 	}
 	
 }

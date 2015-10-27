@@ -62,11 +62,11 @@ abstract class AbstractActionController extends AbstractRequestController {
     }
 
     /**
-     * Default implementation returns <code>false</code>
-     * @return boolean <code>true</code> if the access is denied, <code>false</code> otherwise.
+     * Default implementation returns <code>true</code>
+     * @return boolean <code>true</code> if the access is allowed, <code>false</code> otherwise.
      */
-    protected function isDenied() {
-        return false;
+    protected function isAllowed() {
+        return true;
     }
 
     /**
@@ -76,7 +76,7 @@ abstract class AbstractActionController extends AbstractRequestController {
 
     public final function createResponse() {
         try {
-            if ($this->isDenied()) {
+            if (!$this->isAllowed()) {
                 $this->failure(L::FAIL_ACCESS_DENIED, L::FAIL_ACCESS_DENIED_HINT);
             }
             $this->processRequest();

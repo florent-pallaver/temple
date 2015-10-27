@@ -64,6 +64,19 @@ class BasicMapping extends AbstractMapping {
 	 * @param type $colName
 	 * @return \temple\data\persistence\model\BasicMapping
 	 */
+	public static final function createDate(\ReflectionProperty $field, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
+		return new BasicMapping($field, $insertable, $updatable, DateFieldConverter::getInstance(), $constraints, $colName) ;
+	}
+
+	/**
+	 * 
+	 * @param \ReflectionProperty $field
+	 * @param type $insertable
+	 * @param type $updatable
+	 * @param array $constraints
+	 * @param type $colName
+	 * @return \temple\data\persistence\model\BasicMapping
+	 */
 	public static final function createDateTime(\ReflectionProperty $field, $insertable = true, $updatable = true, array $constraints = [], $colName = null) {
 		return new BasicMapping($field, $insertable, $updatable, DateTimeFieldConverter::getInstance(), $constraints, $colName) ;
 	}

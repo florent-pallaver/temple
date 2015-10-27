@@ -48,14 +48,21 @@ abstract class Enumeration implements \Serializable {
 	
 	/**
 	 * 
+	 * @return string TODOC
+	 */
+	public function toLocalizedString() {
+		$localeClass = static::class . 'Locale' ;
+		return $localeClass::$all[$this->ordinal] ;
+	}
+	
+	/**
+	 * 
 	 * @param mixed $other
 	 * @return boolean
 	 */
 	public final function equals($other) {
-		$c = static::class ;
-		Logger::getInstance($c)->info( $other instanceof $c ? strval($this) . ' ' . strval($other) : 'non') ;
-		
-		
+//		$c = static::class ;
+//		Logger::getInstance($c)->info( $other instanceof $c ? strval($this) . ' ' . strval($other) : 'non') ;
 		return (static::class === get_class($other)) && ($this->ordinal === $other->ordinal) ;
 	}
 	

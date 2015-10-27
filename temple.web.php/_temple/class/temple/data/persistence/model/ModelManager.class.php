@@ -24,8 +24,8 @@ abstract class ModelManager {
 	/**
 	 * TODOC
 	 *
-	 * @param unknown $modelClassName
-	 * @param unknown $id
+	 * @param Key $key
+	 * @param mixed $id
 	 * @return Model
 	 * @throws
 	 */

@@ -9,7 +9,9 @@ namespace temple\util;
  */
 class TempleDateTime extends \DateTime {
 
-	const SQL_DATE_FORMAT = 'Y-m-d H:i:s';
+	const SQL_DATE_FORMAT = 'Y-m-d';
+
+	const SQL_DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
 	/**
 	 * Return difference between $this and $now
@@ -46,7 +48,7 @@ class TempleDateTime extends \DateTime {
 	}
 
 	public function __toString() {
-		return $this->format(self::SQL_DATE_FORMAT);
+		return $this->format(self::SQL_DATE_TIME_FORMAT);
 	}
 
 }
