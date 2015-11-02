@@ -24,7 +24,7 @@ namespace temple\web\mail\phpmailer {
 			//Set who the message is to be sent to
 			$mail->addAddress($email, $nickname);
 			//Set the subject line
-			$mail->Subject = $subject;
+			$mail->Subject = self::$subjectPrefix . $subject;
 			//convert HTML into a basic plain-text alternative body
 			$mail->msgHTML($content);
 			if (!$mail->send()) {
@@ -45,7 +45,7 @@ namespace temple\web\mail\phpmailer {
 				$mail->addBCC($bcc);
 			}
 			//Set the subject line
-			$mail->Subject = $subject;
+			$mail->Subject = self::$subjectPrefix . $subject;
 			//convert HTML into a basic plain-text alternative body
 			$mail->msgHTML($content);
 			if (!$mail->send()) {

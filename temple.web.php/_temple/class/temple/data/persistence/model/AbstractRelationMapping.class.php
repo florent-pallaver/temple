@@ -79,16 +79,20 @@ abstract class AbstractRelationMapping extends AbstractMapping implements Relati
 	
 	public function getDBValue(Model $m) {
 		$o = $this->getValue($m) ;
-		return _eia($o ? $o->getId() : null) ;
+		return _eia($o ? $o->getId() : FieldConverter::NULL_DB_VALUE) ;
  	}
 	
 	public function setPHPValue(Model $m, $value) {
 		$o = null ;
 		if($value !== null) {
-			if(is_object($value) && $this->to->getClass()->isInstance($value)) {
+			$c = $this->to->getClass() ;
+			if(is_object($value) && $c->isInstance($value)) {
 				$o = $value ;
 			} else {
-				$o = ModelManager::getInstance()->getProxy($this->to->getClass(), $value) ;
+				if($this->logger->isFineLoggable()) {
+					$this->logger->fine(sprintf('Getting proxy %s[id=%s] for %s[id=%s]', $c->getName(), $value, $m->getClass()->getName(), $m->getId())) ;
+				}
+				$o = ModelManager::getInstance()->getProxy($c, $value) ;
 				$o->proxyInit($this->field, $m) ;
 			}
 		}

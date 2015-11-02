@@ -29,7 +29,7 @@ function _dif($v, $d) {
  * @return array
  */
 function _eia($v) {
-	return $v === null ? null : (is_array($v) ? $v : [$v]) ;
+	return $v === null ? [null] : (is_array($v) ? $v : [$v]) ;
 }
 
 /**
@@ -38,7 +38,7 @@ function _eia($v) {
  * @return string
  */
 function _str($v) {
-	return is_array($v) ? print_r($v, true) : strval($v) ;
+	return is_array($v) ? print_r($v, true) : ($v instanceof DateTime ? temple\util\DateUtil::localize($v): strval($v)) ;
 }
 
 /**

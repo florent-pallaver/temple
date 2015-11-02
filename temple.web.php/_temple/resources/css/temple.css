@@ -153,3 +153,8 @@ label.required:after {
 	.btn { font-size: 1em ; }
 	.btn.btn-lg { font-size: 1.3em ; }
 }
+
+/* bug bootstrap */
+.media .img-responsive {
+	max-width: none ;
+}

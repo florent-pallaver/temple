@@ -18,6 +18,8 @@ abstract class Mailer {
 	protected static $password = '';
 	protected static $templatePath;
 
+	public static $subjectPrefix = '' ;
+	
 	/**
 	 * 
 	 * @param type $subject

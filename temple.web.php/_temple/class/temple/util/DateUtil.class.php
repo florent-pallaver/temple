@@ -25,5 +25,14 @@ final class DateUtil {
 		return $age ;
 	}
 	
+	/**
+	 * 
+	 * @param \DateTime $d
+	 * @param string $format
+	 * @return string
+	 */
+	public static function localize(\DateTime $d, $format = \temple\CommonLocale::LONG_DATE_FORMAT) {
+		return strftime($format, $d->getTimestamp()) ;
+	}
 
 }

@@ -8,11 +8,11 @@ namespace temple\data\persistence\model;
  * @author florent
  */
 abstract class AbstractFieldConverter 
-//	extends \temple\WithLogger 
+	extends \temple\WithLogger 
 	implements FieldConverter {
 	
 	protected function __construct() {
-//		parent::__construct() ;
+		parent::__construct() ;
 	}
 	
 	public final function toDBValue($value) {

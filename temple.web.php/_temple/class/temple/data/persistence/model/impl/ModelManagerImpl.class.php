@@ -66,9 +66,13 @@ class ModelManagerImpl extends ModelManager {
 			$o = $proxyClass->newInstance() ;
 			$this->getMetamodel($class)->getMappings()['id']->setPHPValue($o, $id) ;
 			self::$proxies[$cn][$id] = $o ;
-			$this->logger->debug("proxy for $cn"."[id=$id] created") ;
+			if($this->logger->isDebugLoggable()) {
+				$this->logger->debug("proxy for $cn"."[id=$id] created") ;
+			}
 		} else {
-			$this->logger->finer("proxy for $cn"."[id=$id] from cache") ;
+			if($this->logger->isFinerLoggable()) {
+				$this->logger->finer("proxy for $cn"."[id=$id] from cache") ;
+			}
 		}
 		return self::$proxies[$cn][$id] ;
 	}

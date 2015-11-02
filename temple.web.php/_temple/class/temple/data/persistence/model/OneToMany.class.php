@@ -16,6 +16,9 @@ final class OneToMany extends AbstractRelationMapping {
 			if(is_array($value)) {
 				$o = $value ;
 			} else {
+				if($this->logger->isFineLoggable()) {
+					$this->logger->fine(sprintf('Getting proxy %1$s[][%2$s=%4$s] for %3$s[id=%4$s]', $this->to->getClass()->getName(), implode(', ', $this->to->getColumnNames()), $m->getClass()->getName(), $m->getId())) ;
+				}
 				$o = new proxy\ArrayProxy($this->to, $m->getId()) ;
 			}
 		}

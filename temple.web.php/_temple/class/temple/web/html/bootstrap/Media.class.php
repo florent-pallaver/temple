@@ -52,8 +52,8 @@ class Media extends AbstractComponent {
 	 * @param type $body
 	 * @return HN
 	 */
-	public static function createImage($href, $src, $alt, $heading, $body, $mediaCssClass='pull-left', $bodyCssClass=null) {
-		$m = new Media('div', $href, NF::createImgNode($src, $alt)->addCssClass('img-responsive'), $heading, null, $mediaCssClass, $bodyCssClass);
+	public static function createImage($href, $src, $alt, $heading, $body, $mediaCssClass='media-left', $bodyCssClass=null) {
+		$m = new Media('div', $href, NF::createImgNode($src, $alt), $heading, null, $mediaCssClass, $bodyCssClass);
 		return $m->addToBody($body);
 	}
 
@@ -92,8 +92,8 @@ class Media extends AbstractComponent {
 	 * @param type $body
 	 * @return HN
 	 */
-	public static function createItemImage($href, $src, $alt, $heading, $body, $mediaCssClass='pull-left', $bodyCssClass=null) {
-		$m = new Media('li', $href, NF::createImgNode($src, $alt)->addCssClass('img-responsive'), $heading, null, $mediaCssClass, $bodyCssClass);
+	public static function createItemImage($href, $src, $alt, $heading, $body, $mediaCssClass='media-left', $bodyCssClass=null) {
+		$m = new Media('li', $href, NF::createImgNode($src, $alt), $heading, null, $mediaCssClass, $bodyCssClass);
 		return $m->addToBody($body);
 	}
 

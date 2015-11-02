@@ -2,6 +2,8 @@
 
 namespace temple\web\html\v5 ;
 
+use temple\util\DateUtil ;
+
 /**
  * Description of Time
  *
@@ -42,7 +44,7 @@ class Time extends \temple\web\html\HTMLNode {
 		if($icon) {
 			$t->addChild(\temple\web\html\IconFactory::getInstance()->createIcon($icon)) ;
 		}
-		$t->addChild(new \temple\web\html\HTMLString(strftime($format, $dateTime->getTimestamp()))) ;
+		$t->addChild(new \temple\web\html\HTMLString(DateUtil::localize($dateTime, $format))) ;
 		return $t ;
 	}
 	

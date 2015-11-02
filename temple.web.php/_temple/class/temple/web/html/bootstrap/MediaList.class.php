@@ -2,8 +2,6 @@
 
 namespace temple\web\html\bootstrap;
 
-use temple\web\html\HTMLElement;
-
 /**
  * Description of MediaList
  *

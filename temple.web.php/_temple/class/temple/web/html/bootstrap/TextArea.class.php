@@ -31,7 +31,7 @@ class TextArea extends AbstractFormField {
 	}
 	
 	public function setValue($value) {
-		$this->addChild(new \temple\web\html\HTMLString($value, false), 'value') ;
+		$this->addChild(new \temple\web\html\HTMLString($value, true), 'value') ;
 		return $this;
 	}
 

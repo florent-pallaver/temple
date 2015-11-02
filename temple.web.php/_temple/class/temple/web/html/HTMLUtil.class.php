@@ -30,7 +30,7 @@ final class HTMLUtil {
 		} elseif ($x instanceof \temple\util\Iconable) {
 			$e = IconFactory::getInstance()->createText($x->getIcon(), $x);
 		} elseif ($x instanceof \DateTime) {
-			$e = new HTMLString(strftime(self::$DATE_FORMAT, $x->getTimestamp()));
+			$e = new HTMLString(\temple\util\DateUtil::localize($x, self::$DATE_FORMAT));
 		} elseif ($x !== null) {
 			if (is_array($x)) {
 				$a = [];

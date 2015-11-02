@@ -274,6 +274,15 @@ abstract class AbstractActionController extends AbstractRequestController {
         return $fn;
     }
 
+	protected final function postModel($key, \temple\data\persistence\model\Key $pk, $required = true) {
+		$id = $this->postInt($key, false) ;
+		$m = $this->getModelManager()->findByKey($pk, $id) ;
+		if($required && !$m) {
+			$this->failure('Model not found!') ;
+		}
+		return $m ;
+	}
+	
     // check FALSE and NULL only to return NULL only if value is one of those
     private function checkValue($value, $key, $required) {
         if (($value === FALSE || $value === NULL)) {
