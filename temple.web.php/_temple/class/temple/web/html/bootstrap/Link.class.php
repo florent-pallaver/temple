@@ -77,4 +77,15 @@ class Link extends AbstractComponent {
 	public static function createTel($tel, $content = null, $cssClass=null) {
 		return new Link('tel:'.$tel, $content === null ? HTMLUtil::toHTMLElement($tel) : $content, $cssClass) ;
 	}
+
+	/**
+	 * 
+	 * @param string $tel
+	 * @param string $content
+	 * @param string $cssClass
+	 * @return \temple\web\html\bootstrap\Link
+	 */
+	public static function createSMS($tel, $content = null, $cssClass=null) {
+		return new Link('sms:'.$tel, $content, $cssClass) ;
+	}
 }

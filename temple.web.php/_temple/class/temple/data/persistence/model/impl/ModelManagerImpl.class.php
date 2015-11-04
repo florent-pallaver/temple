@@ -162,12 +162,17 @@ class ModelManagerImpl extends ModelManager {
 	}
 
 	public function persist(Model $model) {
-		$c = $model->getClass() ;
+		if($model instanceof \temple\data\persistence\model\proxy\_Proxy) {
+			$m = $model->_instance() ;
+		} else {
+			$m = $model ;
+		}
+		$c = $m->getClass() ;
 		$gn = GraphNode::getInstance($c) ;
-		$iq = $gn->newInsert($model) ;
+		$iq = $gn->newInsert($m) ;
 		$mid = $this->driver->query($iq)->getGeneratedId() ;
 		if($mid) {
-			$this->getMetamodel($c)->getMappings()['id']->setPHPValue($model, $mid) ;
+			$this->getMetamodel($c)->getMappings()['id']->setPHPValue($m, $mid) ;
 		}
 		return $mid ;
 	}
@@ -177,8 +182,13 @@ class ModelManagerImpl extends ModelManager {
 	}
 
 	public function update(Model $model) {
-		$gn = GraphNode::getInstance($model->getClass()) ;
-		$uq = $gn->newUpdate($model) ;
+		if($model instanceof \temple\data\persistence\model\proxy\_Proxy) {
+			$m = $model->_instance() ;
+		} else {
+			$m = $model ;
+		}
+		$gn = GraphNode::getInstance($m->getClass()) ;
+		$uq = $gn->newUpdate($m) ;
 		return $this->driver->query($uq)->getRowCount() > 0 ;
 	}
 

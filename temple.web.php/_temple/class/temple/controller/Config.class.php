@@ -31,7 +31,7 @@ final class Config {
      * 
      * @param string $class
 	 * @param string $objectPath does not start with <code>/</code>
-     * @return string
+     * @return \temple\URL
      */
     public static function getURL($class, $objectPath = '') {
         $params = [];

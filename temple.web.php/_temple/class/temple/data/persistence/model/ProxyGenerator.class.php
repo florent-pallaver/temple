@@ -31,7 +31,7 @@ namespace temple\_generated\%1$s ;
 /**
  * Generated class, dot not modify
  */
-class %2$sProxy extends \%1$s\%2$s {
+class %2$sProxy extends \%1$s\%2$s implements \temple\data\persistence\model\proxy\_Proxy {
 
 	use \temple\data\persistence\model\ModelProxy ;
 	

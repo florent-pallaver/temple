@@ -31,6 +31,11 @@ trait ModelProxy {
 //		Logger::getInstance('PROXY')->debug('Destroying proxy ['.parent::_class()->getName().', '.$this->getId().']');
 	}
 	
+	public function _instance() {
+		$this->lazyLoad() ;
+		return $this->instance ;
+	}
+	
 	private function lazyLoad() {
 		if(!$this->instance) {
 			Logger::getInstance('Temple.PROXY')->debug('Lazily loading ['.parent::_class()->getName().', '.$this->getId().']');
