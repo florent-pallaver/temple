@@ -172,6 +172,14 @@ abstract class AbstractActionController extends AbstractRequestController {
     }
 
     protected final function postInt($key, $required = true, $min = null, $max = null) {
+	return $this->postNumber($key, $required, $min, $max) ;
+    }
+
+    protected final function postFloat($key, $required = true, $min = null, $max = null) {
+	return $this->postNumber($key, $required, $min, $max, true) ;
+    }
+
+    private function postNumber($key, $required = true, $min = null, $max = null, $float = false) {
         $options = [];
         if ($min !== null) {
             $options['min_range'] = $min;
@@ -179,7 +187,7 @@ abstract class AbstractActionController extends AbstractRequestController {
         if ($max !== null) {
             $options['max_range'] = $max;
         }
-        $i = filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT, $options);
+        $i = filter_input(INPUT_POST, $key, $float ? FILTER_VALIDATE_FLOAT : FILTER_VALIDATE_INT, $options);
         return $this->checkValue($i, $key, $required);
     }
 

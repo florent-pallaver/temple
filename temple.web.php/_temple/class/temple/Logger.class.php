@@ -29,6 +29,10 @@ final class Logger {
 	public static $MIN_LOG_LEVEL = self::LEVEL_CONFIG;
 	private static $instances = [];
 	private $name;
+	/**
+	 *
+	 * @var resource | boolean
+	 */
 	private $logFile;
 
 	private function __construct($name) {
@@ -74,7 +78,7 @@ final class Logger {
 	}
 	
 	private function _log($str, $level) {
-		if ($this->isLoggable($level)) {
+		if ($this->logFile && $this->isLoggable($level)) {
 			fwrite($this->logFile, '<' . self::$requestId . '>');
 			fwrite($this->logFile, '<' . $this->name . '>');
 			if($level) {
@@ -86,7 +90,9 @@ final class Logger {
 	}
 
 	public function __destruct() {
-		fclose($this->logFile);
+		if($this->logFile) {
+			fclose($this->logFile);
+		}
 	}
 
 	/**
