@@ -9,7 +9,11 @@ namespace temple\web\html;
  */
 class HTMLString extends AbstractHTMLElement {
 
+	/**
+	 * @var HTMLString
+	 */
     public static $NBSP;
+	
     private $string;
     private $formattedString;
     private $nl2br;
