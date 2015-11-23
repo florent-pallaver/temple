@@ -148,8 +148,8 @@ final class HTMLNodeFactory {
 		return self::createNodeWithClass('table', $class)->addChild(new HTMLNode('tbody'), 'tbody') ;
 	}
 
-	public static final function createCssLinkNode($href) {
-		return new HTMLNode('link', ['rel'=>'stylesheet', 'href'=>$href]) ;
+	public static final function createCssLinkNode($href, $media = 'all') {
+		return new HTMLNode('link', ['rel'=>'stylesheet', 'href'=>$href, 'media'=>$media]) ;
 	}
 	
 }
