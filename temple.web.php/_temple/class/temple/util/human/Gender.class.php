@@ -32,11 +32,11 @@ final class Gender extends \temple\Enumeration implements \temple\util\Iconable 
 	private static $_icons = ['venus', 'mars', 'transgender', 'genderless'];
 
 	public final function getIcon() {
-		return _iod(self::$_icons, $this->getOrdinal(), 'question');
+		return _iod(self::$_icons, $this->ordinal(), 'question');
 	}
 
 	public function __toString() {
-		return GenderLocale::$all[$this->getOrdinal()];
+		return GenderLocale::$all[$this->ordinal()];
 	}
 
 }

@@ -52,53 +52,52 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 	/**
 	 * @return \temple\web\html\HTMLNode ;
 	 */
-	public function getHeader() {
+	public final function getHeader() {
 		return $this->getBody()->getChild(self::HEADER_ID) ;
 	}
 
 	/**
 	 * @return \temple\web\html\HTMLNode ;
 	 */
-	public function getMain() {
+	public final function getMain() {
 		return $this->getBody()->getChild(self::MAIN_ID) ;
 	}
 
 	/**
 	 * @return \temple\web\html\HTMLNode ;
 	 */
-	public function getFooter() {
+	public final function getFooter() {
 		return $this->getBody()->getChild(self::FOOTER_ID) ;
 	}
 
 	/**
 	 * 
-	 * @param type $icon
-	 * @param type $title
+	 * @param mixed $title
 	 * @param \temple\web\html\HTMLElement $body
 	 * @param string $cssClass
 	 * @param \temple\web\html\HTMLElement $footer
 	 * @return \temple\web\html\bootstrap\Modal
 	 */
-	public function addModal($icon, $title, HTMLElement $body, $cssClass = '', HTMLElement $footer = null) {
-		$m = new Modal($icon, $title, $body, $footer, $cssClass) ;
+	public final function addModal($title, HTMLElement $body, $cssClass = '', HTMLElement $footer = null) {
+		$m = new Modal($title, $body, $footer, $cssClass) ;
 		$this->getBody()->getChild(self::$modalsKey)->addElement($m) ;
 		return $m ;
 	}
 
-	public function addScript($script) {
+	public final function addScript($script) {
 		$this->getBody()->getChild(self::$scriptsKey)
 				->addElement(NF::createScriptNode()
 						->addChild(new \temple\web\html\HTMLString($script, true))) ;
 		return $this ;
 	}
 
-	public function addScriptLink($src) {
+	public final function addScriptLink($src) {
 		$this->getBody()->getChild(self::$scriptsKey)
 				->addElement(NF::createNode('script', ['src'=>$src])) ;
 		return $this ;
 	}
 
-	public function addCssLink($src) {
+	public final function addCssLink($src) {
 		$this->getHead()->addChild(NF::createCssLinkNode($src)) ;
 		return $this ;
 	}

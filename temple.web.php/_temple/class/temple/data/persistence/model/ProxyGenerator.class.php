@@ -62,7 +62,7 @@ EOD;
 		if(!$pft || $classFile->getLastModificationTime()->getTimestamp() > $pft->getTimestamp()) {
 			$methods = '' ;
 			foreach($c->getMethods(\ReflectionMethod::IS_PUBLIC) as $m) {
-				if(!($m->isFinal() || $m->isStatic() || $m->isConstructor() || $m->isDestructor())) {
+				if(!($m->isFinal() || $m->isStatic() || $m->isConstructor() || $m->isDestructor() || $m->getName() == '__clone')) {
 					$parameters = [] ;
 					foreach($m->getParameters() as $p) {
 						$parameters[] = '$' . $p->getName() ;

@@ -2,8 +2,6 @@
 
 namespace temple\web\html\bootstrap;
 
-use temple\web\html\HTMLNodeFactory as NF;
-
 /**
  * Description of Select
  *
@@ -65,9 +63,11 @@ class Select extends AbstractFormField {
 	 */
 	public function addOption($value, $label) {
 		$v = strval($value);
-		return $this->addChild(NF::createNodeWithString('option', $label)
-								->setAttribute('value', $v)
-								->setAttribute('selected', in_array($v, $this->values) ? 'selected' : null), $v);
+		$o = new \temple\web\html\HTMLNode('option', [
+			'value' => $v, 
+			'selected' => in_array($v, $this->values) ? 'selected' : null
+		]) ;
+		return $this->addChild($o->addChild($this->toHTMLElement($label)), $v);
 	}
 
 	/**
@@ -116,7 +116,7 @@ class Select extends AbstractFormField {
 			$s->setRequired(true) ;
 		}
 		foreach($all as $e) {
-			$s->addOption($e->getOrdinal(), $e) ;
+			$s->addOption($e->ordinal(), $e) ;
 		}
 		return $s->setMultiple($multiple) ;
 	}

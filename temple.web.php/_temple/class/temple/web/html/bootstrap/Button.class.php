@@ -22,11 +22,11 @@ class Button extends AbstractFormField {
      * @param type $caret
      * @param array $btnCssClass
      */
-    public function __construct($type, $innerText = null, CssVariant $variant = null) {
+    public function __construct($type, $inline = null, CssVariant $variant = null) {
         parent::__construct('button');
         $variant_ = _dif($variant, CssVariant::$DEFAULT);
         $this->addCompositeCssClass('btn', $variant_)
-                ->addChild($this->toHTMLElement($innerText))
+                ->addChild($this->toHTMLElement($inline))
                 ->setAttribute('type', $type)
                 // work around for firefox persisting disabled state accross page loads (CF bootstrap doc)
                 ->setAttribute('autocomplete', 'off');
@@ -54,35 +54,51 @@ class Button extends AbstractFormField {
         return new Button(self::TYPE_BUTTON, $innerText, $variant);
     }
 
-    /**
-     * 
-     * @param type $name
-     * @param mixed $innerText
-     * @param \temple\web\html\bootstrap\CssVariant $variant
-     * @param \temple\web\html\bootstrap\CssVariant $variant if null default to CssVariant::$PRIMARY
-     * @param boolean $centered
-     * @return Button
-     */
-    public static function createSubmit($name, $innerText, CssVariant $variant = null, $centered = true) {
-        $b = new Button(self::TYPE_SUBMIT, $innerText, _dif($variant, CssVariant::$PRIMARY));
-        return $b->setAttribute('value', $name)->setName(self::$SUBMIT_NAME)
-//				->addCssClass($centered ? 'center-block' : null) 
-        ;
-    }
-
+	/**
+	 * 
+	 * @param \temple\view\UserAction $a
+	 * @param CssVariant $v
+	 * @return Button
+	 */
+	public static function createSubmit(\temple\view\UserAction $a, CssVariant $v = null) {
+		$b = new Button(self::TYPE_SUBMIT, self::createIconedLabel($a), self::variant($v)) ;
+		return $b->setName(self::$SUBMIT_NAME)->setValue('submit') ;
+	}
+	
+	/**
+	 * 
+	 * @param \temple\util\Iconable $i
+	 * @param CssVariant $v
+	 * @param string $value
+	 * @return Button
+	 */
+	public static function createSubmit1(\temple\util\Iconable $i, CssVariant $v = null, $value = 'submit') {
+		$b = new Button(self::TYPE_SUBMIT, self::createIconedLabel($i), self::variant($v));
+		return $b->setName(self::$SUBMIT_NAME)->setValue($value) ;
+	}
+	
 	/**
 	 * 
 	 * @param type $icon
 	 * @param type $text
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
-	 * @param type $name
+	 * @param type $value
 	 * @return Button
 	 */
-    public static function createSubmit2($icon, $text, CssVariant $variant = null, $name = 'submit') {
-        $b = new Button(self::TYPE_SUBMIT, \temple\web\html\IconFactory::getInstance()->createText($icon, $text), _dif($variant, CssVariant::$PRIMARY));
-        return $b->setName(self::$SUBMIT_NAME)->setAttribute('value', $name);
+    public static function createSubmit2($icon, $text, CssVariant $variant = null, $value = 'submit') {
+        $b = new Button(self::TYPE_SUBMIT, \temple\web\html\IconFactory::getInstance()->createText($icon, $text), self::variant($variant));
+        return $b->setName(self::$SUBMIT_NAME)->setValue($value);
     }
 
+	/**
+	 * 
+	 * @param CssVariant $v
+	 * @return CssVariant
+	 */
+	private static function variant(CssVariant $v= null) {
+		return _dif($v, CssVariant::$PRIMARY) ;
+	}
+	
     /**
      * 
      * @param mixed $innerText

@@ -53,7 +53,7 @@ class NavbarVariant extends \temple\Enumeration {
 
 	public function __toString() {
 		if ($this->string === null) {
-			$this->string = 'navbar-' . strtolower(str_replace('__', '-', $this->getName()));
+			$this->string = 'navbar-' . strtolower(str_replace('__', '-', $this->name()));
 		}
 		return $this->string;
 	}

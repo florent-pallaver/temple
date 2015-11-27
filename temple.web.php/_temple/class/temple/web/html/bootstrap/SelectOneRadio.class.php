@@ -99,7 +99,7 @@ class SelectOneRadio extends AbstractFormField {
 		foreach ($options as $v => $label) {
 			$sor->addButtonOption($v, $label, ($value !== null && $v == $value ? 'active' : NULL), _iod($optionVariants, $v));
 		}
-		return $sor->setValue($value)->setData(['toggle' => 'buttons']);
+		return $sor->setValue($value)->setRole('group')->setData(['toggle' => 'buttons']);
 	}
 
 	/**

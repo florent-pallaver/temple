@@ -68,7 +68,7 @@ class ImageHelper {
 	}
 
 	private static function failure($ufn, $reason, Exception $e = null) {
-		throw new ActionException('process image', sprintf(self::$failMsg, $ufn, $reason), null, $e);
+		throw new ActionException('Unable to process image', sprintf(self::$failMsg, $ufn, $reason), null, $e);
 	}
 
 }

@@ -70,10 +70,14 @@ class DriverImpl extends Driver {
 		$this->logger->debug($sqlQuery) ;
 		$result = $this->connection->query($sqlQuery) ;
 		if(!$result) {
-			if($this->connection->errno == 1062) {
-				throw new UniqueConstraintException($sqlQuery, $this->connection->error, $this->connection->errno) ;
-			} else {
-				throw new QueryException($sqlQuery, $this->connection->error, $this->connection->errno) ;
+			switch($this->connection->errno) {
+				case 1062: 
+					throw new UniqueConstraintException($sqlQuery, $this->connection->error, $this->connection->errno) ;
+				case 1451:
+				case 1452:
+					throw new \temple\data\persistence\db\ForeignKeyConstraintException($sqlQuery, $this->connection->error, $this->connection->errno) ;
+				default:
+					throw new QueryException($sqlQuery, $this->connection->error, $this->connection->errno) ;
 			}
 		}
 		// before checking warnings as it changes affected_rows !

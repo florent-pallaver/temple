@@ -290,7 +290,7 @@ abstract class AbstractView0 implements View {
 	}
 
 	protected final function renderEnumSelect($label, $name, array $options, $value = null, $allowNull = true, $helpText = '') {
-		$this->renderSelect($label, $name, $options, $value === null ? null : $value->getOrdinal(), $allowNull, $helpText);
+		$this->renderSelect($label, $name, $options, $value === null ? null : $value->ordinal(), $allowNull, $helpText);
 	}
 
 	protected final function renderSubmit($icon, $text, $btnClass = 'btn-primary', $helpText = '') {

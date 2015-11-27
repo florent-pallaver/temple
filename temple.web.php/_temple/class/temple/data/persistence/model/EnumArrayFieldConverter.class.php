@@ -26,7 +26,7 @@ class EnumArrayFieldConverter extends AbstractFieldConverter {
 	protected function toDBValue0($notNullArray) {
 		$mask = 0 ;
 		foreach($notNullArray as $v) {
-			$mask |= 1 << $v->getOrdinal() ;
+			$mask |= 1 << $v->ordinal() ;
 		}
 		return $mask ;
 	}
@@ -35,7 +35,7 @@ class EnumArrayFieldConverter extends AbstractFieldConverter {
 		$array = [] ;
 		$all = $this->enumClass->getMethod(self::GET_ALL_METHOD)->invoke(null) ;
 		foreach($all as $v) {
-			if($notNullMask & (1 << $v->getOrdinal())) {
+			if($notNullMask & (1 << $v->ordinal())) {
 				$array[] = $v ;
 			}
 		}

@@ -33,7 +33,7 @@ final class TableVariant extends \temple\Enumeration {
 
 	public function __toString() {
 		if ($this->string === null) {
-			$this->string = 'table-' . strtolower($this->getName());
+			$this->string = 'table-' . strtolower($this->name());
 		}
 		return $this->string;
 	}

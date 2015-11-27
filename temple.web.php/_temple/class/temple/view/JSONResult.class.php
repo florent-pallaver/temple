@@ -27,7 +27,7 @@ final class JSONResult implements Renderable, \JsonSerializable {
 	private $goTo ;
 	
 	function __construct(Status $status, $messages = true, array $data = [], array $feedbacks =[], $reload = false, $resetForm = false, $goTo = '') {
-		$this->status = $status ? $status->getOrdinal() : 0 ;
+		$this->status = $status ? $status->ordinal() : 0 ;
 		$this->data = $data;
 		$this->feedbacks = $feedbacks ;
 		$this->messages = $messages ? Messages::getInstance()->popAll() : [] ;

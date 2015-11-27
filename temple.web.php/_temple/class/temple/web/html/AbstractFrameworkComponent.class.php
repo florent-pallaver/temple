@@ -23,6 +23,16 @@ abstract class AbstractFrameworkComponent extends HTMLNode implements FrameworkC
 		return IconFactory::getInstance()->createText($name, $text, $variations, $formatted) ;
 	}
 	
+	/**
+	 * 
+	 * @param \temple\util\Iconable $i
+	 * @param array $variations
+	 * @return HTMLElement
+	 */
+	protected final static function createIconedLabel(\temple\util\Iconable $i, array $variations = []) {
+		return IconFactory::getInstance()->createLabel($i) ;
+	}
+	
 	protected final function getAlertIcon($key) {
 		return _iod(IconFactory::getInstance()->getAlertIcons(), $key) ;
 	}

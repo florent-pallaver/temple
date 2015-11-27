@@ -9,6 +9,11 @@ namespace temple\controller;
  */
 abstract class AbstractRequestControllerLocale {
 
+	const FAIL_INVALID_REQUEST = 'Invalid request.' ;
+	
+	const FAIL_INTERNAL_ERROR = 'An internal error occured.' ;
+	const INTERNAL_ERROR_HINT = 'Try again later.' ;
+	
 	const INFO_FILES_LIMIT = 'Only %d files can be uploaded at a time, the extra ones have been ignored.';
 	const INFO_INVALID_CHARS = 'The field %1$s \'%2$s\' contained invalid characters, they have been replaced.';
 	const INFO_MAX_LENGTH = 'The field %1$s exceeded the %2$d characters length limit and has been truncated.';
@@ -24,5 +29,8 @@ abstract class AbstractRequestControllerLocale {
 
 	const FAIL_PASSES = 'Passes do not match' ;
 	
+	const FAIL_PARAMETERS = 'Sent data are invalid.' ;
+	const FAIL_PARAMETERS_HINT = 'Check the data you sent.' ;
+
 
 }

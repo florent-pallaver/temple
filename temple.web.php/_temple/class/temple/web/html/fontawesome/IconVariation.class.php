@@ -94,7 +94,7 @@ final class IconVariation extends \temple\Enumeration implements \temple\web\htm
 		] ;
 	
 	public function toCssClass() {
-		return self::$css[$this->getOrdinal()];
+		return self::$css[$this->ordinal()];
 	}
 	
 	public function __toString() {

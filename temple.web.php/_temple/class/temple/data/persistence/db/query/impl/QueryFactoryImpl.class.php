@@ -28,14 +28,14 @@ final class QueryFactoryImpl extends QueryFactory {
 		$fns = $key->getColumnNames();
 		$cf = count($fns) ;
 		$cv = count($_values) ;
-		if ($cf == $cv) {
-			$and = $this->newAndCondition();
-			for ($i = 0, $l = $cf; $i < $l; $i++) {
-				$and->addComparison($this->newFieldComparison(new Field($fns[$i], $table), $_values[$i], $comp));
-			}
-			return $and;
+//		if ($cf == $cv) {
+		$and = $this->newAndCondition();
+		for ($i = 0, $l = $cf > $cv ? $cv : $cf ; $i < $l; $i++) {
+			$and->addComparison($this->newFieldComparison(new Field($fns[$i], $table), $_values[$i], $comp));
 		}
-		throw new IllegalArgumentException("$cv values given to be compared with a key of $cf fields");
+		return $and;
+//		}
+//		throw new IllegalArgumentException("$cv values given to be compared with a key of $cf fields");
 	}
 
 	public function newFieldComparison(Field $field, $value, $comparator = null) {

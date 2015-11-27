@@ -15,9 +15,11 @@ abstract class AbstractHTMLElement implements HTMLElement {
 		$this->renderObservers[] = $ro ;
 	}
 
-	public function removeRenderListener(RenderObserver $ro) {}
+	public function removeRenderListener(RenderObserver $ro) {
+		throw new \RuntimeException('Not implemented ! :-p') ;
+	}
 
-	public function toString() {
+	public final function toString() {
 		$this->_preRender() ;
 		return $this->_toString() ;
 	}
@@ -45,8 +47,18 @@ abstract class AbstractHTMLElement implements HTMLElement {
 	 * 
 	 * @param mixed $x
 	 * @return HTMLElement
+	 * @deprecated since version alpha
 	 */
 	protected final function toHTMLElement($x) {
+		return HTMLUtil::toHTMLElement($x) ;
+	}
+
+	/**
+	 * TODOC 
+	 * @param mixed $x
+	 * @return HTMLElement
+	 */
+	protected static final function htmlElement($x) {
 		return HTMLUtil::toHTMLElement($x) ;
 	}
 	

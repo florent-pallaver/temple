@@ -31,14 +31,14 @@ abstract class Enumeration implements \Serializable {
 	/**
 	 * @return int
 	 */
-	public final function getOrdinal() {
+	public final function ordinal() {
 		return $this->ordinal;
 	}
 
 	/**
 	 * @return string
 	 */
-	public final function getName() {
+	public final function name() {
 		return $this->name;
 	}
 
@@ -64,6 +64,22 @@ abstract class Enumeration implements \Serializable {
 //		$c = static::class ;
 //		Logger::getInstance($c)->info( $other instanceof $c ? strval($this) . ' ' . strval($other) : 'non') ;
 		return (static::class === get_class($other)) && ($this->ordinal === $other->ordinal) ;
+	}
+	
+	/**
+	 * 
+	 * @param array $list
+	 * @return boolean if this object is one of the given 
+	 */
+	public final function isOneOf(array $list) {
+		$b = false ;
+		foreach($list as $l) {
+			$b = $this->equals($l) ;
+			if($b) {
+				break ;
+			}
+		}
+		return $b ;
 	}
 	
 	public function serialize() {

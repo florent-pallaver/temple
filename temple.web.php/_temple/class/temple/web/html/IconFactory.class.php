@@ -21,6 +21,8 @@ abstract class IconFactory {
 	
 	const BOOTSTRAP_IMPL = 'bootstrap' ;
 
+	private static $defaultLabelSpanCssClass = null ;
+
 	/**
 	 * TODOC
 	 * @param string $name
@@ -53,15 +55,34 @@ abstract class IconFactory {
 	public function createText($name, $text, array $variations = [], $formatted = false) {
 		$i = $this->createIcon($name, $variations)  ;
 		$t = $text 
-				? HTMLUtil::toHTMLElement([$i, new HTMLString($text, $formatted)]) 
+				? new HTMLElementList([$i, HTMLNodeFactory::createNode('span')
+						->addChild(new HTMLString($text, $formatted))
+						->addCssClass(self::$defaultLabelSpanCssClass)]) 
 				: $i ;
 		return $t ;
+	}
+	
+	/**
+	 * 
+	 * @param \temple\util\Iconable $i
+	 * @param array $variations
+	 * @return HTMLElement
+	 */
+	public function createLabel(\temple\util\Iconable $i, array $variations = []) {
+		return $this->createText($i->getIcon(), $i instanceof \temple\util\Nameable ? $i->getName() : $i, $variations) ;
 	}
 	
 	/**
 	 * @return array
 	 */
 	public abstract function getAlertIcons() ;
+	
+		/**
+	 * @param string $cssClass
+	 */
+	public static final function resetDefaultLabelSpanCssClass($cssClass = null) {
+		self::$defaultLabelSpanCssClass = $cssClass ;
+	}
 	
 	public static function config($impl) {
 		self::$SUB_NAMESPACE = _dif($impl, self::FONTAWESOME_IMPL) ;

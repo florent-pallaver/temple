@@ -334,7 +334,7 @@ final class Country extends \temple\Enumeration {
 		'URY', 'UZB', 'VUT', 'VEN', 'VNM', 'VGB', 'VIR', 'WLF', 'ESH', 'YEM', 'ZMB', 'ZWE'];
 
 	public function __toString() {
-		return self::$strings[$this->getOrdinal()] ;
+		return self::$strings[$this->ordinal()] ;
 	}
 	
 }

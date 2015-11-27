@@ -78,6 +78,13 @@ interface Node extends HTMLElement {
 	
 	/**
 	 * 
+	 * @param $role
+	 * @return Node
+	 */
+	public function setRole($role) ;
+	
+	/**
+	 * 
 	 * @param string $cssClass
 	 * @return Node
 	 */

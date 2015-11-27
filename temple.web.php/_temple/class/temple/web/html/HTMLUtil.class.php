@@ -28,7 +28,7 @@ final class HTMLUtil {
 		if ($x instanceof HTMLElement) {
 			$e = $x;
 		} elseif ($x instanceof \temple\util\Iconable) {
-			$e = IconFactory::getInstance()->createText($x->getIcon(), $x);
+			$e = IconFactory::getInstance()->createText($x->getIcon(), $x instanceof \temple\util\Nameable ? $x->getName() : $x);
 		} elseif ($x instanceof \DateTime) {
 			$e = new HTMLString(\temple\util\DateUtil::localize($x, self::$DATE_FORMAT));
 		} elseif ($x !== null) {

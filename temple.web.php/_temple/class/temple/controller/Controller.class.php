@@ -15,9 +15,9 @@ interface Controller extends \temple\util\Nameable, \temple\util\Iconable {
 	function getLocales() ;
 	
     /**
-	 * @return string 
+	 * @return string the message to send the user when this action fails
 	 */
-	function getActionDescription() ;
+	function getFailureMessage() ;
 	
 	/**
 	 * TODOC

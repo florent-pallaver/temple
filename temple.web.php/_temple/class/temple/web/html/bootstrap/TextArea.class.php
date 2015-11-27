@@ -53,11 +53,12 @@ class TextArea extends AbstractFormField {
 
 	/**
 	 * 
-	 * @param type $name
-	 * @param type $placeholder
-	 * @param type $required
-	 * @param type $cssClass
-	 * @return \temple\web\html\bootstrap\Input
+	 * @param string $name
+	 * @param string $placeholder
+	 * @param boolean $required
+	 * @param int $rowCount
+	 * @param string  $cssClass
+	 * @return TextArea
 	 */
 	public static function create($name, $placeholder, $required = false, $rowCount = self::DEFAULT_ROWS_COUNT, $cssClass = 'form-control') {
 		return new TextArea($name, $placeholder, $rowCount, $required, $cssClass);

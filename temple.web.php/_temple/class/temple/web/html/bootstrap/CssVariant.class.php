@@ -95,7 +95,7 @@ final class CssVariant extends \temple\Enumeration {
 	 */
 	public function compose($cssBaseClass) {
 		if($this->components === null) {
-			$this->components = explode('_', strtolower($this->getName())) ;
+			$this->components = explode('_', strtolower($this->name())) ;
 		}
 		$cssClasses = $cssBaseClass ;
 		foreach($this->components as $c) {

@@ -87,7 +87,7 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 	public final function getId() {
 		$id = $this->getAttribute('id') ;
 		if($id === NULL) {
-			$id = self::getNewId() ;
+			$id = self::newId() ;
 			$this->setAttribute('id', $id) ;
 		}
 		return $id ;
@@ -138,6 +138,10 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 		return $this ;
 	}
 
+	public final function setRole($role) {
+		return $this->setAttribute('role', $role) ;
+	}
+	
 	public final function addCssClass($cssClass) {
 		if($cssClass) {
 			if(!isset($this->attributes['class'])) {
@@ -186,7 +190,7 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 //		return $this->children ;
 //	}
 
-	private static final function getNewId() {
+	private static final function newId() {
 		return self::$defaultIdPrefix . self::$idCount ++ ;
 	}
 

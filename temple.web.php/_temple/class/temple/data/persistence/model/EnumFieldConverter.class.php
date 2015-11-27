@@ -25,7 +25,7 @@ class EnumFieldConverter extends AbstractFieldConverter {
 	}
 	
 	protected function toDBValue0($notNullValue) {
-		return $notNullValue->getOrdinal() ;
+		return $notNullValue->ordinal() ;
 	}
 
 	protected function toPHPValue0($notNullValue) {

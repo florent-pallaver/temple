@@ -4,7 +4,7 @@ namespace temple\web\html\bootstrap;
 
 use temple\web\html\bootstrap\ComponentFactory as CF;
 use temple\web\html\HTMLElement;
-use temple\web\html\bootstrap\CssVariant;
+use temple\web\html\bootstrap\CssVariant as CV;
 
 /**
  * Description of Panel
@@ -18,7 +18,16 @@ class Panel extends AbstractComponent {
 	 */
 	public static $DEFAULT_VARIANT ;
 	
-	public function __construct($title, HTMLElement $body = null, HTMLElement $footer = null, CssVariant $variant = null, Accordion $a = null, $shown = true) {
+	/**
+	 * 
+	 * @param mixed $title
+	 * @param HTMLElement $body
+	 * @param HTMLElement $footer
+	 * @param CssVariant $variant
+	 * @param Accordion $a
+	 * @param boolean $shown
+	 */
+	public function __construct($title, HTMLElement $body = null, HTMLElement $footer = null, CV $variant = null, Accordion $a = null, $shown = true) {
 		parent::__construct('div');
 		$this->addCompositeCssClass('panel', $variant ? $variant : self::$DEFAULT_VARIANT);
 		if($a) {
@@ -30,18 +39,16 @@ class Panel extends AbstractComponent {
 			$t = CF::toHTMLElement($title) ;
 		}
 		if ($a || $t) {
-			$this->addChild(CF::createComponent('div', 'panel-heading')
-							->addChild(CF::createComponent('h4', 'panel-title')
-									->addChild($t)));
+			$this->addChild(CF::createComponent('div', 'panel-heading', CF::createComponent('h4', 'panel-title', $t)));
 		}
 		if($a) {
 			$this->addChild($parent) ;
 		}
 		if($body) {
-			$parent->addChild(CF::createComponent('div', 'panel-body')->addChild($body));
+			$parent->addChild(CF::createComponent('div', 'panel-body', $body));
 		}
 		if ($footer) {
-			$parent->addChild(CF::createComponent('div', 'panel-footer')->addChild($footer));
+			$parent->addChild(CF::createComponent('div', 'panel-footer', $footer));
 		}
 	}
 
@@ -54,7 +61,7 @@ class Panel extends AbstractComponent {
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
 	 * @return \temple\web\html\bootstrap\Panel
 	 */
-	public static function create($icon, $title, HTMLElement $body = null, HTMLElement $footer = null, CssVariant $variant = null) {
+	public static function create($icon, $title, HTMLElement $body = null, HTMLElement $footer = null, CV $variant = null) {
 		return new Panel($icon || $title ? \temple\web\html\IconFactory::getInstance()->createText($icon, $title) : null, $body, $footer, $variant);
 	}
 
@@ -64,7 +71,7 @@ class Panel extends AbstractComponent {
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
 	 * @return \temple\web\html\bootstrap\Panel
 	 */
-	public static function createBodyPanel(HTMLElement $body, CssVariant $variant = null) {
+	public static function createBodyPanel(HTMLElement $body, CV $variant = null) {
 		return Panel::create(null, null, $body, null, $variant);
 	}
 
@@ -75,12 +82,12 @@ class Panel extends AbstractComponent {
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
 	 * @return type
 	 */
-	public static function createEmpty($icon, $title, CssVariant $variant = null) {
+	public static function createEmpty($icon, $title, CV $variant = null) {
 		return self::create($icon, $title, null, null, $variant) ;
 	}
 	
 	private static function _init() {
-		self::$DEFAULT_VARIANT = CssVariant::$DEFAULT ;
+		self::$DEFAULT_VARIANT = CV::$DEFAULT ;
 	}
 	
 }

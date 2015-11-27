@@ -11,27 +11,6 @@ use temple\controller\AbstractRequestControllerLocale as L;
  */
 abstract class AbstractRequestController extends AbstractController {
 
-	protected static $default0 = ['default' => 0];
-	protected static $defaultEmpty = ['default' => ''];
-	protected static $defaultEmptyArray = ['default' => []];
-
-	/**
-	 * Use when string must not be empty and HTML needs to be escaped.
-	 * @var array
-	 */
-	protected static $_notEmptyHTML = ['notEmpty' => true];
-
-	/**
-	 * Use when HTML does not need to be escaped.
-	 * @var array
-	 */
-	protected static $_NotHTML = ['escapeHTML' => false];
-
-	/**
-	 * Use when string must not be empty and HTML does not need to be escaped.
-	 * @var array
-	 */
-	protected static $_notEmptyNotHTML = ['notEmpty' => true, 'escapeHTML' => false];
 	private $icon;
 	private $name;
 
@@ -66,26 +45,26 @@ abstract class AbstractRequestController extends AbstractController {
 
 	/**
 	 * 
-	 * @param type $type
-	 * @param type $key
-	 * @param type $maxLength
-	 * @param type $minLength
-	 * @param type $autoCrop
-	 * @param type $filter
+	 * @param int $type one of INPUT_GET, INPUT_POST, INPUT_SESSION, INPUT_COOKIE etc
+	 * @param string $key
+	 * @param int $maxLength
+	 * @param int $minLength
+	 * @param boolean $autoCrop
+	 * @param int $filter filter mask TODOC
 	 * @return string
 	 */
 	protected final function requestString($type, $key, $maxLength, $minLength = 0, $autoCrop = false, $filter = FILTER_DEFAULT) {
-		$str = $this->checkValue(filter_input($type, $key, $filter), $key, $minLength > 0);
+		$str = $this->checkValue(trim(filter_input($type, $key, $filter)), $key, $minLength > 0);
 		if ($str !== null) {
 			if (strlen($str) < $minLength) {
-				$this->setFeedback($key, sprintf(L::FAIL_MIN_LENGTH, $minLength));
+				$this->invalidValue($key, sprintf(L::FAIL_MIN_LENGTH, $minLength));
 				$str = null;
 			} else {
 				if ($maxLength > 0 && strlen($str) > $maxLength) {
 					if ($autoCrop) {
 						$str = substr($str, 0, $maxLength);
 					} else {
-						$this->setFeedback($key, sprintf(L::FAIL_MAX_LENGTH, $maxLength));
+						$this->invalidValue($key, sprintf(L::FAIL_MAX_LENGTH, $maxLength));
 						$str = null;
 					}
 				}
@@ -94,6 +73,15 @@ abstract class AbstractRequestController extends AbstractController {
 		return $str;
 	}
 
+	/**
+	 * 
+	 * @param int $type one of INPUT_GET, INPUT_POST, INPUT_SESSION, INPUT_COOKIE etc
+	 * @param string $key
+	 * @param boolean $required
+	 * @param int $min
+	 * @param int $max
+	 * @return int
+	 */
 	protected final function requestInt($type, $key, $required = false, $min = null, $max = null) {
         $options = [];
         if ($min !== null) {
@@ -105,146 +93,61 @@ abstract class AbstractRequestController extends AbstractController {
         $i = filter_input($type, $key, FILTER_VALIDATE_INT, $options);
         return $this->checkValue($i, $key, $required);
     }
-
 	
-	// check FALSE and NULL only to return NULL only if value is one of those
-	private function checkValue($value, $key, $required) {
+	/**
+	 * Check FALSE and NULL values only to return NULL only if value is one of those.
+	 * <br>
+	 * Also sets feedback 
+	 * @param mixed $value
+	 * @param string $key
+	 * @param boolean $required
+	 * @return mixed
+	 */
+	protected final function checkValue($value, $key, $required) {
 		if (($value === FALSE || $value === NULL)) {
 			if ($required) {
 				// generic message here cause we don't know what might have cause the error
-				$this->setFeedback($key);
+				$this->invalidValue($key);
 			}
 			$value = NULL;
 		}
 		return $value;
 	}
 
-	protected final function queryString($key, $maxLength = 0, $minLength = 0, $autoCrop = false) {
-		return $this->requestString(INPUT_GET, $key, $maxLength, $minLength, $autoCrop);
-	}
-
-	protected final function queryInt($key, $min = null, $max = null, $required = false) {
-		return $this->requestInt(INPUT_GET, $key, $required, $min, $max) ;
+    /**
+     * 
+     * @param type $key
+     * @param type $msg
+     */
+	protected function invalidValue($key, $msg = L::FAIL_INCORRECT_FIELD) {
+		$this->failure(L::FAIL_INVALID_REQUEST, $msg) ;
+		$this->logger->warning($key . ' is invalid') ;
 	}
 	
-	// DEPRECATED
-
-	protected final function getBooleanGetParam($name) {
-		return $this->getBooleanParam(INPUT_GET, $name);
+//	 * @param int $maxLength
+//	 * @param int $minLength
+//	 * @param boolean $autoCrop
+	/**
+	 * 
+	 * @param string $key
+	 * @return string
+	 */
+	protected final function queryString($key) {
+		return $this->requestString(INPUT_GET, $key, 0, 0, false);
 	}
 
-	protected final function getIntGetParam($name, array $options = []) {
-		return $this->getNumberParam(INPUT_GET, $name, $options);
+//	 * @param boolean $required
+	/**
+	 * 
+	 * @param string $key
+	 * @param int $min
+	 * @param int $max
+	 * @return int
+	 */
+	protected final function queryInt($key, $min = null, $max = null) {
+		return $this->requestInt(INPUT_GET, $key, false, $min, $max) ;
 	}
-
-	protected final function getStringGetParam($name, array $options = []) {
-		return $this->getStringParam(INPUT_GET, $name, $options);
-	}
-
-	protected final function getBooleanPostParam($name) {
-		return $this->getBooleanParam(INPUT_POST, $name);
-	}
-
-	protected final function getIntPostParam($name, array $options = []) {
-		return $this->getNumberParam(INPUT_POST, $name, $options);
-	}
-
-	protected final function getFloatPostParam($name, array $options = []) {
-		return $this->getNumberParam(INPUT_POST, $name, $options, true);
-	}
-
-	protected final function getEnumPostParam($name, \ReflectionClass $enumClass, array $options = []) {
-		return $this->getEnumParam(INPUT_POST, $name, $enumClass, $options);
-	}
-
-	protected final function getStringPostParam($name, array $options = []) {
-		return $this->getStringParam(INPUT_POST, $name, $options);
-	}
-
-	protected final function getArrayPostParam($name, array $options = []) {
-		return $this->getArrayParam(INPUT_POST, $name, $options);
-	}
-
-	protected final function getFilesParam($name, $max = 0) {
-		if (!isset($_FILES[$name])) {
-			$this->paramFailed($name);
-		}
-		if (is_array($_FILES[$name]['error'])) {
-			$params = [];
-			foreach ($_FILES[$name] as $k => $values) {
-				foreach ($values as $i => $v) {
-					if ($i < $max || $max == 0) {
-						$params[$i][$k] = $v;
-					}
-				}
-			}
-			if ($max > 0 && count($_FILES[$name]['error']) > $max) {
-				$this->info(sprintf(L::INFO_FILES_LIMIT, $max));
-			}
-		} else {
-			$params = &$_FILES[$name];
-		}
-		return $params;
-	}
-
-	private final function getBooleanParam($type, $name) {
-		$b = filter_input($type, $name, FILTER_VALIDATE_BOOLEAN, array('default' => false));
-		$_POST[$name] = $b === true;
-		return $b === true;
-	}
-
-	private final function getNumberParam($type, $name, array $options, $float = false) {
-		$n = filter_input($type, $name, $float ? FILTER_VALIDATE_FLOAT : FILTER_VALIDATE_INT, $options);
-		if ($n || $n === 0) {
-			return $n;
-		}
-		if (array_key_exists('default', $options)) {
-			return $options['default'];
-		}
-		$this->paramFailed($name);
-	}
-
-	private final function getEnumParam($type, $name, \ReflectionClass $enumClass, array $options) {
-		$ordinal = $this->getNumberParam($type, $name, ['default' => -1], false);
-		$e = $enumClass->getMethod('getByOrdinal')->invoke(null, $ordinal);
-		if ($e) {
-			return $e;
-		}
-		if (array_key_exists('default', $options)) {
-			return $options['default'];
-		}
-		$this->paramFailed($name);
-	}
-
-	private final function getStringParam($type, $name, array $options) {
-		$str = filter_input($type, $name);
-		if ($str !== null && is_string($str)) {
-			return $str;
-		}
-		if (array_key_exists('default', $options)) {
-//			if($type == INPUT_POST) {
-//				$_POST[$name] = $options['default'];
-//			}
-			return $options['default'];
-		}
-		$this->paramFailed($name);
-	}
-
-	private final function getArrayParam($type, $name, array $options) {
-		$arr = filter_input($type, $name, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-		if ($arr !== null && is_array($arr)) {
-			return $arr;
-		}
-		if (array_key_exists('default', $options)) {
-			return $options['default'];
-		}
-		$this->paramFailed($name);
-	}
-
-	private final function paramFailed($name) {
-		$this->failure(sprintf(L::FAIL_INCORRECT_FIELD, $name));
-	}
-
+	
 	/**
 	 * Throws an ActionException causing this controller to fail.
 	 * 
@@ -254,7 +157,7 @@ abstract class AbstractRequestController extends AbstractController {
 	 * @throws ActionException always
 	 */
 	protected final function failure($reason = null, $hint = '', \Exception $e = null) {
-		throw new ActionException($this->getActionDescription(), $reason, $hint, $e);
+		throw new ActionException($this->getFailureMessage(), $reason, $hint, $e);
 	}
 
 	/**
@@ -283,78 +186,6 @@ abstract class AbstractRequestController extends AbstractController {
 	 */
 	protected final function getMailer() {
 		return \temple\web\mail\Mailer::getInstance();
-	}
-
-	protected final function getCheckedDate($key, $pattern, $minAge = 0) {
-		$birthdate = trim($this->getStringPostParam($key));
-		$bdate = null;
-		if (strlen($birthdate) > 0) {
-			// $ as delimiter cause / is in the pattern
-			if (preg_match('$' . $pattern . '$', $birthdate, $date)) {
-				$bdate = $date[9] . '-' . $this->trailZero($date[5]) . '-' . $this->trailZero($date[1]);
-				$age = \paris\model\ModelHelper::getAge($bdate);
-				if ($minAge > 0 && $age < $minAge) {
-					$bdate = null;
-					$this->warning(sprintf(L::WARN_AGE, $birthdate, $minAge));
-				}
-			} else {
-				$this->warning(sprintf(L::WARN_INVALID_DATE, $birthdate));
-			}
-		}
-		return $bdate;
-	}
-
-	private function trailZero($str) {
-		if (strlen($str) == 1) {
-			$s = '0' . $str;
-		} else {
-			$s = $str;
-		}
-		return $s;
-	}
-
-	// FIXME revoir les fonctions pour qu'elles incluent les noms des paramètres
-	// FIXME revoir les fonctions pour que les feedbacks soient sur les champs
-
-	/**
-	 * TODOC 
-	 * 
-	 * @param type $key
-	 * @param type $maxLength
-	 * @param type $paramName
-	 * @return string
-	 * @throws ActionException if $notEmpty is true and the checked string is empty
-	 */
-	protected final function getCheckedString($key, $maxLength, $paramName = '', $options = []) {
-		$str = trim($this->getStringPostParam($key));
-		$pattern = _iod($options, 'pattern', '');
-		if ($pattern) {
-			$c = 0;
-			$r = _iod($options, 'replacement', '');
-			$str = preg_replace($pattern, $r, $str, -1, $c);
-			if ($c && $paramName) {
-				$this->info(sprintf(L::INFO_INVALID_CHARS, $paramName, $str));
-			}
-		}
-		if (_iod($options, 'escapeHTML', true)) {
-			$str = htmlspecialchars($str, ENT_QUOTES);
-		}
-		if (_iod($options, 'notEmpty', false) && strlen($str) == 0) {
-			$this->failure(sprintf(L::FAIL_EMPTY_FIELD, $paramName));
-		}
-//		$e = $this->escapeSQL($str) ;
-		if ($maxLength > 0 && strlen($str) > $maxLength) {
-			$str = substr($str, 0, $maxLength);
-			if ($paramName) {
-				$this->info(sprintf(L::INFO_MAX_LENGTH, $paramName, $maxLength));
-			}
-		}
-		return $str;
-//		$str = $this->ensureString($post, $maxLength, $paramName);
-//		if ($notEmpty && strlen($str) == 0) {
-//			throw new ActionException('perform action', "The field '$paramName' cannot be empty.");
-//		}
-//		return $str;
 	}
 
 }

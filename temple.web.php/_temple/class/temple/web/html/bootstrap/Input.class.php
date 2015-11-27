@@ -21,6 +21,7 @@ class Input extends AbstractFormField {
 	const TYPE_SEARCH = 'search';
 	const TYPE_TELEPHONE = 'tel';
 	const TYPE_DATE = 'date';
+	const TYPE_DATETIME = 'datetime';
 
 	const ACCEPT_ALL = '*/*' ;
 	const ACCEPT_VIDEO = 'video/*' ;
@@ -102,6 +103,17 @@ class Input extends AbstractFormField {
 		return new Input($name, self::TYPE_DATE, $placeholder, $required, $cssClass);
 	}
 
+	/**
+	 * 
+	 * @param string $name
+	 * @param string $placeholder
+	 * @param boolean $required
+	 * @param string $cssClass
+	 * @return \temple\web\html\bootstrap\Input
+	 */
+	public static function createDateTime($name, $placeholder, $required = false, $cssClass = 'form-control') {
+		return new Input($name, self::TYPE_DATETIME, $placeholder, $required, $cssClass);
+	}
 
 	/**
 	 * 

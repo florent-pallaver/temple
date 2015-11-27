@@ -22,10 +22,10 @@ class Alerts extends AbstractComponent {
 		$this->setAttribute('id', self::ID) ;
 		$messages = Messages::getInstance()->popAll() ;
 		foreach (Status::getAll() as $s) {
-			$k = $s->getOrdinal() ;
+			$k = $s->ordinal() ;
 			if (isset($messages[$k]) && $messages[$k]) {
 				foreach ($messages[$k] as $msg) {
-					$this->addAlert($msg, $s->getOrdinal());
+					$this->addAlert($msg, $s->ordinal());
 				}
 			}
 		}

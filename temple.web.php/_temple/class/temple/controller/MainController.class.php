@@ -21,18 +21,18 @@ final class MainController extends AbstractRequestController {
 
 	private static $locales = ['en' => 'en_GB.utf8', 'fr' => 'fr_FR.utf8'] ;
 	
-	public function getActionDescription() {
-		return 'process request';
+	public function getFailureMessage() {
+		return 'Unable to process request';
 	}
 
 	public function createResponse() {
 		$r = $this->getResponse();
 		\temple\data\Session::getInstance()->end();
-		if (!($r instanceof \temple\view\Renderable)) {
-			Logger::getInstance()->fatal('The response returned was not an instance of \\temple\\view\\Renderable.');
-			$this->failure();
+		if ($r instanceof \temple\view\Renderable) {
+			return $r;
 		}
-		return $r;
+		Logger::getInstance()->fatal('The response returned was not an instance of \\temple\\view\\Renderable.');
+		$this->failure();
 	}
 
 	/**
@@ -42,18 +42,18 @@ final class MainController extends AbstractRequestController {
 	 */
 	private function getResponse() {
 		$vn = self::$defaultView;
-		$a = $this->getStringGetParam(URL::ACTION_PARAMETER, self::$defaultEmpty) ;
-		$viewName = $this->getStringGetParam(URL::VIEW_PARAMETER, self::$defaultEmpty);
+		$action = $this->queryString(URL::ACTION_PARAMETER) ;
+		$viewName = $this->queryString(URL::VIEW_PARAMETER);
 		if ($viewName) {
 			// the view name does not matter when we're doing an action (ie $a == true)
-			if ($a || array_search($viewName, self::$viewNames) !== false) {
+			if ($action || array_search($viewName, self::$viewNames) !== false) {
 				$vn = &$viewName;
 			}
 		}
 		if($this->logger->isDebugLoggable()) {
-			$this->logger->debug("request view = '$viewName' used view = '$vn' action = '$a'") ;
+			$this->logger->debug("request view = '$viewName' used view = '$vn' action = '$action'") ;
 		}
-		$cn = Config::$CONTROLLERS_BASE_NAMESPACE . '\\' . ($a && $a != Config::$VIEW_ACTION ? ($vn . '\\'. _fctuc($a)) : _fctuc($vn)) . self::$suffix;
+		$cn = Config::$CONTROLLERS_BASE_NAMESPACE . '\\' . ($action && $action != Config::$VIEW_ACTION ? ($vn . '\\'. _fctuc($action)) : _fctuc($vn)) . self::$suffix;
 		// specify locale before creating response and causing any exception
 		// FIXME un peu pourri comme impl !
 		setlocale(LC_TIME, self::$locales[Config::$LOCALE]) ;

@@ -166,4 +166,7 @@ final class Logger {
 		self::getInstance()->_log($str, 0);
 	}
 
+	public static function logDuration($label) {
+		self::getInstance()->_log(sprintf('%s : %s ms', $label, 1000 * (microtime(true) - TEMPLE_START_TS)), 0);
+	}
 }

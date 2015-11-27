@@ -2,9 +2,6 @@
 
 namespace temple\web\html\bootstrap;
 
-use temple\web\html\HTMLElement ;
-use temple\web\html\HTMLUtil ;
-
 /**
  * Description of Link
  *
@@ -14,16 +11,15 @@ class Link extends AbstractComponent {
 
 	/**
 	 * 
-	 * @param type $href
-	 * @param type $icon
-	 * @param type $text
-	 * @param type $cssClass
+	 * @param mixed $href
+	 * @param mixed $inner
+	 * @param string $cssClass
 	 */
-	public function __construct($href, HTMLElement $e = null, $cssClass = null) {
+	public function __construct($href, $inner = null, $cssClass = null) {
 		parent::__construct('a', $cssClass) ;
 		$this->setAttribute('href', $href) ;
-		if($e) {
-			$this->addChild($e) ;
+		if($inner) {
+			$this->addChild(self::htmlElement($inner)) ;
 		}
 	}
 
@@ -42,20 +38,19 @@ class Link extends AbstractComponent {
 	 * @return \temple\web\html\bootstrap\Link
 	 */
 	public static function create($href, $content, $cssClass = null) {
-		return new Link($href, HTMLUtil::toHTMLElement($content), $cssClass) ;
+		return new Link($href, $content, $cssClass) ;
 	}
 	
 	/**
 	 * 
 	 * @param type $href
 	 * @param mixed $e
-	 * @param \temple\web\html\bootstrap\CssVariant $variant
+	 * @param CssVariant $variant
 	 * @param type $cssClass
 	 * @return Link
 	 */
 	public static function createButton($href, $e = null, CssVariant $variant = null, $cssClass = null) {
-		$l = Link::create($href, $e, $cssClass) ;
-		return $l->setAttribute('role', 'button')->addCompositeCssClass('btn', _dif($variant, CssVariant::$DEFAULT)) ;
+		return Link::create($href, $e, $cssClass)->setAttribute('role', 'button')->addCompositeCssClass('btn', _dif($variant, CssVariant::$DEFAULT)) ;
 	}
 	
 	/**
@@ -65,7 +60,7 @@ class Link extends AbstractComponent {
 	 * @return \temple\web\html\bootstrap\Link
 	 */
 	public static function createEmail($email, $cssClass=null) {
-		return new Link('mailto:'.$email, HTMLUtil::toHTMLElement($email), $cssClass) ;
+		return new Link('mailto:'.$email, self::htmlElement($email), $cssClass) ;
 	}
 	
 	/**
@@ -75,7 +70,7 @@ class Link extends AbstractComponent {
 	 * @return \temple\web\html\bootstrap\Link
 	 */
 	public static function createTel($tel, $content = null, $cssClass=null) {
-		return new Link('tel:'.$tel, $content === null ? HTMLUtil::toHTMLElement($tel) : $content, $cssClass) ;
+		return new Link('tel:'.$tel, $content === null ? self::htmlElement($tel) : $content, $cssClass) ;
 	}
 
 	/**

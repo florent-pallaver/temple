@@ -9,11 +9,11 @@ namespace temple\controller;
  */
 final class InvalidActionController extends AbstractActionController {
 
-	const DESCRIPTION = 'process action' ;
+	const DESCRIPTION = 'unable to process action' ;
 	
 	const REASON = 'Invalid request' ;
 	
-	public function getActionDescription() {
+	public function getFailureMessage() {
 		return self::DESCRIPTION ;
 	}
 

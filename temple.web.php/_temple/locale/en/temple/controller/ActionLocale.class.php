@@ -9,6 +9,6 @@ namespace temple\controller;
  */
 abstract class ActionLocale {
 
-    const MSG_FORMAT = "<strong>Unable to %s.</strong>\n%s%s\n\n<em>Please contact us if this error unexpectedly persists</em>." ;
+    const MSG_FORMAT = "<strong>%s.</strong>\n%s%s\n\n<em>Please contact us if this error unexpectedly persists</em>." ;
 	
 }

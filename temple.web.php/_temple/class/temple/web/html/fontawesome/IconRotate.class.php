@@ -27,7 +27,7 @@ final class IconRotate extends \temple\Enumeration {
 	private static $strings = ['fa-rotate-90', 'fa-rotate-180', 'fa-rotate-270'] ;
 	
 	public function __toString() {
-		return self::$strings[$this->getOrdinal()];
+		return self::$strings[$this->ordinal()];
 	}
 	
 }

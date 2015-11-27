@@ -47,7 +47,7 @@ class Dropdown extends AbstractComponent {
 	private function getItemList() {
 		$child = $this->getChild(self::LIST_KEY);
 		if (!$child) {
-			$child = ItemList::createUnordered('dropdown-menu') ;
+			$child = ItemList::createUnordered('dropdown-menu')->setAria(['labelledby' => $this->getChild(0)->getId()]);
 			$this->addChild($child, self::LIST_KEY);
 		}
 		return $child;
@@ -66,7 +66,7 @@ class Dropdown extends AbstractComponent {
 		return $d->addCssClass('btn-group')
 						->addChild(Button::create([\temple\web\html\IconFactory::getInstance()->createText($icon, $text), ComponentFactory::$CARET], $variant)
 								->addCssClass('dropdown-toggle')
-								->setData(['toggle' => 'dropdown']));
+								->setData(['toggle' => 'dropdown'])->setAria(['haspopup'=>'true', 'expanded'=>'false']));
 	}
 
 	/**
@@ -76,8 +76,8 @@ class Dropdown extends AbstractComponent {
 	 */
 	public static function createNavLink($content) {
 		$d = new Dropdown('li', 'dropdown') ;
-		return $d->addChild(Link::create('#', [$content, ComponentFactory::$CARET], 'dropdown-toggle')
-								->setData(['toggle' => 'dropdown']));
+		return $d->addChild(Link::create(null, [$content, ComponentFactory::$CARET], 'dropdown-toggle')
+								->setData(['toggle' => 'dropdown'])->setAria(['haspopup'=>'true', 'expanded'=>'false']));
 	}
 
 }

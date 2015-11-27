@@ -9,6 +9,26 @@ namespace temple\util ;
  */
 final class DateUtil {
 
+	/**
+	 * @var string day's full string format
+	 */
+	const LONG_DAY_FORMAT = '%A' ;
+	
+	/**
+	 * @var string day's short string format
+	 */
+	const SHORT_DAY_FORMAT = '%a' ;
+	
+	/**
+	 * @var string month's full string format
+	 */
+	const LONG_MONTH_FORMAT = '%B' ;
+	
+	/**
+	 * @var string month's short string format
+	 */
+	const SHORT_MONTH_FORMAT = '%b' ;
+	
 	private function __construct() {}
 
 	/**

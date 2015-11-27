@@ -66,7 +66,7 @@ final class RugbyUnionPosition extends \temple\Enumeration {
 	 * @return array
 	 */
 	public function getNumbers() {
-		return self::$numbers[$this->getOrdinal()] ;
+		return self::$numbers[$this->ordinal()] ;
 	}
 	
 	/**
@@ -74,7 +74,7 @@ final class RugbyUnionPosition extends \temple\Enumeration {
 	 * @return boolean
 	 */
 	public function isForward() {
-		return $this->getOrdinal() < self::$SCRUM_HALF->getOrdinal() ; 
+		return $this->ordinal() < self::$SCRUM_HALF->ordinal() ; 
 	}
 	
 	/**
@@ -82,11 +82,11 @@ final class RugbyUnionPosition extends \temple\Enumeration {
 	 * @return boolean
 	 */
 	public function isBack() {
-		return $this->getOrdinal() > self::$NUMBER_8->getOrdinal() ; 
+		return $this->ordinal() > self::$NUMBER_8->ordinal() ; 
 	}
 	
 	public function __toString() {
-		return RugbyUnionPositionLocale::$all[$this->getOrdinal()];
+		return RugbyUnionPositionLocale::$all[$this->ordinal()];
 	}
 
 }

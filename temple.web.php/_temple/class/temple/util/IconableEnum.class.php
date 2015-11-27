@@ -10,13 +10,11 @@ namespace temple\util ;
  */
 trait IconableEnum {
 
-	use \temple\Enum ;
-	
 	/** @var array */
 	private static $_icons = [];
 
 	public final function getIcon() {
-		return _iod(self::$_icons, $this->getOrdinal(), 'question');
+		return _iod(self::$_icons, $this->ordinal(), 'question');
 	}
 
 }

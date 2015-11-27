@@ -36,6 +36,10 @@ abstract class AbstractActionController extends AbstractRequestController {
 		return $this->getLocales()[self::_ACTION_NAME_KEY];
 	}
 	
+    protected final function invalidValue($key, $msg = L::FAIL_INCORRECT_FIELD) {
+        $this->feedbacks[$key] = $msg;
+    }
+
     /**
      * 
      * @param type $key
@@ -46,39 +50,21 @@ abstract class AbstractActionController extends AbstractRequestController {
     }
 
     /**
-     * 
-     * @param type $key
-     * @param type $value
-     */
-    protected final function setFeedback($key, $value = L::FAIL_INCORRECT_FIELD) {
-        $this->feedbacks[$key] = $value;
-    }
-
-    /**
      * @param type $goTo
      */
     protected final function setGoTo($goTo) {
         $this->goTo = $goTo;
     }
 
-    /**
-     * Default implementation returns <code>true</code>
-     * @return boolean <code>true</code> if the access is allowed, <code>false</code> otherwise.
-     */
-    protected function isAllowed() {
-        return true;
-    }
-
-    /**
-     * @throws \Exception in case of an error
-     */
-    protected abstract function processRequest();
-
     public final function createResponse() {
         try {
-            if (!$this->isAllowed()) {
+            if (!$this->isAccessAllowed()) {
                 $this->failure(L::FAIL_ACCESS_DENIED, L::FAIL_ACCESS_DENIED_HINT);
             }
+			$this->initialize() ;
+			if ($this->feedbacks) {
+				$this->failure(L::FAIL_PARAMETERS, L::FAIL_PARAMETERS_HINT) ;
+			}
             $this->processRequest();
             $r = Status::$SUCCESS;
             $im = $this->includeMessages;
@@ -95,42 +81,55 @@ abstract class AbstractActionController extends AbstractRequestController {
         return new JSONResult($r, $im, $this->data, $this->feedbacks, $this->reload, false, $this->goTo);
     }
 
-    protected final function checkFeedback() {
-        if ($this->feedbacks) {
-            $this->failure();
-        }
+    /**
+	 * Tells whether access to the controller is allowed.
+	 * <br>
+	 * Typically, checks the user is signed in or has needed credentials.
+	 * <br>
+     * Default implementation returns <code>true</code>
+     * @return boolean <code>true</code> if the access is allowed, <code>false</code> otherwise.
+     */
+    protected function isAccessAllowed() {
+        return true;
     }
 
+	/**
+	 * Gets and sets values from request.<br>
+	 * Use invalidValue() to mark invalid POST parameters.
+	 */
+	protected function initialize() {}
+	
+    /**
+     * @throws \Exception in case of an error
+     */
+	protected abstract function processRequest() ;
+	
+	/**
+	 * 
+	 * @param string $key
+	 * @param int $maxLength
+	 * @param int $minLength
+	 * @param boolean $autoCrop
+	 * @return string
+	 */
     protected final function postString($key, $maxLength = 0, $minLength = 0, $autoCrop = false) {
-        return $this->postString0($key, $maxLength, $minLength, $autoCrop);
+        return $this->requestString(INPUT_POST, $key, $maxLength, $minLength, $autoCrop);
     }
 
+	/**
+	 * 
+	 * @param string $key
+	 * @param int $maxLength
+	 * @param boolean $required
+	 * @param boolean $toLower
+	 * @return string
+	 */
     protected final function postEmail($key, $maxLength = 0, $required = true, $toLower = true) {
-        $e = $this->postString0($key, $maxLength, $required ? 5 : 0, false, FILTER_VALIDATE_EMAIL);
+        $e = $this->requestString(INPUT_POST, $key, $maxLength, $required ? 5 : 0, false, FILTER_VALIDATE_EMAIL);
         if ($toLower && $e !== null) {
             $e = strtolower($e);
         }
         return $e;
-    }
-
-    private function postString0($key, $maxLength, $minLength = 0, $autoCrop = false, $filter = FILTER_DEFAULT) {
-        $str = $this->checkValue(trim(filter_input(INPUT_POST, $key, $filter)), $key, $minLength > 0);
-        if ($str !== null) {
-            if (strlen($str) < $minLength) {
-                $this->setFeedback($key, sprintf(L::FAIL_MIN_LENGTH, $minLength));
-                $str = null;
-            } else {
-                if ($maxLength > 0 && strlen($str) > $maxLength) {
-                    if ($autoCrop) {
-                        $str = substr($str, 0, $maxLength);
-                    } else {
-                        $this->setFeedback($key, sprintf(L::FAIL_MAX_LENGTH, $maxLength));
-                        $str = null;
-                    }
-                }
-            }
-        }
-        return $str;
     }
 
     /**
@@ -143,7 +142,7 @@ abstract class AbstractActionController extends AbstractRequestController {
      * @return \DateTime
      */
     protected final function postDate($key, $required = true, $minAge = null, $maxAge = null, array $patterns = ['Y-m-d', 'd#m#y', 'd#m#Y']) {
-        $ds = $this->postString0($key, 0);
+        $ds = $this->requestString(INPUT_POST, $key, 0);
         $d = null ;
         // FIXME log if $patterns is empty
         foreach ($patterns as $p) {
@@ -155,26 +154,42 @@ abstract class AbstractActionController extends AbstractRequestController {
         if ($d) {
 			$age = \temple\util\DateUtil::age($d) ;
 			if($minAge !== null && $d && (intval($minAge) > $age)) {
-				$this->setFeedback($key, sprintf(L::FAIL_MIN_AGE, $minAge));
+				$this->invalidValue($key, sprintf(L::FAIL_MIN_AGE, $minAge));
 				$d = null ;
 			}
 			if($maxAge !== null && $d && (intval($maxAge) < $age)) {
-				$this->setFeedback($key, sprintf(L::FAIL_MAX_AGE, $maxAge));
+				$this->invalidValue($key, sprintf(L::FAIL_MAX_AGE, $maxAge));
 				$d = null ;
 			}
         } else {
 			if($required) {
-	            $this->setFeedback($key);
+	            $this->invalidValue($key);
 			}
             $d = null;
 		}
         return $d;
     }
 
+	/**
+	 * 
+	 * @param string $key
+	 * @param boolean $required
+	 * @param int $min
+	 * @param int $max
+	 * @return int
+	 */
     protected final function postInt($key, $required = true, $min = null, $max = null) {
 	return $this->postNumber($key, $required, $min, $max) ;
     }
 
+	/**
+	 * 
+	 * @param string $key
+	 * @param boolean $required
+	 * @param float $min
+	 * @param float $max
+	 * @return float
+	 */
     protected final function postFloat($key, $required = true, $min = null, $max = null) {
 	return $this->postNumber($key, $required, $min, $max, true) ;
     }
@@ -224,8 +239,8 @@ abstract class AbstractActionController extends AbstractRequestController {
         $p2 = $this->postString($key2, $maxLength, $minLength);
         if ($p1 !== null && $p2 !== null) {
             if ($p1 !== $p2) {
-                $this->setFeedback($key1, L::FAIL_PASSES);
-                $this->setFeedback($key2, L::FAIL_PASSES);
+                $this->invalidValue($key1, L::FAIL_PASSES);
+                $this->invalidValue($key2, L::FAIL_PASSES);
             } else {
                 $p = $p1;
             }
@@ -250,7 +265,7 @@ abstract class AbstractActionController extends AbstractRequestController {
                         if ($file['size'] <= $maxSize) {
                             $fn = $file['tmp_name'];
                         } else {
-                            $this->setFeedback($key, sprintf(L::FAIL_FILE_TOO_BIG, $maxSize . ' bytes'));
+                            $this->invalidValue($key, sprintf(L::FAIL_FILE_TOO_BIG, $maxSize . ' bytes'));
                         }
                     } else {
                         throw new \RuntimeException('The file is not been an uploaded file.');
@@ -261,11 +276,11 @@ abstract class AbstractActionController extends AbstractRequestController {
                         break;
                     }
                 default :
-                    $this->setFeedback($key, L::FAIL_UPLOAD_ERROR);
+                    $this->invalidValue($key, L::FAIL_UPLOAD_ERROR);
             }
         } else {
             if ($required) {
-                $this->setFeedback($key);
+                $this->invalidValue($key);
             }
         }
         return $fn;
@@ -276,12 +291,19 @@ abstract class AbstractActionController extends AbstractRequestController {
         if ($fn) {
             move_uploaded_file($fn, $dstFile);
 			if($required) {
-				$this->setFeedback($key, L::FAIL_UPLOAD_ERROR) ;
+				$this->invalidValue($key, L::FAIL_UPLOAD_ERROR) ;
 			}
         }
         return $fn;
     }
 
+	/**
+	 * 
+	 * @param string $key
+	 * @param \temple\data\persistence\model\Key $pk
+	 * @param boolean $required
+	 * @return type
+	 */
 	protected final function postModel($key, \temple\data\persistence\model\Key $pk, $required = true) {
 		$id = $this->postInt($key, false) ;
 		$m = $this->getModelManager()->findByKey($pk, $id) ;
@@ -291,16 +313,4 @@ abstract class AbstractActionController extends AbstractRequestController {
 		return $m ;
 	}
 	
-    // check FALSE and NULL only to return NULL only if value is one of those
-    private function checkValue($value, $key, $required) {
-        if (($value === FALSE || $value === NULL)) {
-            if ($required) {
-                // generic message here cause we don't know what might have cause the error
-                $this->setFeedback($key);
-            }
-            $value = NULL;
-        }
-        return $value;
-    }
-
 }
