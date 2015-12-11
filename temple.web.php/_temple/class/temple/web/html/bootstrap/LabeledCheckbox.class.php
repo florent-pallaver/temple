@@ -45,6 +45,20 @@ class LabeledCheckbox extends AbstractFormField {
 		$this->checkbox->setAttribute('checked', $value ? 'checked' : null);
 		return $this;
 	}
+	
+	public function isRequired() {
+		return $this->checkbox->isRequired() ;
+	}
+
+	public function setDisabled($disabled = true) {
+		$this->checkbox->setDisabled($disabled);
+		return $this ;
+	}
+
+	public function setForm($formId) {
+		$this->checkbox->setForm($formId);
+		return $this ;
+	}
 
 	/**
 	 * 

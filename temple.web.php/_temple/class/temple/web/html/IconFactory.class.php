@@ -28,7 +28,7 @@ abstract class IconFactory {
 	 * @param string $name
 	 * @param array $variations array of IconVariation 
 	 * @return FrameworkComponent or null if $anme is null
-	 * @see IconVariation
+	 * @see CssVariation
 	 */
 	public final function createIcon($name, array $variations = []) {
 		return $name ? $this->newIcon($name, $variations)->setAttribute('aria-hidden', 'true') : null;
@@ -39,7 +39,7 @@ abstract class IconFactory {
 	 * @param string $name
 	 * @param array $variations array of IconVariation 
 	 * @return FrameworkComponent
-	 * @see IconVariation
+	 * @see CssVariation
 	 */
 	protected abstract function newIcon($name, array $variations = []) ;
 	
@@ -50,7 +50,7 @@ abstract class IconFactory {
 	 * @param array $variations array of IconVariation
 	 * @param boolean $formatted
 	 * @return HTMLElement
-	 * @see IconVariation
+	 * @see CssVariation
 	 */
 	public function createText($name, $text, array $variations = [], $formatted = false) {
 		$i = $this->createIcon($name, $variations)  ;

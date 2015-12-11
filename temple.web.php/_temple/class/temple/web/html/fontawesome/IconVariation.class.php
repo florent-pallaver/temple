@@ -7,7 +7,7 @@ namespace temple\web\html\fontawesome;
  *
  * @author flominou
  */
-final class IconVariation extends \temple\Enumeration implements \temple\web\html\IconVariation {
+final class IconVariation extends \temple\web\html\AbstractCssVariation {
 	
 	/**
 	 * fixes the width of the icon
@@ -95,10 +95,6 @@ final class IconVariation extends \temple\Enumeration implements \temple\web\htm
 	
 	public function toCssClass() {
 		return self::$css[$this->ordinal()];
-	}
-	
-	public function __toString() {
-		return $this->toCssClass() ;
 	}
 	
 }

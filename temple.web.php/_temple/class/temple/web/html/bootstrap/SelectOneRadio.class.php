@@ -10,7 +10,7 @@ namespace temple\web\html\bootstrap;
 class SelectOneRadio extends AbstractFormField {
 
 	private static $defaultCssVariant ;
-		
+	
 	private $name;
 	private $required;
 	private $radios;
@@ -34,14 +34,29 @@ class SelectOneRadio extends AbstractFormField {
 	 * @return \temple\web\html\bootstrap\SelectOneRadio
 	 */
 	public function setValue($value) {
+		$v = _eti($value) ;
 		foreach ($this->radios as $radio) {
-			if ($radio->getAttribute('value') == $value) {
+			if ($radio->getAttribute('value') == $v) {
 				$radio->setAttribute('checked', 'checked') ;
 			}
 		}
 		return $this;
 	}
 
+	public function setForm($formId) {
+		foreach($this->radios as $c) {
+			$c->setForm($formId) ;
+		}
+		return $this ;
+	}
+
+	public function setDisabled($disabled = true) {
+		foreach($this->radios as $c) {
+			$c->setDisabled($disabled) ;
+		}
+		return $this ;
+	}
+	
 	public function isRequired() {
 		return $this->required;
 	}
@@ -97,7 +112,8 @@ class SelectOneRadio extends AbstractFormField {
 		$sor = new SelectOneRadio($name, 'btn-group', $radioCssClass, $required);
 		$value = _eti($val) ;
 		foreach ($options as $v => $label) {
-			$sor->addButtonOption($v, $label, ($value !== null && $v == $value ? 'active' : NULL), _iod($optionVariants, $v));
+			$rv = $label instanceof \temple\Enumeration ? $label->ordinal() : $v ;
+			$sor->addButtonOption($rv, $label, ($value !== null && $rv == $value ? 'active' : NULL), _iod($optionVariants, $v));
 		}
 		return $sor->setValue($value)->setRole('group')->setData(['toggle' => 'buttons']);
 	}

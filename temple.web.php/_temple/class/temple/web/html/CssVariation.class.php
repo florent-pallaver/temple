@@ -7,7 +7,7 @@ namespace temple\web\html;
  * 
  * @author flominou
  */
-interface IconVariation {
+interface CssVariation {
 	
 	/**
 	 * @return string 

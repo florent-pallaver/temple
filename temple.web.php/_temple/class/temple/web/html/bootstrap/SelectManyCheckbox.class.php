@@ -35,10 +35,18 @@ class SelectManyCheckbox extends ItemList implements FormField {
 				$this->checkboxes[$k]->setAttribute('checked', $v ? 'checked' : null) ;
 			}
 		}
+		return $this ;
 	}
 
 	public function isRequired() {
 		return false;
 	}
-	
+
+	public function setDisabled($disabled = true) {
+		foreach($this->checkboxes as $c) {
+			$c->setDisabled($disabled) ;
+		}
+		return $this ;
+	}
+
 }

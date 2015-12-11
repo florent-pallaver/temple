@@ -26,12 +26,17 @@ class Form extends AbstractComponent {
 	 */
 	private $lastFieldset ;
 
+	/**
+	 * @var array
+	 */
+	private $formGroups ;
+	
 	public function __construct($action, $cssClass = null, $ajax = true, $fieldsetCssClass = null, $disabled = false) {
 		parent::__construct('form', $cssClass);
 		$this->fieldCssClass = null ;
 		$this->labelCssClass = null ;
 		$this->useCssClasses = true ;
-//		$this->getId() ; // forces id generation
+		$this->formGroups = [] ;
 		if($ajax) {
 			$this->addCssClass(self::AJAX_FORM_CLASS) ;
 		}
@@ -77,13 +82,11 @@ class Form extends AbstractComponent {
 	
 	/**
 	 * 
-	 * @param \temple\web\html\bootstrap\Component $comp
-	 * @return \temple\web\html\bootstrap\Form
+	 * @param \temple\web\html\HTMLElement $comp
+	 * @return Form
 	 */
 	public function addField(\temple\web\html\HTMLElement $comp) {
 		$this->lastFieldset->addChild($comp) ;
-		if(false) {
-		}
 		return $this ;
 	}
 	
@@ -115,6 +118,23 @@ class Form extends AbstractComponent {
 		$this->useCssClasses = !$this->useCssClasses ;
 		return $this ;
 	}
+
+	/**
+	 * 
+	 * @param string $jsFunction
+	 * @param array $data
+	 * @return Form
+	 */
+	public function setOnSuccessCallback($jsFunction, array $data = []) {
+		return $this->setData(['on-success' => $jsFunction])->setData($data) ;
+	}
+	
+	/**
+	 * @return Form
+	 */
+	public function horizontal() {
+		return $this->addCssClass('form-horizontal') ;
+	}
 	
 	/**
 	 * 
@@ -126,7 +146,7 @@ class Form extends AbstractComponent {
 	 * @return Form
 	 */
 	public function addFormGroup($label, FormField $field, $labelCssClass = null, $fieldCssClass = null, FormGroup &$fg = null) {
-		$fg = new FormGroup($field, $label, false) ;
+		$fg = new FormGroup($field, $label) ;
 		if($this->useCssClasses) {
 			$fg->getLabel()->addCssClass(_dif($labelCssClass, $this->labelCssClass)) ;
 			$fg->getFieldDiv()->addCssClass(_dif($fieldCssClass, $this->fieldCssClass)) ;
@@ -169,6 +189,16 @@ class Form extends AbstractComponent {
 	public function addTextAreaInFormGroup(TextArea $textArea, $labelCssClass = null, $fieldCssClass = null, FormGroup &$fg = null) {
 		return $this->addFormGroup($textArea->getAttribute('placeholder'), $textArea, $labelCssClass, $fieldCssClass, $fg ) ;
 	}
+	
+	/**
+	 * 
+	 * @param string $formFieldKey
+	 * @return FormGroup
+	 */
+	public function getFormGroup($formFieldKey) {
+		return _iod($this->formGroups, $formFieldKey) ;
+	}
+	
 	/**
 	 * 
 	 * @param type $action

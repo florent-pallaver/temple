@@ -15,6 +15,11 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 	 */
 	public static $defaultIdPrefix = 'htmlNode_' ;
 
+	/**
+	 * @var array
+	 */
+	private static $idedNodes = [] ;
+	
 	private static $idCount = 0 ;
 
 	/**
@@ -33,16 +38,18 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 	private $children ;
 
 	/**
-	 * Cosntructor.
+	 * Constructor.
 	 *
 	 * @param string $nodeType - the type of the HTMLNode to create.
 	 * @param array $attributes - an associative string => string array containing the attributes of the HTMLNode to create.
+	 * @param array $data
 	 */
 	public function __construct($nodeType, array $attributes = [], array $data = []) {
 		$this->nodeType = strtolower($nodeType) ;
-		$this->attributes = $attributes ;
-		$this->setData($data) ;
+		$this->attributes = [] ;
 		$this->children = new HTMLElementList() ;
+		$this->setAttributes($attributes) ;
+		$this->setData($data) ;
 	}
 
 	protected final function _toString() {
@@ -88,7 +95,7 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 		$id = $this->getAttribute('id') ;
 		if($id === NULL) {
 			$id = self::newId() ;
-			$this->setAttribute('id', $id) ;
+			$this->setId($id) ;
 		}
 		return $id ;
 	}
@@ -100,10 +107,16 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 	public final function setAttribute($key, $value) {
 		if($value === NULL) {
 			unset($this->attributes[$key]) ;
+			if($key === 'id') {
+				unset(self::$idedNodes[$key]) ;
+			}
 		} else {
 //			if(is_array($value)) {
 //				\temple\Logger::getInstance()->debug(print_r($value, true)) ;
 //			}
+			if($key === 'id') {
+				self::$idedNodes[$key] = $this ;
+			}
 			$this->attributes[$key] = htmlentities($value) ;
 		}
 		return $this ;
@@ -173,23 +186,23 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 		return $this ;
 	}
 
-//	public final function removeChild(HTMLElement $child) {
-//		foreach($this->children as $k => $c) {
-//			if($c === $child) {
-//				unset($this->children[$k]) ;
-//				break ;
-//			}
-//		}
-//	}
-
 	public final function getChild($key) {
 		return $this->children->getElement($key) ;
 	}
 	
-//	public final function getChildren() {
-//		return $this->children ;
-//	}
-
+	public final function getIterator() {
+		return $this->children->getIterator() ;
+	}
+	
+	/**
+	 * 
+	 * @param string $id
+	 * @return HTMLNode null if none exists
+	 */
+	public static final function getById($id) {
+		return _iod(self::$idedNodes, $id) ;
+	}
+	
 	private static final function newId() {
 		return self::$defaultIdPrefix . self::$idCount ++ ;
 	}

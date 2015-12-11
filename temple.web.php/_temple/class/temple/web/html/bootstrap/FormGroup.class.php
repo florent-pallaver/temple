@@ -9,6 +9,8 @@ namespace temple\web\html\bootstrap;
  */
 class FormGroup extends AbstractGroup {
 
+	private static $ID_SUFFIX = 'FG';
+	
 	private static $fieldKey = '_field|' ;
 	
 	private static $labelKey = '_label|' ;
@@ -19,12 +21,11 @@ class FormGroup extends AbstractGroup {
 	
 	/**
 	 * 
-	 * @param \temple\web\html\bootstrap\FormField $field
+	 * @param FormField $field
 	 * @param type $label
-	 * @param type $srOnly deprecated !
 	 * @param type $cssClass
 	 */
-	public function __construct(FormField $field, $label, $srOnly = true, $cssClass = null) {
+	public function __construct(FormField $field, $label, $cssClass = null) {
 		parent::__construct('form', null, $cssClass);
 		$this->addAllChildren([
 			self::$labelKey => $this->createHTMLNode('label', self::$defaultLabelCssClass, new \temple\web\html\HTMLString($label, true))->addCssClass('control-label'),
@@ -33,6 +34,7 @@ class FormGroup extends AbstractGroup {
 		if($field->isRequired()) {
 			$this->getLabel()->addCssClass('required');
 		}
+		$this->setId(self::getFormGroupId($field)) ;
 	}
 	
 	/**
@@ -66,6 +68,15 @@ class FormGroup extends AbstractGroup {
 	 */
 	public static function create(FormField $input) {
 		return new FormGroup($input, $input->getTitle()) ;
+	}
+	
+	/**
+	 * 
+	 * @param FormField $field
+	 * @return string
+	 */
+	public static function getFormGroupId(FormField $field) {
+		return $field->getName() . self::$ID_SUFFIX ;
 	}
 	
 }

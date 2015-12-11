@@ -128,9 +128,18 @@ class GraphNode {
 				}
 			}
 		}
+		foreach ($this->metamodel->getRelationMappings() as $rm) {
+			if ($rm instanceof \temple\data\persistence\model\ManyToOne || $rm instanceof \temple\data\persistence\model\OneToOne) {
+				if($rm->isUpdatable()) {
+					$cols = $rm->getColumnNames();
+					$vals = $rm->getDBValue($model);
+					for ($i = 0, $l = count($cols); $i < $l; $i++) {
+						$u->addAssignment(new Field($cols[$i], $t), $vals[$i]);
+					}
+				}
+			}
+		}
 		$u->getCondition()->addComparison(self::$qf->newKeyComparison($this->metamodel->getPrimaryKey(), $model->getId(), $t));
-//		 TODO add condition
-//		throw new Exception('Not Implemented');
 		return $u;
 	}
 

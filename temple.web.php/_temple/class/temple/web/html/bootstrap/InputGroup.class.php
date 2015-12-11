@@ -84,6 +84,11 @@ final class InputGroup extends AbstractGroup implements FormField {
 		return $this->getInput()->isRequired() ;
 	}
 	
+	public function setDisabled($disabled = true) {
+		$this->getInput()->setDisabled($disabled) ;
+		return $this ;
+	}
+	
 	/**
 	 * 
 	 * @param \temple\web\html\bootstrap\Input $input

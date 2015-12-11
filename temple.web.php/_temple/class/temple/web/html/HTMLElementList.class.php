@@ -7,7 +7,7 @@ namespace temple\web\html;
  *
  * @author florent
  */
-class HTMLElementList extends AbstractHTMLElement {
+class HTMLElementList extends AbstractHTMLElement implements \IteratorAggregate {
 
 	/**
 	 * @var array 
@@ -62,4 +62,9 @@ class HTMLElementList extends AbstractHTMLElement {
 		}
 	}
     
+	public function getIterator() {
+		$ao = new \ArrayObject($this->elements) ;
+		return $ao->getIterator() ; 
+	}
+	
 }

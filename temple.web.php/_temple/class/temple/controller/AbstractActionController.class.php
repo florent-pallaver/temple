@@ -14,7 +14,6 @@ use temple\controller\AbstractRequestControllerLocale as L;
 abstract class AbstractActionController extends AbstractRequestController {
 
     const ID_KEY = 'id';
-    const MIN_PASS_LENGTH = 8;
     const ACTION_KEY = 'action';
 
 	const _ACTION_NAME_KEY = '_action_name' ;
@@ -233,7 +232,7 @@ abstract class AbstractActionController extends AbstractRequestController {
         return $enums;
     }
 
-    protected final function postPass($key1, $key2, $maxLength, $minLength = self::MIN_PASS_LENGTH) {
+    protected final function postPass($key1, $key2, $maxLength, $minLength) {
         $p = null;
         $p1 = $this->postString($key1, $maxLength, $minLength);
         $p2 = $this->postString($key2, $maxLength, $minLength);

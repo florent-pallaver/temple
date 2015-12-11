@@ -35,7 +35,7 @@ class Time extends \temple\web\html\HTMLNode {
 	 * 
 	 * @param \DateTime $dateTime
 	 * @param string $format
-	 * @param type $icon
+	 * @param string $icon
 	 * @return \temple\web\html\v5\Time
 	 */
 	public static final function create(\DateTime $dateTime, $format = self::DEFAULT_FORMAT, $icon = null) {

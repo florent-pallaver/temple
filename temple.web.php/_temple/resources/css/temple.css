@@ -151,11 +151,10 @@ label.required:after {
 }
 
 /* Bigger buttons in small devices ... */
-.btn { font-size: 1.2em ; }
-.btn.btn-lg { font-size: 1.6em ; }
-@media (min-width:768px) {
-	.btn { font-size: 1em ; }
-	.btn.btn-lg { font-size: 1.3em ; }
+@media (max-width:767px) {
+	.btn { 
+		padding: 9px ;
+	}
 }
 
 /* bug bootstrap */

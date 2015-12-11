@@ -6,7 +6,7 @@ namespace temple\web\html\bootstrap;
  *
  * @author florent
  */
-interface FormField extends FormComponent {
+interface FormField extends FormComponent, \temple\util\Nameable {
 
 	/**
 	 * @param string $value the value to set
@@ -18,4 +18,12 @@ interface FormField extends FormComponent {
 	 * @return boolean TODOC
 	 */
 	function isRequired() ;
+	
+	/**
+	 * 
+	 * @param boolean $disabled
+	 * @return FormField this object
+	 */
+	function setDisabled($disabled = true) ;
+	
 }

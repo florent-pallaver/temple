@@ -18,4 +18,6 @@ final class CommonLocale {
 	const DATE_FORMAT = '%b %d %Y' ;
 	const LONG_DATE_FORMAT = '%B %d %Y' ;
 
+	const TIME_FORMAT = 'h:i A' ;
+	
 }

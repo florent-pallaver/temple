@@ -17,7 +17,7 @@ class QueryException extends DBException {
 	 * @param number $code - the error code (optionnal, 0 by default)
 	 */
 	public function __construct($query, $reason, $code = 0) {
-		parent::__construct(sprintf('Failure while executing query: ' . PHP_EOL .'%s'. PHP_EOL . 'Reason: %s', $query, $reason), $code) ;
+		parent::__construct(sprintf('Failure while executing query (code %s): ' . PHP_EOL .'%s'. PHP_EOL . 'Reason: %s', $code, $query, $reason), $code) ;
 	}
 
 }

@@ -27,7 +27,14 @@ class Navbar extends AbstractComponent {
 	 */
 	private $collapse ;
 	
-	public function __construct(HTMLElement $brand, array $variants = [], $cssClass = null) {
+	/**
+	 * 
+	 * @param HTMLElement $brand
+	 * @param array $variants
+	 * @param string $logoLink
+	 * @param string $cssClass
+	 */
+	public function __construct(HTMLElement $brand, array $variants = [], $logoLink = '/' , $cssClass = null) {
 		parent::__construct('nav', 'navbar');
 		$this->addCssClass($cssClass)->setAttribute('role', 'navigation') ;
 		foreach($variants as $var) {
@@ -36,7 +43,7 @@ class Navbar extends AbstractComponent {
 		$this->header = CF::createComponent('div', 'navbar-header') ;
 		$this->collapse = CF::createComponent('div', 'collapse navbar-collapse') ;
 		$this
-			->addChild($this->header->addChild(new Link('/', $brand, 'navbar-brand')))
+			->addChild($this->header->addChild(new Link($logoLink, $brand, 'navbar-brand')))
 			->addChild($this->collapse)
 			;
 	}

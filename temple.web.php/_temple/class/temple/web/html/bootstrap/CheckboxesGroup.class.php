@@ -11,7 +11,8 @@ namespace temple\web\html\bootstrap;
 class CheckboxesGroup extends AbstractFormField {
 
 	private static $defaultCssVariant ;
-		
+	
+	private $fieldName ;
 	private $name;
 	private $required;
 	private $checkboxes;
@@ -19,12 +20,17 @@ class CheckboxesGroup extends AbstractFormField {
 
 	public function __construct($name, $cssClass = null, $checkboxesCssClass = null, $required = false) {
 		parent::__construct('div', $cssClass);
+		$this->fieldName = $name ;
 		$this->name = $name . '[]';
 		$this->required = $required;
 		$this->checkboxes = [];
 		$this->checkboxesCssClass = $checkboxesCssClass;
 	}
 
+	public function getName() {
+		return $this->fieldName ;
+	}
+	
 	/**
 	 * 
 	 * @param mixed $value scalar or array of scalars
@@ -125,6 +131,14 @@ class CheckboxesGroup extends AbstractFormField {
 		foreach($this->checkboxes as $c) {
 			$c->setForm($formId) ;
 		}
+		return $this ;
+	}
+
+	public function setDisabled($disabled = true) {
+		foreach($this->checkboxes as $c) {
+			$c->setDisabled($disabled) ;
+		}
+		return $this ;
 	}
 	
 }

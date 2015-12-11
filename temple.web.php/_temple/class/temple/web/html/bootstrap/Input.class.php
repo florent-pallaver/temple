@@ -21,7 +21,9 @@ class Input extends AbstractFormField {
 	const TYPE_SEARCH = 'search';
 	const TYPE_TELEPHONE = 'tel';
 	const TYPE_DATE = 'date';
+	const TYPE_TIME = 'time';
 	const TYPE_DATETIME = 'datetime';
+	const TYPE_URL = 'url';
 
 	const ACCEPT_ALL = '*/*' ;
 	const ACCEPT_VIDEO = 'video/*' ;
@@ -111,6 +113,18 @@ class Input extends AbstractFormField {
 	 * @param string $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
+	public static function createTime($name, $placeholder, $required = false, $cssClass = 'form-control') {
+		return new Input($name, self::TYPE_TIME, $placeholder, $required, $cssClass);
+	}
+
+	/**
+	 * 
+	 * @param string $name
+	 * @param string $placeholder
+	 * @param boolean $required
+	 * @param string $cssClass
+	 * @return \temple\web\html\bootstrap\Input
+	 */
 	public static function createDateTime($name, $placeholder, $required = false, $cssClass = 'form-control') {
 		return new Input($name, self::TYPE_DATETIME, $placeholder, $required, $cssClass);
 	}
@@ -168,6 +182,20 @@ class Input extends AbstractFormField {
 		return new Input($name, self::TYPE_EMAIL, $placeholder, $required, $cssClass);
 	}
 
+	/**
+	 * 
+	 * @param string $name
+	 * @param string $placeholder
+	 * @param int $maxlength
+	 * @param boolean $required
+	 * @param string $cssClass
+	 * @return Input
+	 */
+	public static function createURL($name, $placeholder, $maxlength, $required = false, $cssClass = 'form-control') {
+		$i = new Input($name, self::TYPE_URL, $placeholder, $required, $cssClass) ;
+		return $i->setMaxLength($maxlength) ;
+	}
+	
 	/**
 	 * 
 	 * @param type $name

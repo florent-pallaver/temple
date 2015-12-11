@@ -7,7 +7,7 @@ namespace temple\web\html ;
  *
  * @author Florent
  */
-interface Node extends HTMLElement {
+interface Node extends HTMLElement, \IteratorAggregate {
 
 	/**
 	 * Tells whether this node has of the given node type.

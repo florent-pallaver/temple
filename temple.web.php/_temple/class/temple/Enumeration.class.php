@@ -63,7 +63,7 @@ abstract class Enumeration implements \Serializable {
 	public final function equals($other) {
 //		$c = static::class ;
 //		Logger::getInstance($c)->info( $other instanceof $c ? strval($this) . ' ' . strval($other) : 'non') ;
-		return (static::class === get_class($other)) && ($this->ordinal === $other->ordinal) ;
+		return $other !== null && (static::class === get_class($other)) && ($this->ordinal == $other->ordinal) ;
 	}
 	
 	/**

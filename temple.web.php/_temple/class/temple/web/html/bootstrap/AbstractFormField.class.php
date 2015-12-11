@@ -18,4 +18,9 @@ abstract class AbstractFormField extends AbstractComponent implements FormField 
 		return (boolean)$this->getAttribute('required');
 	}
 	
+	public function setDisabled($disabled = true) {
+		$this->setAttribute('disabled', $disabled ? '' : null) ;
+		return $this ;
+	}
+	
 }

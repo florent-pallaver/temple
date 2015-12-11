@@ -44,6 +44,14 @@ class Button extends AbstractFormField {
         return $this->addCssClass('_confirm');
     }
 
+	/**
+	 * @return Button
+	 */
+	public function setBlock() {
+		$this->addCssClass('btn-block') ;
+		return $this ;
+	}
+	
     /**
      * 
      * @param mixed $innerText

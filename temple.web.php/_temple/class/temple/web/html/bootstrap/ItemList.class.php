@@ -36,12 +36,42 @@ class ItemList extends AbstractComponent {
 
 	/**
 	 * 
+	 * @param array $items
+	 * @return ItemList
+	 */
+	public final function addItems(array $items) {
+		foreach($items as $i) {
+			$this->addItem($i) ;
+		}
+		return $this ;
+	}
+	
+	/**
+	 * 
 	 * @return ItemList
 	 */
 	public final function addDivider() {
 		return $this->addChild(ListItem::$DIVIDER);
 	}
 
+	/**
+	 * 
+	 * @return ItemList
+	 */
+	public final function unstyled() {
+		$this->addCssClass('list-unstyled') ;
+		return $this ;
+	}
+	
+	/**
+	 * 
+	 * @return ItemList
+	 */
+	public final function inline() {
+		$this->addCssClass('list-inline') ;
+		return $this ;
+	}
+	
 	/**
 	 * 
 	 * @param type $cssClass
