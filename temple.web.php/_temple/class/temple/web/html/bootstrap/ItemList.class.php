@@ -7,25 +7,8 @@ namespace temple\web\html\bootstrap;
  *
  * @author florent
  */
-class ItemList extends AbstractComponent {
+class ItemList extends AbstractList {
 
-	/**
-	 * Constructor 
-	 * 
-	 * @param boolean $ordered
-	 * @param string $cssClass
-	 */
-	public function __construct($ordered = false, $cssClass = null) {
-		parent::__construct($ordered ? 'ol' : 'ul');
-		$this->addCssClass($cssClass);
-	}
-
-	/**
-	 * 
-	 * @param mixed $item
-	 * @param string $cssClass
-	 * @return ItemList
-	 */
 	public final function addItem($item = null, $cssClass = null) {
 		if ($item) {
 			$this->addChild($item instanceof \temple\web\html\Node && $item->isNode('li') ?
@@ -36,42 +19,12 @@ class ItemList extends AbstractComponent {
 
 	/**
 	 * 
-	 * @param array $items
-	 * @return ItemList
-	 */
-	public final function addItems(array $items) {
-		foreach($items as $i) {
-			$this->addItem($i) ;
-		}
-		return $this ;
-	}
-	
-	/**
-	 * 
 	 * @return ItemList
 	 */
 	public final function addDivider() {
 		return $this->addChild(ListItem::$DIVIDER);
 	}
 
-	/**
-	 * 
-	 * @return ItemList
-	 */
-	public final function unstyled() {
-		$this->addCssClass('list-unstyled') ;
-		return $this ;
-	}
-	
-	/**
-	 * 
-	 * @return ItemList
-	 */
-	public final function inline() {
-		$this->addCssClass('list-inline') ;
-		return $this ;
-	}
-	
 	/**
 	 * 
 	 * @param type $cssClass

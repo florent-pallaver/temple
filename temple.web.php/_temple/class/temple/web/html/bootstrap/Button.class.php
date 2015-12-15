@@ -52,6 +52,11 @@ class Button extends AbstractFormField {
 		return $this ;
 	}
 	
+	public function setToggable() {
+		$this->setData(['toggle'=>'button']) ;
+		return $this ;
+	}
+	
     /**
      * 
      * @param mixed $innerText

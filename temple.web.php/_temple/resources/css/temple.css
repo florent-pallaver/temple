@@ -79,6 +79,10 @@ ul._checkboxes li label:hover {
 	background-color: lightgray ;
 }
 
+ul._checkboxes label.btn {
+	margin: 0.3em 0;
+}
+
 nav.navbar img {
 	max-height: 100% ;
 }
@@ -150,6 +154,10 @@ label.required:after {
 	width: 100% ;
 }
 
+.btn-toolbar .btn-group {
+	margin-bottom: 0.5em ;
+}
+
 /* Bigger buttons in small devices ... */
 @media (max-width:767px) {
 	.btn { 
@@ -160,6 +168,12 @@ label.required:after {
 /* bug bootstrap */
 .media .img-responsive {
 	max-width: none ;
+}
+
+[data-toggle="buttons"]> li > .btn input[type="checkbox"] { /* hide checkboxes from list of checkboxes */
+	position: absolute;
+	clip: rect(0, 0, 0, 0);
+	pointer-events: none;
 }
 
 /* font awesome */

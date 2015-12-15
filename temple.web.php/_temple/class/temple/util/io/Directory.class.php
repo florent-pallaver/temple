@@ -45,15 +45,18 @@ class Directory extends AbstractFileSystemResource {
 	}
 	
 	/**
+	 * 
+	 * @param int $order one of SCANDIR_SORT_NONE, SCANDIR_SORT_ASCENDING or SCANDIR_SORT_DESCENDING
 	 * @return array
+	 * @throws ResourceAccessException
 	 */
-	public function getEntries() {
+	public function getEntries($order = SCANDIR_SORT_NONE) {
 		if(!$this->isReadable()) {
 			throw new ResourceAccessException($this) ;
 		}
 		$entries = [] ;
 		$p = $this->getAbsolutePath() ;
-		foreach(scandir($p, SCANDIR_SORT_NONE) as $e) {
+		foreach(scandir($p, $order) as $e) {
 			if($e != '.' && $e != '..') {
 				$f = $p . '/' . $e ;
 				$entries[] = is_dir($f) ? new Directory($e, $this) : new File($e, $this) ;

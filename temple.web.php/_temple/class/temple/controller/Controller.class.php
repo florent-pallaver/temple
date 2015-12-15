@@ -2,6 +2,8 @@
 
 namespace temple\controller;
 
+// FIXME remove iconable !!!
+
 /**
  * TODOC 
  * 

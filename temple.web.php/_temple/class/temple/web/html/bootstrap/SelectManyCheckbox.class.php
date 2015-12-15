@@ -8,19 +8,29 @@ namespace temple\web\html\bootstrap;
  *
  * @author florent
  */
-class SelectManyCheckbox extends ItemList implements FormField {
+class SelectManyCheckbox extends AbstractList implements FormField {
 
+	/**
+	 * @var CssVariant
+	 */
+	public static $DEFAULT_BUTTON_VARIANT ;
+	
+	private $name ;
+	
 	private $checkboxes ;
 	
-	public function __construct($name, array $options, array $value = []) {
-		parent::__construct(false, '_checkboxes list-unstyled');
+	public function __construct($name, $cssClass = null) {
+		parent::__construct(false, '_checkboxes') ;
+		$this->name = $name . '[]' ;
 		$this->checkboxes = [] ;
-		foreach($options as $k => $v) {
-			$i = Input::createCheckbox($name . '[]', $k) ;
-			$this->addItem(ComponentFactory::createComponent('label', null, [$i, $v]));
-			$this->checkboxes[$k] = $i ;
-		}
-		$this->setValue($value) ;
+		$this->addCssClass($cssClass) ;
+	}
+	
+	public function addItem($item = null, $cssClass = null) {
+		$k = $item->getValue() ;
+		$i = Input::createCheckbox($this->name, $k) ;
+		$this->addChild(new ListItem(ComponentFactory::createComponent('label', $cssClass, [$i, $item->getName()])));
+		$this->checkboxes[$k] = $i ;
 	}
 	
 	public function setForm($formId) {
@@ -49,4 +59,49 @@ class SelectManyCheckbox extends ItemList implements FormField {
 		return $this ;
 	}
 
+	/**
+	 * 
+	 * @param type $name
+	 * @param array $options
+	 * @param array $values
+	 * @return SelectManyCheckbox
+	 */
+	public static function createButtonGroup($name, array $options, array $values = [], CssVariant $variant = null) {
+		$smc = new SelectManyCheckbox($name, 'btn-group') ;
+		
+		$cv = _dif($variant, self::$DEFAULT_BUTTON_VARIANT) ;
+		
+		foreach($options as $k => $v) {
+			$smc->addItem(new SelectManyCheckbox_Option($k, $v), $cv->compose('btn')) ;
+		}
+		
+		$smc->unstyled()->setValue($values)->setData(['toggle'=>'buttons']) ;
+		return $smc ;
+	}
+
+	private static function _init() {
+		self::$DEFAULT_BUTTON_VARIANT = CssVariant::$DEFAULT ;
+	}
+	
+}
+
+final class SelectManyCheckbox_Option implements \temple\util\Nameable {
+	
+	private $value ;
+	
+	private $name ;
+
+	public function __construct($value, $name) {
+		$this->value = $value;
+		$this->name = $name;
+	}
+	
+	public function getValue() {
+		return $this->value;
+	}
+
+	public function getName() {
+		return $this->name;
+	}
+	
 }
