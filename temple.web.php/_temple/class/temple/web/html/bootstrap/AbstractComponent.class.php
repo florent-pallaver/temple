@@ -37,10 +37,6 @@ abstract class AbstractComponent extends \temple\web\html\AbstractFrameworkCompo
 		return $this->getAttribute('title') ;
 	}
 	
-	public final function setTitle($title) {
-		return $this->setAttribute('title', $title) ;
-	}
-	
 	public function getName() {
 		return $this->getAttribute('name') ;
 	}

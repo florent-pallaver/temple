@@ -50,6 +50,10 @@ TempleForm.prototype.submitDone = function(result) {
 			for(var i = 0 ; i < keys.length ; i++) {
 				var field = f.find('[name="' + keys[i] + '"]') ;
 				field.closest('.form-group').addClass('has-error') ;
+				var ig = field.closest('.input-group') ;
+				if(ig.length) {
+					field = ig ;
+				}
 				field.after('<small class="help-block _temple_feedback">' + feedbacks[keys[i]] + '</small>' ) ;
 			}
 			if(this.form[keys[0]] && typeof this.form[keys[0]].focus === 'function') {

@@ -158,6 +158,10 @@ label.required:after {
 	margin-bottom: 0.5em ;
 }
 
+.tab-pane {
+	padding-top : 1em ;
+}
+
 /* Bigger buttons in small devices ... */
 @media (max-width:767px) {
 	.btn { 

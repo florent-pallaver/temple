@@ -72,6 +72,14 @@ class Input extends AbstractFormField {
 	}
 	
 	/**
+	 * @param int $min
+	 * @return Input
+	 */
+	public function setMinLength($min) {
+		return $this->setAttribute('minlength', $min > 0 ? $min : null);
+	}
+	
+	/**
 	 * @param string $pattern
 	 * @return Input
 	 */

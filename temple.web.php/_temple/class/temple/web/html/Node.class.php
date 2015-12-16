@@ -29,7 +29,13 @@ interface Node extends HTMLElement, \IteratorAggregate {
 	 * @return Node
 	 */
 	public function setId($id) ;
-
+		
+	/**
+	 * @param string $title
+	 * @return Component
+	 */
+	public function setTitle($title) ;
+	
 	/**
 	 * TODOC
 	 *

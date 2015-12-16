@@ -95,7 +95,7 @@ final class Cache {
 	}
 
 	private static function _init() {
-		self::$FOLDER = TEMPLE_RESOURCE_PATH . 'cache/' ;
+		self::$FOLDER = CUSTOM_RESOURCE_PATH . 'cache/' ;
 		
 	}
 }

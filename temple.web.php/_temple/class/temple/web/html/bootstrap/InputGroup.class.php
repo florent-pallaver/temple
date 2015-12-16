@@ -70,6 +70,10 @@ final class InputGroup extends AbstractGroup implements FormField {
 		return $this->getChild($pre ? self::$pre : self::$post);
 	}
 
+	public function getName() {
+		return $this->getInput()->getName() ;
+	}
+	
 	public function setForm($formId) {
 		$this->getInput()->setForm($formId) ;
 		return $this ;
@@ -91,11 +95,11 @@ final class InputGroup extends AbstractGroup implements FormField {
 	
 	/**
 	 * 
-	 * @param \temple\web\html\bootstrap\Input $input
+	 * @param Input $input
 	 * @param mixed $iconText
-	 * @param type $pre
-	 * @param \temple\web\html\bootstrap\CssVariant $cv
-	 * @param type $cssClass
+	 * @param boolean $pre
+	 * @param CssVariant $cv
+	 * @param string $cssClass
 	 * @return InputGroup
 	 */
 	public static function create(Input $input, $iconText, $pre = true, CssVariant $cv = null, $cssClass = null) {
@@ -105,11 +109,11 @@ final class InputGroup extends AbstractGroup implements FormField {
 	
 	/**
 	 * 
-	 * @param \temple\web\html\bootstrap\Input $input
-	 * @param type $icon
-	 * @param type $pre
-	 * @param \temple\web\html\bootstrap\CssVariant $variant
-	 * @param type $cssClass
+	 * @param Input $input
+	 * @param string $icon
+	 * @param boolean $pre
+	 * @param CssVariant $variant
+	 * @param string $cssClass
 	 * @return InputGroup
 	 */
 	public static function createIconed(Input $input, $icon, $pre = true, CssVariant $variant = null, $cssClass = null) {

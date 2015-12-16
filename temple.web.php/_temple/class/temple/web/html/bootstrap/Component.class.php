@@ -26,11 +26,4 @@ interface Component extends \temple\web\html\FrameworkComponent {
 	 */
 	function getTitle() ;
 	
-	/**
-	 * @param string $title
-	 * @return Component
-	 */
-	function setTitle($title) ;
-
-	
 }
