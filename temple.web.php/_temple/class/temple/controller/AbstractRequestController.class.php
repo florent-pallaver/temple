@@ -45,6 +45,16 @@ abstract class AbstractRequestController extends AbstractController {
 
 	/**
 	 * 
+	 * @param type $type
+	 * @param type $key
+	 * @return boolean
+	 */
+	protected final function requestBoolean($type, $key) {
+        return filter_input($type, $key, FILTER_VALIDATE_BOOLEAN) === true;
+    }
+	
+	/**
+	 * 
 	 * @param int $type one of INPUT_GET, INPUT_POST, INPUT_SESSION, INPUT_COOKIE etc
 	 * @param string $key
 	 * @param int $maxLength
@@ -146,6 +156,15 @@ abstract class AbstractRequestController extends AbstractController {
 	 */
 	protected final function queryInt($key, $min = null, $max = null) {
 		return $this->requestInt(INPUT_GET, $key, false, $min, $max) ;
+	}
+	
+	/**
+	 * 
+	 * @param string $key
+	 * @return boolean
+	 */
+	protected final function queryBoolean($key) {
+		return $this->requestBoolean(INPUT_GET, $key) ;
 	}
 	
 	/**

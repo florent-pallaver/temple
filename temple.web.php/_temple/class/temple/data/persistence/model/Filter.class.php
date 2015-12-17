@@ -20,14 +20,11 @@ class Filter {
 	private $offset ;
 
 	/**
-	 * Constructor.
-	 * TODOC
-	 *
-	 * @param string $modelClassName
-	 * @param Condition $condition
-	 * @param array $orders
-	 * @param number $maxCount
-	 * @param number $offset
+	 * Constructor
+	 * 
+	 * @param \ReflectionClass $modelClass
+	 * @param int $maxCount
+	 * @param int $offset
 	 */
 	public function __construct(\ReflectionClass $modelClass, $maxCount = 0, $offset = 0) {
 		$this->modelClass = $modelClass ;

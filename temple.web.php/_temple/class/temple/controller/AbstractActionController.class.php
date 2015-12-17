@@ -201,19 +201,32 @@ abstract class AbstractActionController extends AbstractRequestController {
         if ($max !== null) {
             $options['max_range'] = $max;
         }
-        $i = filter_input(INPUT_POST, $key, $float ? FILTER_VALIDATE_FLOAT : FILTER_VALIDATE_INT, $options);
+        $i = filter_input(INPUT_POST, $key, $float ? FILTER_VALIDATE_FLOAT : FILTER_VALIDATE_INT, ['options' => $options]);
         return $this->checkValue($i, $key, $required);
     }
 
     protected final function postBoolean($key) {
-        return filter_input(INPUT_POST, $key, FILTER_VALIDATE_BOOLEAN) === true;
+        return $this->requestBoolean(INPUT_POST, $key) ;
     }
 
+	/**
+	 * 
+	 * @param string $key
+	 * @param \ReflectionClass $enumClass
+	 * @param boolean $required
+	 * @return \temple\Enumeration
+	 */
     protected final function postEnum($key, \ReflectionClass $enumClass, $required = true) {
         $i = $this->postInt($key, $required);
         return $i !== null ? $enumClass->getMethod('getByOrdinal')->invoke(null, $i) : null;
     }
 
+	/**
+	 * 
+	 * @param string $key
+	 * @param \ReflectionClass $enumClass
+	 * @return array 
+	 */
     protected final function postEnums($key, \ReflectionClass $enumClass) {
         $enums = [];
         $ordinals = filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT, ['flags' => FILTER_REQUIRE_ARRAY, 'options' => ['min_range' => 0]]);
@@ -247,28 +260,34 @@ abstract class AbstractActionController extends AbstractRequestController {
         return $p;
     }
 
-    /**
-     * 
+	/**
+	 * 
      * @param string $key
      * @param int $maxSize > 0
+	 * @param string $dstFile
      * @param boolean $required whether or not the file must exist
-     * @return string the path to the valid uploaded file
-     */
-    protected final function checkUpload($key, $maxSize, $required = false) {
-        $fn = null;
+	 * @return File
+	 */
+    protected final function postFile($key, $maxSize, $dstFile, $required = false) {
+		$f = null ;
         if (isset($_FILES[$key])) {
             $file = &$_FILES[$key];
             switch ($file['error']) {
                 case UPLOAD_ERR_OK :
-                    if (is_uploaded_file($file['tmp_name'])) {
-                        if ($file['size'] <= $maxSize) {
-                            $fn = $file['tmp_name'];
-                        } else {
-                            $this->invalidValue($key, sprintf(L::FAIL_FILE_TOO_BIG, $maxSize . ' bytes'));
-                        }
-                    } else {
+                    if (!is_uploaded_file($file['tmp_name'])) {
                         throw new \RuntimeException('The file is not been an uploaded file.');
                     }
+					if ($file['size'] <= $maxSize) {
+						if(move_uploaded_file($file['tmp_name'], $dstFile)) {
+							$f = new \temple\util\io\File($dstFile) ;
+						} else if($required) {
+							$this->invalidValue($key, L::FAIL_UPLOAD_ERROR) ;
+						} else {
+							$this->warning(L::FAIL_UPLOAD_ERROR) ;
+						}
+					} else {
+						$this->invalidValue($key, sprintf(L::FAIL_FILE_TOO_BIG, $maxSize . ' bytes'));
+					}
                     break;
                 case UPLOAD_ERR_NO_FILE :
                     if (!$required) {
@@ -282,18 +301,7 @@ abstract class AbstractActionController extends AbstractRequestController {
                 $this->invalidValue($key);
             }
         }
-        return $fn;
-    }
-
-    protected final function postFile($key, $maxSize, $dstFile, $required = false) {
-        $fn = $this->checkUpload($key, $maxSize, $required);
-        if ($fn) {
-            move_uploaded_file($fn, $dstFile);
-			if($required) {
-				$this->invalidValue($key, L::FAIL_UPLOAD_ERROR) ;
-			}
-        }
-        return $fn;
+        return $f;
     }
 
 	/**
