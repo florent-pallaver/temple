@@ -37,6 +37,7 @@ public final class AnnotatedFieldCache<A extends Annotation> extends AbstractLog
 	 * @param c
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public AnnotatedField<A>[] getFields(Class<?> c) {
 		AnnotatedField<A>[] toStringFields = this.cache.get(c);
 		if (toStringFields == null) {

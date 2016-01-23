@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class CalendarInterval implements Interval<Calendar>, Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@ToString
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column()
