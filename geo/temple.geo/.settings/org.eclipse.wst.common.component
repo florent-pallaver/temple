@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="temple.geo">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="temple.common.jar" deploy-path="/lib" handle="module:/resource/temple.common/temple.common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.geo.service.jar" deploy-path="/" handle="module:/resource/temple.geo.service/temple.geo.service">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.geo.service.client.jar" deploy-path="/lib" handle="module:/resource/temple.geo.service.client/temple.geo.service.client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.model.jar" deploy-path="/lib" handle="module:/resource/temple.model/temple.model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.service.client.jar" deploy-path="/lib" handle="module:/resource/temple.service.client/temple.service.client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.geo.service.import-geonames.jar" deploy-path="/" handle="module:/resource/temple.geo.service.import-geonames/temple.geo.service.import-geonames">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.geo.web.war" deploy-path="/" handle="module:/resource/temple.geo.web/temple.geo.web">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.geo.service._private.jar" deploy-path="/lib" handle="module:/resource/temple.geo.service._private/temple.geo.service._private">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>

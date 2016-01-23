@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: temple.service.client.jar 
+ temple.model.jar 
+ temple.common.jar
+

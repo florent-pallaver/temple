@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+ <display-name>temple.geo.web</display-name>
+ <servlet>
+  <servlet-name>Faces Servlet</servlet-name>
+  <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+ </servlet>
+ <servlet>
+  <servlet-name>Administrative Divisions Servlet</servlet-name>
+  <servlet-class>com.temple.web.geo.servlet.AdministrativeDivisionsServlet</servlet-class>
+  <enabled>true</enabled>
+ </servlet>
+ <servlet>
+  <servlet-name>Populated Places Servlet</servlet-name>
+  <servlet-class>com.temple.web.geo.servlet.PopulatedPlacesServlet</servlet-class>
+  <enabled>true</enabled>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>Faces Servlet</servlet-name>
+  <url-pattern>*.jsf</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>Administrative Divisions Servlet</servlet-name>
+  <url-pattern>/geo/div.jsf</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>Populated Places Servlet</servlet-name>
+  <url-pattern>/geo/places.jsf</url-pattern>
+ </servlet-mapping>
+</web-app>
