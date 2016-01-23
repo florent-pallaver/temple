@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="temple.service">
+        <wb-resource deploy-path="/" source-path="/ejbModule" tag="defaultRootSource"/>
+        <property name="ClientProject" value="temple.service.client"/>
+        <property name="ClientJARURI" value="temple.service.client.jar"/>
+        <property name="java-output-path" value="/temple.service/build/classes"/>
+    </wb-module>
+</project-modules>
