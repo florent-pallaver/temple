@@ -136,15 +136,14 @@ class Button extends AbstractFormField {
 
 	/**
 	 * 
-	 * @param type $icon
-	 * @param type $text
+	 * @param mixed $label
 	 * @param \temple\web\html\Node $collapsable
-	 * @param \temple\web\html\bootstrap\CssVariant $variant
+	 * @param CssVariant $variant
 	 * @param boolean $collapsed whether the $collapsable is initially collapsed or not
 	 * @return Button
 	 */
-	public static function createCollapse($icon, $text, \temple\web\html\Node $collapsable, CssVariant $variant = null, $collapsed = true) {
-		return self::create(\temple\web\html\IconFactory::getInstance()->createText($icon, $text), $variant)
+	public static function createCollapse($label, \temple\web\html\Node $collapsable, CssVariant $variant = null, $collapsed = true) {
+		return self::create($label, $variant)
 				->setData([
 					'target' => '#' . $collapsable->getId(),
 					'toggle' => 'collapse' ]) 

@@ -13,14 +13,15 @@ abstract class AbstractRequestControllerLocale {
 	
 	const FAIL_INTERNAL_ERROR = 'Une erreur interne est survenue.' ;
 	const INTERNAL_ERROR_HINT = 'Reessayez plus tard.' ;
-	
+
 	const INFO_FILES_LIMIT = 'Seulement %d fichiers peuvent être téléchargés à la fois, les fichiers supplémentaires ont été ignorés.';
 	const INFO_INVALID_CHARS = 'Le champ %1$s \'%2$s\' contenait des caractères invalides qui ont été remplacés.';
 	const INFO_MAX_LENGTH = 'Le champ %1$s excédait la limite de %2$d caractères et a été tronqué.';
 	
 	const WARN_AGE = '\'%1$s\' n\'est pas une date de naissance valide.\nSi vous n\'avez pas au moins %2$d ans, vous ne respectez pas les termes et conditions d\'utilisation de ce site web.';
 	const WARN_INVALID_DATE = '\'%s\' n\'est pas une date valide.';
-	
+	const WARN_DELETE_FILE = 'Impossible d\'effacer le fichier.' ;
+
 	const FAIL_INCORRECT_FIELD = 'Ce champ est incorrect.' ;
 	const FAIL_EMPTY_FIELD = 'Ce champ ne peut pas être vide.' ;
 	const FAIL_MIN_LENGTH = 'Ce champ doit minimum faire %1$s caractères.' ;

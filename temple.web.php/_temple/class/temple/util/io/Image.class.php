@@ -12,14 +12,6 @@ use Exception;
  */
 class Image {
 
-	private static $errorMsgs = [
-		UPLOAD_ERR_INI_SIZE => 'file is too big',
-		UPLOAD_ERR_FORM_SIZE => 'file is too big',
-		UPLOAD_ERR_PARTIAL => 'file has been only partially uploaded',
-		UPLOAD_ERR_NO_FILE => 'no file has been uploaded',
-		0 => 'an unexpected error on the server occured'
-	];
-	private static $failMsg = "An error occured while processing '%s': %s.";
 	public static $COMPRESSION_QUALITY = 95;
 	public static $IMAGE_MAX_WIDTH = 1280;
 	public static $IMAGE_MAX_HEIGHT = 720;
@@ -57,17 +49,7 @@ class Image {
 	 * @throws ResourceCreationException
 	 */
 	public function writeTo($dir, $dest, $wid = 0, $hei = 0) {
-		$f = $this->getDestFile($dir, $dest) ;
-		try {
-			$im = $this->im->getimage() ;
-			$b = true ;
-			if($wid > 0 || $hei > 0) {
-				$b = $im->thumbnailimage($wid, $hei, true) ;
-			}
-			return $b && $im->writeimage($f);
-		} catch (Exception $ex) {
-			throw new ResourceCreationException($f, $ex->getMessage());
-		}
+		return $this->createFile($this->getDestFile($dir, $dest), $wid, $hei) ;
 	}
 	
 	/**
@@ -79,13 +61,7 @@ class Image {
 	 * @throws ResourceCreationException
 	 */
 	public function writeThumbnailTo($dir, $dest, $dim) {
-		$f = $this->getDestFile($dir, $dest) ;
-		try {
-			$im = $this->im->getimage() ;
-			return $im->cropthumbnailimage($dim, $dim) && $im->writeimage($f);
-		} catch (Exception $ex) {
-			throw new ResourceCreationException($f, $ex->getMessage());
-		}
+		return $this->createThumbnailFile($this->getDestFile($dir, $dest), $dim) ;
 	}
 	
 	/**
@@ -104,57 +80,69 @@ class Image {
 		return new File($dest . '.jpg', $d) ;
 	}
 
-	public static function createFromFile($ufn) {
+	/**
+	 * 
+	 * @param string $dest
+	 * @param int $wid
+	 * @param int $hei
+	 * @return boolean
+	 * @throws ResourceCreationException
+	 */
+	public function createFile($dest, $wid = 0, $hei = 0) {
 		try {
-			$im = new Imagick($ufn);
+			$im = $this->im->getImage() ;
+			$b = true ;
+			if($wid > 0 || $hei > 0) {
+				$b = $im->thumbnailImage($wid, $hei, true) ;
+			}
+			return $b && $im->writeImage($dest);
 		} catch (Exception $ex) {
-			self::failure($ufn, 'its file format is not supported', $ex);
+			throw new ResourceCreationException($dest, $ex->getMessage());
 		}
-		try {
-			$im->setimagecolorspace(255);
-			$im->setimageformat('jpeg');
-			$im->setimagecompression(Imagick::COMPRESSION_JPEG);
-			$im->setimagecompressionquality(self::$COMPRESSION_QUALITY);
-			$im->flattenimages();
-		} catch (Exception $ex) {
-			self::failure($ufn, $ex->getMessage(), $ex);
-		}
-		return new Image($im) ;
 	}
 	
 	/**
 	 * 
-	 * @param array $uploadData
-	 * @throws Exception
+	 * @param string $dest
+	 * @param int $dim
+	 * @return boolean
+	 * @throws ResourceCreationException
 	 */
-	public static function createFromUploadFile(array $uploadData) {
-		$ufn = &$uploadData['name'];
-		if ($uploadData['error']) {
-			self::failure($ufn, self::$errorMsgs[intval($uploadData['error'])]);
-		}
-		if (!is_uploaded_file($uploadData['tmp_name'])) {
-			self::failure($ufn, 'it is not an uploaded file');
-		}
+	public function createThumbnailFile($dest, $dim) {
 		try {
-			$im = new Imagick($uploadData['tmp_name']);
+			$im = $this->im->getImage() ;
+			return $im->cropThumbnailImage($dim, $dim) && $im->writeImage($dest);
 		} catch (Exception $ex) {
-			self::failure($ufn, 'its file format is not supported', $ex);
+			throw new ResourceCreationException($dest, $ex->getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param File $file
+	 * @return Image
+	 * @throws ImageProcessingException
+	 */
+	public static function createFromFile(File $file) {
+		try {
+			$im = new Imagick() ;
+			if($file->getMimeType() == 'application/pdf') {
+				$im->setResolution(300,300);
+			}
+			$im->readimage($file->getAbsolutePath()); 
+		} catch (Exception $ex) {
+			throw new UnsupportedImageFormatException($ex) ;
 		}
 		try {
-			$im->setimagecolorspace(255);
+//			$im->setimagecolorspace(255);
 			$im->setimageformat('jpeg');
 			$im->setimagecompression(Imagick::COMPRESSION_JPEG);
 			$im->setimagecompressionquality(self::$COMPRESSION_QUALITY);
 			$im->flattenimages();
 		} catch (Exception $ex) {
-			self::failure($ufn, $ex->getMessage(), $ex);
+			throw new ImageProcessingException($ex) ;
 		}
 		return new Image($im) ;
 	}
 	
-	private static function failure($ufn, $reason, Exception $e = null) {
-		// TODO should throw IO exception
-		throw new Exception(sprintf(self::$failMsg, $ufn, $reason), 0, $e);
-	}
-
 }

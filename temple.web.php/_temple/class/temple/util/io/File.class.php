@@ -51,4 +51,18 @@ class File extends AbstractFileSystemResource {
 		} 
 	}
 	
+	/**
+	 * 
+	 * @return string the mime type as return by finfo
+	 * @throws ResourceAccessException
+	 */
+	public function getMimeType() {
+		if(!$this->isReadable()) {
+			throw new ResourceAccessException($this) ;
+		}
+		$fi = new \finfo(FILEINFO_MIME_TYPE) ;
+		$mt = $fi->file($this->getAbsolutePath()) ;
+		return $mt ;
+	}
+	
 }

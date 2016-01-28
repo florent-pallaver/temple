@@ -14,6 +14,9 @@ final class CommonLocale {
 	const YES = 'yes' ;
 	const NO = 'no' ;
 	
+	const LEFT = 'left' ;
+	const RIGHT = 'right' ;
+	
 	const SHORT_DATE_FORMAT = '%m/%d/%Y' ;
 	const DATE_FORMAT = '%b %d %Y' ;
 	const LONG_DATE_FORMAT = '%B %d %Y' ;

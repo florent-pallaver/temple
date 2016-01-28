@@ -7,7 +7,7 @@ namespace temple\util\io;
  *
  * @author florent
  */
-class ImageFormatException extends IOException {
+class UnsupportedImageFormatException extends IOException {
 
 	const FORMAT = "Unsupported image format" ;
 	

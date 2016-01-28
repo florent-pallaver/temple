@@ -23,8 +23,22 @@ final class RawHTML extends AbstractHTMLElement {
 		return $this->raw ;
 	}
 
+	/**
+	 * 
+	 * @param mixed $raw
+	 * @return \temple\web\html\RawHTML
+	 */
 	public static final function create($raw) {
 		return new RawHTML($raw) ;
+	}
+	
+	/**
+	 * 
+	 * @param \temple\web\html\HTMLElement $e
+	 * @return \temple\web\html\RawHTML
+	 */
+	public static final function fromHTMLElement(HTMLElement $e) {
+		return new RawHTML($e->toString()) ;
 	}
 	
 }

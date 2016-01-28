@@ -26,8 +26,8 @@ abstract class ModelManager {
 	 *
 	 * @param Key $key
 	 * @param mixed $id
-	 * @return Model
-	 * @throws
+	 * @return Model null if no model found
+	 * @throws \temple\data\persistence\db\DBException
 	 */
 	public abstract function findByKey(Key $key, $id) ;
 
@@ -99,7 +99,7 @@ abstract class ModelManager {
 	 * TODOC
 	 *
 	 * @param Model $model
-	 * @return
+	 * @return boolean
 	 */
 	public abstract function delete(Model $model) ;
 

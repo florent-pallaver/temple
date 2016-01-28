@@ -93,12 +93,13 @@ class Input extends AbstractFormField {
 	 * @param string $placeholder
 	 * @param boolean $required
 	 * @param int $maxLength
+	 * @param int $minLength
 	 * @param string $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
-	public static function create($name, $placeholder, $required = false, $maxLength = 0, $cssClass = 'form-control') {
+	public static function create($name, $placeholder, $required = false, $maxLength = 0, $minLength = 0, $cssClass = 'form-control') {
 		$i = new Input($name, self::TYPE_TEXT, $placeholder, $required, $cssClass) ;
-		return $i->setMaxLength($maxLength) ;
+		return $i->setMaxLength($maxLength)->setMinLength($minLength) ;
 	}
 
 	/**

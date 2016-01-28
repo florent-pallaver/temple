@@ -76,7 +76,7 @@ class Dropdown extends AbstractComponent {
 	 */
 	public static function createNavLink($content) {
 		$d = new Dropdown('li', 'dropdown') ;
-		return $d->addChild(Link::create(null, [$content, ComponentFactory::$CARET], 'dropdown-toggle')
+		return $d->addChild(Link::create('#', [$content, ComponentFactory::$CARET], 'dropdown-toggle')
 								->setData(['toggle' => 'dropdown'])->setAria(['haspopup'=>'true', 'expanded'=>'false']));
 	}
 

@@ -7,7 +7,7 @@ namespace temple\view;
  *
  * @author flominou
  */
-interface UserAction extends \temple\util\Iconable, \temple\util\Nameable {
+interface UserAction extends \temple\util\Labelable {
 
 	/**
 	 * @return string the controller's fully qualified class name

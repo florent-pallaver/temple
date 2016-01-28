@@ -24,7 +24,7 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 	private static $modalsKey = '_modals|' ;
 	private static $scriptsKey = '_scripts|' ;
 	
-	public function __construct($title, $author = '', $description = '', $headerClass = 'container') {
+	public function __construct($title, $author = '', $description = '') {
 		parent::__construct($title, $author, $description);
 		$rp = \temple\web\Config::TEMPLE_RESOURCE_PATH ;
 		$this->addMeta('viewport', 'width=device-width, initial-scale=1.0') ;
@@ -32,9 +32,9 @@ class HTML5Document extends \temple\web\html\HTML5Document {
 				->addCssLink($rp . 'font-awesome/' . self::$FONT_AWESOME_VERSION . '/css/font-awesome.min.css')
 				->addCssLink($rp . 'css/temple.min.css');
 		$this->getBody()
-				->addChild(NF::createNode('header', ['class'=> $headerClass, 'id'=>self::HEADER_ID]), self::HEADER_ID) 
-				->addChild(NF::createNode('main', ['class'=>'container', 'id'=>self::MAIN_ID]), self::MAIN_ID) 
-				->addChild(NF::createNode('footer', ['class'=>'container', 'id'=>self::FOOTER_ID]), self::FOOTER_ID) 
+				->addChild(NF::createNode('header', ['id'=>self::HEADER_ID]), self::HEADER_ID) 
+				->addChild(NF::createNode('main', ['id'=>self::MAIN_ID]), self::MAIN_ID) 
+				->addChild(NF::createNode('footer', ['id'=>self::FOOTER_ID]), self::FOOTER_ID) 
 				->addChild(new \temple\web\html\HTMLElementList(), self::$modalsKey)
 				->addChild(new \temple\web\html\HTMLElementList(), self::$scriptsKey)
 			;

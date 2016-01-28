@@ -37,7 +37,7 @@ final class DateUtil {
 	 * @return int
 	 */
 	public static function age(\DateTime $bd) {
-		$now = new \DateTime('now') ;
+		$now = self::now() ;
 		$age = $now->format('Y') - $bd->format('Y') ;
 		if($now->format('m-d') < $bd->format('m-d')) {
 			$age-- ;
@@ -55,4 +55,11 @@ final class DateUtil {
 		return strftime($format, $d->getTimestamp()) ;
 	}
 
+	/**
+	 * @return \DateTime
+	 */
+	public static function now() {
+		return new \DateTime('now') ;
+	}
+	
 }

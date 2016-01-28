@@ -30,7 +30,7 @@ final class ExceptionHandler {
 	
 	/**
 	 * 
-	 * @param \Exception $e
+	 * @param Exception $e
 	 */
 	public static function handle(Exception $e) {
 		self::log($e) ;

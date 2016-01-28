@@ -20,6 +20,7 @@ abstract class AbstractRequestControllerLocale {
 	
 	const WARN_AGE = '\'%1$s\' is not a valid birthdate.\nIf you are not at least %2$d you are breaking the terms and conditions of use of this website.';
 	const WARN_INVALID_DATE = '\'%s\' is not a valid date.';
+	const WARN_DELETE_FILE = 'Unable to delete file.' ;
 	
 	const FAIL_MIN_AGE = 'Minimum allowed age is %s.' ;
 	const FAIL_MAX_AGE = 'Maximum allowed age is %s.' ;
