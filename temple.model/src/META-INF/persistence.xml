@@ -2,26 +2,13 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="com.temple.persistenceUnit">
     <jta-data-source>jdbc/temple/default</jta-data-source>
-    <class>com.temple.model.geo.AbstractGeoEntity</class>
-    <class>com.temple.model.geo.LocationId</class>
-    <class>com.temple.model.geo.Location</class>
-    <class>com.temple.model.geo.RegionId</class>
-    <class>com.temple.model.geo.Region</class>
-    <class>com.temple.model.geo.CityId</class>
-    <class>com.temple.model.geo.City</class>
+    <class>com.temple.model.Counter</class>
     <class>com.temple.model.impl.AbstractEntity</class>
-    <class>com.temple.model.impl.AbstractGroup</class>
-    <class>com.temple.model.impl.AbstractIntegerIdResource</class>
-    <class>com.temple.model.impl.AbstractResource</class>
-    <class>com.temple.model.impl.AbstractUser</class>
     <class>com.temple.model.impl.OwnedChildEntityId</class>
     <class>com.temple.model.impl.OwnedEntityId</class>
     <class>com.temple.model.impl.access.DefaultMod</class>
-    <class>com.temple.model.impl.content.AbstractNode</class>
-    <class>com.temple.model.geo.geonames.Geoname</class>
-    <class>com.temple.model.geo.geonames.AdministrativeDivision</class>
-    <class>com.temple.model.geo.geonames.PopulatedPlace</class>
-    <class>com.temple.model.geo.geonames.AbstractCountryArea</class>
+    <class>com.temple.model.util.CalendarInterval</class>
+    <class>com.temple.model.util.human.HabitInterval</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 </persistence>

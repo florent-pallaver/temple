@@ -108,7 +108,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 		final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		final Root<? extends E> root = cq.from(this.getEntityClass());
 		cq.select(cb.count(root.get(this.getCountedField())));
-		cq.where(this.createWherePredicate(cb, root)) ;
+		cq.where(this.createWherePredicate(cb, root, cq)) ;
 		final TypedQuery<Long> q = em.createQuery(cq);
 		return q;
 	}

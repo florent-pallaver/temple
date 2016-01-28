@@ -16,6 +16,8 @@ import javax.inject.Inject;
  */
 public class DefaultTempleEntityPagerBean<E extends TempleEntity, F extends PageableEntityFilter<E>> extends AbstractTempleEntityPagerBean<E, F>{
 
+	private static final long serialVersionUID = 1L;
+	
 	@Inject
 	@TempleObject
 	private ModelManager mm ;

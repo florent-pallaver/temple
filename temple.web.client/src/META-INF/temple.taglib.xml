@@ -5,18 +5,18 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_2.xsd">
 	<namespace>http://temple.com/ui</namespace>
 	
-	<tag>
-		<tag-name>validateMinimumAge</tag-name>
-	        <attribute>
-			<description>The minimum age required, default to 18</description>
-			<name>min</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<validator>
-			<validator-id>com.temple.MinimumAgeValidator</validator-id>
-			<validator-class>com.temple.web.validation.MinimumAgeValidator</validator-class>
-		</validator>
-	</tag>
+<!-- 	<tag> -->
+<!-- 		<tag-name>validateMinimumAge</tag-name> -->
+<!-- 	        <attribute> -->
+<!-- 			<description>The minimum age required, default to 18</description> -->
+<!-- 			<name>min</name> -->
+<!-- 			<required>false</required> -->
+<!-- 			<type>java.lang.Integer</type> -->
+<!-- 		</attribute> -->
+<!-- 		<validator> -->
+<!-- 			<validator-id>com.temple.MinimumAgeValidator</validator-id> -->
+<!-- 			<validator-class>com.temple.web.validation.MinimumAgeValidator</validator-class> -->
+<!-- 		</validator> -->
+<!-- 	</tag> -->
 
 </facelet-taglib>

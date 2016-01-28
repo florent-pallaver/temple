@@ -1,4 +1,4 @@
-package com.temple.model.filter.human;
+package com.temple.model.util.human;
 
 import com.temple.util.Interval;
 import com.temple.util.TempleUtil;

@@ -21,7 +21,7 @@ public abstract class CredentialsException extends LocaleViewableTempleException
 	 * @param parameters
 	 */
 	public CredentialsException(Serializable... parameters) {
-		super(parameters, Module.EJB);
+		super(parameters, Module.SERVICE);
 	}
 
 	/**
@@ -32,6 +32,6 @@ public abstract class CredentialsException extends LocaleViewableTempleException
 	 * @param cause
 	 */
 	public CredentialsException(Throwable cause, Serializable... parameters) {
-		super(parameters, Module.EJB, cause);
+		super(parameters, Module.SERVICE, cause);
 	}
 }

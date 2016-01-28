@@ -29,8 +29,6 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 	@ToString
 	private final List<FilterOrder<? super E>> orderBy;
 
-	private transient CriteriaQuery<? extends E> rootQuery;
-
 	/**
 	 * Constructor.
 	 */
@@ -81,9 +79,9 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 	public TypedQuery<? extends E> createTypedQuery(EntityManager em) {
 		final CriteriaBuilder cb = em.getCriteriaBuilder();
 		final Class<? extends E> ec = this.getEntityClass();
-		this.rootQuery = cb.createQuery(ec);
-		final Root<? extends E> root = this.rootQuery.from(ec);
-		this.rootQuery.where(this.createWherePredicate(cb, root));
+		CriteriaQuery<? extends E> rootQuery = cb.createQuery(ec);
+		final Root<? extends E> root = rootQuery.from(ec);
+		rootQuery.where(this.createWherePredicate(cb, root, rootQuery));
 		this.aggregate(cb, root);
 		final int size = this.orderBy.size();
 		if (size > 0) {
@@ -92,13 +90,13 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 				final Path<?> field = root.get(criteria.field);
 				return criteria.asc ? cb.asc(field) : cb.desc(field);
 			}).collect(Collectors.toList());
-			this.rootQuery.orderBy(collect);
+			rootQuery.orderBy(collect);
 		}
-		final TypedQuery<? extends E> q = em.createQuery(this.rootQuery);
+		final TypedQuery<? extends E> q = em.createQuery(rootQuery);
 		return q;
 	}
 
-	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root);
+	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root, CriteriaQuery<?> rootQuery);
 
 	/**
 	 * For group by and having clauses ...
@@ -109,12 +107,9 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 	protected void aggregate(CriteriaBuilder cb, Root<? extends E> root) {
 	}
 
-	protected CriteriaQuery<? extends E> getRootQuery() {
-		return this.rootQuery;
-	}
-
 	@Override
 	public String toString() {
 		return TempleUtil.toString(this);
 	}
+
 }
