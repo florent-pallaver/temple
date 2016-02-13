@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.temple.geo.web.cdi;
 
@@ -33,36 +33,24 @@ public class GeoWebConfiguration extends AbstractCDIBean implements WebConfigura
 		return "index" ;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.temple.web.cdi.WebConfiguration#getCommonPages()
-	 */
 	@Override
 	public List<String> getCommonPages() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.temple.web.cdi.WebConfiguration#getSessionPages()
-	 */
 	@Override
 	public List<String> getSessionPages() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.temple.web.cdi.WebConfiguration#getStaticResourcePathPrefix()
-	 */
 	@Override
 	public String getStaticResourcePathPrefix() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.temple.web.cdi.WebConfiguration#getTempFolder()
-	 */
 	@Override
 	public File getTempFolder() {
 		// TODO Auto-generated method stub

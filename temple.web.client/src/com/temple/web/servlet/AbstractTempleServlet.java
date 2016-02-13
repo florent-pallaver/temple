@@ -1,14 +1,15 @@
 package com.temple.web.servlet;
 
-import com.temple.LocaleViewableTempleException;
-import com.temple.service.cdi.TempleObject;
-import com.temple.service.cdi.session.LanguageBean;
-import com.temple.util.TempleLogger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+
+import com.temple.LocaleViewableTempleException;
+import com.temple.service.cdi.ApplicationBean;
+import com.temple.service.cdi.session.LanguageBean;
+import com.temple.util.TempleLogger;
 
 /**
  * TODOC
@@ -21,7 +22,7 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	@TempleObject
+	@ApplicationBean
 	protected LanguageBean lb;
 
 	private final TempleLogger logger = new TempleLogger();
@@ -39,14 +40,14 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 		if (value != null) {
 			try {
 				i = Integer.valueOf(value);
-			} catch (Exception ignored) {
+			} catch (final Exception ignored) {
 			}
 		}
 		return i;
 	}
 
 	protected final boolean getBooleanParam(HttpServletRequest req, String key) {
-		Integer i = getIntegerParam(req, key);
+		final Integer i = this.getIntegerParam(req, key);
 		return i != null && i == 1;
 	}
 
@@ -96,19 +97,19 @@ public abstract class AbstractTempleServlet extends HttpServlet {
 		this.logger.error(arg0);
 	}
 
-	protected final void logThrowable(Throwable t) {
+	protected final void thrown(Throwable t) {
 		this.logger.thrown(t);
 	}
 
-	protected final void logThrowable(String msg, Throwable t) {
-		this.logger.throwable(msg, t);
+	protected final void thrown(String msg, Throwable t) {
+		this.logger.thrown(msg, t);
 	}
 
 	protected final void addError(LocaleViewableTempleException e) {
 		FacesContext.getCurrentInstance() //
-				.addMessage(null, //
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, //
-								this.lb.getString(e), //
-								this.lb.getDetailedString(e)));
+		.addMessage(null, //
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, //
+						this.lb.getString(e), //
+						this.lb.getDetailedString(e)));
 	}
 }

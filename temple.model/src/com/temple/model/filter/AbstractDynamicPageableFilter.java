@@ -1,14 +1,16 @@
 package com.temple.model.filter;
 
-import com.temple.model.TempleEntity;
-import com.temple.util.ToString;
 import java.io.Serializable;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
+
+import com.temple.model.TempleEntity;
+import com.temple.util.ToString;
 
 /**
  * TODOC
@@ -24,7 +26,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 	/**
 	 * TODOC
 	 */
-	public static final short DEFAULT_MAX_COUNT = 5; // 30
+	public static final short DEFAULT_MAX_COUNT = 30;
 
 	@ToString
 	private int offset;
@@ -34,7 +36,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 
 	@ToString
 	private boolean maxCountIgnored = false ;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -90,12 +92,12 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 
 	/**
 	 * TODOC
-	 * @param i 
+	 * @param i
 	 */
-	protected final void setMaxCountIgnored(boolean i) {
+	protected void setMaxCountIgnored(boolean i) {
 		this.maxCountIgnored = i ;
 	}
-	
+
 	/**
 	 * TODOC
 	 *
@@ -115,7 +117,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 
 	/**
 	 * TODOC {@link SingularAttribute} is not {@link Serializable}
-	 * 
+	 *
 	 * @return
 	 */
 	protected abstract SingularAttribute<? super E, ?> getCountedField();
@@ -132,7 +134,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 		if (this.offset > 0) {
 			q.setFirstResult(this.offset);
 		}
-		if(!maxCountIgnored) {
+		if(!this.maxCountIgnored) {
 			// maxCount always > 0
 			q.setMaxResults(this.maxCount);
 		}

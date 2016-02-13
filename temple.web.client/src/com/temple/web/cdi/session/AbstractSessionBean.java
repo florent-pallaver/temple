@@ -1,17 +1,18 @@
 package com.temple.web.cdi.session;
 
-import com.temple.LocaleViewableTempleException;
-import com.temple.service.ServiceException;
-import com.temple.service.cdi.TempleObject;
-import com.temple.service.cdi.session.LanguageBean;
-import com.temple.view.LocaleStringView;
-import com.temple.view.LocaleViewable;
-import com.temple.web.cdi.application.AbstractApplicationBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
 import javax.inject.Inject;
+
+import com.temple.LocaleViewableTempleException;
+import com.temple.service.ServiceException;
+import com.temple.service.cdi.ApplicationBean;
+import com.temple.service.cdi.session.LanguageBean;
+import com.temple.view.LocaleStringView;
+import com.temple.view.LocaleViewable;
+import com.temple.web.cdi.application.AbstractApplicationBean;
 
 /**
  * TODOC
@@ -25,14 +26,14 @@ public abstract class AbstractSessionBean extends AbstractApplicationBean {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	@TempleObject
+	@ApplicationBean
 	protected LanguageBean languageBean;
 
 	private String componentId = null ;
 
 	/**
 	 * Sets the component id FacesMessages will be registered to
-	 * 
+	 *
 	 * @param componentId an id
 	 * @deprecated passing the event should be enough
 	 */
@@ -40,7 +41,7 @@ public abstract class AbstractSessionBean extends AbstractApplicationBean {
 	protected void setComponentId(String componentId) {
 		this.componentId = componentId;
 	}
-	
+
 	/**
 	 * Adds a global info {@link FacesMessage}
 	 *
@@ -88,7 +89,7 @@ public abstract class AbstractSessionBean extends AbstractApplicationBean {
 	protected void addWarning(String id, LocaleViewable lv) {
 		this.addWarning(id, this.languageBean.getString(lv));
 	}
-	
+
 	/**
 	 * Adds a global error {@link FacesMessage}
 	 *
@@ -107,9 +108,9 @@ public abstract class AbstractSessionBean extends AbstractApplicationBean {
 	protected void addError(String id, String error) {
 		this.addMessage(id, FacesMessage.SEVERITY_ERROR, error, null);
 	}
-	
+
 	/**
-	 * Adds a global error {@link FacesMessage} 
+	 * Adds a global error {@link FacesMessage}
 	 *
 	 * @param e the exception which caused the error
 	 */
@@ -138,7 +139,7 @@ public abstract class AbstractSessionBean extends AbstractApplicationBean {
 	 * Overrides parent behavior, instead adds an error message
 	 * <br>
 	 * TODOC
-	 * @see AbstractApplicationBean#serviceFailed(com.temple.service.ServiceException, javax.faces.event.FacesEvent) 
+	 * @see AbstractApplicationBean#serviceFailed(com.temple.service.ServiceException, javax.faces.event.FacesEvent)
 	 */
 	@Override
 	protected void serviceFailed(final ServiceException e, FacesEvent fe) {

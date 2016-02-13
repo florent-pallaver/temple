@@ -1,7 +1,8 @@
 package com.temple;
 
-import com.temple.view.LocaleBundle;
 import java.util.logging.Logger;
+
+import com.temple.view.LocaleBundle;
 
 /**
  * Enumeration of the existing modules in this application.
@@ -18,13 +19,6 @@ public enum Module implements LocaleBundle {
 	 * The Model module.
 	 */
 	MODEL("model"),
-	/**
-	 * The EJB module.
-	 *
-	 * @deprecated use {@link Module#SERVICE} instead
-	 */
-	@Deprecated
-	EJB("ejb"),
 	/**
 	 * The Service module.
 	 */

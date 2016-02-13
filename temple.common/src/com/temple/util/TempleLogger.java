@@ -26,14 +26,14 @@ public final class TempleLogger extends AbstractLogger {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param loggerName
-	 * @param prefix 
+	 * @param prefix
 	 */
 	public TempleLogger(String loggerName, String prefix) {
 		super(loggerName, prefix);
 	}
-	
+
 	@Override
 	public boolean isDebugLoggable() {
 		return super.isDebugLoggable();
@@ -55,23 +55,44 @@ public final class TempleLogger extends AbstractLogger {
 	}
 
 	@Override
-	public void debug(Object arg0) {
-		super.debug(arg0);
+	public void debug(Object o) {
+		super.debug(o);
 	}
 
 	@Override
-	public void info(Object arg0) {
-		super.info(arg0);
+	public void debug(String format, Object... params) {
+		// TODO Auto-generated method stub
+		super.debug(format, params);
 	}
 
 	@Override
-	public void warning(Object arg0) {
-		super.warning(arg0);
+	public void info(Object o) {
+		super.info(o);
 	}
 
 	@Override
-	public void error(Object arg0) {
-		super.error(arg0);
+	public void info(String format, Object... params) {
+		super.info(format, params);
+	}
+
+	@Override
+	public void warning(Object o) {
+		super.warning(o);
+	}
+
+	@Override
+	public void warning(String format, Object... params) {
+		super.warning(format, params);
+	}
+
+	@Override
+	public void error(Object o) {
+		super.error(o);
+	}
+
+	@Override
+	public void error(String format, Object... params) {
+		super.error(format, params);
 	}
 
 	@Override
@@ -80,7 +101,23 @@ public final class TempleLogger extends AbstractLogger {
 	}
 
 	@Override
-	public void throwable(String msg, Throwable t) {
-		super.throwable(msg, t);
+	public void thrown(String msg, Throwable t) {
+		super.thrown(msg, t);
 	}
+
+	@Override
+	public void report(Throwable t) {
+		super.report(t);
+	}
+
+	@Override
+	public void report(Object o) {
+		super.report(o);
+	}
+
+	@Override
+	public void ignored(Throwable t) {
+		super.ignored(t);
+	}
+
 }

@@ -27,6 +27,12 @@ final class Logger {
 	 * @var number $MIN_LOG_LEVEL - the mininimum log level, LEVEL_CONFIG by default.
 	 */
 	public static $MIN_LOG_LEVEL = self::LEVEL_CONFIG;
+	/**
+	 *
+	 * @var string the log file path
+	 */
+	public static $LOG_FILE_PATH = './log.log' ;
+	
 	private static $instances = [];
 	private $name;
 	/**
@@ -37,7 +43,9 @@ final class Logger {
 
 	private function __construct($name) {
 		$this->name = $name;
-		$this->logFile = fopen(TEMPLE_ROOT_PATH . 'log.log', 'a');
+		$this->logFile = fopen(self::$LOG_FILE_PATH, 'a');
+		// FIXME throw some exception if file not writable
+		
 	}
 
 	/**

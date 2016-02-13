@@ -87,6 +87,10 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 		echo '>' ;
 	}
 	
+	public final function getNodeType() {
+		return $this->nodeType ;
+	}
+	
 	public final function isNode($nodeType) {
 		return $this->nodeType === $nodeType ;
 	}

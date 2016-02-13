@@ -1,12 +1,14 @@
 package com.temple.util.file.media.image;
 
-import com.temple.util.AbstractLogger;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+
+import com.temple.util.AbstractLogger;
 
 /**
  * TODOC
@@ -43,7 +45,7 @@ public class ImageDataReader extends AbstractLogger {
 			dim[0] = this.reader.getWidth(0);
 			dim[1] = this.reader.getHeight(0);
 		} catch (final IOException e) {
-			this.throwable("Unable to get dimension from photo", e);
+			this.thrown("Unable to get dimension from photo", e);
 		}
 		return dim;
 	}

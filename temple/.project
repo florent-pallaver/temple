@@ -5,10 +5,11 @@
 	<projects>
 		<project>temple.common</project>
 		<project>temple.model</project>
-		<project>temple.credentials.ejb.client</project>
 		<project>temple.service</project>
 		<project>temple.service.client</project>
 		<project>temple.web.util</project>
+		<project>temple.credentials.service.client</project>
+		<project>temple.web.common</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

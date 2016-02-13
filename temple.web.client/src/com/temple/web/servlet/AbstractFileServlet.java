@@ -1,13 +1,15 @@
 package com.temple.web.servlet;
 
-import com.temple.util.file.media.Codec;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.temple.util.file.media.Codec;
 
 /**
  * Base servlet implementation class to serve a file
@@ -62,7 +64,7 @@ public abstract class AbstractFileServlet extends AbstractTempleServlet {
 			try (final ServletOutputStream sos = response.getOutputStream()) {
 				Files.copy(f.toPath(), response.getOutputStream());
 			} catch (final IOException e) {
-				this.logThrowable(e);
+				this.thrown(e);
 			}
 			response.flushBuffer();
 		} else {

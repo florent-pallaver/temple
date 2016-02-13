@@ -1,12 +1,13 @@
 package com.temple.util.file;
 
-import com.temple.util.AbstractLogger;
-import com.temple.util.file.media.Codec;
 import java.io.File;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import com.temple.util.AbstractLogger;
+import com.temple.util.file.media.Codec;
 
 /**
  * TODOC
@@ -21,7 +22,7 @@ public class LocalUploadedFile extends AbstractLogger implements UploadedFile {
 	private final String name;
 
 	private final String extension ;
-	
+
 	private File file;
 
 	/**
@@ -86,7 +87,7 @@ public class LocalUploadedFile extends AbstractLogger implements UploadedFile {
 			b = true;
 		} catch (final Exception e) {
 			b = false;
-			this.throwable("unable to move " + this.file.getAbsolutePath() + " to " + dest.getAbsolutePath(), e);
+			this.thrown("unable to move " + this.file.getAbsolutePath() + " to " + dest.getAbsolutePath(), e);
 		}
 		return b;
 	}

@@ -1,10 +1,11 @@
 package com.temple.service.cdi.session;
 
+import java.io.Serializable;
+
 import com.temple.service.cdi.TempleCDIBean;
 import com.temple.util.human.Language;
 import com.temple.view.LocaleStringView;
 import com.temple.view.LocaleViewable;
-import java.io.Serializable;
 
 /**
  * TODOC
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * @author Florent Pallaver
  * @version 1.0
  */
-public interface LanguageBean extends TempleCDIBean {
+public interface LanguageBean extends TempleCDIBean, Serializable {
 
 	/**
 	 * @return the {@link Language} currently in use.
@@ -62,7 +63,7 @@ public interface LanguageBean extends TempleCDIBean {
 
 	/**
 	 * TODOC
-	 * 
+	 *
 	 * @param lv
 	 * @return
 	 */

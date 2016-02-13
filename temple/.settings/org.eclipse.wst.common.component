@@ -7,9 +7,6 @@
         <dependent-module archiveName="temple.model.jar" deploy-path="/lib" handle="module:/resource/temple.model/temple.model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="temple.credentials.ejb.client.jar" deploy-path="/lib" handle="module:/resource/temple.credentials.ejb.client/temple.credentials.ejb.client">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="temple.service.jar" deploy-path="/" handle="module:/resource/temple.service/temple.service">
             <dependent-object/>
             <dependency-type>uses</dependency-type>
@@ -18,6 +15,12 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="temple.web.util.jar" deploy-path="/lib" handle="module:/resource/temple.web.util/temple.web.util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.credentials.ejb.client.jar" deploy-path="/lib" handle="module:/resource/temple.credentials.service.client/temple.credentials.service.client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.web.common.jar" deploy-path="/lib" handle="module:/resource/temple.web.common/temple.web.common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

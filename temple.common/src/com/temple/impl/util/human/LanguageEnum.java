@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.temple.impl.util.human;
 
 import java.util.Locale;
@@ -10,7 +7,7 @@ import com.temple.util.human.Language;
 /**
  * TODOC <br>
  * See ISO 639-1 codes
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */

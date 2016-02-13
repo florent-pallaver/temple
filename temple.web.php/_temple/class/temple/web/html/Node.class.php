@@ -10,6 +10,11 @@ namespace temple\web\html ;
 interface Node extends HTMLElement, \IteratorAggregate {
 
 	/**
+	 * @return string
+	 */
+	public function getNodeType() ;
+	
+	/**
 	 * Tells whether this node has of the given node type.
 	 *
 	 * @param string $nodeType - a node type.

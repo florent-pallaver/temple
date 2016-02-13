@@ -3,6 +3,8 @@ package com.temple.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.temple.NotImplementedException;
+
 public abstract class AbstractLogger {
 
 	private final String prefix;
@@ -38,33 +40,58 @@ public abstract class AbstractLogger {
 		return this.logger.isLoggable(Level.SEVERE);
 	}
 
-	protected void debug(Object arg0) {
-		this.log(Level.FINEST, arg0);
+	protected void debug(Object o) {
+		this.log(Level.FINEST, o);
 	}
 
-	protected void info(Object arg0) {
-		this.log(Level.INFO, arg0);
+	protected void debug(String format, Object... params) {
+		this.debug(String.format(format, params));
 	}
 
-	protected void warning(Object arg0) {
-		this.log(Level.WARNING, arg0);
+	protected void info(Object o) {
+		this.log(Level.INFO, o);
+	}
+
+	protected void info(String format, Object... params) {
+		this.info(String.format(format, params));
+	}
+
+	protected void warning(Object o) {
+		this.log(Level.WARNING, o);
+	}
+
+	protected void warning(String format, Object... params) {
+		this.warning(String.format(format, params));
 	}
 
 	/**
-	 * Logs the string representation of the given object as {
-	 *
-	 * @Level#SEVERE severe}
-	 * @param arg0
+	 * Logs the string representation of the given object as {@link Level#SEVERE severe}
+	 * @param o
 	 */
-	protected void error(Object arg0) {
-		this.log(Level.SEVERE, arg0);
+	protected void error(Object o) {
+		this.log(Level.SEVERE, o);
 	}
 
+	protected void error(String format, Object... params) {
+		this.error(String.format(format, params));
+	}
+
+	/**
+	 * Logs as {@link Level#SEVERE severe} a {@link Throwable}.
+	 *
+	 * @param t - the {@link Throwable}
+	 */
 	protected void thrown(Throwable t) {
-		this.throwable(t.getMessage(), t);
+		this.thrown(t.getMessage(), t);
 	}
 
-	protected void throwable(String msg, Throwable t) {
+	/**
+	 * Logs as {@link Level#SEVERE severe} a {@link Throwable} with a message.
+	 *
+	 * @param msg the message
+	 * @param t - the {@link Throwable}
+	 */
+	protected void thrown(String msg, Throwable t) {
 		this.logger.log(Level.SEVERE, msg, t);
 	}
 
@@ -80,14 +107,12 @@ public abstract class AbstractLogger {
 
 	private void sendReport() {
 		// FIXME
+		throw new NotImplementedException() ;
 	}
 
 	/**
-	 * Ignores a {
-	 *
-	 * @Throwable}. It will be logged only if Level.ALL is loggable.
-	 * @param t the {
-	 * @Throwable} to ignore
+	 * Ignores a {@link Throwable}. It will be logged only if {@link Level#ALL} is loggable.
+	 * @param t the {@link Throwable} to ignore
 	 */
 	protected void ignored(Throwable t) {
 		if (this.logger.isLoggable(Level.ALL)) {

@@ -36,6 +36,10 @@ public abstract class AbstractAjaxServlet extends AbstractTempleServlet {
 		jr.write(response);
 	}
 
+	protected String getErrorMessage(ServiceException e) {
+		return e.getLocaleKey() ;
+	}
+	
 	/**
 	 * Creates a specific {@JsonResponse} object for this service if it succeeds.
 	 * 
