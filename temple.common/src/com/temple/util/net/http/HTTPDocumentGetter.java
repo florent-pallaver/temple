@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.zip.GZIPInputStream;
 
+import com.temple.util.TempleUtil;
 import com.temple.util.net.Document;
 import com.temple.util.net.Domain;
 
