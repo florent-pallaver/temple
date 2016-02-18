@@ -65,7 +65,7 @@ function _fctuc($s) {
  * @return int
  */
 function _eti($e) {
-	return $e instanceof temple\Enumeration ? $e->ordinal() : ($e === null ? $e : intval($e)) ;
+	return $e instanceof temple\Enumeration ? $e->ordinal() : ($e === null ? null : intval($e)) ;
 }
 
 /**

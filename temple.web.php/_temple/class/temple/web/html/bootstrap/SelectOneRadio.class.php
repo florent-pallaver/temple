@@ -122,12 +122,14 @@ class SelectOneRadio extends AbstractFormField {
 	 * 
 	 * @param string $name
 	 * @param boolean $val
+	 * @param string $noOption text for the no option
+	 * @param string $yesOption text for the yes option
 	 * @param string $radioCssClass
 	 * @param array $optionVariants
 	 * @return SelectOneRadio
 	 */
-	public static function createYesNoGroup($name, $val = false, $radioCssClass = null, array $optionVariants = []) {
-		return self::createButtonGroup($name, [\temple\CommonLocale::NO, \temple\CommonLocale::YES], $val, $radioCssClass, $optionVariants, true) ;
+	public static function createYesNoGroup($name, $val = false, $noOption = \temple\CommonLocale::NO, $yesOption = \temple\CommonLocale::YES, $radioCssClass = null, array $optionVariants = []) {
+		return self::createButtonGroup($name, [$noOption, $yesOption], $val, $radioCssClass, $optionVariants, true) ;
 	}
 	
 	/**

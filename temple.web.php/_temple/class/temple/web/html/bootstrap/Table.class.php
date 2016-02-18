@@ -61,9 +61,10 @@ class Table extends AbstractComponent {
 	 * 
 	 * @param array $cellsContent
 	 * @param string $cssClass css class of the row (the <code>&lt;tr&gt;</code> element)
+	 * @param \temple\web\html\Node $tr the add row (the <code>&lt;tr&gt;</code> element)
 	 * @return \temple\web\html\bootstrap\Table
 	 */
-	public function addRow(array $cellsContent, $cssClass = null, &$tr = null) {
+	public function addRow(array $cellsContent, $cssClass = null, \temple\web\html\Node &$tr = null) {
 		$tr = ComponentFactory::createComponent('tr', $cssClass);
 		foreach ($cellsContent as $i => $cc) {
 			$tr->addChild(ComponentFactory::createComponent('td', _iod($this->cellCssClasses, $i))

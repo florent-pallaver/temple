@@ -145,6 +145,10 @@ class HTMLNode extends AbstractHTMLElement implements Node {
 		return $this->setAttribute('title', $title) ;
 	}
 	
+	public final function setStyle($style) {
+		return $this->setAttribute('style', $style) ;
+	}
+	
 	public final function setData(array $data) {
 		foreach($data as $k => $v) {
 			$this->setAttribute('data-' . $k, $v) ;

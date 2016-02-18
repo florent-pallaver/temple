@@ -74,6 +74,13 @@ interface Node extends HTMLElement, \IteratorAggregate {
 	public function setAttributes(array $attributes) ;
 	
 	/**
+	 * Sets the CSS style attribute
+	 * @param string $style
+	 * @return Node
+	 */
+	public function setStyle($style) ;
+	
+	/**
 	 * 
 	 * @param array $data
 	 * @return Node
