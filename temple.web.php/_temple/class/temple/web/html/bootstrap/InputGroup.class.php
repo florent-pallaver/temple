@@ -21,7 +21,13 @@ final class InputGroup extends AbstractGroup implements FormField {
 				->addChild(new \temple\web\html\HTMLElementList(), self::$post);
 	}
 
-	private function addInnerText($it, $pre = false) {
+	/**
+	 * 
+	 * @param mixed $it
+	 * @param boolean $pre
+	 * @return \temple\web\html\bootstrap\InputGroup
+	 */
+	public function addContent($it, $pre = false) {
 		$this->getElementList($pre)
 				->addElement(ComponentFactory::createComponent('span', 'input-group-addon', $this->toHTMLElement($it))
 						);
@@ -40,6 +46,12 @@ final class InputGroup extends AbstractGroup implements FormField {
 		return $this;
 	}
 	
+	/**
+	 * 
+	 * @param \temple\web\html\bootstrap\Button $button
+	 * @param boolean $pre
+	 * @return \temple\web\html\bootstrap\InputGroup
+	 */
 	public function addButton(Button $button, $pre = false) {
 		$this->getElementList($pre)
 				->addElement(ComponentFactory::createComponent('div', 'input-group-btn')
@@ -104,7 +116,7 @@ final class InputGroup extends AbstractGroup implements FormField {
 	 */
 	public static function create(Input $input, $iconText, $pre = true, CssVariant $cv = null, $cssClass = null) {
 		$ig = new InputGroup($input, $cv, $cssClass) ;
-		return $ig->addInnerText($iconText, $pre) ;
+		return $ig->addContent($iconText, $pre) ;
 	}
 	
 	/**
