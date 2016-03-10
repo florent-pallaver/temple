@@ -9,7 +9,6 @@
 		<project>temple.service.client</project>
 		<project>temple.web.util</project>
 		<project>temple.credentials.service.client</project>
-		<project>temple.web.common</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
