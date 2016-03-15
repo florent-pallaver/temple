@@ -18,12 +18,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  * TODOC
  * @author flominou
  */
 @MappedSuperclass
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractCountryArea extends AbstractJsonable implements CountryArea, GeoEntity {
 
 	private static final long serialVersionUID = 1L ;
@@ -69,7 +72,7 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 	@Transient
 	private transient String lcName ;
 	
-	AbstractCountryArea() {
+	protected AbstractCountryArea() {
 		super() ;
 	}
 

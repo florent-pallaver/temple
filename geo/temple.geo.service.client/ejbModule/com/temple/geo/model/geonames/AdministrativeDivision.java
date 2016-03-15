@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.temple.geo.model.CountryDivisionEntity;
 
@@ -16,6 +17,7 @@ import com.temple.geo.model.CountryDivisionEntity;
  */
 @Entity
 @Table(name = "admin_divisions")
+@XmlRootElement
 public class AdministrativeDivision extends AbstractCountryArea implements CountryDivisionEntity {
 
 	private static final long serialVersionUID = 1L ;

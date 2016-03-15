@@ -81,7 +81,6 @@ public class CountryAreaFilter<GE extends AbstractCountryArea> extends AbstractD
 	}
 
 	public void setParentId(Integer parentId) {
-		new TempleLogger().info(" *************** " + parentId);
 		this.parentId = parentId ;
 	}
 

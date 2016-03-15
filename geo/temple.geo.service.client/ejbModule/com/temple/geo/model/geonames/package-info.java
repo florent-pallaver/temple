@@ -5,4 +5,8 @@
  * @see http://download.geonames.org/export/dump/
  * @see http://download.geonames.org/export/dump/readme.txt
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 package com.temple.geo.model.geonames;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;

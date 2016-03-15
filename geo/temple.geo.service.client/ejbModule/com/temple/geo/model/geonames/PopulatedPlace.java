@@ -26,6 +26,7 @@ import com.temple.geo.model.HumanSettlementEntity;
 /**
  * TODOC
  * @author flominou
+ * @see ByImportanceComparator
  */
 @Entity
 @Table(name = "populated_places")

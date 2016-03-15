@@ -1,5 +1,7 @@
 package com.temple.geo.service.ws;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -9,27 +11,37 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonStructure;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Variant;
 
+import com.temple.geo.model.CountryDivisionEntity;
 import com.temple.geo.model.GeoEntity;
+import com.temple.geo.model.Place;
+import com.temple.geo.model.geonames.AbstractCountryArea_;
+import com.temple.geo.model.geonames.AdministrativeDivision;
+import com.temple.geo.model.geonames.Feature;
+import com.temple.geo.model.geonames.PopulatedPlace;
 import com.temple.geo.service.GeoEntityManager;
 import com.temple.service.ServiceException;
 import com.temple.service.cdi.TempleObject;
 import com.temple.service.ws.AbstractWebServiceBean;
 import com.temple.util.Charsets;
+import com.temple.util.Nameable;
 import com.temple.util.geo.Country;
 
 @Path("/service")
 //@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+@Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
 public class WebServiceTest extends AbstractWebServiceBean {
 
@@ -46,30 +58,68 @@ public class WebServiceTest extends AbstractWebServiceBean {
 	@TempleObject
 	private GeoEntityManager m;
 
+	@Inject
+	@TempleObject
+	private EntityManager em ;
+	
 	@Context
 	private Request req ;
-
+	
 	@GET
-	@Path("divisions/{c}")
-	public Response divisions(@PathParam("c") Country c) throws ServiceException {
-
-		final Variant selected = this.req.selectVariant(WebServiceTest.variants);
-		final ResponseBuilder b ;
-		if(selected == null) {
-			b = Response.notAcceptable(WebServiceTest.variants);
-		} else {
-			b = Response.ok(this.toJsonArray(this.m.findCountryDivisions(c)), selected) ;
-		}
-
-		return b.build();
+	@Path("divs/{c}")
+	public List<Place> fuck(@PathParam("c") Country c) {
+		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+		CriteriaQuery<Place> tq = cb.createQuery(Place.class);
+		Root<AdministrativeDivision> root = tq.from(AdministrativeDivision.class);
+		tq.select(cb.construct(Place.class, root.get(AbstractCountryArea_.id), root.get(AbstractCountryArea_.name)))
+				.where(cb.equal(root.get(AbstractCountryArea_.country), c),
+						root.get(AbstractCountryArea_.feature).in(Feature.ADM1)) ;
+		return em.createQuery(tq).getResultList() ;
 	}
-
+	
 	@GET
 	@Path("places/{d}")
-	public JsonStructure places(@PathParam("d") int parentId) throws ServiceException {
-		return this.toJsonArray(this.m.findHumanSettlements(parentId));
+	public List<Place> fùck(@PathParam("d") int d) {
+		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+		CriteriaQuery<Place> tq = cb.createQuery(Place.class);
+		Root<PopulatedPlace> root = tq.from(PopulatedPlace.class);
+		tq.select(cb.construct(Place.class, root.get(AbstractCountryArea_.id), root.get(AbstractCountryArea_.name)))
+				.where(cb.equal(root.get(AbstractCountryArea_.parentId), d)) ;
+		return em.createQuery(tq).getResultList() ;
+	}
+	
+	@GET
+	@Path("test")
+//	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public List<Nameable> test() {
+		info("test ...");
+		int i = 5 ;
+		return Arrays.asList(new Place(i++, "Sample"), new Place(i++, "Sample"), new Place(i++, "Sample")) ;
+	}
+	
+	@GET
+	@Path("divisions/{c}")
+	public List<CountryDivisionEntity> divisions(@PathParam("c") Country c) throws ServiceException {
+
+//		final Variant selected = this.req.selectVariant(WebServiceTest.variants);
+//		final ResponseBuilder b ;
+//		if(selected == null) {
+//			b = Response.notAcceptable(WebServiceTest.variants);
+//		} else {
+//			b = Response.ok(
+//			return this.toJsonArray(this.m.findCountryDivisions(c)) ;
+//					, selected) ;
+//		}
+			return new ArrayList<>(m.findCountryDivisions(c)) ;
+//		return b.build();
 	}
 
+//	@GET
+//	@Path("places/{d}")
+//	public JsonStructure places(@PathParam("d") int parentId) throws ServiceException {
+//		return this.toJsonArray(this.m.findHumanSettlements(parentId));
+//	}
+	
 	private JsonArray toJsonArray(Collection<? extends GeoEntity> c) {
 		final JsonArrayBuilder jab = Json.createArrayBuilder();
 		for (final GeoEntity e : c) {
