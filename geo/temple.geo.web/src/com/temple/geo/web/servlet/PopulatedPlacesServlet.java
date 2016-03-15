@@ -5,6 +5,7 @@ import java.util.List;
 import com.temple.geo.model.HumanSettlementEntity;
 import com.temple.service.ServiceException;
 import com.temple.util.geo.Country;
+import com.temple.web.servlet.InvalidRequestException;
 
 /**
  * TODOC
@@ -16,7 +17,8 @@ public class PopulatedPlacesServlet extends AbstractAjaxGeoServlet<HumanSettleme
 
 	@Override
 	protected List<? extends HumanSettlementEntity> findGeoEntities(Country c) throws ServiceException {
-		return this.gdm.findHumanSettlements(c) ;
+		throw new InvalidRequestException() ;
+		//		return this.gdm.findHumanSettlements(c) ;
 	}
 
 	@Override

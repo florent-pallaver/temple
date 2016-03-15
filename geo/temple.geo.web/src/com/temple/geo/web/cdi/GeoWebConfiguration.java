@@ -6,14 +6,19 @@ package com.temple.geo.web.cdi;
 import java.io.File;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import com.temple.Module;
 import com.temple.service.cdi.AbstractCDIBean;
+import com.temple.service.cdi.ApplicationBean;
 import com.temple.web.cdi.WebConfiguration;
 
 /**
  * @author flominou
  *
  */
+@ApplicationScoped
+@ApplicationBean
 public class GeoWebConfiguration extends AbstractCDIBean implements WebConfiguration {
 
 	private static final long serialVersionUID = 1L;

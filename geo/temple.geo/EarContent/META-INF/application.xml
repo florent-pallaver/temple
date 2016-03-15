@@ -4,7 +4,7 @@
   <module>
     <web>
       <web-uri>temple.geo.web.war</web-uri>
-      <context-root>temple.geo.web</context-root>
+      <context-root>/temple.geo.web</context-root>
     </web>
   </module>
   <module>

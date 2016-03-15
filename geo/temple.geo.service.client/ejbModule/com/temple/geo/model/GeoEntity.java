@@ -6,8 +6,10 @@ import com.temple.util.json.Jsonable;
 
 /**
  * Base contract to define geographic entity.
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
-public interface GeoEntity extends TempleEntity, Jsonable, GeoLocatable {}
+public interface GeoEntity extends TempleEntity, Jsonable, GeoLocatable {
+
+}

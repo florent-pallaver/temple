@@ -30,11 +30,6 @@ public class AbstractJsonable implements Jsonable {
 	}
 
 	@Override
-	public JsonObject toJsonObject() {
-		return JsonUtil.toJsonObject(this);
-	}
-
-	@Override
 	public void setValues(JsonObject jo) {
 		JsonUtil.setValues(this, jo);
 	}

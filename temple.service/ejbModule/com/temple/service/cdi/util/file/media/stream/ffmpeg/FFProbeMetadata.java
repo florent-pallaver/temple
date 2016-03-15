@@ -1,6 +1,7 @@
 package com.temple.service.cdi.util.file.media.stream.ffmpeg;
 
 import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
@@ -41,8 +42,12 @@ final class FFProbeMetadata extends AbstractJsonable {
 
 		@Override
 		public void add(JsonObjectBuilder job, String name, Object value) {
-			// not implemented
-			throw new RuntimeException("not implemented");
+			throw new UnsupportedOperationException() ;
+		}
+
+		@Override
+		public void add(JsonArrayBuilder jab, Object value) {
+			throw new UnsupportedOperationException() ;
 		}
 
 		@Override
@@ -57,8 +62,12 @@ final class FFProbeMetadata extends AbstractJsonable {
 
 		@Override
 		public void add(JsonObjectBuilder job, String name, Object value) {
-			// not implemented
-			throw new RuntimeException("not implemented");
+			throw new UnsupportedOperationException() ;
+		}
+
+		@Override
+		public void add(JsonArrayBuilder jab, Object value) {
+			throw new UnsupportedOperationException() ;
 		}
 
 		@Override

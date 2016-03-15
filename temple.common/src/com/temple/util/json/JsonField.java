@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -40,7 +41,7 @@ public @interface JsonField {
 
 	/**
 	 * TODOC {@link Handler}s implementation must be public
-	 * 
+	 *
 	 * @author Florent Pallaver
 	 * @version 1.0
 	 */
@@ -53,7 +54,16 @@ public @interface JsonField {
 		 * @param name
 		 * @param value
 		 */
-		void add(JsonObjectBuilder job, String name, Object value);
+		void add(JsonObjectBuilder job, String name, Object value) ;
+
+		/**
+		 * TODOC
+		 *
+		 * @param job
+		 * @param name
+		 * @param value
+		 */
+		void add(JsonArrayBuilder jab, Object value) ;
 
 		/**
 		 * TODOC

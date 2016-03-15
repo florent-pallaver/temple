@@ -1,5 +1,6 @@
 package com.temple.util.json;
 
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -16,6 +17,11 @@ public class DoubleHandler implements Handler {
 	@Override
 	public void add(JsonObjectBuilder job, String name, Object value) {
 		job.add(name, (Double) value);
+	}
+
+	@Override
+	public void add(JsonArrayBuilder jab, Object value) {
+		jab.add((Double) value);
 	}
 
 	@Override

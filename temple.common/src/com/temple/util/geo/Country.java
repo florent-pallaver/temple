@@ -3,13 +3,21 @@ package com.temple.util.geo;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.json.JsonObject;
+
+import com.temple.util.json.DoubleHandler;
+import com.temple.util.json.IntegerHandler;
+import com.temple.util.json.JsonField;
+import com.temple.util.json.JsonUtil;
+import com.temple.util.json.Jsonable;
+
 /**
  * Enumeration of all countries in the world!
  *
  * @author Florent Pallaver
  * @version 1.0
  */
-public enum Country implements GeoArea {
+public enum Country implements GeoArea, Jsonable {
 
 	// Source /resources/geonames/countryInfo_2015-03-25.txt
 	// ordered by their ISO code
@@ -267,15 +275,20 @@ public enum Country implements GeoArea {
 	Zimbabwe("Zimbabwe", "ZW") ;
 
 	private static Map<String, Country> byISOCodes = new HashMap<>() ;
-	
+
+	@JsonField(inputable = false)
 	private final String name;
 
+	@JsonField(inputable = false)
 	private final String isoCode;
 
+	@JsonField(handler = DoubleHandler.class, inputable = false)
 	private final double latitude;
 
+	@JsonField(handler = DoubleHandler.class,inputable = false)
 	private final double longitude;
 
+	@JsonField(handler = IntegerHandler.class,inputable = false)
 	private final int altitude;
 
 	private Country(String name, String isoCode) {
@@ -318,43 +331,49 @@ public enum Country implements GeoArea {
 	public Earth getParentArea() {
 		return Earth.instance ;
 	}
-	
+
 	/**
 	 * @return the 2 letters ISO code of this country.
 	 */
 	public String getIsoCode() {
 		return this.isoCode;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param isoCode a 2 letters ISO code
 	 * @return the Country corresponding the given ISO code.
 	 * @throws IllegalArgumentException if the given ISO code is not registered.
 	 */
 	public static Country getByISOCode(String isoCode) {
-		return getByISOCode(isoCode, true) ;
+		return Country.getByISOCode(isoCode, true) ;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param isoCode a 2 letters ISO code
 	 * @param throwException whether to throw an {@code IllegalArgumentException} if the given code is invalid
 	 * @return the Country corresponding the given ISO code, {@code null} if none exists.
 	 * @throws IllegalArgumentException if the given ISO code is not registered and throwException is {@code true}.
 	 */
 	public static Country getByISOCode(String isoCode, boolean throwException) {
-		if(byISOCodes.isEmpty()) {
-			for(Country c : values()) {
-				byISOCodes.put(c.isoCode, c) ;
+		if(Country.byISOCodes.isEmpty()) {
+			for(final Country c : Country.values()) {
+				Country.byISOCodes.put(c.isoCode, c) ;
 			}
 			// FIXME Eclipse link does not support lambdas ...
-//			Arrays.stream(Country.values()).parallel().forEach(c -> byISOCodes.put(c.isoCode, c));
+			//			Arrays.stream(Country.values()).parallel().forEach(c -> byISOCodes.put(c.isoCode, c));
 		}
 		final String ic = isoCode.toUpperCase() ;
-		if(throwException && !byISOCodes.containsKey(ic)) {
+		if(throwException && !Country.byISOCodes.containsKey(ic)) {
 			throw new IllegalArgumentException(isoCode + " is not a valid 2 letters ISO code") ;
 		}
-		return byISOCodes.get(ic) ;
+		return Country.byISOCodes.get(ic) ;
 	}
+
+	@Override
+	public JsonObject toJsonObject() {
+		return JsonUtil.toJsonObject(this);
+	}
+
 }

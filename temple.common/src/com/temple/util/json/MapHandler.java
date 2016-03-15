@@ -1,15 +1,18 @@
 package com.temple.util.json;
 
-import com.temple.util.json.JsonField.Handler;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
+import com.temple.util.json.JsonField.Handler;
+
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
@@ -20,16 +23,29 @@ public final class MapHandler implements Handler {
 		if (value == null) {
 			job.addNull(name);
 		} else {
-			final JsonObjectBuilder mjob = Json.createObjectBuilder() ;
-			((Map<?, ?>) value).forEach((k,v) -> {
-				if(v == null) {
-					mjob.addNull(k.toString()) ;
-				} else {
-					mjob.add(k.toString(), v.toString()) ; 
-				}
-			});
-			job.add(name, mjob) ;
+			job.add(name, this.toJsonObjectBuilder(value)) ;
 		}
+	}
+
+	@Override
+	public void add(JsonArrayBuilder jab, Object value) {
+		if (value == null) {
+			jab.addNull();
+		} else {
+			jab.add(this.toJsonObjectBuilder(value)) ;
+		}
+	}
+
+	private JsonObjectBuilder toJsonObjectBuilder(Object value) {
+		final JsonObjectBuilder mjob = Json.createObjectBuilder() ;
+		((Map<?, ?>) value).forEach((k,v) -> {
+			if(v == null) {
+				mjob.addNull(k.toString()) ;
+			} else {
+				mjob.add(k.toString(), v.toString()) ;
+			}
+		});
+		return mjob ;
 	}
 
 	@Override
