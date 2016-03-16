@@ -1,5 +1,6 @@
 package com.temple.model.filter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +13,6 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 
 import com.temple.model.TempleEntity;
 import com.temple.util.TempleUtil;
@@ -24,8 +24,10 @@ import com.temple.util.ToString;
  * @author Florent Pallaver
  * @version 1.0
  * @param <E>
+ * @param <E>
  */
-public abstract class AbstractDynamicFilter<E extends TempleEntity> implements EntityFilter<E> {
+public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Serializable>
+		implements EntityFilter<E, R> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,11 +41,6 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 		super();
 		this.orderBy = new ArrayList<>();
 	}
-
-	/**
-	 * @return the entityClass to filter
-	 */
-	protected abstract Class<? extends E> getEntityClass();
 
 	/**
 	 * @return the orderBy
@@ -73,18 +70,16 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 	}
 
 	@Override
-	public TypedQuery<? extends E> createTypedQuery(EntityManager em) {
-		return this.createTypedQuery(em, this.getEntityClass());
-	}
-
-	@Override
-	public <R> TypedQuery<R> createTypedQuery(EntityManager em, Class<R> resultClass, Selection<?>... selections) {
+	public TypedQuery<R> createTypedQuery(EntityManager em) {
 		final CriteriaBuilder cb = em.getCriteriaBuilder();
-		final Class<? extends E> ec = this.getEntityClass();
-		final CriteriaQuery<R> rootQuery = cb.createQuery(resultClass);
-		final Root<? extends E> root = rootQuery.from(ec);
-		if(selections.length > 0) {
-			rootQuery.select(cb.construct(resultClass, selections)) ;
+		final Class<E> ec = this.getEntityClass();
+		final Class<R> rc = this.getResultClass();
+		final CriteriaQuery<R> rootQuery = cb.createQuery(rc);
+		final Root<E> root = rootQuery.from(ec);
+		if (!rc.equals(ec)) {
+			// if(selections.length > 0) {
+			// rootQuery.select(cb.construct(resultClass, selections)) ;
+			// }
 		}
 		rootQuery.where(this.createWherePredicate(cb, root, rootQuery));
 		this.aggregate(cb, root);
@@ -101,7 +96,8 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 		return q;
 	}
 
-	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root, CriteriaQuery<?> rootQuery);
+	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root,
+			CriteriaQuery<?> rootQuery);
 
 	/**
 	 * For group by and having clauses ...

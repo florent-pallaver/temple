@@ -1,9 +1,12 @@
 package com.temple.model.filter;
 
-import com.temple.model.TempleEntity;
-import com.temple.util.Pageable;
+import java.io.Serializable;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+
+import com.temple.model.TempleEntity;
+import com.temple.util.Pageable;
 
 /**
  * TODOC
@@ -12,7 +15,8 @@ import javax.persistence.TypedQuery;
  * @version 1.0
  * @param <E>
  */
-public interface PageableEntityFilter<E extends TempleEntity> extends EntityFilter<E>, Pageable {
+public interface PageableEntityFilter<E extends TempleEntity, R extends Serializable>
+		extends EntityFilter<E, R>, Pageable {
 
 	/**
 	 * TODOC

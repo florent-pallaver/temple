@@ -111,29 +111,21 @@ public interface TempleEntityManager extends TempleManager {
 	 * @return
 	 * @throws FindEntityException
 	 */
-	long findCount(PageableEntityFilter<?> filter) throws FindEntityException;
+	long findCount(PageableEntityFilter<?, ?> filter) throws FindEntityException;
 
 	/**
 	 * TODOC
 	 *
 	 * @param <E>
+	 * @param <R>
 	 * @param ref
 	 * @return
 	 * @throws FindEntityException
 	 *             if an error occurs while trying to find the entities matching
 	 *             the filter
 	 */
-	<E extends TempleEntity> List<? extends E> findByFilter(EntityFilter<E> ref) throws FindEntityException;
-
-	/**
-	 *
-	 * @param ef
-	 * @return
-	 * @throws FindEntityException
-	 */
-	default <R> List<R> find(EntityFilter<? extends TempleEntity> ef) throws FindEntityException {
-		throw new UnsupportedOperationException();
-	}
+	<E extends TempleEntity, R extends Serializable> List<R> findByFilter(EntityFilter<E, R> ref)
+			throws FindEntityException;
 
 	/**
 	 * TODOC

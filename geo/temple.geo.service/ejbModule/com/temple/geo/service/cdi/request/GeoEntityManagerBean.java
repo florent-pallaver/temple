@@ -5,18 +5,11 @@ import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import com.temple.geo.model.CountryDivisionEntity;
 import com.temple.geo.model.HumanSettlementEntity;
-import com.temple.geo.model.Place;
 import com.temple.geo.model.geonames.AbstractCountryArea;
-import com.temple.geo.model.geonames.AbstractCountryArea_;
 import com.temple.geo.model.geonames.AdministrativeDivision;
-import com.temple.geo.model.geonames.AdministrativeDivision_;
 import com.temple.geo.model.geonames.Feature;
 import com.temple.geo.model.geonames.PopulatedPlace;
 import com.temple.geo.model.geonames.filter.CountryAreaFilter;

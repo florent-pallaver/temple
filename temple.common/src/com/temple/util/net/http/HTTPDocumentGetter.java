@@ -9,14 +9,14 @@ import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.zip.GZIPInputStream;
 
-import com.temple.util.TempleUtil;
 import com.temple.util.net.Document;
 import com.temple.util.net.Domain;
 
 /**
- * Utility class to get document through HTTP or HTTPS protocol.
- * To be consistent, the same object should be used to get documents for and only for one given session as the referrer
- * and cookie are automatically refreshed.
+ * Utility class to get document through HTTP or HTTPS protocol. To be
+ * consistent, the same object should be used to get documents for and only for
+ * one given session as the referrer and cookie are automatically refreshed.
+ * 
  * @author flominou
  */
 public final class HTTPDocumentGetter extends AbstractHTTPGetter<Document> implements Serializable {
@@ -31,21 +31,21 @@ public final class HTTPDocumentGetter extends AbstractHTTPGetter<Document> imple
 	 * @param domain
 	 */
 	public HTTPDocumentGetter(Domain<?> domain) {
-		super(domain) ;
+		super(domain);
 	}
 
 	@Override
 	protected Document getFile0(HttpURLConnection con, String path) throws HTTPGetException {
 		final StringBuilder sb = new StringBuilder();
 		final char[] cbuf = new char[HTTPDocumentGetter.BUFFER_SIZE];
-		try(Reader reader = this.getReader(con)) {
+		try (Reader reader = this.getReader(con)) {
 			while (reader.read(cbuf) != -1) {
 				sb.append(cbuf);
 			}
 		} catch (final IOException e) {
 			throw new HTTPGetException(e);
 		}
-		return new Document(this.domain, path, sb.toString()) ;
+		return new Document(this.domain, path, sb.toString());
 	}
 
 	private Reader getReader(HttpURLConnection con) throws IOException {
@@ -55,7 +55,8 @@ public final class HTTPDocumentGetter extends AbstractHTTPGetter<Document> imple
 			is = new GZIPInputStream(is);
 		}
 		final String contentType = con.getContentType().toUpperCase();
-		final Charset c = Charset.forName(contentType.indexOf("ISO-8859-1") > -1 ? "ISO-8859-1" : contentType.indexOf("UTF-16") > -1 ? "UTF-16" : "UTF-8");
+		final Charset c = Charset.forName(contentType.indexOf("ISO-8859-1") > -1 ? "ISO-8859-1"
+				: contentType.indexOf("UTF-16") > -1 ? "UTF-16" : "UTF-8");
 		return new InputStreamReader(is, c);
 	}
 }

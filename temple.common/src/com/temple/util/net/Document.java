@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.logging.Level;
 
 import com.temple.Module;
-import com.temple.util.TempleUtil;
 
 /**
  * TODOC
@@ -18,11 +17,11 @@ public final class Document implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Domain<?> domain ;
+	private final Domain<?> domain;
 
-	private final String path ;
+	private final String path;
 
-	private final String content ;
+	private final String content;
 
 	public Document(Domain<?> domain, String path, String content) {
 		super();
@@ -54,10 +53,11 @@ public final class Document implements Serializable {
 
 	/**
 	 * TODOC
+	 * 
 	 * @param file
 	 */
 	public void writeTo(File file) {
-		try(FileWriter fw = new FileWriter(file, false)) {
+		try (FileWriter fw = new FileWriter(file, false)) {
 			fw.write(this.content);
 		} catch (final IOException e) {
 			Module.DEFAULT.logger.log(Level.SEVERE, "Unable to write document to " + file.getAbsolutePath(), e);

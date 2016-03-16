@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.Selection;
 
 import com.temple.model.TempleEntity;
 
@@ -13,9 +12,22 @@ import com.temple.model.TempleEntity;
  *
  * @author Florent Pallaver
  * @version 1.0
- * @param <E> The entity class this filter applies to
+ * @param <E>
+ *            The entity class this filter applies to
+ * @param <R>
+ *            The result class
  */
-public interface EntityFilter<E extends TempleEntity> extends Serializable {
+public interface EntityFilter<E extends TempleEntity, R extends Serializable> extends Serializable {
+
+	/**
+	 * @return the filtered entity class
+	 */
+	Class<E> getEntityClass();
+
+	/**
+	 * @return the result class
+	 */
+	Class<R> getResultClass();
 
 	/**
 	 * TODOC
@@ -23,15 +35,6 @@ public interface EntityFilter<E extends TempleEntity> extends Serializable {
 	 * @param em
 	 * @return
 	 */
-	TypedQuery<? extends E> createTypedQuery(EntityManager em);
-
-	/**
-	 * TODOC
-	 * @param em
-	 * @param result
-	 * @param selections
-	 * @return
-	 */
-	<R> TypedQuery<R> createTypedQuery(EntityManager em, Class<R> result, Selection<?> ... selections) ;
+	TypedQuery<R> createTypedQuery(EntityManager em);
 
 }

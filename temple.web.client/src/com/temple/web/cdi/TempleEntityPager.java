@@ -1,19 +1,20 @@
 package com.temple.web.cdi;
 
-import com.temple.model.TempleEntity;
+import java.io.Serializable;
+import java.util.List;
+
 import com.temple.model.filter.EntityFilter;
 import com.temple.util.Pageable;
-import java.util.List;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
- * @param <M>
+ * @param <R>
  * @param <F>
  */
-public interface TempleEntityPager<M extends TempleEntity, F extends EntityFilter<M>> extends Pageable {
+public interface TempleEntityPager<R extends Serializable, F extends EntityFilter<?, R>> extends Pageable {
 
 	/**
 	 * @return the filter
@@ -25,15 +26,17 @@ public interface TempleEntityPager<M extends TempleEntity, F extends EntityFilte
 	 *
 	 * @return
 	 */
-	List<? extends M> getAll();
+	List<R> getAll();
 
 	/**
 	 * TODOC
 	 *
-	 * @param index - an index
-	 * @return <code>null</code> if no result, the object at the position <code>index % results.size()</code>
+	 * @param index
+	 *            - an index
+	 * @return <code>null</code> if no result, the object at the position
+	 *         <code>index % results.size()</code>
 	 */
-	M getResult(int index);
+	R getResult(int index);
 
 	/**
 	 * TODOC

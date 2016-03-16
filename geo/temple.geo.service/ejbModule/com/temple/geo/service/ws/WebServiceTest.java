@@ -65,9 +65,9 @@ public class WebServiceTest extends AbstractWebServiceBean {
 	@Context
 	private Request req;
 
-	public
-
-	@GET @Path("divs/{c}") public List<Place> fuck(@PathParam("c") Country c) {
+	@GET
+	@Path("divs/{c}")
+	public List<Place> fuck(@PathParam("c") Country c) {
 		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		final CriteriaQuery<Place> tq = cb.createQuery(Place.class);
 		final Root<AdministrativeDivision> root = tq.from(AdministrativeDivision.class);

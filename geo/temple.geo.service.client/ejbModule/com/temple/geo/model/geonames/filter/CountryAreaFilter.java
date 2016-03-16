@@ -11,49 +11,55 @@ import com.temple.geo.model.geonames.AdministrativeDivision;
 import com.temple.geo.model.geonames.Feature;
 import com.temple.geo.model.geonames.PopulatedPlace;
 import com.temple.model.filter.AbstractDynamicFilter;
-import com.temple.util.TempleLogger;
 import com.temple.util.ToString;
 import com.temple.util.geo.Country;
 
 /**
  * TODOC
+ *
  * @author flominou
  * @param <GE>
  */
-public class CountryAreaFilter<GE extends AbstractCountryArea> extends AbstractDynamicFilter<GE>{
+public class CountryAreaFilter<GE extends AbstractCountryArea> extends AbstractDynamicFilter<GE, GE> {
 
 	private static final long serialVersionUID = 1L;
 
 	@ToString
-	private final Class<? extends GE> geoEntityClass ;
+	private final Class<GE> geoEntityClass;
 
 	@ToString
-	private Country country ;
+	private Country country;
 
 	@ToString
-	private Feature[] features ;
+	private Feature[] features;
 
 	@ToString
-	private Integer parentId ;
+	private Integer parentId;
 
 	// CDI
 	CountryAreaFilter() {
-		this(null) ;
+		this(null);
 	}
 
 	/**
 	 * Constructor
+	 *
 	 * @param geoEntityClass
 	 */
 	public CountryAreaFilter(Class<GE> geoEntityClass) {
 		super();
-		this.geoEntityClass = geoEntityClass ;
+		this.geoEntityClass = geoEntityClass;
 		this.setOrder(NameOrder.ASC);
 	}
 
 	@Override
-	protected Class<? extends GE> getEntityClass() {
-		return this.geoEntityClass ;
+	public Class<GE> getEntityClass() {
+		return this.geoEntityClass;
+	}
+
+	@Override
+	public Class<GE> getResultClass() {
+		return this.geoEntityClass;
 	}
 
 	public Country getCountry() {
@@ -65,11 +71,11 @@ public class CountryAreaFilter<GE extends AbstractCountryArea> extends AbstractD
 	}
 
 	public Feature[] getFeatures() {
-		return this.features.clone() ;
+		return this.features.clone();
 	}
 
 	public void setFeatures(Feature... features) {
-		this.features = features ;
+		this.features = features;
 	}
 
 	public Integer getParentId() {
@@ -81,23 +87,23 @@ public class CountryAreaFilter<GE extends AbstractCountryArea> extends AbstractD
 	}
 
 	public void setParentId(Integer parentId) {
-		this.parentId = parentId ;
+		this.parentId = parentId;
 	}
 
 	@Override
 	protected Predicate createWherePredicate(CriteriaBuilder cb, Root<? extends GE> root, CriteriaQuery<?> rootQuery) {
-		Predicate p = cb.conjunction() ;
-		if(this.parentId == null) {
-			if(this.country != null) {
-				p = cb.and(cb.equal(root.get(AbstractCountryArea_.country), this.country)) ;
+		Predicate p = cb.conjunction();
+		if (this.parentId == null) {
+			if (this.country != null) {
+				p = cb.and(cb.equal(root.get(AbstractCountryArea_.country), this.country));
 			}
-			if(this.features != null && this.features.length > 0) {
-				p = cb.and(p, root.get(AbstractCountryArea_.feature).in((Object[]) this.features)) ;
+			if (this.features != null && this.features.length > 0) {
+				p = cb.and(p, root.get(AbstractCountryArea_.feature).in((Object[]) this.features));
 			}
 		} else {
-			p = cb.equal(root.get(AbstractCountryArea_.parentId), this.parentId) ;
+			p = cb.equal(root.get(AbstractCountryArea_.parentId), this.parentId);
 		}
-		return p ;
+		return p;
 	}
 
 	/**
@@ -105,7 +111,7 @@ public class CountryAreaFilter<GE extends AbstractCountryArea> extends AbstractD
 	 * @return
 	 */
 	public static final CountryAreaFilter<AdministrativeDivision> adminDivFilter() {
-		return new CountryAreaFilter<>(AdministrativeDivision.class) ;
+		return new CountryAreaFilter<>(AdministrativeDivision.class);
 	}
 
 	/**
@@ -113,7 +119,7 @@ public class CountryAreaFilter<GE extends AbstractCountryArea> extends AbstractD
 	 * @return
 	 */
 	public static final CountryAreaFilter<PopulatedPlace> populatedPlaceFilter() {
-		return new CountryAreaFilter<>(PopulatedPlace.class) ;
+		return new CountryAreaFilter<>(PopulatedPlace.class);
 	}
 
 }

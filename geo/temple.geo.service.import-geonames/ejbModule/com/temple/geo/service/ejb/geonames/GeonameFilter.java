@@ -20,9 +20,10 @@ import com.temple.util.geo.Country;
 
 /**
  * TODOC
+ *
  * @author flominou
  */
-final class GeonameFilter extends AbstractStaticPageableFilter<Geoname>{
+final class GeonameFilter extends AbstractStaticPageableFilter<Geoname, Geoname> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,28 +31,28 @@ final class GeonameFilter extends AbstractStaticPageableFilter<Geoname>{
 	private Country country = null;
 
 	@ToString
-	private FeatureType featureType = null ;
+	private FeatureType featureType = null;
 
 	@ToString
-	private List<Feature> features = new ArrayList<>() ;
+	private List<Feature> features = new ArrayList<>();
 
 	@ToString
-	private String ac1 = null ;
+	private String ac1 = null;
 
 	@ToString
-	private String ac2 = null ;
+	private String ac2 = null;
 
 	@ToString
-	private String ac3 = null ;
+	private String ac3 = null;
 
 	@ToString
-	private String ac4 = null ;
+	private String ac4 = null;
 
 	/**
 	 * Constructor
 	 */
 	public GeonameFilter() {
-		super(Geoname.class);
+		super(Geoname.class, Geoname.class);
 		this.setMaxCountIgnored(true);
 	}
 
@@ -105,35 +106,36 @@ final class GeonameFilter extends AbstractStaticPageableFilter<Geoname>{
 
 	@Override
 	protected SingularAttribute<? super Geoname, ?> getCountedField() {
-		return Geoname_.id ;
+		return Geoname_.id;
 	}
 
 	@Override
-	protected Predicate createWherePredicate(CriteriaBuilder cb, Root<? extends Geoname> root, CriteriaQuery<?> rootQuery) {
-		Predicate p = cb.conjunction() ;
-		if(this.country != null) {
-			p = cb.and(cb.equal(root.get(Geoname_.country), this.country)) ;
+	protected Predicate createWherePredicate(CriteriaBuilder cb, Root<? extends Geoname> root,
+			CriteriaQuery<?> rootQuery) {
+		Predicate p = cb.conjunction();
+		if (this.country != null) {
+			p = cb.and(cb.equal(root.get(Geoname_.country), this.country));
 		}
-		if(this.features.isEmpty()) {
-			if(this.featureType != null) {
-				p = cb.and(p, cb.equal(root.get(Geoname_.featureType), this.featureType)) ;
+		if (this.features.isEmpty()) {
+			if (this.featureType != null) {
+				p = cb.and(p, cb.equal(root.get(Geoname_.featureType), this.featureType));
 			}
 		} else {
-			p = cb.and(p, root.get(Geoname_.feature).in(this.features)) ;
+			p = cb.and(p, root.get(Geoname_.feature).in(this.features));
 		}
-		if(this.ac1 != null && !this.ac1.isEmpty()) {
-			p = cb.and(p, cb.equal(root.get(Geoname_.ac1), this.ac1)) ;
-			if(this.ac2 != null && !this.ac2.isEmpty()) {
-				p = cb.and(p, cb.equal(root.get(Geoname_.ac2), this.ac2)) ;
-				if(this.ac3 != null && !this.ac3.isEmpty()) {
-					p = cb.and(p, cb.equal(root.get(Geoname_.ac3), this.ac3)) ;
-					if(this.ac4 != null && !this.ac4.isEmpty()) {
-						p = cb.and(p, cb.equal(root.get(Geoname_.ac4), this.ac4)) ;
+		if (this.ac1 != null && !this.ac1.isEmpty()) {
+			p = cb.and(p, cb.equal(root.get(Geoname_.ac1), this.ac1));
+			if (this.ac2 != null && !this.ac2.isEmpty()) {
+				p = cb.and(p, cb.equal(root.get(Geoname_.ac2), this.ac2));
+				if (this.ac3 != null && !this.ac3.isEmpty()) {
+					p = cb.and(p, cb.equal(root.get(Geoname_.ac3), this.ac3));
+					if (this.ac4 != null && !this.ac4.isEmpty()) {
+						p = cb.and(p, cb.equal(root.get(Geoname_.ac4), this.ac4));
 					}
 				}
 			}
 		}
-		return p ;
+		return p;
 	}
 
 }

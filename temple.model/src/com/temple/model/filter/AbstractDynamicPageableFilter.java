@@ -19,7 +19,8 @@ import com.temple.util.ToString;
  * @version 1.0
  * @param <E>
  */
-public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> extends AbstractDynamicFilter<E> implements PageableEntityFilter<E> {
+public abstract class AbstractDynamicPageableFilter<E extends TempleEntity, R extends Serializable>
+		extends AbstractDynamicFilter<E, R> implements PageableEntityFilter<E, R> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +36,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 	private short maxCount;
 
 	@ToString
-	private boolean maxCountIgnored = false ;
+	private boolean maxCountIgnored = false;
 
 	/**
 	 * Constructor.
@@ -45,8 +46,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 	}
 
 	/**
-	 * Constructor.
-	 * TODOC
+	 * Constructor. TODOC
 	 *
 	 * @param perPageCount
 	 */
@@ -75,7 +75,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 		if (this.maxCount <= this.offset) {
 			this.offset -= this.maxCount;
 		} else {
-			this.offset = 0 ;
+			this.offset = 0;
 		}
 	}
 
@@ -92,10 +92,11 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 
 	/**
 	 * TODOC
+	 *
 	 * @param i
 	 */
 	protected void setMaxCountIgnored(boolean i) {
-		this.maxCountIgnored = i ;
+		this.maxCountIgnored = i;
 	}
 
 	/**
@@ -110,7 +111,7 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 		final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		final Root<? extends E> root = cq.from(this.getEntityClass());
 		cq.select(cb.count(root.get(this.getCountedField())));
-		cq.where(this.createWherePredicate(cb, root, cq)) ;
+		cq.where(this.createWherePredicate(cb, root, cq));
 		final TypedQuery<Long> q = em.createQuery(cq);
 		return q;
 	}
@@ -129,12 +130,12 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity> exte
 	 * @return
 	 */
 	@Override
-	public TypedQuery<? extends E> createTypedQuery(EntityManager em) {
-		final TypedQuery<? extends E> q = super.createTypedQuery(em);
+	public TypedQuery<R> createTypedQuery(EntityManager em) {
+		final TypedQuery<R> q = super.createTypedQuery(em);
 		if (this.offset > 0) {
 			q.setFirstResult(this.offset);
 		}
-		if(!this.maxCountIgnored) {
+		if (!this.maxCountIgnored) {
 			// maxCount always > 0
 			q.setMaxResults(this.maxCount);
 		}

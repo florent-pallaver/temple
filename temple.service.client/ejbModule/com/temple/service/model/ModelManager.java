@@ -1,33 +1,38 @@
 package com.temple.service.model;
 
-import com.temple.model.TempleEntity;
+import java.io.Serializable;
+import java.util.List;
+
 import com.temple.model.filter.EntityFilter;
 import com.temple.model.filter.PageableEntityFilter;
 import com.temple.service.ServiceException;
 import com.temple.service.TempleManager;
-import java.util.List;
 
 /**
  * TODOC
+ *
  * @author flominou
  */
 public interface ModelManager extends TempleManager {
 
 	/**
-	 * 
+	 * TODOC
+	 *
 	 * @param <E>
+	 * @param <R>
 	 * @param ef
 	 * @return
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
-	<E extends TempleEntity> List<? extends E> find(EntityFilter<E> ef) throws ServiceException ;
-	
+	<R extends Serializable> List<R> find(EntityFilter<?, R> ef) throws ServiceException;
+
 	/**
-	 * 
+	 * TODOC
+	 *
 	 * @param pef
 	 * @return
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
-	long getCount(PageableEntityFilter<?> pef) throws ServiceException ;
-	
+	long getCount(PageableEntityFilter<?, ?> pef) throws ServiceException;
+
 }
