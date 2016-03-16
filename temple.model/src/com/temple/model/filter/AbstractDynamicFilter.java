@@ -1,11 +1,9 @@
 package com.temple.model.filter;
 
-import com.temple.model.TempleEntity;
-import com.temple.util.TempleUtil;
-import com.temple.util.ToString;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,6 +12,11 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+
+import com.temple.model.TempleEntity;
+import com.temple.util.TempleUtil;
+import com.temple.util.ToString;
 
 /**
  * TODOC
@@ -69,18 +72,20 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 		this.orderBy.addAll(orders);
 	}
 
-	/**
-	 * TODOC
-	 *
-	 * @param em
-	 * @return
-	 */
 	@Override
 	public TypedQuery<? extends E> createTypedQuery(EntityManager em) {
+		return this.createTypedQuery(em, this.getEntityClass());
+	}
+
+	@Override
+	public <R> TypedQuery<R> createTypedQuery(EntityManager em, Class<R> resultClass, Selection<?>... selections) {
 		final CriteriaBuilder cb = em.getCriteriaBuilder();
 		final Class<? extends E> ec = this.getEntityClass();
-		CriteriaQuery<? extends E> rootQuery = cb.createQuery(ec);
+		final CriteriaQuery<R> rootQuery = cb.createQuery(resultClass);
 		final Root<? extends E> root = rootQuery.from(ec);
+		if(selections.length > 0) {
+			rootQuery.select(cb.construct(resultClass, selections)) ;
+		}
 		rootQuery.where(this.createWherePredicate(cb, root, rootQuery));
 		this.aggregate(cb, root);
 		final int size = this.orderBy.size();
@@ -92,7 +97,7 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity> implements E
 			}).collect(Collectors.toList());
 			rootQuery.orderBy(collect);
 		}
-		final TypedQuery<? extends E> q = em.createQuery(rootQuery);
+		final TypedQuery<R> q = em.createQuery(rootQuery);
 		return q;
 	}
 
