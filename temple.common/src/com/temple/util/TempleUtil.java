@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -90,6 +91,20 @@ public abstract class TempleUtil {
 		return r == max ? min : r;
 	}
 
+	/**
+	 * 
+	 * @param array an array
+	 * @return a random element from the given array
+	 * @throws NullPointerException if given array is <code>null</code>
+	 * @throws IllegalArgumentException if the given array is empty
+	 */
+	public static final <E> E random(E[] array) {
+		if(array.length == 0) {
+			throw new IllegalArgumentException("Empty array given.") ;
+		}
+		return array[TempleUtil.random(0, array.length)] ;
+	}
+	
 	/**
 	 * TODOC
 	 *

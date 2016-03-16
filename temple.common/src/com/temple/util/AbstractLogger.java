@@ -5,6 +5,11 @@ import java.util.logging.Logger;
 
 import com.temple.NotImplementedException;
 
+/**
+ * Base implementation class providing util logging methods.
+ * 
+ * @author flominou
+ */
 public abstract class AbstractLogger {
 
 	private final String prefix;

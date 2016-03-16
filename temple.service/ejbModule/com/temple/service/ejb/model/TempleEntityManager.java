@@ -3,6 +3,12 @@
  */
 package com.temple.service.ejb.model;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
+import javax.ejb.Local;
+
 import com.temple.model.EntityKey;
 import com.temple.model.TempleEntity;
 import com.temple.model.UniqueEntityKey;
@@ -13,14 +19,10 @@ import com.temple.service.TempleManager;
 import com.temple.service.model.EntityException;
 import com.temple.service.model.FindEntityException;
 import com.temple.service.model.UpdateException;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import javax.ejb.Local;
 
 /**
- * TODOC
- * Is meant to be used locally as real interaction with clients shouldn't be made through this interface.
+ * TODOC Is meant to be used locally as real interaction with clients shouldn't
+ * be made through this interface.
  *
  * @author Florent Pallaver
  * @version 1.0
@@ -36,16 +38,20 @@ public interface TempleEntityManager extends TempleManager {
 	 * @return
 	 * @throws FindEntityException
 	 */
-	// <E extends TempleEntity> E findReferenceById(Class<E> c, Serializable id) throws FindEntityException;
+	// <E extends TempleEntity> E findReferenceById(Class<E> c, Serializable id)
+	// throws FindEntityException;
 	/**
 	 * Finds an {@link TempleEntity entity} given its id.
 	 *
 	 * @param <E>
-	 * @param clazz an entity class
-	 * @param id an id
+	 * @param clazz
+	 *            an entity class
+	 * @param id
+	 *            an id
 	 * @return the entity with given class and id
-	 * @throws FindEntityException if an error occurs while trying to find the entity or if none exists with the given
-	 *             id.
+	 * @throws FindEntityException
+	 *             if an error occurs while trying to find the entity or if none
+	 *             exists with the given id.
 	 */
 	default <E extends TempleEntity> E get(Class<E> clazz, Serializable id) throws FindEntityException {
 		final E e = this.findById(clazz, id);
@@ -59,10 +65,14 @@ public interface TempleEntityManager extends TempleManager {
 	 * Finds an {@link TempleEntity entity} given its id.
 	 *
 	 * @param <E>
-	 * @param clazz an entity class
-	 * @param id an id
-	 * @return the entity with given class and id, <code>null</code> if none exists
-	 * @throws FindEntityException if an error occurs while trying to find the entity
+	 * @param clazz
+	 *            an entity class
+	 * @param id
+	 *            an id
+	 * @return the entity with given class and id, <code>null</code> if none
+	 *         exists
+	 * @throws FindEntityException
+	 *             if an error occurs while trying to find the entity
 	 */
 	<E extends TempleEntity> E findById(Class<E> clazz, Serializable id) throws FindEntityException;
 
@@ -109,9 +119,21 @@ public interface TempleEntityManager extends TempleManager {
 	 * @param <E>
 	 * @param ref
 	 * @return
-	 * @throws FindEntityException if an error occurs while trying to find the entities matching the filter
+	 * @throws FindEntityException
+	 *             if an error occurs while trying to find the entities matching
+	 *             the filter
 	 */
 	<E extends TempleEntity> List<? extends E> findByFilter(EntityFilter<E> ref) throws FindEntityException;
+
+	/**
+	 *
+	 * @param ef
+	 * @return
+	 * @throws FindEntityException
+	 */
+	default <R> List<R> find(EntityFilter<? extends TempleEntity> ef) throws FindEntityException {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * TODOC
@@ -121,7 +143,8 @@ public interface TempleEntityManager extends TempleManager {
 	 * @return
 	 * @throws FindEntityException
 	 */
-//	<E extends TempleEntity> PageableResults<? extends E> getFirstPage(PageableEntityFilter<E> filter) throws FindEntityException;
+	// <E extends TempleEntity> PageableResults<? extends E>
+	// getFirstPage(PageableEntityFilter<E> filter) throws FindEntityException;
 
 	/**
 	 * @param po
