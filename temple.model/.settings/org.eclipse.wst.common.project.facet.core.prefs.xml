@@ -4,4 +4,13 @@
       <attribute name="provider-id" value="GlassFish-4-SystemLibrary-JPA"/>
     </node>
   </facet>
+  <facet id="jpt.jaxb">
+    <node name="libprov">
+      <attribute name="provider-id" value="jaxb-no-op-library-provider"/>
+    </node>
+    <node name="platform">
+      <attribute name="platform-id" value="generic_2_2"/>
+    </node>
+    <node name="schemas"/>
+  </facet>
 </root>

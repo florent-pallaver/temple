@@ -13,6 +13,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+import javax.persistence.metamodel.SingularAttribute;
 
 import com.temple.model.TempleEntity;
 import com.temple.util.TempleUtil;
@@ -27,7 +29,7 @@ import com.temple.util.ToString;
  * @param <E>
  */
 public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Serializable>
-		implements EntityFilter<E, R> {
+implements EntityFilter<E, R> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -76,12 +78,17 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Se
 		final Class<R> rc = this.getResultClass();
 		final CriteriaQuery<R> rootQuery = cb.createQuery(rc);
 		final Root<E> root = rootQuery.from(ec);
-		if (!rc.equals(ec)) {
-			// if(selections.length > 0) {
-			// rootQuery.select(cb.construct(resultClass, selections)) ;
-			// }
-		}
 		rootQuery.where(this.createWherePredicate(cb, root, rootQuery));
+		if (!rc.equals(ec)) {
+			final SingularAttribute<? super E, ?>[] selectedAttributes = this.getSelectedAttributes();
+			if(selectedAttributes != null) {
+				final Selection<?>[] selections = new Selection<?>[selectedAttributes.length] ;
+				for (int i = 0; i < selectedAttributes.length; i++) {
+					selections[i] = root.get(selectedAttributes[i]) ;
+				}
+				rootQuery.select(cb.construct(rc, selections)) ;
+			}
+		}
 		this.aggregate(cb, root);
 		final int size = this.orderBy.size();
 		if (size > 0) {
@@ -98,6 +105,10 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Se
 
 	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root,
 			CriteriaQuery<?> rootQuery);
+
+	protected SingularAttribute<? super E, ?>[] getSelectedAttributes() {
+		return null ;
+	}
 
 	/**
 	 * For group by and having clauses ...
