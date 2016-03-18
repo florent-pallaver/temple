@@ -29,7 +29,7 @@ import com.temple.util.ToString;
  * @param <E>
  */
 public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Serializable>
-implements EntityFilter<E, R> {
+		implements EntityFilter<E, R> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,12 +81,12 @@ implements EntityFilter<E, R> {
 		rootQuery.where(this.createWherePredicate(cb, root, rootQuery));
 		if (!rc.equals(ec)) {
 			final SingularAttribute<? super E, ?>[] selectedAttributes = this.getSelectedAttributes();
-			if(selectedAttributes != null) {
-				final Selection<?>[] selections = new Selection<?>[selectedAttributes.length] ;
+			if (selectedAttributes != null) {
+				final Selection<?>[] selections = new Selection<?>[selectedAttributes.length];
 				for (int i = 0; i < selectedAttributes.length; i++) {
-					selections[i] = root.get(selectedAttributes[i]) ;
+					selections[i] = root.get(selectedAttributes[i]);
 				}
-				rootQuery.select(cb.construct(rc, selections)) ;
+				rootQuery.select(cb.construct(rc, selections));
 			}
 		}
 		this.aggregate(cb, root);
@@ -106,8 +106,13 @@ implements EntityFilter<E, R> {
 	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root,
 			CriteriaQuery<?> rootQuery);
 
+	/**
+	 * singularattributes aren't serializable ...
+	 * 
+	 * @return
+	 */
 	protected SingularAttribute<? super E, ?>[] getSelectedAttributes() {
-		return null ;
+		return null;
 	}
 
 	/**

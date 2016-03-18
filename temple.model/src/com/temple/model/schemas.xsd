@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <xsd:complexType name="named">
+   <xsd:complexType name="namedEntity">
       <xsd:sequence>
          <xsd:element name="id" type="xsd:int"/>
          <xsd:element name="name" type="xsd:string" minOccurs="0"/>
       </xsd:sequence>
    </xsd:complexType>
-   <xsd:element name="named" type="named"/>
+   <xsd:element name="namedEntity" type="namedEntity"/>
 </xsd:schema>

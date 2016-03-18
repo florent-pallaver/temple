@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.json.JsonObject;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.temple.util.json.DoubleHandler;
 import com.temple.util.json.IntegerHandler;
@@ -17,10 +18,12 @@ import com.temple.util.json.Jsonable;
  * @author Florent Pallaver
  * @version 1.0
  */
+@XmlJavaTypeAdapter(CountryAdapter.class)
 public enum Country implements GeoArea, Jsonable {
 
 	// Source /resources/geonames/countryInfo_2015-03-25.txt
 	// ordered by their ISO code
+
 	Andorra("Andorra", "AD"),
 	United_Arab_Emirates("United Arab Emirates", "AE"),
 	Afghanistan("Afghanistan", "AF"),
@@ -272,9 +275,9 @@ public enum Country implements GeoArea, Jsonable {
 	Mayotte("Mayotte", "YT"),
 	South_Africa("South Africa", "ZA"),
 	Zambia("Zambia", "ZM"),
-	Zimbabwe("Zimbabwe", "ZW") ;
+	Zimbabwe("Zimbabwe", "ZW");
 
-	private static Map<String, Country> byISOCodes = new HashMap<>() ;
+	private static Map<String, Country> byISOCodes = new HashMap<>();
 
 	@JsonField(inputable = false)
 	private final String name;
@@ -285,10 +288,10 @@ public enum Country implements GeoArea, Jsonable {
 	@JsonField(handler = DoubleHandler.class, inputable = false)
 	private final double latitude;
 
-	@JsonField(handler = DoubleHandler.class,inputable = false)
+	@JsonField(handler = DoubleHandler.class, inputable = false)
 	private final double longitude;
 
-	@JsonField(handler = IntegerHandler.class,inputable = false)
+	@JsonField(handler = IntegerHandler.class, inputable = false)
 	private final int altitude;
 
 	private Country(String name, String isoCode) {
@@ -329,7 +332,7 @@ public enum Country implements GeoArea, Jsonable {
 
 	@Override
 	public Earth getParentArea() {
-		return Earth.instance ;
+		return Earth.instance;
 	}
 
 	/**
@@ -341,34 +344,44 @@ public enum Country implements GeoArea, Jsonable {
 
 	/**
 	 *
-	 * @param isoCode a 2 letters ISO code
+	 * @param isoCode
+	 *            a 2 letters ISO code
 	 * @return the Country corresponding the given ISO code.
-	 * @throws IllegalArgumentException if the given ISO code is not registered.
+	 * @throws IllegalArgumentException
+	 *             if the given ISO code is not registered.
 	 */
 	public static Country getByISOCode(String isoCode) {
-		return Country.getByISOCode(isoCode, true) ;
+		return Country.getByISOCode(isoCode, true);
 	}
 
 	/**
 	 *
-	 * @param isoCode a 2 letters ISO code
-	 * @param throwException whether to throw an {@code IllegalArgumentException} if the given code is invalid
-	 * @return the Country corresponding the given ISO code, {@code null} if none exists.
-	 * @throws IllegalArgumentException if the given ISO code is not registered and throwException is {@code true}.
+	 * @param isoCode
+	 *            a 2 letters ISO code
+	 * @param throwException
+	 *            whether to throw an {@code IllegalArgumentException} if the
+	 *            given code is invalid
+	 * @return the Country corresponding the given ISO code, {@code null} if
+	 *         none exists.
+	 * @throws IllegalArgumentException
+	 *             if the given ISO code is not registered and throwException is
+	 *             {@code true}.
 	 */
 	public static Country getByISOCode(String isoCode, boolean throwException) {
-		if(Country.byISOCodes.isEmpty()) {
-			for(final Country c : Country.values()) {
-				Country.byISOCodes.put(c.isoCode, c) ;
+		if (Country.byISOCodes.isEmpty()) {
+			for (final Country c : Country.values()) {
+				Country.byISOCodes.put(c.isoCode, c);
 			}
 			// FIXME Eclipse link does not support lambdas ...
-			//			Arrays.stream(Country.values()).parallel().forEach(c -> byISOCodes.put(c.isoCode, c));
+			// Arrays.stream(Country.values()).parallel().forEach(c ->
+			// byISOCodes.put(c.isoCode, c));
 		}
-		final String ic = isoCode.toUpperCase() ;
-		if(throwException && !Country.byISOCodes.containsKey(ic)) {
-			throw new IllegalArgumentException(isoCode + " is not a valid 2 letters ISO code") ;
+		final String ic = isoCode.toUpperCase();
+		final Country country = Country.byISOCodes.get(ic);
+		if (country == null && throwException) {
+			throw new IllegalArgumentException(isoCode + " is not a valid 2 letters ISO code");
 		}
-		return Country.byISOCodes.get(ic) ;
+		return country;
 	}
 
 	@Override

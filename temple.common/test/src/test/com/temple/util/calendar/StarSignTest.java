@@ -9,14 +9,15 @@ import com.temple.util.calendar.StarSign;
 
 /**
  * TODOC
- * 
+ *
  * @author Florent Pallaver
  * @version 1.0
  */
 public class StarSignTest {
 
 	/**
-	 * Test method for {@link com.temple.util.calendar.StarSign#find(java.util.Calendar)}.
+	 * Test method for
+	 * {@link com.temple.util.calendar.StarSign#find(java.util.Calendar)}.
 	 */
 	@Test
 	public void testFind() {
