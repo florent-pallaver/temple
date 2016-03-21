@@ -1,8 +1,7 @@
-<tbody>
-	<tr ng-repeat="place in placesCtrl.all">
-		<td>Country</td>
-		<td><a href="#/countries/{{placesCtrl.country}}/divisions/{{placesCtrl.division}}/cities/{{place.id}}">{{place.name}}</a></td>
-		<td>0</td>
-		<td>0</td>
-	</tr>
-</tbody>
+
+<h3>World - {{ctrl.country}} - {{ctrl.division}}</h3>
+<input ng-model="ctrl.page" type="number" min="1" ng-change="ctrl.newPage()">
+<ul>
+	<li ng-repeat="city in ctrl.cities"><a href="{{ctrl.link(city)}}">{{city.name}}</a>
+	</li>
+</ul>

@@ -2,12 +2,15 @@ package com.temple.geo.model.geonames;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import com.temple.geo.model.CountryDivisionEntity;
 
@@ -17,23 +20,26 @@ import com.temple.geo.model.CountryDivisionEntity;
  */
 @Entity
 @Table(name = "admin_divisions")
+@XmlType(name="")
 @XmlRootElement
 public class AdministrativeDivision extends AbstractCountryArea implements CountryDivisionEntity {
 
 	private static final long serialVersionUID = 1L ;
-	
+
 	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "parentDivision")
+	@XmlTransient
 	private List<AdministrativeDivision> divisions ;
-	
+
 	@Column(nullable = false)
 	private int divisionsCount ;
-	
+
 	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "parentDivision")
+	@XmlTransient
 	private List<PopulatedPlace> places ;
-	
+
 	@Column(nullable = false)
 	private int placesCount ;
-	
+
 	protected AdministrativeDivision() {
 		super() ;
 	}
@@ -52,25 +58,25 @@ public class AdministrativeDivision extends AbstractCountryArea implements Count
 	}
 
 	public int getAdministrativeDivisionsCount() {
-		return divisionsCount;
+		return this.divisionsCount;
 	}
 
 	public int getPopulatedPlacesCount() {
-		return placesCount;
+		return this.placesCount;
 	}
-	
+
 	public List<AdministrativeDivision> getDivisions() {
-		return divisions;
+		return this.divisions;
 	}
-	
+
 	private void add(AdministrativeDivision ad) {
 		this.divisions.add(ad) ;
 		this.divisionsCount++ ;
 	}
-	
+
 	void add(PopulatedPlace pp) {
 		this.places.add(pp) ;
 		this.placesCount++ ;
 	}
-	
+
 }

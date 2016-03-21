@@ -1,15 +1,7 @@
 package com.temple.geo.model.geonames;
 
-import com.temple.geo.model.GeoEntity;
-import com.temple.util.TempleUtil;
-import com.temple.util.ToString;
-import com.temple.util.geo.Country;
-import com.temple.util.geo.CountryArea;
-import com.temple.util.json.AbstractJsonable;
-import com.temple.util.json.DoubleHandler;
-import com.temple.util.json.IntegerHandler;
-import com.temple.util.json.JsonField;
 import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,6 +12,17 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.temple.geo.model.GeoEntity;
+import com.temple.util.TempleUtil;
+import com.temple.util.ToString;
+import com.temple.util.geo.Country;
+import com.temple.util.geo.CountryArea;
+import com.temple.util.json.AbstractJsonable;
+import com.temple.util.json.DoubleHandler;
+import com.temple.util.json.IntegerHandler;
+import com.temple.util.json.JsonField;
 
 /**
  * TODOC
@@ -30,13 +33,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public abstract class AbstractCountryArea extends AbstractJsonable implements CountryArea, GeoEntity {
 
 	private static final long serialVersionUID = 1L ;
-	
+
 	@ToString
 	@JsonField(handler = IntegerHandler.class)
 	@Id
 	@Column(nullable = false, updatable = false)
 	private int id ;
-	
+
 	@ToString
 	@JsonField
 	@Column(nullable = false, length = 200)
@@ -64,14 +67,17 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 
 	@ManyToOne
 	@JoinColumn(name = "parentId")
+	@XmlTransient
 	private AdministrativeDivision parentDivision ;
 
 	@Column(insertable = false, updatable = false)
+	@XmlTransient
 	private int parentId ;
 
 	@Transient
+	@XmlTransient
 	private transient String lcName ;
-	
+
 	protected AbstractCountryArea() {
 		super() ;
 	}
@@ -79,7 +85,7 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 	AbstractCountryArea(Geoname g, AdministrativeDivision parent) {
 		this(g.getId(), g.getName(), g.getLatitude(), g.getLongitude(), g.getFeature(), g.getCountry(), parent) ;
 	}
-	
+
 	AbstractCountryArea(int id, String name, double latitude, double longitude, Feature feature, Country country, AdministrativeDivision parentDivision) {
 		this() ;
 		this.id = id;
@@ -90,7 +96,7 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 		this.country = country;
 		this.parentDivision = parentDivision;
 	}
-	
+
 	@Override
 	public Integer getId() {
 		return this.id ;
@@ -124,7 +130,7 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 	public Feature getFeature() {
 		return this.feature;
 	}
-	
+
 	@Override
 	public Country getCountry() {
 		return this.country ;
@@ -146,12 +152,12 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 		}
 		return this.lcName.startsWith(lcPrefix) ;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return 371 + this.id;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		return obj != null && this.getClass() == obj.getClass() && this.id == ((AbstractCountryArea) obj).id;
@@ -161,5 +167,5 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 	public String toString() {
 		return TempleUtil.toString(this) ;
 	}
-	
+
 }

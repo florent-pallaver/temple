@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import com.temple.util.Nameable;
 import com.temple.util.TempleUtil;
@@ -23,6 +23,7 @@ import com.temple.util.json.JsonField;
  * @author flominou
  */
 @XmlRootElement
+@XmlType(name="")
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class NamedEntity extends AbstractJsonable implements Nameable, Serializable {
 
@@ -30,12 +31,10 @@ public final class NamedEntity extends AbstractJsonable implements Nameable, Ser
 
 	@ToString
 	@JsonField(handler = IntegerHandler.class, inputable = false)
-	@XmlAttribute(required = true)
 	private final int id;
 
 	@ToString
 	@JsonField(inputable = false)
-	@XmlAttribute(required = true)
 	private final String name;
 
 	protected NamedEntity() {

@@ -5,28 +5,19 @@
 <title>temple.geo.web</title>
 </head>
 <body>
+	<a href="#/">Monde</a>
 	<div>
-		<a href="#/countries">Monde</a>
-		<a href="#/countries">Monde</a>
-		<a href="#/countries">Monde</a>
-		<table>
-			<thead>
-				<tr>
-					<th>Type</th>
-					<th>Name</th>
-					<th>Longitude</th>
-					<th>Latitude</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody ng-view></tbody>
-		</table>
+		<div ng-view>
+		</div>
 	</div>
 	<script type="text/javascript" src="resources/angular/1_5_0/angular.min.js"></script>
 	<script type="text/javascript" src="resources/angular/1_5_0/angular-route.min.js"></script>
 	<script type="text/javascript" src="resources/geoApp/app.js"></script>
 	<script type="text/javascript" src="resources/geoApp/places/module.js"></script>
 	<script type="text/javascript" src="resources/geoApp/places/service.js"></script>
-	<script type="text/javascript" src="resources/geoApp/places/controller.js"></script>
+	<script type="text/javascript" src="resources/geoApp/places/world.controller.js"></script>
+	<script type="text/javascript" src="resources/geoApp/places/country.controller.js"></script>
+	<script type="text/javascript" src="resources/geoApp/places/division.controller.js"></script>
+	<script type="text/javascript" src="resources/geoApp/places/city.controller.js"></script>
 </body>
 </html>

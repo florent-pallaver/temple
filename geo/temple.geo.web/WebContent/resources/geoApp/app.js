@@ -1,6 +1,10 @@
 /**
  * 
  */
+function serviceError(response) {
+	alert(response.statusText);
+}
+
 (function() {
 
 	var app = angular.module('geoApp', ['ngRoute', 'placesModule']) ;
@@ -18,24 +22,24 @@
 //	});
 
 	function configRoute($routeProvider) {
-		$routeProvider.when('/countries', {
+		$routeProvider.when('/', {
 			templateUrl : 'resources/geoApp/places/world.html',
-			controller : 'PlacesController',
-			controllerAs : 'placesCtrl',
-		}).when('/countries/:country/divisions', {
+			controller : 'WorldController',
+			controllerAs : 'ctrl',
+		}).when('/:country', {
 			templateUrl : 'resources/geoApp/places/country.html',
-			controller : 'PlacesController',
-			controllerAs : 'placesCtrl',
-		}).when('/countries/:country/divisions/:division/cities', {
+			controller : 'CountryController',
+			controllerAs : 'ctrl',
+		}).when('/:country/:division/:divisionId', {
 			templateUrl : 'resources/geoApp/places/division.html',
-			controller : 'PlacesController',
-			controllerAs : 'placesCtrl',
-		}).when('/countries/:country/divisions/:division/cities/:city', {
+			controller : 'DivisionController',
+			controllerAs : 'ctrl',
+		}).when('/:country/:division/:divisionId/:city/:cityId', {
 			templateUrl : 'resources/geoApp/places/city.html',
-			controller : 'PlacesController',
-			controllerAs : 'placesCtrl',
+			controller : 'CityController',
+			controllerAs : 'ctrl',
 		}).otherwise({
-			redirectTo : '/countries'
+			redirectTo : '/'
 		});
 	}
 

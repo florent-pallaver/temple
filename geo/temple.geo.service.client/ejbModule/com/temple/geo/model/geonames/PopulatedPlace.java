@@ -18,8 +18,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import com.temple.geo.model.HumanSettlementEntity;
 
@@ -30,8 +33,10 @@ import com.temple.geo.model.HumanSettlementEntity;
  */
 @Entity
 @Table(name = "populated_places")
+@XmlRootElement
+@XmlType(name="")
 public class PopulatedPlace extends AbstractCountryArea implements HumanSettlementEntity {
-	
+
 	private static final long serialVersionUID = 1L ;
 
 	/**
@@ -51,7 +56,7 @@ public class PopulatedPlace extends AbstractCountryArea implements HumanSettleme
 		super(g, Objects.requireNonNull(parentDivision));
 		parentDivision.add(this);
 	}
-	
+
 	@Override
 	public boolean isCapital() {
 		return this.feature.equals(Feature.PPLC);
@@ -73,25 +78,25 @@ public class PopulatedPlace extends AbstractCountryArea implements HumanSettleme
 		 * Sole instance
 		 */
 		public static final Comparator<PopulatedPlace> instance = new ByImportanceComparator() ;
-		
-		private static final Map<Feature, Integer> orders = new HashMap<>(FEATURES.length) ;
- 		
+
+		private static final Map<Feature, Integer> orders = new HashMap<>(PopulatedPlace.FEATURES.length) ;
+
 		private ByImportanceComparator() {}
-		
+
 		@Override
 		public int compare(PopulatedPlace o1, PopulatedPlace o2) {
 			Objects.requireNonNull(o1) ;
 			Objects.requireNonNull(o2) ;
-			return orders.get(o1.feature).compareTo(orders.get(o2.feature)) ;
+			return ByImportanceComparator.orders.get(o1.feature).compareTo(ByImportanceComparator.orders.get(o2.feature)) ;
 		}
-	
+
 		static {
-			for(int l = FEATURES.length, i = 0 ; l -->0 ; ) {
-				orders.put(FEATURES[l], i++) ;
+			for(int l = PopulatedPlace.FEATURES.length, i = 0 ; l -->0 ; ) {
+				ByImportanceComparator.orders.put(PopulatedPlace.FEATURES[l], i++) ;
 			}
 		}
-		
-	
-}
+
+
+	}
 
 }

@@ -1,8 +1,12 @@
-<tbody>
-	<tr ng-repeat="place in placesCtrl.all">
-		<td>Country</td>
-		<td><a href="#/{{place.value}}">{{place.value}}</a></td>
-		<td>0</td>
-		<td>0</td>
-	</tr>
-</tbody>
+
+<h3>World - {{ctrl.country}} - {{ctrl.division}} - {{ctrl.city.name}}</h3>
+<dl>
+	<dt>Feature</dt>
+	<dd>{{ctrl.city.feature}}</dd>
+	<dt>Name</dt>
+	<dd>{{ctrl.city.name}}</dd>
+	<dt>Longitude</dt>
+	<dd>{{ctrl.city.longitude}}</dd>
+	<dt>Latitude</dt>
+	<dd>{{ctrl.city.latitude}}</dd>
+</dl>
