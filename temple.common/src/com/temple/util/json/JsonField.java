@@ -25,17 +25,17 @@ public @interface JsonField {
 	 *
 	 * @return
 	 */
-	Class<? extends Handler> handler() default StringHandler.class;
+	Class<? extends Handler> handler() default Handler.class;
 
 	/**
-	 * @return <code>true</code> if this property can be overwritten, <code>false</code> if it cannot. Default to
-	 *         <code>true</code>.
+	 * @return <code>true</code> if this property can be overwritten,
+	 *         <code>false</code> if it cannot. Default to <code>true</code>.
 	 */
 	boolean inputable() default true;
 
 	/**
-	 * @return <code>true</code> if this property can be sent, <code>false</code> if it cannot. Default to
-	 *         <code>true</code>.
+	 * @return <code>true</code> if this property can be sent,
+	 *         <code>false</code> if it cannot. Default to <code>true</code>.
 	 */
 	boolean outputable() default true;
 
@@ -54,7 +54,7 @@ public @interface JsonField {
 		 * @param name
 		 * @param value
 		 */
-		void add(JsonObjectBuilder job, String name, Object value) ;
+		void add(JsonObjectBuilder job, String name, Object value);
 
 		/**
 		 * TODOC
@@ -63,7 +63,7 @@ public @interface JsonField {
 		 * @param name
 		 * @param value
 		 */
-		void add(JsonArrayBuilder jab, Object value) ;
+		void add(JsonArrayBuilder jab, Object value);
 
 		/**
 		 * TODOC

@@ -52,7 +52,7 @@ public abstract class JsonUtil extends TempleUtil {
 	private static final JsonObjectBuilder toJsonObjectBuilder(Object o) {
 		final JsonObjectBuilder job = Json.createObjectBuilder();
 		JsonUtil.fieldsStream(o).parallel().filter(f -> f.annotation.outputable())
-		.forEach(f -> JsonUtil.getHandler(f).add(job, f.field.getName(), TempleUtil.get(o, f.field)));
+				.forEach(f -> JsonUtil.getHandler(f).add(job, f.field.getName(), TempleUtil.get(o, f.field)));
 		return job;
 	}
 
@@ -64,7 +64,7 @@ public abstract class JsonUtil extends TempleUtil {
 	public static final JsonArray toJsonArray(Object j) {
 		final JsonArrayBuilder jab = Json.createArrayBuilder();
 		JsonUtil.fieldsStream(j).filter(f -> f.annotation.outputable())
-		.forEach(f -> JsonUtil.getHandler(f).add(jab, TempleUtil.get(j, f.field)));
+				.forEach(f -> JsonUtil.getHandler(f).add(jab, TempleUtil.get(j, f.field)));
 		return jab.build();
 	}
 
@@ -88,7 +88,8 @@ public abstract class JsonUtil extends TempleUtil {
 	 * @return
 	 */
 	public static final JsonArray toJsonArray(Collection<?> c, boolean asArray) {
-		return JsonUtil.toBuilder(c, asArray ? (jab, o) -> jab.add(JsonUtil.toJsonArray(o)) : (jab, o) -> jab.add(JsonUtil.toJsonObjectBuilder(o))).build();
+		return JsonUtil.toBuilder(c, asArray ? (jab, o) -> jab.add(JsonUtil.toJsonArray(o))
+				: (jab, o) -> jab.add(JsonUtil.toJsonObjectBuilder(o))).build();
 	}
 
 	private static final JsonArrayBuilder toBuilder(Collection<?> c, BiConsumer<JsonArrayBuilder, Object> builder) {
@@ -120,15 +121,36 @@ public abstract class JsonUtil extends TempleUtil {
 	 * @return
 	 */
 	protected static final Handler getHandler(AnnotatedField<JsonField> af) {
-		final Class<? extends Handler> c = af.annotation.handler();
-		Handler handler = JsonUtil.handlerCache.get(c);
-		if (handler == null) {
-			try {
-				handler = c.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				throw new RuntimeException(e);
+		Handler handler = null;
+		Class<? extends Handler> c = af.annotation.handler();
+		if (c.isInterface()) {
+			final Class<?> fieldType = af.field.getType();
+			if (Integer.TYPE.equals(fieldType) || Integer.class.equals(fieldType)) {
+				c = IntegerHandler.class;
+			} else if (String.class.equals(fieldType)) {
+				c = StringHandler.class;
+			} else if (Boolean.TYPE.equals(fieldType) || Boolean.class.equals(fieldType)) {
+				c = BooleanHandler.class;
+			} else if (Double.TYPE.equals(fieldType) || Double.class.equals(fieldType)) {
+				c = DoubleHandler.class;
+			} else if (fieldType.isEnum()) {
+				handler = EnumHandler.getInstance(fieldType.asSubclass(Enum.class));
+			} else if (Map.class.isAssignableFrom(fieldType)) {
+				c = MapHandler.class;
+			} else {
+				c = GenericStringHandler.class;
 			}
-			JsonUtil.handlerCache.put(c, handler);
+		}
+		if (handler == null) {
+			handler = JsonUtil.handlerCache.get(c);
+			if (handler == null) {
+				try {
+					handler = c.newInstance();
+				} catch (InstantiationException | IllegalAccessException e) {
+					throw new RuntimeException(e);
+				}
+				JsonUtil.handlerCache.put(c, handler);
+			}
 		}
 		return handler;
 	}

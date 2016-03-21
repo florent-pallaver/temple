@@ -4,36 +4,26 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-import com.temple.util.json.JsonField.Handler;
-
 /**
  * TODOC
  *
  * @author Florent Pallaver
  * @version 1.0
  */
-public final class StringHandler implements Handler {
+public final class StringHandler extends AbstractHandler {
 
 	@Override
-	public void add(JsonObjectBuilder job, String name, Object value) {
-		if (value == null) {
-			job.addNull(name);
-		} else {
-			job.add(name, (String) value);
-		}
+	protected void nullSafeAdd(JsonObjectBuilder job, String name, Object value) {
+		job.add(name, (String) value);
 	}
 
 	@Override
-	public void add(JsonArrayBuilder jab, Object value) {
-		if (value == null) {
-			jab.addNull();
-		} else {
-			jab.add((String) value);
-		}
+	protected void nullSafeAdd(JsonArrayBuilder jab, Object value) {
+		jab.add((String) value);
 	}
 
 	@Override
-	public Object getValue(JsonObject jo, String name) {
-		return !jo.containsKey(name) || jo.isNull(name) ? null : jo.getString(name);
+	protected Object getNullSafeValue(JsonObject jo, String name) {
+		return jo.getString(name);
 	}
 }

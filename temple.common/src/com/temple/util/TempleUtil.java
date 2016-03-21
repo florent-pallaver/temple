@@ -5,6 +5,9 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +31,8 @@ public abstract class TempleUtil {
 	/**
 	 * Constructor
 	 */
-	protected TempleUtil() {}
+	protected TempleUtil() {
+	}
 
 	/**
 	 * TODOC
@@ -71,8 +75,10 @@ public abstract class TempleUtil {
 	}
 
 	/**
-	 * @param min - the minimum value (included)
-	 * @param max - the maximum value (excluded)
+	 * @param min
+	 *            - the minimum value (included)
+	 * @param max
+	 *            - the maximum value (excluded)
 	 * @return a random value within the interval [ min ; max [
 	 */
 	public static final int random(int min, int max) {
@@ -81,8 +87,10 @@ public abstract class TempleUtil {
 	}
 
 	/**
-	 * @param min - the minimum value (included)
-	 * @param max - the maximum value (excluded)
+	 * @param min
+	 *            - the minimum value (included)
+	 * @param max
+	 *            - the maximum value (excluded)
 	 * @return a random value within the interval [ min ; max [
 	 */
 	public static final long random(long min, long max) {
@@ -92,19 +100,22 @@ public abstract class TempleUtil {
 	}
 
 	/**
-	 * 
-	 * @param array an array
+	 *
+	 * @param array
+	 *            an array
 	 * @return a random element from the given array
-	 * @throws NullPointerException if given array is <code>null</code>
-	 * @throws IllegalArgumentException if the given array is empty
+	 * @throws NullPointerException
+	 *             if given array is <code>null</code>
+	 * @throws IllegalArgumentException
+	 *             if the given array is empty
 	 */
 	public static final <E> E random(E[] array) {
-		if(array.length == 0) {
-			throw new IllegalArgumentException("Empty array given.") ;
+		if (array.length == 0) {
+			throw new IllegalArgumentException("Empty array given.");
 		}
-		return array[TempleUtil.random(0, array.length)] ;
+		return array[TempleUtil.random(0, array.length)];
 	}
-	
+
 	/**
 	 * TODOC
 	 *
@@ -147,8 +158,10 @@ public abstract class TempleUtil {
 	 * Two objects a and b are equals if one of these condition is true :
 	 * <ul>
 	 * <li>they reference the same object : <code>a == b</code>,</li>
-	 * <li>they are <code>null</code> : <code>a == null && b == null</code>,</li>
-	 * <li>or they are equals according to the {@link Object#equals(Object) equals method} : <code>a.equals(b)</code></li>
+	 * <li>they are <code>null</code> : <code>a == null && b == null</code>,
+	 * </li>
+	 * <li>or they are equals according to the {@link Object#equals(Object)
+	 * equals method} : <code>a.equals(b)</code></li>
 	 * </ul>
 	 * TODOC add the array case
 	 *
@@ -156,7 +169,8 @@ public abstract class TempleUtil {
 	 *            - one object.
 	 * @param another
 	 *            - another object.
-	 * @return <code>true</code> if both objects are equals, <code>false</code> otherwise.
+	 * @return <code>true</code> if both objects are equals, <code>false</code>
+	 *         otherwise.
 	 */
 	public static boolean equals(Object o1, Object o2) {
 		final boolean e;
@@ -196,19 +210,21 @@ public abstract class TempleUtil {
 	}
 
 	/**
-	 * Searches a value in an array and return it's first position in that array.
+	 * Searches a value in an array and return it's first position in that
+	 * array.
 	 *
 	 * @param a
 	 *            - an array.
 	 * @param v
 	 *            - a value.
-	 * @return the index of the given value in the given array, or {@link #VALUE_NOT_FOUND} if that value hasn't been
-	 *         found.
+	 * @return the index of the given value in the given array, or
+	 *         {@link #VALUE_NOT_FOUND} if that value hasn't been found.
 	 */
 	public static final int linearSearch(Object[] a, Object v) {
 		final int l = a.length;
 		int i = 0;
-		for (; i < l && !TempleUtil.equals(a[i], v); i++) {}
+		for (; i < l && !TempleUtil.equals(a[i], v); i++) {
+		}
 		return i == l ? TempleUtil.VALUE_NOT_FOUND : i;
 	}
 
@@ -219,7 +235,8 @@ public abstract class TempleUtil {
 	 *            - an array.
 	 * @param v
 	 *            - a value.
-	 * @return <code>true</code> if the given array contains the given value, <code>false</code> otherwise.
+	 * @return <code>true</code> if the given array contains the given value,
+	 *         <code>false</code> otherwise.
 	 */
 	public static final boolean contains(Object[] a, Object v) {
 		return TempleUtil.linearSearch(a, v) != TempleUtil.VALUE_NOT_FOUND;
@@ -308,17 +325,31 @@ public abstract class TempleUtil {
 		try {
 			final boolean accessible = f.isAccessible();
 			if (!accessible) {
-				f.setAccessible(true);
+				TempleUtil.setAccessible(f, true);
 			}
 			object = f instanceof Method ? ((Method) f).invoke(o) : ((Field) f).get(o);
 			if (!accessible) {
-				f.setAccessible(false);
+				TempleUtil.setAccessible(f, false);
 			}
-		} catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (PrivilegedActionException | InvocationTargetException | IllegalArgumentException
+				| IllegalAccessException e) {
 			// should never happen !
 			throw new RuntimeException(e);
 		}
 		return object;
+	}
+
+	private static void setAccessible(final AccessibleObject f, final boolean accessible)
+			throws PrivilegedActionException {
+		AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
+
+			@Override
+			public Void run() {
+				f.setAccessible(accessible);
+				return null;
+			}
+
+		});
 	}
 
 	/**
@@ -333,20 +364,52 @@ public abstract class TempleUtil {
 		try {
 			final boolean accessible = f.isAccessible();
 			if (!accessible) {
-				f.setAccessible(true);
+				TempleUtil.setAccessible(f, true);
 			}
 			if (f instanceof Method) {
-				((Method) f).invoke(o, v);
+				final Method method = (Method) f;
+				method.invoke(o, TempleUtil.safeValue(method.getParameters()[0].getType(), v));
 			} else {
-				((Field) f).set(o, v);
+				final Field field = (Field) f;
+				field.set(o, TempleUtil.safeValue(field.getType(), v));
 			}
 			if (!accessible) {
-				f.setAccessible(false);
+				TempleUtil.setAccessible(f, false);
 			}
-		} catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (PrivilegedActionException | InvocationTargetException | IllegalArgumentException
+				| IllegalAccessException e) {
 			// should never happen !
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static final Object safeValue(Class<?> type, Object v) {
+		final Object value;
+		if (v == null && type.isPrimitive()) {
+			if (type.equals(Integer.TYPE)) {
+				value = Integer.valueOf(0);
+			} else if (type.equals(Long.TYPE)) {
+				value = Long.valueOf(0l);
+			} else if (type.equals(Double.TYPE)) {
+				value = Double.valueOf(0d);
+			} else if (type.equals(Float.TYPE)) {
+				value = Float.valueOf(0f);
+			} else if (type.equals(Byte.TYPE)) {
+				value = Byte.valueOf((byte) 0);
+			} else if (type.equals(Short.TYPE)) {
+				value = Short.valueOf((short) 0);
+			} else if (type.equals(Character.TYPE)) {
+				value = Character.valueOf((char) 0);
+			} else if (type.equals(Boolean.TYPE)) {
+				value = Boolean.FALSE;
+			} else {
+				// should never happen ...
+				throw new RuntimeException("Inconsistent type ...");
+			}
+		} else {
+			value = v;
+		}
+		return value;
 	}
 
 	/**
@@ -356,15 +419,15 @@ public abstract class TempleUtil {
 	 * @return
 	 */
 	public static final String toString(Object o) {
-		final StringBuilder sb = new StringBuilder(o.getClass().getName()) ;
+		final StringBuilder sb = new StringBuilder(o.getClass().getName());
 		final AnnotatedField<ToString>[] fields = Lazy.toStringFieldsCache.getFields(o.getClass());
 		final List<?> values = Arrays.stream(fields).parallel().map(field -> {
-				final Object value = TempleUtil.getString(o, field.field);
-				return field.annotation.renderIfNull() || value != null ? field.field.getName() + ':'  + value : null ;
-			}).filter(s -> s != null).collect(Collectors.toList()) ;
+			final Object value = TempleUtil.getString(o, field.field);
+			return field.annotation.renderIfNull() || value != null ? field.field.getName() + ':' + value : null;
+		}).filter(s -> s != null).collect(Collectors.toList());
 		return sb.append(values).toString();
 	}
-	
+
 	private static Object getString(Object o, Field f) {
 		final Class<?> type = f.getType();
 		final Object value = TempleUtil.get(o, f);
@@ -375,9 +438,11 @@ public abstract class TempleUtil {
 
 		static final AnnotatedFieldCache<ToString> toStringFieldsCache = new AnnotatedFieldCache<>(ToString.class);
 	}
-	/* public static final boolean equals(Object... objects) { boolean e = true; int l = objects.length; if(l > 0) {
-	 * Object r = objects[0]; for(int i = l; e &&
-	 * i-- > 1;) { e = equals(r, objects[i]); } } return e; } */
+	/*
+	 * public static final boolean equals(Object... objects) { boolean e = true;
+	 * int l = objects.length; if(l > 0) { Object r = objects[0]; for(int i = l;
+	 * e && i-- > 1;) { e = equals(r, objects[i]); } } return e; }
+	 */
 	// test linearSearch
 	// public static void main(String[] args) {
 	// Object[] a = {1, 2, 3, 4, 5};

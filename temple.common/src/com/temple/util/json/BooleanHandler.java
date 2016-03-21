@@ -4,28 +4,27 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-import com.temple.util.json.JsonField.Handler;
-
 /**
  * TODOC
  *
  * @author Florent Pallaver
  * @version 1.0
  */
-public final class BooleanHandler implements Handler {
+public final class BooleanHandler extends AbstractHandler {
 
 	@Override
-	public void add(JsonObjectBuilder job, String name, Object value) {
+	protected void nullSafeAdd(JsonObjectBuilder job, String name, Object value) {
 		job.add(name, (Boolean) value);
 	}
 
 	@Override
-	public void add(JsonArrayBuilder jab, Object value) {
+	protected void nullSafeAdd(JsonArrayBuilder jab, Object value) {
 		jab.add((Boolean) value);
 	}
 
 	@Override
-	public Object getValue(JsonObject jo, String name) {
+	protected Object getNullSafeValue(JsonObject jo, String name) {
 		return jo.getBoolean(name);
 	}
+
 }

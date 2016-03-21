@@ -7,8 +7,7 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-
-import com.temple.util.json.JsonField.Handler;
+import javax.json.JsonString;
 
 /**
  * TODOC
@@ -16,47 +15,35 @@ import com.temple.util.json.JsonField.Handler;
  * @author Florent Pallaver
  * @version 1.0
  */
-public final class MapHandler implements Handler {
+public final class MapHandler extends AbstractHandler {
 
 	@Override
-	public void add(JsonObjectBuilder job, String name, Object value) {
-		if (value == null) {
-			job.addNull(name);
-		} else {
-			job.add(name, this.toJsonObjectBuilder(value)) ;
-		}
+	protected void nullSafeAdd(JsonObjectBuilder job, String name, Object value) {
+		job.add(name, this.toJsonObjectBuilder(value));
 	}
 
 	@Override
-	public void add(JsonArrayBuilder jab, Object value) {
-		if (value == null) {
-			jab.addNull();
-		} else {
-			jab.add(this.toJsonObjectBuilder(value)) ;
-		}
+	protected void nullSafeAdd(JsonArrayBuilder jab, Object value) {
+		jab.add(this.toJsonObjectBuilder(value));
 	}
 
 	private JsonObjectBuilder toJsonObjectBuilder(Object value) {
-		final JsonObjectBuilder mjob = Json.createObjectBuilder() ;
-		((Map<?, ?>) value).forEach((k,v) -> {
-			if(v == null) {
-				mjob.addNull(k.toString()) ;
+		final JsonObjectBuilder mjob = Json.createObjectBuilder();
+		((Map<?, ?>) value).forEach((k, v) -> {
+			if (v == null) {
+				mjob.addNull(k.toString());
 			} else {
-				mjob.add(k.toString(), v.toString()) ;
+				mjob.add(k.toString(), v.toString());
 			}
 		});
-		return mjob ;
+		return mjob;
 	}
 
 	@Override
-	public Object getValue(JsonObject jo, String name) {
-		Map<String, String> m ;
-		if(!jo.containsKey(name) || jo.isNull(name)) {
-			m = null ;
-		} else {
-			m = new HashMap<>() ;
-			jo.getJsonObject(name).forEach((s, jv) -> m.put(s, jv.toString()));
-		}
-		return m ;
+	protected Object getNullSafeValue(JsonObject jo, String name) {
+		final Map<String, String> m = new HashMap<>();
+		jo.getJsonObject(name).forEach((s, jv) -> m.put(s, ((JsonString) jv).getString()));
+		return m;
 	}
+
 }

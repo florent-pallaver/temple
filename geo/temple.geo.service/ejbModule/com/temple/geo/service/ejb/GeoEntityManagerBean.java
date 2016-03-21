@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import com.temple.geo.model.CountryDivisionEntity;
 import com.temple.geo.model.HumanSettlementEntity;
+import com.temple.geo.service.FilterData;
 import com.temple.geo.service.GeoEntityManager;
 import com.temple.service.ServiceException;
 import com.temple.service.cdi.TempleObject;
@@ -23,7 +24,7 @@ public class GeoEntityManagerBean extends AbstractEJBBean implements GeoEntityMa
 
 	@Inject
 	@TempleObject
-	private GeoEntityManager m ;
+	private GeoEntityManager m;
 
 	@Override
 	public List<? extends CountryDivisionEntity> findCountryDivisions(Country c) throws ServiceException {
@@ -36,13 +37,18 @@ public class GeoEntityManagerBean extends AbstractEJBBean implements GeoEntityMa
 	}
 
 	@Override
-	public List<? extends HumanSettlementEntity> findHumanSettlements(Country c) throws ServiceException {
-		return this.m.findHumanSettlements(c);
+	public int countHumanSettlements(Country c) throws ServiceException {
+		return this.m.countHumanSettlements(c);
 	}
 
 	@Override
-	public List<? extends HumanSettlementEntity> findHumanSettlements(int parentId) throws ServiceException {
-		return this.m.findHumanSettlements(parentId);
+	public int countHumanSettlements(int parentId) throws ServiceException {
+		return this.m.countHumanSettlements(parentId);
+	}
+
+	@Override
+	public List<? extends HumanSettlementEntity> findHumanSettlements(FilterData filter) throws ServiceException {
+		return this.m.findHumanSettlements(filter);
 	}
 
 }

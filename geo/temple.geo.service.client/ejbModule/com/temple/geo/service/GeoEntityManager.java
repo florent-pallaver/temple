@@ -10,6 +10,7 @@ import com.temple.util.geo.Country;
 
 /**
  * TODOC
+ *
  * @author flominou
  */
 public interface GeoEntityManager extends TempleManager {
@@ -25,7 +26,7 @@ public interface GeoEntityManager extends TempleManager {
 	 * @return
 	 * @throws ServiceException
 	 */
-	List<? extends CountryDivisionEntity> findCountryDivisions(Country c) throws ServiceException ;
+	List<? extends CountryDivisionEntity> findCountryDivisions(Country c) throws ServiceException;
 
 	/**
 	 *
@@ -33,7 +34,7 @@ public interface GeoEntityManager extends TempleManager {
 	 * @return
 	 * @throws ServiceException
 	 */
-	List<? extends CountryDivisionEntity> findCountryDivisions(int parentId) throws ServiceException ;
+	List<? extends CountryDivisionEntity> findCountryDivisions(int parentId) throws ServiceException;
 
 	/**
 	 *
@@ -41,7 +42,7 @@ public interface GeoEntityManager extends TempleManager {
 	 * @return
 	 * @throws ServiceException
 	 */
-	List<? extends HumanSettlementEntity> findHumanSettlements(Country c) throws ServiceException ;
+	int countHumanSettlements(Country c) throws ServiceException;
 
 	/**
 	 *
@@ -49,6 +50,16 @@ public interface GeoEntityManager extends TempleManager {
 	 * @return
 	 * @throws ServiceException
 	 */
-	List<? extends HumanSettlementEntity> findHumanSettlements(int parentId) throws ServiceException ;
+	int countHumanSettlements(int parentId) throws ServiceException;
+
+	/**
+	 *
+	 * @param c
+	 * @param from
+	 * @param count
+	 * @return
+	 * @throws ServiceException
+	 */
+	List<? extends HumanSettlementEntity> findHumanSettlements(FilterData filter) throws ServiceException;
 
 }

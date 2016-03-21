@@ -1,9 +1,5 @@
 package com.temple.service.ws;
 
-import javax.ejb.PostActivate;
-import javax.ejb.PrePassivate;
-import javax.ejb.Remove;
-
 import com.temple.AbstractTempleBean;
 import com.temple.Module;
 import com.temple.service.TempleManager;
@@ -27,18 +23,4 @@ public abstract class AbstractWebServiceBean extends AbstractTempleBean implemen
 		this.info("Touched");
 	}
 
-	@PostActivate
-	protected void postActivate() {
-		this.info("Activated");
-	}
-
-	@PrePassivate
-	protected void prePassivate() {
-		this.info("About to be passivated");
-	}
-
-	@Remove(retainIfException = false)
-	protected void preRemove() {
-		this.info("About to be removed");
-	}
 }

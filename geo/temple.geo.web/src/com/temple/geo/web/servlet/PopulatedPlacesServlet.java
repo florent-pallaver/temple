@@ -9,6 +9,7 @@ import com.temple.web.servlet.InvalidRequestException;
 
 /**
  * TODOC
+ * 
  * @author flominou
  */
 public class PopulatedPlacesServlet extends AbstractAjaxGeoServlet<HumanSettlementEntity> {
@@ -17,13 +18,14 @@ public class PopulatedPlacesServlet extends AbstractAjaxGeoServlet<HumanSettleme
 
 	@Override
 	protected List<? extends HumanSettlementEntity> findGeoEntities(Country c) throws ServiceException {
-		throw new InvalidRequestException() ;
-		//		return this.gdm.findHumanSettlements(c) ;
+		throw new InvalidRequestException();
+		// return this.gdm.findHumanSettlements(c) ;
 	}
 
 	@Override
 	protected List<? extends HumanSettlementEntity> findGeoEntities(Integer parentId) throws ServiceException {
-		return this.gdm.findHumanSettlements(parentId) ;
+		throw new InvalidRequestException();
+		// return this.gdm.findHumanSettlements(parentId) ;
 	}
 
 }
