@@ -104,7 +104,7 @@ public class GeonamesDataImporterBean extends AbstractEJBBean implements GeoData
 			this.importing = false ;
 		}
 	}
-	private final Consumer<? super String> name = s -> {
+	private final Consumer<? super String> stringConsumer = s -> {
 		try {
 			final Geoname g = new Geoname(s) ;
 			this.em.persist(g);
@@ -121,7 +121,7 @@ public class GeonamesDataImporterBean extends AbstractEJBBean implements GeoData
 			lines = lines.limit(limit);
 		}
 		// FIXME ? semble causé du GC à fond après éxécution
-		lines.forEach(this.name);
+		lines.forEach(this.stringConsumer);
 	}
 
 	private void algo2(BufferedReader br, long limit) throws IOException {
@@ -134,7 +134,7 @@ public class GeonamesDataImporterBean extends AbstractEJBBean implements GeoData
 				this.em.flush();
 				this.em.clear();
 			}
-			this.name.accept(s);
+			this.stringConsumer.accept(s);
 		}
 	}
 

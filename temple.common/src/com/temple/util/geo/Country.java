@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.json.JsonObject;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.temple.util.json.DoubleHandler;
-import com.temple.util.json.IntegerHandler;
 import com.temple.util.json.JsonField;
 import com.temple.util.json.JsonUtil;
 import com.temple.util.json.Jsonable;
@@ -285,13 +283,13 @@ public enum Country implements GeoArea, Jsonable {
 	@JsonField(inputable = false)
 	private final String isoCode;
 
-	@JsonField(handler = DoubleHandler.class, inputable = false)
+	@JsonField(inputable = false)
 	private final double latitude;
 
-	@JsonField(handler = DoubleHandler.class, inputable = false)
+	@JsonField(inputable = false)
 	private final double longitude;
 
-	@JsonField(handler = IntegerHandler.class, inputable = false)
+	@JsonField(inputable = false)
 	private final int altitude;
 
 	private Country(String name, String isoCode) {

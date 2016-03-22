@@ -1,5 +1,6 @@
 package com.temple.geo.service.ejb;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -7,8 +8,8 @@ import javax.inject.Inject;
 
 import com.temple.geo.model.CountryDivisionEntity;
 import com.temple.geo.model.HumanSettlementEntity;
-import com.temple.geo.service.FilterData;
 import com.temple.geo.service.GeoEntityManager;
+import com.temple.model.filter.EntityFilter;
 import com.temple.service.ServiceException;
 import com.temple.service.cdi.TempleObject;
 import com.temple.service.ejb.AbstractEJBBean;
@@ -47,7 +48,7 @@ public class GeoEntityManagerBean extends AbstractEJBBean implements GeoEntityMa
 	}
 
 	@Override
-	public List<? extends HumanSettlementEntity> findHumanSettlements(FilterData filter) throws ServiceException {
+	public <R extends Serializable> List<R> findHumanSettlements(EntityFilter<? extends HumanSettlementEntity, R> filter) throws ServiceException {
 		return this.m.findHumanSettlements(filter);
 	}
 

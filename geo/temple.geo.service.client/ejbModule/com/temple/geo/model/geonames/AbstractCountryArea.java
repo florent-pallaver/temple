@@ -20,25 +20,24 @@ import com.temple.util.ToString;
 import com.temple.util.geo.Country;
 import com.temple.util.geo.CountryArea;
 import com.temple.util.json.AbstractJsonable;
-import com.temple.util.json.DoubleHandler;
-import com.temple.util.json.IntegerHandler;
 import com.temple.util.json.JsonField;
 
 /**
  * TODOC
+ *
  * @author flominou
  */
 @MappedSuperclass
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractCountryArea extends AbstractJsonable implements CountryArea, GeoEntity {
 
-	private static final long serialVersionUID = 1L ;
+	private static final long serialVersionUID = 1L;
 
 	@ToString
-	@JsonField(handler = IntegerHandler.class)
+	@JsonField
 	@Id
 	@Column(nullable = false, updatable = false)
-	private int id ;
+	private int id;
 
 	@ToString
 	@JsonField
@@ -46,16 +45,17 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 	private String name;
 
 	@ToString
-	@JsonField(handler = DoubleHandler.class)
+	@JsonField
 	@Column(nullable = false, precision = 7, scale = 5)
 	private double latitude;
 
 	@ToString
-	@JsonField(handler = DoubleHandler.class)
+	@JsonField
 	@Column(nullable = false, precision = 8, scale = 5)
 	private double longitude;
 
 	@ToString
+	@JsonField
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
 	Feature feature;
@@ -68,26 +68,26 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 	@ManyToOne
 	@JoinColumn(name = "parentId")
 	@XmlTransient
-	private AdministrativeDivision parentDivision ;
+	private AdministrativeDivision parentDivision;
 
 	@Column(insertable = false, updatable = false)
 	@XmlTransient
-	private int parentId ;
+	private int parentId;
 
 	@Transient
 	@XmlTransient
-	private transient String lcName ;
+	private transient String lcName;
 
 	protected AbstractCountryArea() {
-		super() ;
+		super();
 	}
 
 	AbstractCountryArea(Geoname g, AdministrativeDivision parent) {
-		this(g.getId(), g.getName(), g.getLatitude(), g.getLongitude(), g.getFeature(), g.getCountry(), parent) ;
+		this(g.getId(), g.getName(), g.getLatitude(), g.getLongitude(), g.getFeature(), g.getCountry(), parent);
 	}
 
 	AbstractCountryArea(int id, String name, double latitude, double longitude, Feature feature, Country country, AdministrativeDivision parentDivision) {
-		this() ;
+		this();
 		this.id = id;
 		this.name = name;
 		this.latitude = latitude;
@@ -99,32 +99,32 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 
 	@Override
 	public Integer getId() {
-		return this.id ;
+		return this.id;
 	}
 
 	@Override
 	public double getLongitude() {
-		return this.longitude ;
+		return this.longitude;
 	}
 
 	@Override
 	public double getLatitude() {
-		return this.latitude ;
+		return this.latitude;
 	}
 
 	@Override
 	public int getAltitude() {
-		return 0 ;
+		return 0;
 	}
 
 	@Override
 	public String getName() {
-		return this.name ;
+		return this.name;
 	}
 
 	@Override
 	public Timestamp getCreationTS() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	public Feature getFeature() {
@@ -133,24 +133,26 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 
 	@Override
 	public Country getCountry() {
-		return this.country ;
+		return this.country;
 	}
 
 	@Override
 	public AdministrativeDivision getParentDivision() {
-		return this.parentDivision ;
+		return this.parentDivision;
 	}
 
 	/**
-	 * Tests if the lowercased name of this object starts with the given lowercased prefix.
+	 * Tests if the lowercased name of this object starts with the given
+	 * lowercased prefix.
+	 *
 	 * @param lcPrefix
 	 * @return TODOC
 	 */
 	public boolean lowercaseNameStartsWith(String lcPrefix) {
-		if(this.lcName == null) {
-			this.lcName = this.name.toLowerCase() ;
+		if (this.lcName == null) {
+			this.lcName = this.name.toLowerCase();
 		}
-		return this.lcName.startsWith(lcPrefix) ;
+		return this.lcName.startsWith(lcPrefix);
 	}
 
 	@Override
@@ -160,12 +162,12 @@ public abstract class AbstractCountryArea extends AbstractJsonable implements Co
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj != null && this.getClass() == obj.getClass() && this.id == ((AbstractCountryArea) obj).id;
+		return obj != null && this.getClass().equals(obj.getClass()) && this.id == ((AbstractCountryArea) obj).id;
 	}
 
 	@Override
 	public String toString() {
-		return TempleUtil.toString(this) ;
+		return TempleUtil.toString(this);
 	}
 
 }

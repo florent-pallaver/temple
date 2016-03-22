@@ -17,15 +17,15 @@
         <dependent-module archiveName="temple.service.client.jar" deploy-path="/lib" handle="module:/resource/temple.service.client/temple.service.client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="temple.geo.service.import-geonames.jar" deploy-path="/" handle="module:/resource/temple.geo.service.import-geonames/temple.geo.service.import-geonames">
-            <dependent-object/>
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="temple.geo.web.war" deploy-path="/" handle="module:/resource/temple.geo.web/temple.geo.web">
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="temple.geo.service._private.jar" deploy-path="/lib" handle="module:/resource/temple.geo.service._private/temple.geo.service._private">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple.geo.service.import-geonames.jar" deploy-path="/" handle="module:/resource/temple.geo.service.import-geonames/temple.geo.service.import-geonames">
+            <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

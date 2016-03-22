@@ -63,13 +63,21 @@ public abstract class JsonUtil extends TempleUtil {
 	 */
 	public static final JsonArray toJsonArray(Object j) {
 		final JsonArrayBuilder jab = Json.createArrayBuilder();
-		JsonUtil.fieldsStream(j).filter(f -> f.annotation.outputable())
-				.forEach(f -> JsonUtil.getHandler(f).add(jab, TempleUtil.get(j, f.field)));
+		JsonUtil.fieldsStream(j).filter(f -> f.annotation.outputable()).forEach(f -> JsonUtil.getHandler(f).add(jab, TempleUtil.get(j, f.field)));
 		return jab.build();
 	}
 
 	private static final Stream<AnnotatedField<JsonField>> fieldsStream(Object o) {
 		return Arrays.stream(JsonUtil.jsonFieldsCache.getFields(o.getClass()));
+	}
+
+	/**
+	 *
+	 * @param c
+	 * @return
+	 */
+	public static final JsonArray toJsonArray(final Object[] objects) {
+		return JsonUtil.toJsonArray(Arrays.asList(objects), false);
 	}
 
 	/**
@@ -88,8 +96,7 @@ public abstract class JsonUtil extends TempleUtil {
 	 * @return
 	 */
 	public static final JsonArray toJsonArray(Collection<?> c, boolean asArray) {
-		return JsonUtil.toBuilder(c, asArray ? (jab, o) -> jab.add(JsonUtil.toJsonArray(o))
-				: (jab, o) -> jab.add(JsonUtil.toJsonObjectBuilder(o))).build();
+		return JsonUtil.toBuilder(c, asArray ? (jab, o) -> jab.add(JsonUtil.toJsonArray(o)) : (jab, o) -> jab.add(JsonUtil.toJsonObjectBuilder(o))).build();
 	}
 
 	private static final JsonArrayBuilder toBuilder(Collection<?> c, BiConsumer<JsonArrayBuilder, Object> builder) {

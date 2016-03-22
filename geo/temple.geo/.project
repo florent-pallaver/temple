@@ -8,9 +8,9 @@
 		<project>temple.geo.service.client</project>
 		<project>temple.model</project>
 		<project>temple.service.client</project>
-		<project>temple.geo.service.import-geonames</project>
 		<project>temple.geo.web</project>
 		<project>temple.geo.service._private</project>
+		<project>temple.geo.service.import-geonames</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

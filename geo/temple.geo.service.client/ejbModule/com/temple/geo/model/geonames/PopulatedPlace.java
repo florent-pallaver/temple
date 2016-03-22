@@ -28,32 +28,35 @@ import com.temple.geo.model.HumanSettlementEntity;
 
 /**
  * TODOC
+ *
  * @author flominou
  * @see ByImportanceComparator
  */
 @Entity
 @Table(name = "populated_places")
 @XmlRootElement
-@XmlType(name="")
+@XmlType(name = "")
 public class PopulatedPlace extends AbstractCountryArea implements HumanSettlementEntity {
 
-	private static final long serialVersionUID = 1L ;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Cities, towns, villages, etc
 	 */
-	public static final Feature[] FEATURES = {PPLC, PPLG, PPLA, PPLA2, PPLA3, PPLA4, PPL, PPLL, PPLF, PPLR, PPLS, PPLX, STLMT} ;
+	public static final Feature[] FEATURES = { PPLC, PPLG, PPLA, PPLA2, PPLA3, PPLA4, PPL, PPLL, PPLF, PPLR, PPLS, PPLX, STLMT };
 
-	protected PopulatedPlace() {}
+	protected PopulatedPlace() {
+	}
 
 	/**
-	 * Constructor.
-	 * TODOC
+	 * Constructor. TODOC
+	 *
 	 * @param g
-	 * @param parentDivision not null
+	 * @param parentDivision
+	 *            not null
 	 */
 	public PopulatedPlace(Geoname g, AdministrativeDivision parentDivision) {
-		super(g, Objects.requireNonNull(parentDivision));
+		super(g, parentDivision);
 		parentDivision.add(this);
 	}
 
@@ -64,7 +67,8 @@ public class PopulatedPlace extends AbstractCountryArea implements HumanSettleme
 
 	@Override
 	public boolean isSeat() {
-		return this.feature.equals(PPLA) || this.feature.equals(PPLA2) || this.feature.equals(PPLA3) || this.feature.equals(PPLA4) || PPLG.equals(this.feature) || this.isCapital() ;
+		return this.feature.equals(PPLA) || this.feature.equals(PPLA2) || this.feature.equals(PPLA3) || this.feature.equals(PPLA4) || PPLG.equals(this.feature)
+				|| this.isCapital();
 	}
 
 	/**
@@ -77,25 +81,25 @@ public class PopulatedPlace extends AbstractCountryArea implements HumanSettleme
 		/**
 		 * Sole instance
 		 */
-		public static final Comparator<PopulatedPlace> instance = new ByImportanceComparator() ;
+		public static final Comparator<PopulatedPlace> instance = new ByImportanceComparator();
 
-		private static final Map<Feature, Integer> orders = new HashMap<>(PopulatedPlace.FEATURES.length) ;
+		private static final Map<Feature, Integer> orders = new HashMap<>(PopulatedPlace.FEATURES.length);
 
-		private ByImportanceComparator() {}
+		private ByImportanceComparator() {
+		}
 
 		@Override
 		public int compare(PopulatedPlace o1, PopulatedPlace o2) {
-			Objects.requireNonNull(o1) ;
-			Objects.requireNonNull(o2) ;
-			return ByImportanceComparator.orders.get(o1.feature).compareTo(ByImportanceComparator.orders.get(o2.feature)) ;
+			Objects.requireNonNull(o1);
+			Objects.requireNonNull(o2);
+			return ByImportanceComparator.orders.get(o1.feature).compareTo(ByImportanceComparator.orders.get(o2.feature));
 		}
 
 		static {
-			for(int l = PopulatedPlace.FEATURES.length, i = 0 ; l -->0 ; ) {
-				ByImportanceComparator.orders.put(PopulatedPlace.FEATURES[l], i++) ;
+			for (int l = PopulatedPlace.FEATURES.length, i = 0; l-- > 0;) {
+				ByImportanceComparator.orders.put(PopulatedPlace.FEATURES[l], i++);
 			}
 		}
-
 
 	}
 

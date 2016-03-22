@@ -128,8 +128,8 @@ public class Geoname extends AbstractJsonable implements GeoEntity {
 				// tuple[6],
 				Geoname.parseFeature(tuple[7]), Country.getByISOCode(tuple[8], false),
 				// tuple[9],
-				tuple[10], tuple[11], tuple[12], tuple[13], Geoname.parseLong(tuple[14]), Geoname.parseInt(tuple[15]),
-				Geoname.parseInt(tuple[16]), tuple[17], Geoname.parseCalendar(tuple[18]));
+				tuple[10], tuple[11], tuple[12], tuple[13], Geoname.parseLong(tuple[14]), Geoname.parseInt(tuple[15]), Geoname.parseInt(tuple[16]), tuple[17],
+				Geoname.parseCalendar(tuple[18]));
 	}
 
 	private static Calendar parseCalendar(String s) {
@@ -155,14 +155,13 @@ public class Geoname extends AbstractJsonable implements GeoEntity {
 		try {
 			f = Feature.valueOf(feature_code);
 		} catch (final IllegalArgumentException e) {
-
+			// ignored ...
 		}
 		return f;
 	}
 
-	private Geoname(int geonameid, String name, double latitude, double longitude, Feature feature, Country country,
-			String admin1_code, String admin2_code, String admin3_code, String admin4_code, long population,
-			int elevation, int dem, String timezone, Calendar modification_date) {
+	private Geoname(int geonameid, String name, double latitude, double longitude, Feature feature, Country country, String admin1_code, String admin2_code,
+			String admin3_code, String admin4_code, long population, int elevation, int dem, String timezone, Calendar modification_date) {
 		this.id = geonameid;
 		this.name = name;
 		// this.asciiname = asciiname;

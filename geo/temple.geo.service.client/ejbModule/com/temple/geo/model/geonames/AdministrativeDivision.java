@@ -13,46 +13,50 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.temple.geo.model.CountryDivisionEntity;
+import com.temple.util.json.JsonField;
 
 /**
  * TODOC
+ * 
  * @author flominou
  */
 @Entity
 @Table(name = "admin_divisions")
-@XmlType(name="")
+@XmlType(name = "")
 @XmlRootElement
 public class AdministrativeDivision extends AbstractCountryArea implements CountryDivisionEntity {
 
-	private static final long serialVersionUID = 1L ;
+	private static final long serialVersionUID = 1L;
 
-	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "parentDivision")
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "parentDivision")
 	@XmlTransient
-	private List<AdministrativeDivision> divisions ;
+	private List<AdministrativeDivision> divisions;
 
+	@JsonField
 	@Column(nullable = false)
-	private int divisionsCount ;
+	private int divisionsCount;
 
-	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "parentDivision")
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "parentDivision")
 	@XmlTransient
-	private List<PopulatedPlace> places ;
+	private List<PopulatedPlace> places;
 
+	@JsonField
 	@Column(nullable = false)
-	private int placesCount ;
+	private int placesCount;
 
 	protected AdministrativeDivision() {
-		super() ;
+		super();
 	}
 
 	public AdministrativeDivision(Geoname g, AdministrativeDivision parent) {
-		super(g, parent) ;
+		super(g, parent);
 		// FIXME do a better process !
 		// builds children list for migration only
-		this.divisionsCount = 0 ;
-		this.placesCount = 0 ;
-		this.divisions = new ArrayList<>() ;
-		this.places = new ArrayList<>() ;
-		if(parent != null) {
+		this.divisionsCount = 0;
+		this.placesCount = 0;
+		this.divisions = new ArrayList<>();
+		this.places = new ArrayList<>();
+		if (parent != null) {
 			parent.add(this);
 		}
 	}
@@ -70,13 +74,13 @@ public class AdministrativeDivision extends AbstractCountryArea implements Count
 	}
 
 	private void add(AdministrativeDivision ad) {
-		this.divisions.add(ad) ;
-		this.divisionsCount++ ;
+		this.divisions.add(ad);
+		this.divisionsCount++;
 	}
 
 	void add(PopulatedPlace pp) {
-		this.places.add(pp) ;
-		this.placesCount++ ;
+		this.places.add(pp);
+		this.placesCount++;
 	}
 
 }

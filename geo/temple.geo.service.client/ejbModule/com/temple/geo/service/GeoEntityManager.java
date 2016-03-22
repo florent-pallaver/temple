@@ -1,9 +1,11 @@
 package com.temple.geo.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.temple.geo.model.CountryDivisionEntity;
 import com.temple.geo.model.HumanSettlementEntity;
+import com.temple.model.filter.EntityFilter;
 import com.temple.service.ServiceException;
 import com.temple.service.TempleManager;
 import com.temple.util.geo.Country;
@@ -60,6 +62,6 @@ public interface GeoEntityManager extends TempleManager {
 	 * @return
 	 * @throws ServiceException
 	 */
-	List<? extends HumanSettlementEntity> findHumanSettlements(FilterData filter) throws ServiceException;
+	<R extends Serializable> List<R> findHumanSettlements(EntityFilter<? extends HumanSettlementEntity, R> filter) throws ServiceException;
 
 }
