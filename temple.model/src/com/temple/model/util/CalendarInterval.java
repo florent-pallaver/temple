@@ -23,34 +23,34 @@ public class CalendarInterval implements Interval<Calendar>, Serializable {
 	@ToString
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column()
-	private Calendar lowerLimit ;
+	private Calendar beginning ;
 	
 	@ToString
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column()
-	private Calendar upperLimit ;
+	private Calendar end ;
 
 	protected CalendarInterval() {}
 
 	/**
 	 * Constructor
-	 * @param lowerLimit
-	 * @param upperLimit 
+	 * @param beginning
+	 * @param end 
 	 */
-	public CalendarInterval(Calendar lowerLimit, Calendar upperLimit) {
-		Util.checkBoundaries(lowerLimit, upperLimit);
-		this.lowerLimit = lowerLimit;
-		this.upperLimit = upperLimit;
+	public CalendarInterval(Calendar beginning, Calendar end) {
+		Util.checkBoundaries(beginning, end);
+		this.beginning = beginning;
+		this.end = end;
 	}
 	
 	@Override
 	public Calendar getLowerLimit() {
-		return this.lowerLimit ;
+		return this.beginning ;
 	}
 
 	@Override
 	public Calendar getUpperLimit() {
-		return this.upperLimit ;
+		return this.end ;
 	}
 
 	@Override

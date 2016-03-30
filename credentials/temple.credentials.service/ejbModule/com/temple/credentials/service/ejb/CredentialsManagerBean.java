@@ -8,13 +8,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import com.temple.credentials.model.UserIdentity;
+import com.temple.credentials.model.UserIdentity_;
 import com.temple.credentials.service.CreateUserIdentityException;
 import com.temple.credentials.service.CredentialsManager;
 import com.temple.credentials.service.IncorrectPassException;
 import com.temple.credentials.service.LoginNotFoundException;
 import com.temple.credentials.service.UpdateUserIdentityException;
-import com.temple.credentials.model.UserIdentity;
-import com.temple.credentials.model.UserIdentity_;
 import com.temple.util.TempleUtil;
 import com.temple.util.security.Security;
 
@@ -61,7 +61,7 @@ public class CredentialsManagerBean implements CredentialsManager {
 	}
 
 	@Override
-	public void updatePass(Integer userId, String current, String nevv) throws IncorrectPassException, UpdateUserIdentityException {
+	public void updatePass(int userId, String current, String nevv) throws IncorrectPassException, UpdateUserIdentityException {
 		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		final CriteriaQuery<UserIdentity> cq = cb.createQuery(UserIdentity.class);
 		cq.where(cb.equal(cq.from(UserIdentity.class).get(UserIdentity_.userId), userId));

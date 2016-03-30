@@ -16,12 +16,12 @@ public interface CredentialsManager extends Serializable {
 	/**
 	 * TODOC
 	 */
-	String BEAN_NAME = "CredentialsBean";
+	String BEAN_NAME = "CredentialsManager";
 
 	/**
 	 * TODOC
 	 */
-	String BEAN_GLOBAL_JNDI_NAME = "java:global/temple.credentials/temple.credentials.ejb/" + CredentialsManager.BEAN_NAME;
+	String BEAN_GLOBAL_JNDI_NAME = "java:global/temple.credentials/temple.credentials.service/" + CredentialsManager.BEAN_NAME;
 
 	/**
 	 * TODOC
@@ -53,6 +53,6 @@ public interface CredentialsManager extends Serializable {
 	 * @throws UpdateUserIdentityException
 	 * @throws IncorrectPassException
 	 */
-	void updatePass(Integer userId, String current, String nevv) throws UpdateUserIdentityException, IncorrectPassException;
+	void updatePass(int userId, String current, String nevv) throws UpdateUserIdentityException, IncorrectPassException;
 	// TODO reset pass
 }

@@ -3,7 +3,6 @@ package com.temple.service.ejb.session;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import com.temple.AbstractTempleBean;
@@ -15,7 +14,6 @@ import com.temple.model.TempleUser;
 import com.temple.service.cdi.CDIApplicationParameter;
 import com.temple.service.cdi.CDIApplicationParameter.Type;
 import com.temple.service.cdi.TempleObject;
-import com.temple.service.cdi.request.SignInEvent;
 import com.temple.service.cdi.session.SessionBean;
 import com.temple.service.cdi.util.ClassWrapper;
 import com.temple.service.ejb.model.TempleEntityManager;
@@ -48,9 +46,6 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 	private ClassWrapper<TempleUser> userClass;
 
 	@Inject
-	private Event<SignInEvent> signInEvent;
-
-	@Inject
 	@TempleObject
 	private SessionBean currentSession;
 
@@ -61,14 +56,12 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 	@Override
 	public void signIn(String login, String password) throws SignInException {
 		try {
-			final long uid = this.cm.findUserId(login, password);
+			final int uid = this.cm.findUserId(login, password);
 			final TempleUser u = this.em.findById(this.userClass.getWrappedClass(), uid);
 			if (u == null) {
 				throw new UserNotFoundException(login);
 			}
 			this.currentSession.setUser(u);
-			// TODO CDI actions within an EJB!!!!
-			this.signInEvent.fire(new SignInEvent(u));
 		} catch (final FindEntityException | LoginNotFoundException e) {
 			throw new UserNotFoundException(login, e);
 		} catch (final IncorrectPassException e) {

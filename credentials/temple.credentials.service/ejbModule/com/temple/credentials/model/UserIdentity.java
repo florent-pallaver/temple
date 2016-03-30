@@ -1,5 +1,7 @@
 package com.temple.credentials.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +10,6 @@ import javax.persistence.Table;
 
 import com.temple.util.TempleUtil;
 import com.temple.util.ToString;
-import java.io.Serializable;
 
 /**
  * TODOC
@@ -17,8 +18,8 @@ import java.io.Serializable;
  * @version 1.0
  */
 @Entity
-@Table(name = UserIdentity.TABLE_NAME, indexes = { @Index(name = UserIdentity.USER_ID_INDEX_NAME,
-columnList = UserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
+@Table(name = UserIdentity.TABLE_NAME, indexes = {
+		@Index(name = UserIdentity.USER_ID_INDEX_NAME, columnList = UserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
 public class UserIdentity implements Serializable {
 
 	static final String TABLE_NAME = "user_identities";
@@ -50,11 +51,11 @@ public class UserIdentity implements Serializable {
 	@Column(name = UserIdentity.USER_ID_INDEX_COLUMN_LIST, nullable = false, updatable = false)
 	private int userId;
 
-	protected UserIdentity() {}
+	protected UserIdentity() {
+	}
 
 	/**
-	 * Constructor.
-	 * TODOC
+	 * Constructor. TODOC
 	 *
 	 * @param login
 	 * @param encryptedPass
@@ -70,7 +71,8 @@ public class UserIdentity implements Serializable {
 	}
 
 	/**
-	 * @return the login (or user name) used to authenticate the user linked to this identity.
+	 * @return the login (or user name) used to authenticate the user linked to
+	 *         this identity.
 	 */
 	public String getLogin() {
 		return this.login;
@@ -86,7 +88,8 @@ public class UserIdentity implements Serializable {
 	/**
 	 * Sets the encrypted pass
 	 *
-	 * @param pass the encrypted pass to set
+	 * @param pass
+	 *            the encrypted pass to set
 	 */
 	public void setEncryptedPass(String pass) {
 		this.pass = pass;
@@ -108,7 +111,7 @@ public class UserIdentity implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return 31 + this.userId;
+		return 97 + this.userId;
 	}
 
 	@Override

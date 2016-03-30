@@ -1,18 +1,19 @@
 package com.temple.web.cdi.request;
 
-import com.temple.service.cdi.TempleObject;
-import com.temple.service.session.SessionManager;
-import com.temple.service.session.SignInException;
 import java.io.IOException;
+
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import com.temple.service.cdi.TempleObject;
+import com.temple.service.session.SessionManager;
+import com.temple.service.session.SignInException;
+
 /**
- * TODOC
- * Bean to use to register any data relative to the current session
+ * TODOC Bean to use to register any data relative to the current session
  *
  * @author Florent Pallaver
  * @version 1.0
@@ -64,7 +65,8 @@ public class TempleAuthenticationBean extends AbstractRequestBean {
 	/**
 	 * Sets the login
 	 *
-	 * @param login the login to set
+	 * @param login
+	 *            the login to set
 	 */
 	public void setLogin(String login) {
 		this.name = login;
@@ -80,7 +82,8 @@ public class TempleAuthenticationBean extends AbstractRequestBean {
 	/**
 	 * Sets the pass
 	 *
-	 * @param pass the pass to set
+	 * @param pass
+	 *            the pass to set
 	 */
 	public void setPass(String password) {
 		this.pass = password;

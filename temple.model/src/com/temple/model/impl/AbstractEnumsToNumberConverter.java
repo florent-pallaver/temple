@@ -1,25 +1,29 @@
 package com.temple.model.impl;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeConverter;
 
 /**
  * TODOC <br>
- * Note: because of <a>https://bugs.eclipse.org/bugs/show_bug.cgi?id=414679</a>, concrete subclasses must explicitly
- * implement {@link AttributeConverter}.
- * 
+ * Note: because of <a>https://bugs.eclipse.org/bugs/show_bug.cgi?id=414679</a>,
+ * concrete subclasses must explicitly implement {@link AttributeConverter}.
+ *
  * @author Florent Pallaver
  * @version 1.0
  * @param <E>
  * @param <T>
  */
-public abstract class AbstractEnumsToNumberConverter<E extends Enum<E>, T extends Number> implements AttributeConverter<E[], T> {
+public abstract class AbstractEnumsToNumberConverter<E extends Enum<E>, T extends Number> implements AttributeConverter<Set<E>, T> {
 
 	private final E[] all;
 
 	/**
 	 * Constructor.
-	 * @param all TODOC
+	 *
+	 * @param all
+	 *            TODOC
 	 */
 	protected AbstractEnumsToNumberConverter(E[] all) {
 		this.all = all;
@@ -27,27 +31,29 @@ public abstract class AbstractEnumsToNumberConverter<E extends Enum<E>, T extend
 
 	/**
 	 * TODOC
+	 *
 	 * @param mask
-	 * @return 
+	 * @return
 	 */
-	protected abstract T castMask(Long mask) ;
-	
+	protected abstract T castMask(Long mask);
+
 	/**
 	 * TODOC
+	 *
 	 * @param dbValue
-	 * @return 
+	 * @return
 	 */
-	protected long toMask(T dbValue)  {
-		return dbValue.longValue() ;
+	protected long toMask(T dbValue) {
+		return dbValue.longValue();
 	}
-	
+
 	@Override
-	public final T convertToDatabaseColumn(E[] attribute) {
+	public final T convertToDatabaseColumn(Set<E> attribute) {
 		final Long value;
 		if (attribute != null) {
 			long m = 0;
-			for (int i = attribute.length; i-- > 0;) {
-				m |= 1 << attribute[i].ordinal();
+			for (final E e : attribute) {
+				m |= 1 << e.ordinal();
 			}
 			value = m;
 		} else {
@@ -57,21 +63,16 @@ public abstract class AbstractEnumsToNumberConverter<E extends Enum<E>, T extend
 	}
 
 	@Override
-	public final E[] convertToEntityAttribute(T dbData) {
-		E[] e;
+	public final Set<E> convertToEntityAttribute(T dbData) {
+		final Set<E> attribute = new HashSet<>();
 		if (dbData != null) {
-			e = this.all.clone();
-			final long mask = this.toMask(dbData) ;
-			int j = 0;
+			final long mask = this.toMask(dbData);
 			for (int i = 0, l = this.all.length; i < l; i++) {
 				if ((mask >> i & 1) == 1) {
-					e[j++] = this.all[i];
+					attribute.add(this.all[i]);
 				}
 			}
-			e = Arrays.copyOf(e, j);
-		} else {
-			e = Arrays.copyOf(this.all, 0);
 		}
-		return e;
+		return attribute;
 	}
 }

@@ -1,18 +1,21 @@
 package com.temple.service.cdi.session;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Event;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.temple.model.TempleUser;
 import com.temple.service.cdi.AbstractCDIBean;
 import com.temple.service.cdi.CDISessionParameter;
 import com.temple.service.cdi.TempleObject;
-import com.temple.service.cdi.application.ApplicationManager;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
+import com.temple.service.cdi.request.SignEvent;
 
 /**
  * TODOC
@@ -28,14 +31,19 @@ public class TempleSessionBean extends AbstractCDIBean implements SessionBean {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	@TempleObject
-	private ApplicationManager am;
+	@SignEvent.In
+	private Event<SignEvent> signInEvent;
+
+	@Inject
+	@SignEvent.Out
+	private Event<SignEvent> signOutEvent;
 
 	private TempleUser user = null;
 
 	private final Map<String, Object> parameters = new HashMap<>();
 
-	TempleSessionBean() {}
+	TempleSessionBean() {
+	}
 
 	@Override
 	@Produces
@@ -48,9 +56,9 @@ public class TempleSessionBean extends AbstractCDIBean implements SessionBean {
 	@Override
 	public void setUser(TempleUser user) {
 		if (user != null) {
-			this.am.userSignedIn(user);
+			this.signInEvent.fire(new SignEvent(user));
 		} else if (this.user != null) {
-			this.am.userSignedOut(this.user.getId());
+			this.signOutEvent.fire(new SignEvent(this.user));
 		}
 		this.user = user;
 		this.parameters.clear();

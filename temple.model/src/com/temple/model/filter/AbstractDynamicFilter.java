@@ -28,8 +28,7 @@ import com.temple.util.ToString;
  * @param <E>
  * @param <E>
  */
-public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Serializable>
-		implements EntityFilter<E, R> {
+public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Serializable> implements EntityFilter<E, R> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -89,7 +88,7 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Se
 				rootQuery.select(cb.construct(rc, selections));
 			}
 		}
-		this.aggregate(cb, root);
+		this.aggregate(cb, root, rootQuery);
 		final int size = this.orderBy.size();
 		if (size > 0) {
 			final List<Order> collect = this.orderBy.stream().filter(o -> o.accepts(ec)).map(o -> {
@@ -103,12 +102,11 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Se
 		return q;
 	}
 
-	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root,
-			CriteriaQuery<?> rootQuery);
+	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root, CriteriaQuery<?> rootQuery);
 
 	/**
 	 * singularattributes aren't serializable ...
-	 * 
+	 *
 	 * @return
 	 */
 	protected SingularAttribute<? super E, ?>[] getSelectedAttributes() {
@@ -120,8 +118,9 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Se
 	 *
 	 * @param cb
 	 * @param root
+	 * @param rootQuery
 	 */
-	protected void aggregate(CriteriaBuilder cb, Root<? extends E> root) {
+	protected void aggregate(CriteriaBuilder cb, Root<? extends E> root, CriteriaQuery<?> rootQuery) {
 	}
 
 	@Override
