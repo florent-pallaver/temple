@@ -1,10 +1,7 @@
 package com.temple.web.servlet.filter;
 
-import com.temple.service.cdi.ApplicationBean;
-import com.temple.service.cdi.TempleObject;
-import com.temple.web.cdi.WebConfiguration;
-import com.temple.web.cdi.request.URIParser;
 import java.io.IOException;
+
 import javax.faces.application.ResourceHandler;
 import javax.inject.Inject;
 import javax.servlet.FilterConfig;
@@ -12,6 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.temple.service.cdi.ApplicationBean;
+import com.temple.service.cdi.TempleObject;
+import com.temple.web.cdi.WebConfiguration;
+import com.temple.web.cdi.request.URIParser;
 
 /**
  * TODOC
@@ -51,7 +53,8 @@ public class URLRewriter extends AbstractFilter {
 				this.debug("Dispatching " + pi);
 			}
 			// FIXME index.jsf to parameter !
-//			request.getRequestDispatcher("/test.jsf").forward(request, response);
+			// request.getRequestDispatcher("/test.jsf").forward(request,
+			// response);
 			request.getRequestDispatcher("/index.jsf").forward(request, response);
 		}
 		return b;

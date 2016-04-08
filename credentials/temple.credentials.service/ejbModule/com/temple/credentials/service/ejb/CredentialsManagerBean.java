@@ -49,9 +49,9 @@ public class CredentialsManagerBean implements CredentialsManager {
 
 	@Override
 	public void createIdentity(String login, String rawPass, int userId) throws CreateUserIdentityException {
-		final String salt = TempleUtil.base64Encode(new String(Security.randomCharArray(CredentialsManagerBean.SALT_LENGTH)));
-		final String crypt = this.crypt(login, salt, rawPass);
-		final UserIdentity ui = new UserIdentity(login, crypt, salt, userId);
+		final String salt = TempleUtil.base64Encode(Security.randomBytes(CredentialsManagerBean.SALT_LENGTH));
+		final String encryptedPass = this.crypt(login, salt, rawPass);
+		final UserIdentity ui = new UserIdentity(login, encryptedPass, salt, userId);
 		try {
 			this.em.persist(ui);
 			this.em.flush(); // to be sure to catch every exception
@@ -61,14 +61,14 @@ public class CredentialsManagerBean implements CredentialsManager {
 	}
 
 	@Override
-	public void updatePass(int userId, String current, String nevv) throws IncorrectPassException, UpdateUserIdentityException {
+	public void updatePass(int userId, String current, String newPass) throws IncorrectPassException, UpdateUserIdentityException {
 		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		final CriteriaQuery<UserIdentity> cq = cb.createQuery(UserIdentity.class);
 		cq.where(cb.equal(cq.from(UserIdentity.class).get(UserIdentity_.userId), userId));
 		try {
 			final UserIdentity ui = this.em.createQuery(cq).getSingleResult();
 			this.checkPassword(ui, current);
-			ui.setEncryptedPass(this.crypt(ui.getLogin(), ui.getSalt(), nevv));
+			ui.setEncryptedPass(this.crypt(ui.getLogin(), ui.getSalt(), newPass));
 			this.em.merge(ui);
 			this.em.flush(); // to be sure to catch every exception
 		} catch (final IncorrectPassException e) {
@@ -85,6 +85,6 @@ public class CredentialsManagerBean implements CredentialsManager {
 	}
 
 	private String crypt(String login, String salt, String rawPass) {
-		return Security.SHA512Base64CryptAlgorithm.instance.encrypt(salt + rawPass + login);
+		return Security.SHA512CryptAlgorithm.instance.encrypt64(salt, rawPass, login);
 	}
 }
