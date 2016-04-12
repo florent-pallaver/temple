@@ -15,8 +15,6 @@ import com.temple.credentials.service.CredentialsManager;
 import com.temple.credentials.service.IncorrectPassException;
 import com.temple.credentials.service.LoginNotFoundException;
 import com.temple.credentials.service.UpdateUserIdentityException;
-import com.temple.util.TempleUtil;
-import com.temple.util.security.Security;
 
 /**
  * {@link CredentialsManager} implementation.
@@ -29,8 +27,6 @@ import com.temple.util.security.Security;
 public class CredentialsManagerBean implements CredentialsManager {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final int SALT_LENGTH = 32;
 
 	private static final String persistenceUnitName = "com.temple.credentials.persistenceUnit";
 
@@ -49,9 +45,7 @@ public class CredentialsManagerBean implements CredentialsManager {
 
 	@Override
 	public void createIdentity(String login, String rawPass, int userId) throws CreateUserIdentityException {
-		final String salt = TempleUtil.base64Encode(Security.randomBytes(CredentialsManagerBean.SALT_LENGTH));
-		final String encryptedPass = this.crypt(login, salt, rawPass);
-		final UserIdentity ui = new UserIdentity(login, encryptedPass, salt, userId);
+		final UserIdentity ui = new UserIdentity(login, rawPass, userId);
 		try {
 			this.em.persist(ui);
 			this.em.flush(); // to be sure to catch every exception
@@ -68,7 +62,7 @@ public class CredentialsManagerBean implements CredentialsManager {
 		try {
 			final UserIdentity ui = this.em.createQuery(cq).getSingleResult();
 			this.checkPassword(ui, current);
-			ui.setEncryptedPass(this.crypt(ui.getLogin(), ui.getSalt(), newPass));
+			ui.setPass(newPass);
 			this.em.merge(ui);
 			this.em.flush(); // to be sure to catch every exception
 		} catch (final IncorrectPassException e) {
@@ -79,12 +73,8 @@ public class CredentialsManagerBean implements CredentialsManager {
 	}
 
 	private void checkPassword(UserIdentity ui, String pass) throws IncorrectPassException {
-		if (!ui.getEncryptedPass().equals(this.crypt(ui.getLogin(), ui.getSalt(), pass))) {
+		if (!ui.matchesPass(pass)) {
 			throw new IncorrectPassException();
 		}
-	}
-
-	private String crypt(String login, String salt, String rawPass) {
-		return Security.SHA512CryptAlgorithm.instance.encrypt64(salt, rawPass, login);
 	}
 }

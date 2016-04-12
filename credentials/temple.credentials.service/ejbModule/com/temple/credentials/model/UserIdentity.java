@@ -10,6 +10,8 @@ import javax.persistence.Table;
 
 import com.temple.util.TempleUtil;
 import com.temple.util.ToString;
+import com.temple.util.security.Security;
+import com.temple.util.security.UDCryptAlgorithm;
 
 /**
  * TODOC
@@ -20,13 +22,14 @@ import com.temple.util.ToString;
 @Entity
 @Table(name = UserIdentity.TABLE_NAME, indexes = {
 		@Index(name = UserIdentity.USER_ID_INDEX_NAME, columnList = UserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
-public class UserIdentity implements Serializable {
+public class UserIdentity implements PassProtected, Serializable {
 
 	static final String TABLE_NAME = "user_identities";
 
 	static final String USER_ID_INDEX_COLUMN_LIST = "USER_ID";
 
-	static final String USER_ID_INDEX_NAME = "U_" + UserIdentity.TABLE_NAME + "_" + UserIdentity.USER_ID_INDEX_COLUMN_LIST;
+	static final String USER_ID_INDEX_NAME = "U_" + UserIdentity.TABLE_NAME + "_"
+			+ UserIdentity.USER_ID_INDEX_COLUMN_LIST;
 
 	static final int LOGIN_MAX_LENGTH = 32;
 
@@ -36,6 +39,14 @@ public class UserIdentity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final int SALT_LENGTH = 32;
+
+	private static final UDCryptAlgorithm hasher = Security.SHA512CryptAlgorithm.instance ;
+
+	@ToString
+	@Column(name = UserIdentity.USER_ID_INDEX_COLUMN_LIST, nullable = false, updatable = false)
+	private int userId;
+
 	@ToString
 	@Id
 	@Column(nullable = false, updatable = false, length = UserIdentity.LOGIN_MAX_LENGTH)
@@ -44,12 +55,8 @@ public class UserIdentity implements Serializable {
 	@Column(nullable = false, length = UserIdentity.PASSWORD_MAX_LENGTH)
 	private String pass;
 
-	@Column(nullable = false, updatable = false, length = UserIdentity.SALT_MAX_LENGTH)
+	@Column(nullable = false, length = UserIdentity.SALT_MAX_LENGTH)
 	private String salt;
-
-	@ToString
-	@Column(name = UserIdentity.USER_ID_INDEX_COLUMN_LIST, nullable = false, updatable = false)
-	private int userId;
 
 	protected UserIdentity() {
 	}
@@ -59,15 +66,20 @@ public class UserIdentity implements Serializable {
 	 *
 	 * @param login
 	 * @param encryptedPass
-	 * @param salt
 	 * @param userId
 	 */
-	public UserIdentity(String login, String encryptedPass, String salt, int userId) {
+	public UserIdentity(String login, String rawPass, int userId) {
 		super();
-		this.login = login;
-		this.pass = encryptedPass;
-		this.salt = salt;
 		this.userId = userId;
+		this.login = login;
+		this.setPass(rawPass);
+	}
+
+	/**
+	 * @return the id of the user linked to this identity
+	 */
+	public int getUserId() {
+		return this.userId;
 	}
 
 	/**
@@ -78,35 +90,34 @@ public class UserIdentity implements Serializable {
 		return this.login;
 	}
 
-	/**
-	 * @return the encrypted pass
-	 */
-	public String getEncryptedPass() {
+	@Override
+	public String getPassHash() {
 		return this.pass;
 	}
 
-	/**
-	 * Sets the encrypted pass
-	 *
-	 * @param pass
-	 *            the encrypted pass to set
-	 */
-	public void setEncryptedPass(String pass) {
-		this.pass = pass;
-	}
-
-	/**
-	 * @return the salt
-	 */
+	@Override
 	public String getSalt() {
 		return this.salt;
 	}
 
-	/**
-	 * @return the id of the user linked to this identity
-	 */
-	public int getUserId() {
-		return this.userId;
+	@Override
+	public void setPass(String pass) {
+		this.setPass(pass, TempleUtil.base64Encode(Security.randomBytes(UserIdentity.SALT_LENGTH))) ;
+	}
+
+	@Override
+	public void setPass(String pass, String salt) {
+		this.salt = salt ;
+		this.pass = this.hash(pass) ;
+	}
+
+	@Override
+	public boolean matchesPass(String pass) {
+		return this.pass.equals(this.hash(pass)) ;
+	}
+
+	private String hash(String pass) {
+		return UserIdentity.hasher.encrypt64(this.salt, pass, this.login) ;
 	}
 
 	@Override
@@ -123,4 +134,5 @@ public class UserIdentity implements Serializable {
 	public String toString() {
 		return TempleUtil.toString(this);
 	}
+
 }

@@ -3,8 +3,7 @@
  */
 package com.temple.util.security;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * TODOC
@@ -14,6 +13,7 @@ import java.security.SecureRandom;
  * @see MD5CryptAlgorithm
  * @see SHA512Base64CryptAlgorithm
  */
+// WARN SecureRandom can be very slow !!
 public final class Security {
 
 	private Security() {
@@ -27,7 +27,8 @@ public final class Security {
 	 */
 	public static byte[] randomBytes(int length) {
 		final byte[] bytes = new byte[length];
-		Security.secureRandom().nextBytes(bytes);
+		final Random random = new Random();
+		random.nextBytes(bytes);
 		return bytes;
 	}
 
@@ -39,19 +40,11 @@ public final class Security {
 	 */
 	public static char[] randomChars(int length) {
 		final char[] chars = new char[length];
-		final SecureRandom r = Security.secureRandom();
+		final Random r = new Random() ;
 		for (int i = length; i-- > 0;) {
 			chars[i] = (char) r.nextInt(Character.MAX_VALUE);
 		}
 		return chars;
-	}
-
-	private static SecureRandom secureRandom() {
-		try {
-			return SecureRandom.getInstanceStrong();
-		} catch (final NoSuchAlgorithmException e) {
-			throw new Error("Algorithm not available ...", e);
-		}
 	}
 
 	/**

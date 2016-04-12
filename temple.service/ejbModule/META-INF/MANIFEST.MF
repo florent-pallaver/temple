@@ -1,4 +1,3 @@
 Manifest-Version: 1.0
-Class-Path: temple.ejb.client.jar 
- temple.credentials.service.client.jar
+Class-Path: temple.credentials.service.client.jar
 
