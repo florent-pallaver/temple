@@ -11,7 +11,6 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.temple.credentials.service.IncorrectPassException;
 import com.temple.util.TempleUtil;
 import com.temple.util.security.Security;
 
@@ -33,26 +32,26 @@ public class UserIdentityTest {
 	}
 
 	@Test
-	public void test() throws IncorrectPassException {
+	public void test() {
 		final UserIdentity ui = this.createIdentity();
 		final int length = this.rawPass.length();
 
 		// Only the rawPass works
 		Assert.assertTrue(ui.matchesPass(this.rawPass));
 		Assert.assertFalse(ui.matchesPass(""));
-		Assert.assertFalse(ui.matchesPass(this.rawPass.substring(TempleUtil.random(1, length - 1)))) ;
+		Assert.assertFalse(ui.matchesPass(this.rawPass.substring(TempleUtil.random(1, length - 1))));
 		Assert.assertFalse(ui.matchesPass(this.rawPass + this.rawPass));
 		Assert.assertFalse(ui.matchesPass(new String(Security.randomBytes(length))));
 		Assert.assertFalse(ui.matchesPass(new String(Security.randomChars(length))));
 
 		// Once pass is changed rawPass doesn't work anymore
-		final String newPass = new String(Security.randomBytes(16)) ;
+		final String newPass = new String(Security.randomBytes(16));
 		ui.setPass(newPass);
 		Assert.assertTrue(ui.matchesPass(newPass));
 		Assert.assertFalse(ui.matchesPass(this.rawPass));
 
 		// Once pass is changed and salt too rawPass doesn't work anymore
-		final String salt = new String(Security.randomBytes(32)) ;
+		final String salt = new String(Security.randomBytes(32));
 		ui.setPass(newPass, salt);
 		Assert.assertTrue(ui.matchesPass(newPass));
 		Assert.assertFalse(ui.matchesPass(this.rawPass));

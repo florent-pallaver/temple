@@ -40,7 +40,7 @@ public final class Security {
 	 */
 	public static char[] randomChars(int length) {
 		final char[] chars = new char[length];
-		final Random r = new Random() ;
+		final Random r = new Random();
 		for (int i = length; i-- > 0;) {
 			chars[i] = (char) r.nextInt(Character.MAX_VALUE);
 		}

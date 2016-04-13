@@ -28,8 +28,7 @@ public class UserIdentity implements PassProtected, Serializable {
 
 	static final String USER_ID_INDEX_COLUMN_LIST = "USER_ID";
 
-	static final String USER_ID_INDEX_NAME = "U_" + UserIdentity.TABLE_NAME + "_"
-			+ UserIdentity.USER_ID_INDEX_COLUMN_LIST;
+	static final String USER_ID_INDEX_NAME = "U_" + UserIdentity.TABLE_NAME + "_" + UserIdentity.USER_ID_INDEX_COLUMN_LIST;
 
 	static final int LOGIN_MAX_LENGTH = 32;
 
@@ -41,7 +40,7 @@ public class UserIdentity implements PassProtected, Serializable {
 
 	private static final int SALT_LENGTH = 32;
 
-	private static final UDCryptAlgorithm hasher = Security.SHA512CryptAlgorithm.instance ;
+	private static final UDCryptAlgorithm hasher = Security.SHA512CryptAlgorithm.instance;
 
 	@ToString
 	@Column(name = UserIdentity.USER_ID_INDEX_COLUMN_LIST, nullable = false, updatable = false)
@@ -102,22 +101,22 @@ public class UserIdentity implements PassProtected, Serializable {
 
 	@Override
 	public void setPass(String pass) {
-		this.setPass(pass, TempleUtil.base64Encode(Security.randomBytes(UserIdentity.SALT_LENGTH))) ;
+		this.setPass(pass, null);
 	}
 
 	@Override
 	public void setPass(String pass, String salt) {
-		this.salt = salt ;
-		this.pass = this.hash(pass) ;
+		this.salt = salt == null ? TempleUtil.base64Encode(Security.randomBytes(UserIdentity.SALT_LENGTH)) : salt;
+		this.pass = this.hash(pass);
 	}
 
 	@Override
 	public boolean matchesPass(String pass) {
-		return this.pass.equals(this.hash(pass)) ;
+		return this.pass.equals(this.hash(pass));
 	}
 
 	private String hash(String pass) {
-		return UserIdentity.hasher.encrypt64(this.salt, pass, this.login) ;
+		return UserIdentity.hasher.encrypt64(this.salt, pass, this.login);
 	}
 
 	@Override

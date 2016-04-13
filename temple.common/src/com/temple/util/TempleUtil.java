@@ -331,16 +331,14 @@ public abstract class TempleUtil {
 			if (!accessible) {
 				TempleUtil.setAccessible(f, false);
 			}
-		} catch (PrivilegedActionException | InvocationTargetException | IllegalArgumentException
-				| IllegalAccessException e) {
+		} catch (PrivilegedActionException | InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
 			// should never happen !
 			throw new RuntimeException(e);
 		}
 		return object;
 	}
 
-	private static void setAccessible(final AccessibleObject f, final boolean accessible)
-			throws PrivilegedActionException {
+	private static void setAccessible(final AccessibleObject f, final boolean accessible) throws PrivilegedActionException {
 		AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
@@ -376,8 +374,7 @@ public abstract class TempleUtil {
 			if (!accessible) {
 				TempleUtil.setAccessible(f, false);
 			}
-		} catch (PrivilegedActionException | InvocationTargetException | IllegalArgumentException
-				| IllegalAccessException e) {
+		} catch (PrivilegedActionException | InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
 			// should never happen !
 			throw new RuntimeException(e);
 		}
@@ -432,6 +429,39 @@ public abstract class TempleUtil {
 		final Class<?> type = f.getType();
 		final Object value = TempleUtil.get(o, f);
 		return type.isArray() && !type.getComponentType().isPrimitive() ? Arrays.toString((Object[]) value) : value;
+	}
+
+	/**
+	 * Converts a short to a byte array
+	 * 
+	 * @param v
+	 *            a short
+	 * @return a byte array
+	 */
+	public static final byte[] toBytes(short v) {
+		return new byte[] { (byte) (v >> Byte.SIZE), (byte) v };
+	}
+
+	/**
+	 * Converts a char to a byte array
+	 * 
+	 * @param v
+	 *            a char
+	 * @return a byte array
+	 */
+	public static final byte[] toBytes(char v) {
+		return new byte[] { (byte) (v >> Byte.SIZE), (byte) v };
+	}
+
+	/**
+	 * Converts an integer to a byte array
+	 * 
+	 * @param v
+	 *            an int
+	 * @return a byte array
+	 */
+	public static final byte[] toBytes(int v) {
+		return new byte[] { (byte) (v >> 3 * Byte.SIZE), (byte) (v >> 2 * Byte.SIZE), (byte) (v >> Byte.SIZE), (byte) v };
 	}
 
 	private static final class Lazy {
