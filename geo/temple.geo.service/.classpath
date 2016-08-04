@@ -18,10 +18,5 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/flominou/Work/servers/glassfish4/glassfish/modules/jsonp-jaxrs.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

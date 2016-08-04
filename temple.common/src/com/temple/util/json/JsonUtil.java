@@ -1,6 +1,8 @@
 package com.temple.util.json;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +54,7 @@ public abstract class JsonUtil extends TempleUtil {
 	private static final JsonObjectBuilder toJsonObjectBuilder(Object o) {
 		final JsonObjectBuilder job = Json.createObjectBuilder();
 		JsonUtil.fieldsStream(o).parallel().filter(f -> f.annotation.outputable())
-				.forEach(f -> JsonUtil.getHandler(f).add(job, f.field.getName(), TempleUtil.get(o, f.field)));
+		.forEach(f -> JsonUtil.getHandler(f).add(job, f.field.getName(), TempleUtil.get(o, f.field)));
 		return job;
 	}
 
@@ -138,8 +140,14 @@ public abstract class JsonUtil extends TempleUtil {
 				c = StringHandler.class;
 			} else if (Boolean.TYPE.equals(fieldType) || Boolean.class.equals(fieldType)) {
 				c = BooleanHandler.class;
+			} else if (Calendar.class.equals(fieldType)) {
+				c = CalendarHandler.class;
 			} else if (Double.TYPE.equals(fieldType) || Double.class.equals(fieldType)) {
 				c = DoubleHandler.class;
+			} else if (Short.TYPE.equals(fieldType) || Short.class.equals(fieldType)) {
+				c = ShortHandler.class;
+			} else if (Byte.TYPE.equals(fieldType) || Byte.class.equals(fieldType)) {
+				c = ByteHandler.class;
 			} else if (fieldType.isEnum()) {
 				handler = EnumHandler.getInstance(fieldType.asSubclass(Enum.class));
 			} else if (Map.class.isAssignableFrom(fieldType)) {

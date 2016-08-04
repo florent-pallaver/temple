@@ -12,7 +12,7 @@ import javax.crypto.NoSuchPaddingException;
 
 /**
  * TODOC
- * 
+ *
  * @author flominou
  */
 public class RSABDCryptAlgorithm implements BDCryptAlgorithm {
@@ -50,16 +50,6 @@ public class RSABDCryptAlgorithm implements BDCryptAlgorithm {
 			throw new Error("Algorithm not found ...", e);
 		} catch (final NoSuchPaddingException e) {
 			throw new Error("Padding not found ...", e);
-		}
-	}
-
-	@Override
-	public synchronized byte[] encrypt(byte[] bytes) {
-		try {
-			this.cipher.init(Cipher.ENCRYPT_MODE, this.pair.getPublic());
-			return this.crypt(bytes, 11);
-		} catch (final InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -101,8 +91,13 @@ public class RSABDCryptAlgorithm implements BDCryptAlgorithm {
 	}
 
 	@Override
-	public byte[] encrypt(byte[]... bytes) {
-		return this.encrypt(this.append(bytes));
+	public synchronized byte[] encrypt(byte[]... bytes) {
+		try {
+			this.cipher.init(Cipher.ENCRYPT_MODE, this.pair.getPublic());
+			return this.crypt(this.append(bytes), 11);
+		} catch (final InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

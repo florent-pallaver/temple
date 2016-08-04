@@ -38,7 +38,9 @@ public interface UDCryptAlgorithm {
 	 * @param bytes
 	 * @return
 	 */
-	byte[] encrypt(byte[] bytes);
+	default byte[] encrypt(byte[] bytes) {
+		return this.encrypt(new byte[][]{bytes}) ;
+	}
 
 	/**
 	 *

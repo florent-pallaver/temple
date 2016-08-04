@@ -16,7 +16,7 @@ import com.temple.util.json.JsonField;
  *
  * @author flominou
  */
-public class JsonUtilTest {
+public class JsonTest {
 
 	private JsonObject o1;
 
@@ -29,7 +29,7 @@ public class JsonUtilTest {
 	}
 
 	@Test
-	public void test() {
+	public void testReadWrite() {
 		this.o1.reset();
 		final javax.json.JsonObject jo1 = this.o1.toJsonObject();
 		Assert.assertNotEquals(this.o1, this.o2);

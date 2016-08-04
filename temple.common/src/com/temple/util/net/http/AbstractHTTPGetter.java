@@ -29,6 +29,8 @@ public abstract class AbstractHTTPGetter<F extends Serializable> implements HTTP
 
 	public static int CONNECT_TIMEOUT = 90000; // in milliseconds
 
+	protected String userAgent = AbstractHTTPGetter.USER_AGENT ;
+
 	protected final Domain<?> domain;
 
 	protected final String protocol;
@@ -56,6 +58,14 @@ public abstract class AbstractHTTPGetter<F extends Serializable> implements HTTP
 		this.referrerPath = null;
 		this.proxy = proxy == null ? Proxy.NO_PROXY : proxy;
 		this.timeout = HTTPGetter.DEFAULT_CONNECT_TIMEOUT ;
+	}
+
+	public final String getUserAgent() {
+		return this.userAgent;
+	}
+
+	public final void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
 	}
 
 	@Override
@@ -120,12 +130,7 @@ public abstract class AbstractHTTPGetter<F extends Serializable> implements HTTP
 
 	private HttpURLConnection getConnection(String documentPath) throws IOException {
 		final URL url = new URL(this.protocol, this.domain.getName(), documentPath);
-		final URLConnection con;
-		if (this.domain.useHttps()) {
-			throw new RuntimeException("https not supported ... Sorry.") ;
-		} else {
-			con = url.openConnection(this.proxy);
-		}
+		final URLConnection con = url.openConnection(this.proxy);
 		con.setRequestProperty("User-Agent", AbstractHTTPGetter.USER_AGENT);
 		if (this.referrerPath != null) {
 			con.setRequestProperty("Referer", this.domain + this.referrerPath);
@@ -161,7 +166,7 @@ public abstract class AbstractHTTPGetter<F extends Serializable> implements HTTP
 		default:
 			final String msg = "Unable to get document: " + statusCode;
 			Module.DEFAULT.logger.warning(msg);
-			throw new HTTPGetException(statusCode, msg);
+			throw new HTTPGetException(statusCode, msg, con.getHeaderFields());
 		}
 	}
 

@@ -103,7 +103,7 @@ public class Cookie implements Serializable {
 				try {
 					this.expiry = new Timestamp(Cookie.dateFormat.parse(part.substring(8)).getTime());
 				} catch (final ParseException e) {
-					Module.MODEL.logger.severe(e.getLocalizedMessage());
+					Module.DEFAULT.logger.severe(e.getLocalizedMessage());
 				}
 			} else if (part.toLowerCase().startsWith("path=")) {
 				path = part.substring(5);
@@ -114,9 +114,11 @@ public class Cookie implements Serializable {
 				if (split.length == 1) {
 					if (part.toLowerCase().equals("httponly")) {
 						this.httpOnly = true;
+					} else if (part.toLowerCase().equals("secure")) {
+						Module.DEFAULT.logger.fine("secure cookie ...");
 					} else {
-						Module.MODEL.logger.warning(part);
-						Module.MODEL.logger.warning(values);
+						Module.DEFAULT.logger.warning(part);
+						Module.DEFAULT.logger.warning(values);
 					}
 				} else {
 					this.values.put(split[0], split[1]);
