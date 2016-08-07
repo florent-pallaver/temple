@@ -112,10 +112,8 @@ class ModelManagerImpl extends ModelManager {
 	}
 	
 	private function addOrderBy(\temple\data\persistence\db\query\ConditionnedQuery $cq, Key $k, $asc) {
-//			$sq->addOrderBy(new \temple\data\persistence\db\query\OrderBy($o[0], $o[1])) ;
-		$t = $cq->getTable() ;
 		foreach ($k->getColumnNames() as $cn) {
-			$cq->addOrderBy(new \temple\data\persistence\db\query\OrderBy(new \temple\data\persistence\db\query\Field($cn, $t), $asc));
+			$cq->addOrderBy(new \temple\data\persistence\db\query\OrderBy(new \temple\data\persistence\db\query\Field($cn), $asc));
 		}
 	}
 

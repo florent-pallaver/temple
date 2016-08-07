@@ -35,7 +35,7 @@ final class JoinType extends \temple\Enumeration {
 	 * TODOC
 	 */
 	public function getFormat() {
-		return self::$formats[$this->ordinal] ;
+		return self::$formats[$this->ordinal()] ;
 	}
 
 }

@@ -17,6 +17,9 @@ class Key {
 
 	private static $i = 0 ;
 
+	/**
+	 * @var ReflectionClass
+	 */
 	private $class ;
 
 	private $unique ;
@@ -71,6 +74,10 @@ class Key {
 	 */
 	public function getColumnNames() {
 		return $this->columns ;
+	}
+	
+	public function __toString() {
+		return sprintf('%sKey %s [%s]', $this->unique ? 'Unique ' : '', $this->class->getName(), implode(', ', $this->columns));
 	}
 
 }
