@@ -48,4 +48,7 @@ trait EntityCommon {
 		self::$mappings[$fieldName] = new OneToMany(self::_property($fieldName), $from, $to, false, false, false, false) ;
 	}
 	
+	private static function setOneToOneMapping($fieldName, Key $from, Key $to, $autoFetch = false, $optionnal = false, $insertable = true, $updatable = true) {
+		self::$mappings[$fieldName] = new OneToOne(self::_property($fieldName), $from, $to, $autoFetch, $optionnal, $insertable, $updatable);
+	}
 }

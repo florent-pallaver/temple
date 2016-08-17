@@ -11,7 +11,7 @@ use temple\data\persistence\db\query\Condition;
  *
  * @author florent
  */
-class Join extends \temple\data\persistence\db\query\AbstractQueryPart {
+class JoinImpl extends \temple\data\persistence\db\query\AbstractQueryPart {
 
 	/**
 	 * @var JoinType

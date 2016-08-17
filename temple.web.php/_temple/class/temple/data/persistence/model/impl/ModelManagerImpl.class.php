@@ -6,6 +6,10 @@ use ReflectionClass ;
 
 use temple\data\persistence\db\Driver;
 use temple\data\persistence\db\query\QueryFactory;
+use temple\data\persistence\db\query\Field ;
+use temple\data\persistence\db\query\OrderBy ;
+use temple\data\persistence\db\query\ConditionnedQuery ;
+
 use temple\data\persistence\model\Key ;
 use temple\data\persistence\model\ModelManager;
 use temple\data\persistence\model\Model;
@@ -96,7 +100,8 @@ class ModelManagerImpl extends ModelManager {
 		$gn = GraphNode::getInstance($filter->getModelClass()) ;
 		$sq = $gn->newSelect($this->qf->newAndCondition(), $filter->getMaxCount(), $filter->getOffset()) ;
 		foreach($filter->getKeyConditions() as $kv) {
-			$sq->getCondition()->addComparison($this->qf->newKeyComparison($kv[0], $kv[1], $sq->getTable(), $kv[2])) ;
+			$tableOfKey = $this->findTableForKey($sq, $kv[0]) ;
+			$sq->getCondition()->addComparison($this->qf->newKeyComparison($kv[0], $kv[1], $tableOfKey, $kv[2])) ;
 		}
 		foreach($filter->getOrders() as $o) {
 			$this->addOrderBy($sq, $o[0], $o[1]) ;
@@ -111,9 +116,27 @@ class ModelManagerImpl extends ModelManager {
 		return $models ;
 	}
 	
-	private function addOrderBy(\temple\data\persistence\db\query\ConditionnedQuery $cq, Key $k, $asc) {
+	/**
+	 * 
+	 * @param ConditionnedQuery $query
+	 * @param Key $key
+	 * @return \temple\data\persistence\db\query\Table
+	 */
+	private function findTableForKey(ConditionnedQuery $query, Key $key) {
+		$rootTable = $query->getTable() ;
+		$joinedTables = $rootTable->getJoinedTables()  ;
+		$tableOfKey = $rootTable ;
+		foreach ($joinedTables as $joinedTable) {
+			if($joinedTable->getName() == $key->getClass()->getStaticPropertyValue('TABLE')) {
+				$tableOfKey = $joinedTable ;
+			}
+		}
+		return $tableOfKey ;
+	}
+	
+	private function addOrderBy(ConditionnedQuery $cq, Key $k, $asc) {
 		foreach ($k->getColumnNames() as $cn) {
-			$cq->addOrderBy(new \temple\data\persistence\db\query\OrderBy(new \temple\data\persistence\db\query\Field($cn), $asc));
+			$cq->addOrderBy(new OrderBy(new Field($cn, $this->findTableForKey($cq, $k)), $asc));
 		}
 	}
 

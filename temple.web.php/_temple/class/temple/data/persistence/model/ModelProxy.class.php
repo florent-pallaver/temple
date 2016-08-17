@@ -12,6 +12,11 @@ use temple\Logger ;
 trait ModelProxy {
 
 	/**
+	 * @var Logger
+	 */
+	private static $_templeLogger ;
+	
+	/**
 	 *
 	 * @var \ReflectionProperty
 	 */
@@ -38,11 +43,15 @@ trait ModelProxy {
 	
 	private function lazyLoad() {
 		if(!$this->instance) {
-			Logger::getInstance('Temple.PROXY')->debug('Lazily loading ['.parent::_class()->getName().', '.$this->getId().']');
+			if(self::$_templeLogger->isDebugLoggable()) {
+				self::$_templeLogger->debug('Lazily loading ['.parent::_class()->getName().', '.$this->getId().']');
+			}
 			// setter les fields parents a la place c'est mieux !
 			$this->instance = ModelManager::getInstance()->findByKey(parent::getPK(), $this->getId()) ;
 			if($this->property && $this->holder) {
-//				Logger::getInstance('PROXY')->severe(gettype($this->property)) ;
+				if(self::$_templeLogger->isFinestLoggable()) {
+					self::$_templeLogger->finest('setting property ' . $this->property);
+				}
 				$p = $this->property->isPrivate() ;
 				if($p) {
 					$this->property->setAccessible(true) ;
@@ -53,6 +62,10 @@ trait ModelProxy {
 				}
 			}
 		}
+	}
+	
+	private static function _initModelProxy() {
+		self::$_templeLogger = Logger::getInstance('temple.proxy[' . __CLASS__ . ']') ;
 	}
 	
 }

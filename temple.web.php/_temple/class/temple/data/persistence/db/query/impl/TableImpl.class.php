@@ -28,6 +28,8 @@ class TableImpl extends \temple\data\persistence\db\query\AbstractQueryPart impl
 	private $alias ;
 
 	private $joins ;
+	
+	private $joinedTables ;
 
 	/**
 	 * Constructor.
@@ -40,7 +42,8 @@ class TableImpl extends \temple\data\persistence\db\query\AbstractQueryPart impl
 		Util::notEmptyString($name) ;
 		$this->name = $name ;
 		$this->alias = $alias ? $alias : (self::ALIAS_PREFIX . self::$aliasIndex++) ;
-		$this->joins = array() ;
+		$this->joins = [] ;
+		$this->joinedTables = [] ;
 	}
 
 	public function getName() {
@@ -51,8 +54,13 @@ class TableImpl extends \temple\data\persistence\db\query\AbstractQueryPart impl
 		return $this->alias ;
 	}
 
+	public function getJoinedTables() {
+		return $this->joinedTables ;
+	}
+
 	public function join(JoinType $joinType, Table $table, Condition $condition = null) {
-		$this->joins[] = new Join($joinType, $table, $condition) ;
+		$this->joins[] = new JoinImpl($joinType, $table, $condition) ;
+		$this->joinedTables[] = $table ;
 	}
 
 	public function toString() {

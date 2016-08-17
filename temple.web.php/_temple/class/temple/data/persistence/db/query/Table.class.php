@@ -2,8 +2,6 @@
 
 namespace temple\data\persistence\db\query ;
 
-use temple\util\Util;
-
 /**
  *
  * TODOC
@@ -22,6 +20,11 @@ interface Table extends QueryPart {
 	 */
 	function getAlias() ;
 
+	/**
+	 * @return array of Table
+	 */
+	function getJoinedTables() ;
+	
 	/**
 	 * Joins a table to this one.
 	 *
