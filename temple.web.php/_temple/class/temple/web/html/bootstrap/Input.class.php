@@ -187,8 +187,9 @@ class Input extends AbstractFormField {
 	 * @param type $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
-	public static function createEmail($name, $placeholder, $required = false, $cssClass = 'form-control') {
-		return new Input($name, self::TYPE_EMAIL, $placeholder, $required, $cssClass);
+	public static function createEmail($name, $placeholder, $required = false, $maxLength = 0, $cssClass = 'form-control') {
+		$i = new Input($name, self::TYPE_EMAIL, $placeholder, $required, $cssClass);
+		return $i->setMaxLength($maxLength) ;
 	}
 
 	/**
@@ -225,8 +226,9 @@ class Input extends AbstractFormField {
 	 * @param type $cssClass
 	 * @return \temple\web\html\bootstrap\Input
 	 */
-	public static function createSecret($name, $placeholder, $required = false, $cssClass = 'form-control') {
-		return new Input($name, self::TYPE_SECRET, $placeholder, $required, $cssClass);
+	public static function createSecret($name, $placeholder, $required = false, $maxLength = 0, $cssClass = 'form-control') {
+		$i = new Input($name, self::TYPE_SECRET, $placeholder, $required, $cssClass);
+		return $i->setMaxLength($maxLength) ;
 	}
 
 	/**

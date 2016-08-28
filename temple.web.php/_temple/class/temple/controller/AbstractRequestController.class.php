@@ -15,7 +15,7 @@ abstract class AbstractRequestController extends AbstractController {
 	private $name;
 
 	public function __construct($icon = null, $name = null) {
-		parent::__construct() ;
+		parent::__construct();
 		$this->icon = _dif($icon, 'th-large');
 		if ($name) {
 			$this->name = $name;
@@ -34,13 +34,16 @@ abstract class AbstractRequestController extends AbstractController {
 	}
 
 	protected final function redirect($to = '/', $ensureSession = true) {
-		$session = \temple\data\Session::getInstance();
+//		$session = \temple\data\Session::getInstance();
 		if ($ensureSession) {
-//            session_start();
-			$session->end();
+			$this->ensureSession();
 		}
 		header('location: ' . $to);
 		exit();
+	}
+
+	protected final function ensureSession() {
+		\temple\data\Session::getInstance()->end();
 	}
 
 	/**
@@ -50,9 +53,9 @@ abstract class AbstractRequestController extends AbstractController {
 	 * @return boolean
 	 */
 	protected final function requestBoolean($type, $key) {
-        return filter_input($type, $key, FILTER_VALIDATE_BOOLEAN) === true;
-    }
-	
+		return filter_input($type, $key, FILTER_VALIDATE_BOOLEAN) === true;
+	}
+
 	/**
 	 * 
 	 * @param int $type one of INPUT_GET, INPUT_POST, INPUT_SESSION, INPUT_COOKIE etc
@@ -93,17 +96,17 @@ abstract class AbstractRequestController extends AbstractController {
 	 * @return int
 	 */
 	protected final function requestInt($type, $key, $required = false, $min = null, $max = null) {
-        $options = [];
-        if ($min !== null) {
-            $options['min_range'] = $min;
-        }
-        if ($max !== null) {
-            $options['max_range'] = $max;
-        }
-        $i = filter_input($type, $key, FILTER_VALIDATE_INT, $options);
-        return $this->checkValue($i, $key, $required);
-    }
-	
+		$options = [];
+		if ($min !== null) {
+			$options['min_range'] = $min;
+		}
+		if ($max !== null) {
+			$options['max_range'] = $max;
+		}
+		$i = filter_input($type, $key, FILTER_VALIDATE_INT, $options);
+		return $this->checkValue($i, $key, $required);
+	}
+
 	/**
 	 * Check FALSE and NULL values only to return NULL only if value is one of those.
 	 * <br>
@@ -124,19 +127,16 @@ abstract class AbstractRequestController extends AbstractController {
 		return $value;
 	}
 
-    /**
-     * 
-     * @param type $key
-     * @param type $msg
-     */
+	/**
+	 * 
+	 * @param type $key
+	 * @param type $msg
+	 */
 	protected function invalidValue($key, $msg = L::FAIL_INCORRECT_FIELD) {
-		$this->failure(L::FAIL_INVALID_REQUEST, $msg) ;
-		$this->logger->warning($key . ' is invalid') ;
+		$this->failure(L::FAIL_INVALID_REQUEST, $msg);
+		$this->logger->warning($key . ' is invalid');
 	}
-	
-//	 * @param int $maxLength
-//	 * @param int $minLength
-//	 * @param boolean $autoCrop
+
 	/**
 	 * 
 	 * @param string $key
@@ -146,7 +146,6 @@ abstract class AbstractRequestController extends AbstractController {
 		return $this->requestString(INPUT_GET, $key, 0, 0, false);
 	}
 
-//	 * @param boolean $required
 	/**
 	 * 
 	 * @param string $key
@@ -155,18 +154,18 @@ abstract class AbstractRequestController extends AbstractController {
 	 * @return int
 	 */
 	protected final function queryInt($key, $min = null, $max = null) {
-		return $this->requestInt(INPUT_GET, $key, false, $min, $max) ;
+		return $this->requestInt(INPUT_GET, $key, false, $min, $max);
 	}
-	
+
 	/**
 	 * 
 	 * @param string $key
 	 * @return boolean
 	 */
 	protected final function queryBoolean($key) {
-		return $this->requestBoolean(INPUT_GET, $key) ;
+		return $this->requestBoolean(INPUT_GET, $key);
 	}
-	
+
 	/**
 	 * Throws an ActionException causing this controller to fail.
 	 * 

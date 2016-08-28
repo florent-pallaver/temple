@@ -73,7 +73,7 @@ abstract class ModelManager {
 	 * TODOC
 	 *
 	 * @param Model $model
-	 * @return boolean true if the given object as been updated
+	 * @return boolean true if the given object has been updated
 	 */
 	public abstract function update(Model $model) ;
 

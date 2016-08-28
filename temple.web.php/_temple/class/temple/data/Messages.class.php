@@ -14,7 +14,7 @@ final class Messages implements SessionListener {
 	use \temple\LazySingleton;
 
 	private static $CAUSE_FORMAT = "%s.\nCause: %s";
-	private static $sessionKey = '_messages|';
+	private static $sessionKey = '_temple_messages_';
 	private $registry;
 
 	/**
@@ -24,6 +24,9 @@ final class Messages implements SessionListener {
 
 	private function __construct() {
 		$this->registry = [];
+		
+		\temple\Logger::getInstance('MESSAGES')->debug('construct ...') ;
+		
 		$this->session = Session::getInstance();
 		$this->session->addListener($this) ;
 		if ($this->session->keyExists(self::$sessionKey)) {

@@ -3,10 +3,8 @@
 namespace temple\data\persistence\model\impl;
 
 use temple\data\persistence\db\query\Field;
-use temple\data\persistence\db\query\JoinType;
 use temple\data\persistence\db\query\QueryFactory;
 use temple\data\persistence\db\query\Comparison;
-use temple\data\persistence\db\query\Table;
 use temple\data\persistence\model\Mapping;
 use temple\data\persistence\model\RelationMapping;
 use temple\data\persistence\model\Model;
@@ -22,7 +20,7 @@ class GraphNode {
 	private static $graphs = [];
 
 	/**
-	 * @var QueryFactory TODOC
+	 * @var QueryFactory
 	 */
 	private static $qf;
 
@@ -55,8 +53,6 @@ class GraphNode {
 	}
 
 	/**
-	 * TODOC
-	 *
 	 * @return GraphArrow
 	 */
 	public function getEntryArrow() {
@@ -64,13 +60,26 @@ class GraphNode {
 	}
 
 	/**
-	 * TODOC
 	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
 	}
 
+	/**
+	 * @return \temple\data\persistence\model\Metamodel
+	 */
+	public function getMetamodel() {
+		return $this->metamodel;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getExitArrows() {
+		return $this->arrows;
+	}
+		
 	/**
 	 * 
 	 * @param \temple\data\persistence\db\query\Comparison $comp
@@ -79,8 +88,8 @@ class GraphNode {
 	 * @return \temple\data\persistence\db\query\Select
 	 */
 	public function newSelect(Comparison $comp, $maxCount = 0, $offset = 0) {
-		$fields = [];
-		$table = self::table($this->entryArrow, $fields);
+		$table = $this->entryArrow->getResolvedTable() ;
+		$fields = $this->entryArrow->getResolvedFields();
 		$s = self::$qf->newSelect($table, $fields, $maxCount, $offset);
 		$s->getCondition()->addComparison($comp);
 		return $s;
@@ -151,53 +160,10 @@ class GraphNode {
 	 * @return \temple\data\persistence\db\query\Delete
 	 */
 	public function newDelete(Comparison $comp, $maxCount = 0, $offset = 0) {
-		$table = self::table($this->entryArrow);
+		$table = $this->entryArrow->getResolvedTable();
 		$d = self::$qf->newDelete($table, $maxCount, $offset);
 		$d->getCondition()->addComparison($comp);
 		return $d;
-	}
-
-	/**
-	 * 
-	 * @param \temple\data\persistence\model\impl\GraphArrow $graphArrow
-	 * @param array $fields
-	 * @return type
-	 */
-	private static function table(GraphArrow $graphArrow, array &$cols = null) {
-		$n = $graphArrow->getNode();
-		$t = $graphArrow->getTable();
-		if ($cols !== null) {
-			foreach ($n->metamodel->getMappings() as $mapping) {
-				self::addColumns($mapping, $t, $cols);
-			}
-		}
-		if (!$graphArrow->isCyclic()) {
-			foreach ($n->arrows as $a) {
-				if ($a instanceof GraphArrow && $a->isTraversable()) {
-					$m = $a->getMapping();
-					if ($cols !== null && !$m->autoFetch()) {
-						self::addColumns($m, $t, $cols);
-					}
-					if ($m->autoFetch()) {
-						$jt = self::table($a, $m->autoFetch() ? $cols : null);
-						$jc = self::$qf->newAndCondition();
-						$tfn = $m->getColumnNames();
-						$jtfn = $m->getMappedKey()->getColumnNames();
-						for ($i = 0, $l = count($tfn); $i < $l; $i++) {
-							$jc->addComparison(self::$qf->newFieldComparison(new Field($tfn[$i], $t), new Field($jtfn[$i], $jt)));
-						}
-						$t->join($m->isOptionnal() ? JoinType::$LEFT_OUTER_JOIN : JoinType::$INNER_JOIN, $jt, $jc);
-					}
-				}
-			}
-		}
-		return $t;
-	}
-
-	private static function addColumns(Mapping $m, Table $t, array &$cols) {
-		foreach ($m->getColumnNames() as $cn) {
-			$cols[] = new Field($cn, $t, $t->getAlias() . '_' . $cn);
-		}
 	}
 
 	public function extractObject0(array $tuple) {

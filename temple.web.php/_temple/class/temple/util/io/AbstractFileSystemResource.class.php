@@ -44,7 +44,7 @@ abstract class AbstractFileSystemResource implements FileSystemResource {
 	/**
 	 * @return Directory
 	 */
-	protected final  function getDirectory() {
+	public final  function getDirectory() {
 		if(!$this->directory) {
 			$this->directory = new Directory(dirname($this->path)) ;
 		}
