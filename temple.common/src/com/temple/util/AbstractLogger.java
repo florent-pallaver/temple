@@ -7,7 +7,7 @@ import com.temple.NotImplementedException;
 
 /**
  * Base implementation class providing util logging methods.
- * 
+ *
  * @author flominou
  */
 public abstract class AbstractLogger {
@@ -45,6 +45,10 @@ public abstract class AbstractLogger {
 		return this.logger.isLoggable(Level.SEVERE);
 	}
 
+	protected void debug(Throwable t) {
+		this.logger.log(Level.FINEST, t.getMessage(), t);
+	}
+
 	protected void debug(Object o) {
 		this.log(Level.FINEST, o);
 	}
@@ -65,12 +69,18 @@ public abstract class AbstractLogger {
 		this.log(Level.WARNING, o);
 	}
 
+	protected void warning(Exception e) {
+		this.warning(e.getMessage());
+	}
+
 	protected void warning(String format, Object... params) {
 		this.warning(String.format(format, params));
 	}
 
 	/**
-	 * Logs the string representation of the given object as {@link Level#SEVERE severe}
+	 * Logs the string representation of the given object as {@link Level#SEVERE
+	 * severe}
+	 *
 	 * @param o
 	 */
 	protected void error(Object o) {
@@ -84,7 +94,8 @@ public abstract class AbstractLogger {
 	/**
 	 * Logs as {@link Level#SEVERE severe} a {@link Throwable}.
 	 *
-	 * @param t - the {@link Throwable}
+	 * @param t
+	 *            - the {@link Throwable}
 	 */
 	protected void thrown(Throwable t) {
 		this.thrown(t.getMessage(), t);
@@ -93,8 +104,10 @@ public abstract class AbstractLogger {
 	/**
 	 * Logs as {@link Level#SEVERE severe} a {@link Throwable} with a message.
 	 *
-	 * @param msg the message
-	 * @param t - the {@link Throwable}
+	 * @param msg
+	 *            the message
+	 * @param t
+	 *            - the {@link Throwable}
 	 */
 	protected void thrown(String msg, Throwable t) {
 		this.logger.log(Level.SEVERE, msg, t);
@@ -112,12 +125,15 @@ public abstract class AbstractLogger {
 
 	private void sendReport() {
 		// FIXME
-		throw new NotImplementedException() ;
+		throw new NotImplementedException();
 	}
 
 	/**
-	 * Ignores a {@link Throwable}. It will be logged only if {@link Level#ALL} is loggable.
-	 * @param t the {@link Throwable} to ignore
+	 * Ignores a {@link Throwable}. It will be logged only if {@link Level#ALL}
+	 * is loggable.
+	 *
+	 * @param t
+	 *            the {@link Throwable} to ignore
 	 */
 	protected void ignored(Throwable t) {
 		if (this.logger.isLoggable(Level.ALL)) {

@@ -27,7 +27,7 @@ import com.temple.service.cdi.TempleObject;
 import com.temple.service.ejb.AbstractEJBBean;
 import com.temple.service.model.EntityException;
 import com.temple.util.geo.Country;
-import com.temple.util.process.Progress;
+import com.temple.util.process.LimitedProgress;
 
 /**
  * TODO
@@ -48,7 +48,7 @@ public class GeonamesDataMigraterBean extends AbstractEJBBean implements GeoData
 	@TempleObject
 	private EntityManager em;
 
-	private Progress progress = new Progress();
+	private LimitedProgress progress = new LimitedProgress();
 
 	@Override
 	public void migrateData() {
@@ -56,7 +56,7 @@ public class GeonamesDataMigraterBean extends AbstractEJBBean implements GeoData
 	}
 
 	@Override
-	public Progress getProgress() {
+	public LimitedProgress getProgress() {
 		return this.progress;
 	}
 
@@ -79,7 +79,7 @@ public class GeonamesDataMigraterBean extends AbstractEJBBean implements GeoData
 		this.info("PopulatedPlaces deleted");
 
 		final Country[] countries = Country.values();
-		this.progress = new Progress(countries.length);
+		this.progress = new LimitedProgress(countries.length);
 		try {
 			for (final Country c : countries) {
 				this.info("migrating for %s", c.getName());

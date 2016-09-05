@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.temple.Module;
+import com.temple.util.AbstractLogger;
 import com.temple.util.net.Domain;
 
 /**
  * @author flominou
  */
 // FIXME incomplete
-public abstract class AbstractHTTPGetter<F extends Serializable> implements HTTPGetter<F>, Serializable {
+public abstract class AbstractHTTPGetter<F extends Serializable> extends AbstractLogger implements HTTPGetter<F>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -101,8 +102,10 @@ public abstract class AbstractHTTPGetter<F extends Serializable> implements HTTP
 			this.referrerPath = path;
 			return file ;
 		} catch (final IOException e) {
-			for (final Entry<String, List<String>> hf : con.getHeaderFields().entrySet()) {
-				Module.DEFAULT.logger.info(hf.getKey() + hf.getValue());
+			if(this.isDebugLoggable()) {
+				for (final Entry<String, List<String>> hf : con.getHeaderFields().entrySet()) {
+					this.debug(hf.getKey() + hf.getValue());
+				}
 			}
 			throw new HTTPGetException(e);
 		} finally {

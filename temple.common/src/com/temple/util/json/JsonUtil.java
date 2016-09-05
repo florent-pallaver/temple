@@ -2,7 +2,6 @@ package com.temple.util.json;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,23 +29,11 @@ public abstract class JsonUtil extends TempleUtil {
 
 	private static final Map<Class<? extends Handler>, Handler> handlerCache = new HashMap<>();
 
-	/**
-	 * TODOC
-	 */
 	protected static final AnnotatedFieldCache<JsonField> jsonFieldsCache = new AnnotatedFieldCache<>(JsonField.class);
 
-	/**
-	 * Constructor.
-	 */
 	protected JsonUtil() {
 	}
 
-	/**
-	 * TODOC
-	 *
-	 * @param j
-	 * @return
-	 */
 	public static final JsonObject toJsonObject(Object j) {
 		return JsonUtil.toJsonObjectBuilder(j).build();
 	}
@@ -58,11 +45,6 @@ public abstract class JsonUtil extends TempleUtil {
 		return job;
 	}
 
-	/**
-	 *
-	 * @param j
-	 * @return
-	 */
 	public static final JsonArray toJsonArray(Object j) {
 		final JsonArrayBuilder jab = Json.createArrayBuilder();
 		JsonUtil.fieldsStream(j).filter(f -> f.annotation.outputable()).forEach(f -> JsonUtil.getHandler(f).add(jab, TempleUtil.get(j, f.field)));
@@ -73,30 +55,14 @@ public abstract class JsonUtil extends TempleUtil {
 		return Arrays.stream(JsonUtil.jsonFieldsCache.getFields(o.getClass()));
 	}
 
-	/**
-	 *
-	 * @param c
-	 * @return
-	 */
 	public static final JsonArray toJsonArray(final Object[] objects) {
 		return JsonUtil.toJsonArray(Arrays.asList(objects), false);
 	}
 
-	/**
-	 *
-	 * @param c
-	 * @return
-	 */
 	public static final JsonArray toJsonArray(Collection<?> c) {
 		return JsonUtil.toJsonArray(c, false);
 	}
 
-	/**
-	 *
-	 * @param c
-	 * @param asArray
-	 * @return
-	 */
 	public static final JsonArray toJsonArray(Collection<?> c, boolean asArray) {
 		return JsonUtil.toBuilder(c, asArray ? (jab, o) -> jab.add(JsonUtil.toJsonArray(o)) : (jab, o) -> jab.add(JsonUtil.toJsonObjectBuilder(o))).build();
 	}
@@ -107,12 +73,6 @@ public abstract class JsonUtil extends TempleUtil {
 		return jab;
 	}
 
-	/**
-	 * TODOC
-	 *
-	 * @param j
-	 * @param jo
-	 */
 	public static final void setValues(Object j, JsonObject jo) {
 		final AnnotatedField<JsonField>[] fields = JsonUtil.jsonFieldsCache.getFields(j.getClass());
 		for (int i = 0; i < fields.length; i++) {
@@ -123,12 +83,6 @@ public abstract class JsonUtil extends TempleUtil {
 		}
 	}
 
-	/**
-	 * TODOC
-	 *
-	 * @param af
-	 * @return
-	 */
 	protected static final Handler getHandler(AnnotatedField<JsonField> af) {
 		Handler handler = null;
 		Class<? extends Handler> c = af.annotation.handler();

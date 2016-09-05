@@ -3,14 +3,14 @@ package com.temple.geo.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.temple.util.process.Progress;
+import com.temple.util.process.LimitedProgress;
 
 /**
  * TODOC
  *
  * @author flominou
  */
-public class ImportResult extends Progress {
+public class ImportResult extends LimitedProgress {
 
 	private static final long serialVersionUID = 1L;
 

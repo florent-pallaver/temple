@@ -1,103 +1,88 @@
 package com.temple.util.process;
 
-import com.temple.Module;
-import com.temple.impl.view.DefaultLocaleViewable;
-import com.temple.view.LocaleBundle;
 import java.io.Serializable;
+import java.util.Date;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+
+import com.temple.util.json.AbstractOutputOnlyHandler;
 
 /**
- * Util class to provide information about an operation progress.
- * 
+ *
  * @author flominou
- * @version 1.0
+ * @see JsonHandler
  */
-public class Progress extends DefaultLocaleViewable {
-	
-	private static final long serialVersionUID = 1L ;
-	
-	public static final String DEFAULT_LOCALE_KEY = Progress.class.getName() ;
-	
-	public static final String PERCENT_LOCALE_KEY = Progress.class.getName() + DELIMITER + "percent" ;
-	
-	private int processed ;
+public interface Progress extends Serializable {
 
-	private final int toProcess ;
-	
-	private final long startTime ;
-	
-	private long endTime ;
-	
+	Date getStartDate() ;
+
+	long getProcessed() ;
+
 	/**
-	 * Constructor.
+	 * Increments this progress by one unit.
 	 */
-	public Progress() {
-		this(0) ;
-	}
-	
-	/**
-	 * Constructor.
-	 * TODOC
-	 * @param toProcess
-	 */
-	public Progress(int toProcess) {
-		this(toProcess, toProcess == 0 ? DEFAULT_LOCALE_KEY : PERCENT_LOCALE_KEY, Module.DEFAULT) ;
+	default void incrementProcessed() {
+		this.incrementProcessed(1L);
 	}
 
 	/**
-	 * Constructor.
-	 * TODOC
-	 * @param infoKey
-	 * @param module
+	 * Increments this progress by a given amount of unit.
+	 * @param unitAmount
 	 */
-	public Progress(String infoKey, LocaleBundle module) {
-		this(0, infoKey, module);
+	void incrementProcessed(long unitAmount) ;
+
+	default boolean hasStartedProcessing() {
+		return this.getProcessed() > 0 ;
 	}
-	
+
 	/**
-	 * Constructor.
-	 * TODOC
-	 * @param toProcess
-	 * @param infoKey
-	 * @param module
+	 * Mark this progress as done. Any subsequent call to {@link #incrementProcessed()} won't do anything.
 	 */
-	public Progress(int toProcess, String infoKey, LocaleBundle module) {
-		super(infoKey, new Serializable[2], module);
-		this.processed = 0 ;
-		this.toProcess = toProcess ;
-		this.startTime = System.currentTimeMillis() ;
-		this.endTime = 0 ;
+	void done();
+
+	boolean isDone() ;
+
+	/**
+	 * @return if {@link #isDone()} seconds since this progress started, otherwise seconds until it was done.
+	 */
+	int getProcessingTime() ;
+
+	/**
+	 * @return if {@link #isDone()} the progressing speed, otherwise the progressing speed so far.
+	 */
+	default int getProcessingSpeed() {
+		final int processingTime = this.getProcessingTime();
+		return processingTime == 0 ? 0 : Math.round(this.getProcessed() / processingTime) ;
 	}
-	
-	/**
-	 * TODOC
-	 */
-	public void incrementProcessed() {
-		if(this.endTime == 0) {
-			this.processed++ ;
+
+	public static final class JsonHandler extends AbstractOutputOnlyHandler {
+
+		@Override
+		protected void nullSafeAdd(JsonObjectBuilder job, String name, Object value) {
+			final Progress progress = (Progress) value ;
+			final JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			objectBuilder.add("processed", progress.getProcessed()) ;
+			objectBuilder.add("speed", progress.getProcessingSpeed()) ;
+			objectBuilder.add("time", progress.getProcessingTime()) ;
+			objectBuilder.add("done", progress.isDone()) ;
+			objectBuilder.add("started", progress.hasStartedProcessing()) ;
+			job.add(name, objectBuilder.build()) ;
 		}
-	}
-	
-	/**
-	 * TODOC
-	 */
-	public void done() {
-		this.endTime = System.currentTimeMillis() ;
+
+		@Override
+		protected void nullSafeAdd(JsonArrayBuilder job, Object value) {
+			final Progress progress = (Progress) value ;
+			final JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+			arrayBuilder.add(progress.getProcessed()) ;
+			arrayBuilder.add(progress.getProcessingSpeed()) ;
+			arrayBuilder.add(progress.getProcessingTime()) ;
+			arrayBuilder.add(progress.isDone()) ;
+			arrayBuilder.add(progress.hasStartedProcessing()) ;
+			job.add(arrayBuilder.build()) ;
+		}
+
 	}
 
-	/** 
-	 * TODOC
-	 * @return 
-	 */
-	public int getProcessingTime() {
-		return (int) (((this.endTime == 0 ? System.currentTimeMillis() : this.endTime) - this.startTime) / 1000) ;
-	}
-	
-	@Override
-	public Serializable[] getLocaleParameters() {
-		final Serializable[] lp = super.getLocaleParameters(); 
-		lp[0] = toProcess == 0 ? this.processed : (this.processed * 100 / this.toProcess) ;
-		lp[1] = this.getProcessingTime() ;
-		return lp ;
-	}
-	
 }

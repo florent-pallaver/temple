@@ -282,6 +282,7 @@ abstract class AbstractActionController extends AbstractRequestController {
 						break;
 					}
 				default :
+                                    $this->logger->debug('upload error code : ' . $file['error']) ;
 					$this->invalidValue($key, L::FAIL_UPLOAD_ERROR);
 			}
 		} else {
