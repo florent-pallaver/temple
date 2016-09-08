@@ -4,58 +4,58 @@
 */
 
 * {
-	word-wrap: break-word ;
+    word-wrap: break-word ;
 }
 
 #_templeAlerts {
-	position: fixed ;
-	z-index: 2000;
-	top: 120px;
-	left: 0 ;
-	width: 100%;
+    position: fixed ;
+    z-index: 2000;
+    top: 120px;
+    left: 0 ;
+    width: 100%;
 }
 
 #_templeAlerts div.alert {
-	position: relative ;
-	z-index: 400 ;
-	border-width: 3px;
-	min-width: 320px ;
-	margin-right: auto ;
-	margin-left: auto ;
-	width: 50% ;
+    position: relative ;
+    z-index: 400 ;
+    border-width: 3px;
+    min-width: 320px ;
+    margin-right: auto ;
+    margin-left: auto ;
+    width: 50% ;
 }
 
 @media (min-width: 768px) {
-	#_templeAlerts {
-		left: 50% ;
-		max-width: 50%;
-	}
-	#_templeAlerts div.alert {
-		left: -50% ;
-		max-width: 60%; 
-		min-width: 400px ;
-	}
+    #_templeAlerts {
+        left: 50% ;
+        max-width: 50%;
+    }
+    #_templeAlerts div.alert {
+        left: -50% ;
+        max-width: 60%; 
+        min-width: 400px ;
+    }
 }
 
 #_templeAlerts div.alert .fa,
 #_templeAlerts div.alert .glyphicon {
-	font-size: 20px ;
+    font-size: 20px ;
 }
 
 div.alert {
 }
 
 main {
-	position: relative ;
+    position: relative ;
 }
 
 ._backToTop {
-	display: none ;
-	position: absolute ;
-	right: 10px ;
-	bottom: 10px ;
-	z-index: 900 ;
-	font-size: 20px ;
+    display: none ;
+    position: absolute ;
+    right: 10px ;
+    bottom: 10px ;
+    z-index: 900 ;
+    font-size: 20px ;
 }
 
 .btn span:first-letter,
@@ -66,121 +66,124 @@ ol.breadcrumb li a:first-letter,
 .modal-title:first-letter,
 .control-label:first-letter, 
 th:first-letter {
-	text-transform: capitalize ;
+    text-transform: capitalize ;
 }
 
 ul._checkboxes li label {
-	cursor: pointer;
-	width: 100% ;
+    cursor: pointer;
+    width: 100% ;
 }
 
 ul._checkboxes li label:active,
 ul._checkboxes li label:hover {
-	background-color: lightgray ;
+    background-color: lightgray ;
 }
 
 ul._checkboxes label.btn {
-	margin: 0.3em 0;
+    margin: 0.3em 0;
 }
 
 nav.navbar img {
-	max-height: 100% ;
+    max-height: 100% ;
 }
 
 .panel-body form button[type='submit'],
 .modal-body form button[type='submit'] {
-	float:right ;
-	margin-left: 5px ;
+    float:right ;
+    margin-left: 5px ;
 }
 
 .modal-footer {
-	margin-top: 0 ;
+    margin-top: 0 ;
 }
 
 input[type="file"].form-control {
-	border: 0 ;
-	border-radius: 0;
-	box-shadow: none ;
-	height: auto;
-	padding-left: 0 ;
-	padding-right: 0 ;
+    border: 0 ;
+    border-radius: 0;
+    box-shadow: none ;
+    height: auto;
+    padding-left: 0 ;
+    padding-right: 0 ;
 }
 
 option[value=""] {
-	font-style: italic ;
+    font-style: italic ;
 }
 
 .blockCentered {
-	float: none ;
-	margin-left: auto ; 
-	margin-right: auto ; 
+    float: none ;
+    margin-left: auto ; 
+    margin-right: auto ; 
 }
 
 .help-block {
-	text-align: right ;
-	font-style: italic;
+    text-align: right ;
+    font-style: italic;
+}
+.has-error .help-block {
+    font-weight: 700 ;
 }
 
 label.required:after {
-	content: " *" ;
-	color: red ;
+    content: " *" ;
+    color: red ;
 }
 
 /*label.btn {*/
-	/*cursor: pointer ;*/
+/*cursor: pointer ;*/
 /*}*/
 
 .checkboxed-before button.btn:before,
 .checkboxed-after button.btn:after,
 .checkboxed-before label.btn:before, 
 .checkboxed-after label.btn:after {
-	font-family: 'Glyphicons Halflings';
-	content: "\e157" ;
+    font-family: 'Glyphicons Halflings';
+    content: "\e157" ;
 }
 .checkboxed-before button.btn.active:before,
 .checkboxed-after button.btn.active:after,
 .checkboxed-before label.btn.active:before,
 .checkboxed-after label.btn.active:after {
-	content: "\e067" ;
+    content: "\e067" ;
 }
 
 .checkboxed-after button.btn:after,
 .checkboxed-after label.btn:after {
-	margin-left: 5px ;
+    margin-left: 5px ;
 }
 
 .panel .panel-title a {
-	display: inline-block ;
-	width: 100% ;
+    display: inline-block ;
+    width: 100% ;
 }
 
 .btn-toolbar .btn-group {
-	margin-bottom: 0.5em ;
+    margin-bottom: 0.5em ;
 }
 
 .tab-pane {
-	padding-top : 1em ;
+    padding-top : 1em ;
 }
 
 /* Bigger buttons in small devices ... */
 @media (max-width:767px) {
-	.btn { 
-		padding: 9px ;
-	}
+    .btn { 
+        padding: 9px ;
+    }
 }
 
 /* bug bootstrap */
 .media .img-responsive {
-	max-width: none ;
+    max-width: none ;
 }
 
 [data-toggle="buttons"]> li > .btn input[type="checkbox"] { /* hide checkboxes from list of checkboxes */
-	position: absolute;
-	clip: rect(0, 0, 0, 0);
-	pointer-events: none;
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
 }
 
 /* font awesome */
 .inline-fa {
-	font-family: 'FontAwesome', sans-serif ;
+    font-family: 'FontAwesome', sans-serif ;
 }

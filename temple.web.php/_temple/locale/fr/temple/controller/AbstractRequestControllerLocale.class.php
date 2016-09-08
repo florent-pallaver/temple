@@ -33,7 +33,7 @@ abstract class AbstractRequestControllerLocale {
 	const FAIL_PASSES = 'Les passes ne correspondent pas' ;
 	
 	const FAIL_UPLOAD_ERROR = 'Une erreur est survenue pendant le téléchargement du fichier.' ;
-	const FAIL_FILE_TOO_BIG = 'Le fichier est trop gros, la taille maximale acceptée est %1$s.' ;
+	const FAIL_FILE_TOO_BIG = 'Le fichier est trop gros.' ;
 	
 	const FAIL_ACCESS_DENIED = 'Accès refusé !' ;
 	const FAIL_ACCESS_DENIED_HINT = 'Si vous avez été déconnecté, rafraîchir la page et se reconnecter peut résoudre ce problème.' ;

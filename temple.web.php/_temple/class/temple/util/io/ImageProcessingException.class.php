@@ -2,11 +2,6 @@
 
 namespace temple\util\io;
 
-/**
- * Description of ImageProcessingException
- *
- * @author florent
- */
 class ImageProcessingException extends IOException {
 
 	/**
