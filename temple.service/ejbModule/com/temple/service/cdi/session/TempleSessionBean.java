@@ -17,12 +17,6 @@ import com.temple.service.cdi.CDISessionParameter;
 import com.temple.service.cdi.TempleObject;
 import com.temple.service.cdi.request.SignEvent;
 
-/**
- * TODOC
- *
- * @author Florent Pallaver
- * @version 1.0
- */
 @Named("sessionBean")
 @SessionScoped
 @TempleObject
@@ -42,8 +36,7 @@ public class TempleSessionBean extends AbstractCDIBean implements SessionBean {
 
 	private final Map<String, Object> parameters = new HashMap<>();
 
-	TempleSessionBean() {
-	}
+	TempleSessionBean() {}
 
 	@Override
 	@Produces

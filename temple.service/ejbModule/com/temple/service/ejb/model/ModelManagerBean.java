@@ -13,10 +13,6 @@ import com.temple.service.cdi.TempleObject;
 import com.temple.service.ejb.AbstractEJBBean;
 import com.temple.service.model.ModelManager;
 
-/**
- *
- * @author flominou
- */
 @Stateless
 public class ModelManagerBean extends AbstractEJBBean implements ModelManager {
 

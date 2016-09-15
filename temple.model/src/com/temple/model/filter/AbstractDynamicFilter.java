@@ -20,51 +20,28 @@ import com.temple.model.TempleEntity;
 import com.temple.util.TempleUtil;
 import com.temple.util.ToString;
 
-/**
- * TODOC
- *
- * @author Florent Pallaver
- * @version 1.0
- * @param <E>
- * @param <E>
- */
-public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Serializable> implements EntityFilter<E, R> {
+public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Serializable>
+		implements EntityFilter<E, R> {
 
 	private static final long serialVersionUID = 1L;
 
 	@ToString
 	private final List<FilterOrder<? super E>> orderBy;
 
-	/**
-	 * Constructor.
-	 */
 	protected AbstractDynamicFilter() {
 		super();
 		this.orderBy = new ArrayList<>();
 	}
 
-	/**
-	 * @return the orderBy
-	 */
 	public List<FilterOrder<? super E>> getOrderBy() {
 		return this.orderBy;
 	}
 
-	/**
-	 * TODOC
-	 *
-	 * @param order
-	 */
 	public void setOrder(FilterOrder<? super E> order) {
 		this.orderBy.clear();
 		this.orderBy.add(order);
 	}
 
-	/**
-	 * TODOC
-	 *
-	 * @param orders
-	 */
 	public void setOrderBy(List<FilterOrder<? super E>> orders) {
 		this.orderBy.clear();
 		this.orderBy.addAll(orders);
@@ -102,7 +79,8 @@ public abstract class AbstractDynamicFilter<E extends TempleEntity, R extends Se
 		return q;
 	}
 
-	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root, CriteriaQuery<?> rootQuery);
+	protected abstract Predicate createWherePredicate(CriteriaBuilder cb, final Root<? extends E> root,
+			CriteriaQuery<?> rootQuery);
 
 	/**
 	 * singularattributes aren't serializable ...

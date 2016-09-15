@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="temple">
+    <wb-module deploy-name="temple-0.0.1-SNAPSHOT">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
         <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
-        <dependent-module archiveName="temple.common.jar" deploy-path="/lib" handle="module:/resource/temple.common/temple.common">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.model.jar" deploy-path="/lib" handle="module:/resource/temple.model/temple.model">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.service.jar" deploy-path="/" handle="module:/resource/temple.service/temple.service">
-            <dependent-object/>
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.service.client.jar" deploy-path="/lib" handle="module:/resource/temple.service.client/temple.service.client">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.web.util.jar" deploy-path="/lib" handle="module:/resource/temple.web.util/temple.web.util">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="temple.credentials.service.client.jar" deploy-path="/lib" handle="module:/resource/temple.credentials.service.client/temple.credentials.service.client">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
     </wb-module>
 </project-modules>

@@ -12,13 +12,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import com.temple.model.TempleEntity;
 import com.temple.util.ToString;
 
-/**
- * TODOC
- *
- * @author Florent Pallaver
- * @version 1.0
- * @param <E>
- */
+// No XmlRoot here since it doesn't make any sense to send a filter with pagination at the same time !
 public abstract class AbstractDynamicPageableFilter<E extends TempleEntity, R extends Serializable>
 		extends AbstractDynamicFilter<E, R> implements PageableEntityFilter<E, R> {
 
@@ -38,18 +32,10 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity, R ex
 	@ToString
 	private boolean maxCountIgnored = false;
 
-	/**
-	 * Constructor.
-	 */
 	protected AbstractDynamicPageableFilter() {
 		this(AbstractDynamicPageableFilter.DEFAULT_MAX_COUNT);
 	}
 
-	/**
-	 * Constructor. TODOC
-	 *
-	 * @param perPageCount
-	 */
 	protected AbstractDynamicPageableFilter(short perPageCount) {
 		super();
 		this.setPerPageCount(perPageCount);
@@ -99,12 +85,6 @@ public abstract class AbstractDynamicPageableFilter<E extends TempleEntity, R ex
 		this.maxCountIgnored = i;
 	}
 
-	/**
-	 * TODOC
-	 *
-	 * @param em
-	 * @return
-	 */
 	@Override
 	public TypedQuery<Long> createCountQuery(EntityManager em) {
 		final CriteriaBuilder cb = em.getCriteriaBuilder();

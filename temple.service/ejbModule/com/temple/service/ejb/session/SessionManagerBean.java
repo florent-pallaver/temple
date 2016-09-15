@@ -7,42 +7,35 @@ import javax.inject.Inject;
 
 import com.temple.AbstractTempleBean;
 import com.temple.Module;
-import com.temple.credentials.service.CredentialsManager;
-import com.temple.credentials.service.IncorrectPassException;
-import com.temple.credentials.service.LoginNotFoundException;
 import com.temple.model.TempleUser;
-import com.temple.service.cdi.CDIApplicationParameter;
-import com.temple.service.cdi.CDIApplicationParameter.Type;
 import com.temple.service.cdi.TempleObject;
 import com.temple.service.cdi.session.SessionBean;
 import com.temple.service.cdi.util.ClassWrapper;
 import com.temple.service.ejb.model.TempleEntityManager;
-import com.temple.service.model.FindEntityException;
 import com.temple.service.session.AccessDeniedException;
 import com.temple.service.session.NotSignedInException;
 import com.temple.service.session.SessionException;
 import com.temple.service.session.SessionManager;
 import com.temple.service.session.SignInException;
-import com.temple.service.session.UserNotFoundException;
 
 /**
- * TODOC
+ * Should be in temple.credentials ...
  *
- * @author Florent Pallaver
- * @version 1.0
+ * @author flominou
  */
 @Stateless
 @Local(SessionManager.class)
+@Deprecated
 public class SessionManagerBean extends AbstractTempleBean implements SessionManager {
 
 	@EJB
 	private TempleEntityManager em;
 
-	@EJB(lookup = CredentialsManager.BEAN_GLOBAL_JNDI_NAME)
-	private CredentialsManager cm;
+	// @EJB(lookup = CredentialsManager.BEAN_GLOBAL_JNDI_NAME)
+	// private CredentialsManager cm;
 
-	@Inject
-	@CDIApplicationParameter(Type.USER_CLASS)
+	// @Inject
+	// @CDIApplicationParameter(Type.USER_CLASS)
 	private ClassWrapper<TempleUser> userClass;
 
 	@Inject
@@ -55,18 +48,19 @@ public class SessionManagerBean extends AbstractTempleBean implements SessionMan
 
 	@Override
 	public void signIn(String login, String password) throws SignInException {
-		try {
-			final int uid = this.cm.findUserId(login, password);
-			final TempleUser u = this.em.findById(this.userClass.getWrappedClass(), uid);
-			if (u == null) {
-				throw new UserNotFoundException(login);
-			}
-			this.currentSession.setUser(u);
-		} catch (final FindEntityException | LoginNotFoundException e) {
-			throw new UserNotFoundException(login, e);
-		} catch (final IncorrectPassException e) {
-			throw new com.temple.service.session.IncorrectPassException(e);
-		}
+		// try {
+		// final int uid = this.cm.findUserId(login, password);
+		// final TempleUser u =
+		// this.em.findById(this.userClass.getWrappedClass(), uid);
+		// if (u == null) {
+		// throw new UserNotFoundException(login);
+		// }
+		// this.currentSession.setUser(u);
+		// } catch (final FindEntityException | LoginNotFoundException e) {
+		// throw new UserNotFoundException(login, e);
+		// } catch (final IncorrectPassException e) {
+		// throw new com.temple.service.session.IncorrectPassException(e);
+		// }
 	}
 
 	@Override

@@ -24,12 +24,6 @@ import com.temple.service.model.EntityException;
 import com.temple.service.model.FindEntityException;
 import com.temple.service.model.UpdateException;
 
-/**
- * TODOC
- *
- * @author Florent Pallaver
- * @version 1.0
- */
 @Stateless
 @Local(TempleEntityManager.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -50,21 +44,18 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public <E extends TempleEntity> List<E> findByKey(EntityKey<E> ek, Serializable... values)
-			throws FindEntityException {
+	public <E extends TempleEntity> List<E> findByKey(EntityKey<E> ek, Serializable... values) throws FindEntityException {
 		final Class<E> entityClass = ek.getEntityClass();
 		final CriteriaQuery<E> q = this.cb.createQuery(entityClass);
 		try {
-			return this.em.createQuery(q.where(ek.createPredicates(this.cb, q.from(entityClass), values)))
-					.getResultList();
+			return this.em.createQuery(q.where(ek.createPredicates(this.cb, q.from(entityClass), values))).getResultList();
 		} catch (final PersistenceException e) {
 			throw new FindEntityException(entityClass, ek, e);
 		}
 	}
 
 	@Override
-	public <E extends TempleEntity> E findByKey(UniqueEntityKey<E> uek, Serializable... values)
-			throws FindEntityException {
+	public <E extends TempleEntity> E findByKey(UniqueEntityKey<E> uek, Serializable... values) throws FindEntityException {
 		final EntityKey<E> ek = uek;
 		final List<E> es = this.findByKey(ek, values);
 		return es.isEmpty() ? null : es.get(0);
@@ -94,8 +85,7 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 	}
 
 	@Override
-	public <E extends TempleEntity, R extends Serializable> List<R> findByFilter(EntityFilter<E, R> filter)
-			throws FindEntityException {
+	public <E extends TempleEntity, R extends Serializable> List<R> findByFilter(EntityFilter<E, R> filter) throws FindEntityException {
 		if (this.isDebugLoggable()) {
 			this.debug(filter);
 		}
@@ -212,8 +202,7 @@ public class TempleEntityManagerBean extends AbstractEntityManagerBean implement
 		final Class<E> entityClass = ek.getEntityClass();
 		final CriteriaDelete<E> q = this.cb.createCriteriaDelete(entityClass);
 		try {
-			return this.em.createQuery(q.where(ek.createPredicates(this.cb, q.from(entityClass), values)))
-					.executeUpdate();
+			return this.em.createQuery(q.where(ek.createPredicates(this.cb, q.from(entityClass), values))).executeUpdate();
 		} catch (final PersistenceException e) {
 			throw new EntityException(entityClass, ek, e);
 		}

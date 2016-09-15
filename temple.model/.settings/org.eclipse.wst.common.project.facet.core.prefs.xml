@@ -11,5 +11,6 @@
     <node name="platform">
       <attribute name="platform-id" value="generic_2_2"/>
     </node>
+    <node name="schemas"/>
   </facet>
 </root>

@@ -1,19 +1,8 @@
 package com.temple.util.security;
 
-/**
- * TODOC
- *
- * @author flominou
- */
 public enum KeySize {
 
-	_128,
-	_256,
-	_512,
-	_1024,
-	_2048,
-	_4096,
-	_8192;
+	_128, _256, _512, _1024, _2048, _4096, _8192;
 
 	private final int size;
 
