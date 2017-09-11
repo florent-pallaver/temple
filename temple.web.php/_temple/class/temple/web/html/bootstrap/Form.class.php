@@ -137,6 +137,13 @@ class Form extends AbstractComponent {
 	}
 	
 	/**
+	 * @return Form
+	 */
+	public function inline() {
+		return $this->addCssClass('form-inline') ;
+	}
+	
+	/**
 	 * 
 	 * @param type $label
 	 * @param \temple\web\html\bootstrap\FormField $field

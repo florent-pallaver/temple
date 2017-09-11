@@ -54,6 +54,14 @@ class Dropdown extends AbstractComponent {
 	}
 
 	/**
+	 * @return Dropdown
+	 */
+	public function right() {
+		$this->getItemList()->addCssClass('dropdown-menu-right');
+		return $this;
+	}
+	
+	/**
 	 * 
 	 * @param string $icon
 	 * @param mixed $text
