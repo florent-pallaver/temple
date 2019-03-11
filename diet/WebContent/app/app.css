@@ -1,0 +1,54 @@
+.form-control[ng-change]:NOT(:FOCUS),
+.form-control[ng-change]:NOT(:FOCUS) ~ .input-group-addon {
+	
+	background: transparent;
+	border-color: transparent;
+	box-shadow: none;
+	
+}
+
+td[ng-click] {
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+th.numeric-data {
+	width: 5em;
+}
+
+thead th {
+	text-align: center;
+}
+thead th small {
+	display: none;
+}
+
+.list-group-item .form-control {
+	width: 75%;
+	font-weight: bold;
+}
+.list-group-item.active .form-control:NOT(:FOCUS) {
+	color: white;
+}
+
+td.category {
+	width: 15%;
+}
+td.name {
+	width: 20%;
+}
+td.quantity {
+	width: 10%;
+}
+td.amount {
+	width: 10%;
+}
+td.action {
+	width: 5%;
+}
+
+td.amount input {
+	text-align: right;
+}
+td.quantity input {
+}

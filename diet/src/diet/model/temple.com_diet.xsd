@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:diet="http://temple.com/diet" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://temple.com/diet" elementFormDefault="qualified">
+   <xsd:complexType name="food">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="brand" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="protein" type="xsd:double"/>
+         <xsd:element name="fat" type="xsd:double"/>
+         <xsd:element name="carb" type="xsd:double"/>
+         <xsd:element name="kcal" type="xsd:double"/>
+         <xsd:element name="ig" type="xsd:double"/>
+         <xsd:element name="step" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="meal">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="eater" type="diet:user" minOccurs="0"/>
+         <xsd:element name="day" type="xsd:anySimpleType" minOccurs="0"/>
+         <xsd:element name="time" type="xsd:anySimpleType" minOccurs="0"/>
+         <xsd:element name="content" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="entry" minOccurs="0" maxOccurs="unbounded">
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="key" type="diet:food" minOccurs="0"/>
+                           <xsd:element name="value" type="xsd:int" minOccurs="0"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="user">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="food" type="diet:food"/>
+   <xsd:element name="meal" type="diet:meal"/>
+   <xsd:element name="user" type="diet:user"/>
+</xsd:schema>
