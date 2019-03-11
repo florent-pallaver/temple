@@ -22,7 +22,7 @@ class FailureView extends \temple\web\html\HTML5Document implements View {
 	 */
 	public static $SHOW_CAUSE_STACKTRACE = false;
 
-	public function __construct(\Exception $e) {
+	public function __construct(\Error $e) {
 		parent::__construct('Temple - Failure');
 		$h1 = new HN('h1');
 		$this->getBody()->addChild($h1

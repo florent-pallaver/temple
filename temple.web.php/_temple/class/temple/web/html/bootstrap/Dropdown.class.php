@@ -13,7 +13,7 @@ class Dropdown extends AbstractComponent {
 
 	/**
 	 * Adds an item to this dropdown
-	 * 
+	 *
 	 * @param mixed $item
 	 * @param string $cssClass
 	 * @return Dropdown
@@ -24,7 +24,7 @@ class Dropdown extends AbstractComponent {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Dropdown
 	 */
 	public function addDivider() {
@@ -33,7 +33,7 @@ class Dropdown extends AbstractComponent {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param type $header
 	 * @return Dropdown
 	 */
@@ -60,16 +60,16 @@ class Dropdown extends AbstractComponent {
 		$this->getItemList()->addCssClass('dropdown-menu-right');
 		return $this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param string $icon
 	 * @param mixed $text
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
 	 * @param string $cssClass
 	 * @return Dropdown
 	 */
-	public static function createButton($icon, $text, CssVariant $variant = null, $cssClass = null) {
+	public static function createButton($icon, $text = null, CssVariant $variant = null, $cssClass = null) {
 		$d = new Dropdown('div', $cssClass);
 		return $d->addCssClass('btn-group')
 						->addChild(Button::create([\temple\web\html\IconFactory::getInstance()->createText($icon, $text), ComponentFactory::$CARET], $variant)
@@ -78,7 +78,7 @@ class Dropdown extends AbstractComponent {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mixed $content
 	 * @return Dropdown
 	 */

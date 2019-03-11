@@ -6,11 +6,6 @@ use temple\URL;
 use temple\Logger;
 use temple\ClassLoader ;
 
-/**
- * Description of MainController
- *
- * @author florent
- */
 final class MainController extends AbstractRequestController {
 
 	use \temple\Singleton;
@@ -20,7 +15,7 @@ final class MainController extends AbstractRequestController {
 	private static $viewNames = [];
 
 	private static $locales = ['en' => 'en_GB.utf8', 'fr' => 'fr_FR.utf8'] ;
-	
+
 	public function getFailureMessage() {
 		return 'Unable to process request';
 	}
@@ -36,7 +31,7 @@ final class MainController extends AbstractRequestController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return \temple\view\Renderable
 	 * @throws ActionException
 	 */

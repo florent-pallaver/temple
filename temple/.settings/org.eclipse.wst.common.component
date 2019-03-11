@@ -2,5 +2,17 @@
     <wb-module deploy-name="temple-0.0.1-SNAPSHOT">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
         <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="temple-service.jar" deploy-path="/lib" handle="module:/resource/temple-service/temple-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple-common.jar" deploy-path="/lib" handle="module:/resource/temple-common/temple-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple-service-client.jar" deploy-path="/lib" handle="module:/resource/temple-service-client/temple-service-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="temple-model.jar" deploy-path="/lib" handle="module:/resource/temple-model/temple-model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

@@ -3,16 +3,6 @@
   <artifactId>temple-common</artifactId>
   <name>Temple Project Common </name>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <testSourceDirectory>test/src</testSourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

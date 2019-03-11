@@ -2,11 +2,6 @@
 
 namespace temple\web\mail;
 
-/**
- * Description of Mailer
- *
- * @author florent
- */
 abstract class Mailer {
 
 	use \temple\ToImplement;
@@ -20,6 +15,12 @@ abstract class Mailer {
 
 	public static $subjectPrefix = '' ;
 	
+        /**
+         * @param Mail $mail
+         * @throws MailerException
+         */
+        public abstract function sendMail(Mail $mail);
+        
 	/**
 	 * 
 	 * @param type $subject

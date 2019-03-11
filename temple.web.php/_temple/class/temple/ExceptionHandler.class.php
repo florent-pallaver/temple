@@ -2,7 +2,7 @@
 
 namespace temple ;
 
-use Exception ;
+use Throwable  ;
 
 final class ExceptionHandler {
 
@@ -15,9 +15,9 @@ final class ExceptionHandler {
 
 	/**
 	 * 
-	 * @param Exception $e
+	 * @param Error $e
 	 */
-	public static function log(Exception $e, $logTrace = true) {
+	public static function log(Throwable $e, $logTrace = true) {
 		$l = Logger::getInstance() ;
 		$l->log($e->getMessage(), self::$EXCEPTION_LOG_LEVEL) ;
 		if($logTrace) {
@@ -30,9 +30,9 @@ final class ExceptionHandler {
 	
 	/**
 	 * 
-	 * @param Exception $e
+	 * @param Error $e
 	 */
-	public static function handle(Exception $e) {
+	public static function handle(Throwable $e) {
 		self::log($e) ;
 		http_response_code(500) ;
 		$v = new view\FailureView($e) ;

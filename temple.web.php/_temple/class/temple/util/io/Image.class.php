@@ -81,12 +81,28 @@ class Image {
      * @throws ResourceCreationException
      */
     public function createFile(File $dest, $wid = 0, $hei = 0) {
-        $ok = true;
-        if ($wid > 0 || $hei > 0) {
-//            $ok = $im->thumbnailImage($wid, $hei, true);
-        }
         self::ensureDirExists($dest->getDirectory()) ;
-        if(\imagejpeg($this->gdImage, $dest->getAbsolutePath(), self::$COMPRESSION_QUALITY)) {
+        $dstImg = $this->gdImage;
+        $dstOK = true;
+        if ($wid > 0 || $hei > 0) {
+            if($hei == 0) {
+                $hei = $wid;
+            }
+            if($wid == 0) {
+                $wid = $hei;
+            }
+            if($wid < $this->width || $hei < $this->height) {
+                $ratio = $this->width / $this->height;
+                if($this->width > $this->height) {
+                    $hei = round($wid / $ratio);
+                } else {
+                    $wid = round($hei / $ratio);
+                }
+                $dstImg = \imagecreatetruecolor($wid, $hei);
+                $dstOK = \imagecopyresampled($dstImg, $this->gdImage, 0, 0, 0, 0, $wid, $hei, $this->width, $this->height);
+            }
+        }
+        if($dstOK && \imagejpeg($dstImg, $dest->getAbsolutePath(), self::$COMPRESSION_QUALITY)) {
             return true ;
         }
         throw new ResourceCreationException($dest);
@@ -100,12 +116,22 @@ class Image {
      * @throws ResourceCreationException
      */
     public function createThumbnailFile(File $dest, $dim) {
-//        try {
-//            $im = $this->im->getImage();
-//            return $im->cropThumbnailImage($dim, $dim) && $im->writeImage($dest);
-//        } catch (Exception $ex) {
-//            throw new ResourceCreationException($dest, $ex->getMessage());
-//        }
+        self::ensureDirExists($dest->getDirectory()) ;
+        if($this->width > $this->height) {
+            $min = $this->height;
+            $src_x = round(($this->width - $min) / 2);
+            $src_y = 0;
+        }  else {
+            $min = $this->width;
+            $src_x = 0;
+            $src_y = round(($this->height - $min) / 2);
+        }
+        $dstImg = \imagecreatetruecolor($dim, $dim);
+        if(\imagecopyresampled($dstImg, $this->gdImage, 0, 0, $src_x, $src_y, $dim, $dim, $min, $min)
+                && \imagejpeg($dstImg, $dest->getAbsolutePath(), self::$COMPRESSION_QUALITY)) {
+            return true;
+        }
+        throw new ResourceCreationException($dest);
     }
     
     private static function ensureDirExists(Directory $d) {

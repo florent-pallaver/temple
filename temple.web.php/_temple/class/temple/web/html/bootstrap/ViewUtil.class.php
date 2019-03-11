@@ -15,11 +15,11 @@ use temple\view\UserAction ;
 final class ViewUtil {
 
 	private function __construct() {
-		
+
 	}
 
 	/**
-	 * 
+	 *
 	 * @param type $controllerClass
 	 * @return \temple\web\html\bootstrap\Link
 	 */
@@ -28,8 +28,8 @@ final class ViewUtil {
 	}
 
 	/**
-	 * 
-	 * @param mixed $controller  \temple\controller\Controller | string 
+	 *
+	 * @param mixed $controller  \temple\controller\Controller | string
 	 * @param boolean $confirm
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
 	 * @param boolean $showText
@@ -43,10 +43,10 @@ final class ViewUtil {
 		}
 		return $b ;
 	}
-	
+
 	/**
-	 * 
-	 * @param mixed $controller  \temple\controller\Controller | string 
+	 *
+	 * @param mixed $controller  \temple\controller\Controller | string
 	 * @param boolean $confirm
 	 * @param \temple\web\html\bootstrap\CssVariant $variant
 	 * @param boolean $showText
@@ -59,9 +59,9 @@ final class ViewUtil {
 		}
 		return $b ;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param string $controllerClass
 	 * @param array $fields
 	 * @param boolean $confirm
@@ -84,7 +84,7 @@ final class ViewUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param UserAction $a
 	 * @param array $fields
 	 * @param boolean $confirm
@@ -93,7 +93,7 @@ final class ViewUtil {
 	 */
 	public static function createAjaxForm2(UserAction $a, array $fields, $confirm = false, CssVariant $variant = null) {
 		$controllerClass = $a->getControllerClass() ;
-		$all = &$a->getFieldsLocale() ;
+		$all = $a->getFieldsLocale() ;
 		$f = Form::createAjaxForm(Config::getURL($controllerClass)) ;
 		foreach($fields as $field) {
 			if($field instanceof Input && $field->getAttribute('type') == 'hidden') {
@@ -105,16 +105,16 @@ final class ViewUtil {
 		$f->addField(self::createSubmit2($a, $confirm, $variant)) ;
 		return $f;
 	}
-	
 
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param string $class
 	 * @return \temple\controller\Controller
 	 */
 	private static function newIntance($class) {
 		return new $class ;
 	}
-	
+
 }
