@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,7 +23,7 @@ import diet.model.FoodData_;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
-public class FoodResource extends AbstractResource<Food> {
+public class FoodResource extends AbstractBean<Food> {
 
 	FoodResource() {
 		super(Food.class);
@@ -40,26 +38,22 @@ public class FoodResource extends AbstractResource<Food> {
 	}
 
 	@POST
-	@Transactional(TxType.REQUIRES_NEW)
-	public void create(FoodData foodData) {
+	public void create(FoodData foodData) throws ServiceException {
 		super.create(new Food(foodData));
 	}
 
 	@PUT
 	@Path("{foodId}")
-	@Transactional(TxType.REQUIRES_NEW)
 	public void update(@PathParam("foodId") int foodId, FoodData foodData) {
 		final Food food = this.get(foodId);
 		if(food != null) {
 			food.set(foodData);
-			this.em.merge(food);
+			this.emBean.merge(food);
 		}
 	}
 
 	@DELETE
-	@Transactional(TxType.REQUIRES_NEW)
 	public void delete(@QueryParam("id") List<Integer> foodIds) {
 		foodIds.forEach(super::delete);
 	}
-
 }

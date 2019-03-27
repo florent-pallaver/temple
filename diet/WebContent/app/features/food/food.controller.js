@@ -9,10 +9,16 @@
 	function FoodController($http) {
 		const self = this;
 
+		self.countings = [
+			{label: '100g', value: 'GRAM', unit: 'g'}, 
+			{label: '100ml', value: 'MILLILITER', unit: 'ml'}, 
+			{label: 'unité', value: 'UNIT', unit: ''}
+		];
+		
 		self.foods = [];
 		
         self.newFood = {
-        	name: '', brand: ''
+        	name: '', brand: '', intake: {ig: 0}, counting: 'GRAM'
         };
 
         self.selected = {};
@@ -20,13 +26,17 @@
 		self.init = function() {
 			$http.get(FOOD_RS_URL).then(function(response) {
 				self.foods = response.data;
+				self.foods.forEach(food => food.locked = true);
 			}, onError);
 		};
 
 		self.create = function(food) {
 			var f = food || self.newFood; 
 			if(checkFood(f)) {
-				$http.post(FOOD_RS_URL, f).then(self.init, onError);
+				$http.post(FOOD_RS_URL, f).then(function() {
+					self.init();
+					self.newFood = {name: '', brand: '', intake: {ig: 0}, counting: 'GRAM'}
+				}, onError);
 			}
 		};
 
@@ -35,21 +45,22 @@
 			if(!f.name) {
 				return false;
 			}
-			if(!f.protein && f.protein !== 0) {
+			if(!f.intake.protein && f.intake.protein !== 0) {
 				return false;
 			}
-			if(!f.carb && f.carb !== 0) {
+			if(!f.intake.carb && f.intake.carb !== 0) {
 				return false;
 			}
-			if(!f.fat && f.fat !== 0) {
+			if(!f.intake.fat && f.intake.fat !== 0) {
 				return false;
 			}
-			if(!f.ig && f.ig !== 0) {
+			if(!f.intake.ig && f.intake.ig !== 0) {
 				return false;
 			}
-			if(!f.kcal) {
+			if(!f.intake.kcal) {
 				return false;
 			}
+			// TODO check kcal = 9*fat + 4*(prot+carb)
 			f.brand = f.brand.trim(); 
 			return true;
 		};
@@ -68,7 +79,7 @@
 		};
 
 		self.update = function(food) {
-			if(checkFood(food)) {
+			if(!food.locked && checkFood(food)) {
 				$http.put(FOOD_RS_URL + food.id, food).then(noop, onError);
 			}
 		};
@@ -79,13 +90,10 @@
 			self.create(copiedFood);
 		};
 		
-		var noop = function(){};
-		
-		var onError = function(response) {
-			window.alert('An error occured...');
-			console.log(response);
+		self.toggleLock = function(food) {
+			food.locked = !food.locked;
 		};
-
+		
 		self.init();
 	}
 })();

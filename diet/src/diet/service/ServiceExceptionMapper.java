@@ -6,14 +6,14 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class DefaultExceptionMapper implements ExceptionMapper<RuntimeException> {
+public class ServiceExceptionMapper implements ExceptionMapper<ServiceException> {
 
 	@Override
-	public Response toResponse(RuntimeException t) {
-		t.printStackTrace();
+	public Response toResponse(ServiceException e) {
+		e.printStackTrace();
 		return Response.serverError()
-				.type(MediaType.TEXT_PLAIN_TYPE)
-				.entity(t.getMessage())
+				.type(MediaType.APPLICATION_JSON)
+				.entity(e)
 				.build();
 	}
 

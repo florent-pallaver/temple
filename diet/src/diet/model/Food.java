@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,34 +18,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Food extends FoodData {
 
 	@Id
+	@Column(nullable = false, updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, updatable = false)
+	@Column(name = "creation_date", nullable = false, updatable = false)
 	private Date creationDate;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "last_update", nullable = false)
+	private Date lastUpdate;
+	
 	protected Food() {
 		super();
 	}
 
 	public Food(FoodData data) {
 		super();
-		this.creationDate = new Date();
 		this.set(data);
+		this.creationDate = this.lastUpdate;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public Date getCreationDate() {
-		return creationDate;
-	}
-
 	@Override
-	public String toString() {
-		return "Food [id=" + id + ", name=" + name + ", brand=" + brand + ", protein=" + protein + ", fat=" + fat
-				+ ", carb=" + carb + ", kcal=" + kcal + ", ig=" + ig + ", step=" + step + "]";
+	public void set(FoodData data) {
+		super.set(data);
+		this.lastUpdate = new Date();
 	}
-
 }

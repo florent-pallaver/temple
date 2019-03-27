@@ -14,8 +14,7 @@ import diet.model.User_;
 
 @Path("user")
 @Produces(MediaType.APPLICATION_JSON)
-@RequestScoped
-public class UserResource extends AbstractResource<User> {
+public class UserResource extends AbstractBean<User> {
 
 	UserResource() {
 		super(User.class);

@@ -10,10 +10,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-/**
- *
- * @author flominou
- */
 @Embeddable
 public class HabitInterval implements Interval<Habit>, Serializable {
 

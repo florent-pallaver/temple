@@ -13,12 +13,6 @@ import com.temple.util.ToString;
 import com.temple.util.security.Security;
 import com.temple.util.security.UDCryptAlgorithm;
 
-/**
- * TODOC
- *
- * @author Florent Pallaver
- * @version 1.0
- */
 @Entity
 @Table(name = UserIdentity.TABLE_NAME, indexes = {
 		@Index(name = UserIdentity.USER_ID_INDEX_NAME, columnList = UserIdentity.USER_ID_INDEX_COLUMN_LIST, unique = true) })
@@ -60,13 +54,6 @@ public class UserIdentity implements PassProtected, Serializable {
 	protected UserIdentity() {
 	}
 
-	/**
-	 * Constructor. TODOC
-	 *
-	 * @param login
-	 * @param encryptedPass
-	 * @param userId
-	 */
 	public UserIdentity(String login, String rawPass, int userId) {
 		super();
 		this.userId = userId;
@@ -74,9 +61,6 @@ public class UserIdentity implements PassProtected, Serializable {
 		this.setPass(rawPass);
 	}
 
-	/**
-	 * @return the id of the user linked to this identity
-	 */
 	public int getUserId() {
 		return this.userId;
 	}

@@ -1,3 +1,7 @@
+body {
+	padding-top: 65px;
+}
+
 .form-control[ng-change]:NOT(:FOCUS),
 .form-control[ng-change]:NOT(:FOCUS) ~ .input-group-addon {
 	
@@ -12,21 +16,35 @@ td[ng-click] {
 	vertical-align: middle;
 }
 
-th.numeric-data {
-	width: 5em;
+th.w-6em {
+	width: 6em;
+	min-width: 4em;
+}
+th.w-12em {
+	width: 12em;
+	min-width: 8em;
+}
+th.w-24em {
+	width: 24em;
+	min-width: 18em;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+input[type=number] {
+    -moz-appearance:textfield;
 }
 
-thead th {
+.table thead th {
 	text-align: center;
+	vertical-align: middle;
 }
-thead th small {
-	display: none;
+.table thead th small {
+/* 	display: none; */
 }
 
-.list-group-item .form-control {
-	width: 75%;
-	font-weight: bold;
-}
 .list-group-item.active .form-control:NOT(:FOCUS) {
 	color: white;
 }
@@ -47,8 +65,36 @@ td.action {
 	width: 5%;
 }
 
+.fa-stack.growth-icon {
+	width: 1.5em;
+}
+.growth-icon .fa-weight {
+	font-size: 1.5em;
+}
+.growth-icon .fa-level-up-alt,
+.growth-icon .fa-level-down-alt {
+	text-align: right;
+}
+
 td.amount input {
 	text-align: right;
 }
 td.quantity input {
+}
+
+.card.meal .card-body {
+	max-height: 360px;
+	overflow-y: auto;
+}
+
+.card.meal em {
+	font-size: .9em;
+}
+
+.activable {
+	cursor: pointer;
+}
+
+input[type="number"] {
+	/* max-width: 5em;*/
 }

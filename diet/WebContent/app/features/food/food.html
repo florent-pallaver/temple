@@ -1,58 +1,69 @@
 <div class="row">
-	<div class="col-xs-7 col-sm-8 col-md-9">
-		<table class="table table-striped table-compact table-bordered table-hover table-sm shadow">
+	<div class="col-12 offset-xl-1 col-xl-10">
+	<div class="table-responsive">
+		<table class="table table-striped table-compact table-bordered table-hover table-sm">
 			<thead class="thead-dark">
 				<tr>
-					<th scope="col">Nom</th>
-					<th scope="col">Marque</th>
-					<th scope="col" class="numeric-data"><i class="fas fa-drumstick-bite" title="Protéines"></i><small> Protéines</small></th>
-					<th scope="col" class="numeric-data"><i class="fas fa-candy-cane" title="Glucides"></i><small> Glucides</small></th>
-					<th scope="col" class="numeric-data"><i class="fas fa-bacon" title="Lipides"></i><small> Lipides</small></th>
-					<th scope="col" class="numeric-data"><i class="fas fa-arrows-alt-v" title="Index Glycémique"></i><small> Index Glycémique</small></th>
-					<th scope="col" class="numeric-data"><i class="fas fa-burn" title="Calories"></i><small> Calories</small></th>
-					<th scope="col" class="text-center"></th>
+					<th scope="col" class="w-24em">Nom</th>
+					<th scope="col" class="w-12em">Marque / Variété</th>
+					<th scope="col" class="w-6em"><i class="fas fa-fire-alt" title="Calories"></i><small> Calories</small></th>
+					<th scope="col" class="w-6em"><i class="fas fa-bacon" title="Lipides"></i><small> Lipides</small></th>
+					<th scope="col" class="w-6em"><i class="fas fa-candy-cane" title="Glucides"></i><small> Glucides</small></th>
+					<th scope="col" class="w-6em"><i class="fas fa-drumstick-bite" title="Protéines"></i><small> Protéines</small></th>
+					<th scope="col" class="w-6em"><i class="fas fa-arrows-alt-v" title="Indice Glycémique"></i><small> Indice Glycémique</small></th>
+					<th scope="col" class="w-6em">par</th>
+					<th scope="col" class="w-12em">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td><input class="form-control form-control-sm" type="text"
-						placeholder="nom" ng-model="foodCtrl.newFood.name"></td>
+						placeholder="Nom" ng-model="foodCtrl.newFood.name"></td>
 					<td><input class="form-control form-control-sm" type="text"
-						placeholder="marque" ng-model="foodCtrl.newFood.brand"></td>
-					<td><input class="form-control form-control-sm" type="number"
-						min="0" max="100" step="0.1" placeholder="Proteines"
-						ng-model="foodCtrl.newFood.protein"></td>
-					<td><input class="form-control form-control-sm" type="number"
-						min="0" max="100" step="0.1" placeholder="Glucides"
-						ng-model="foodCtrl.newFood.carb"></td>
-					<td><input class="form-control form-control-sm" type="number"
-						min="0" max="100" step="0.1" placeholder="Lipides"
-						ng-model="foodCtrl.newFood.fat"></td>
-					<td><input class="form-control form-control-sm" type="number"
-						min="0" max="100" placeholder="IG" ng-model="foodCtrl.newFood.ig"></td>
+						placeholder="Marque / Variété" ng-model="foodCtrl.newFood.brand"></td>
 					<td><input class="form-control form-control-sm" type="number"
 						min="0" max="5000" placeholder="Calories"
-						ng-model="foodCtrl.newFood.kcal"></td>
+						ng-model="foodCtrl.newFood.intake.kcal"></td>
+					<td><input class="form-control form-control-sm" type="number"
+						min="0" max="100" step="0.01" placeholder="Lipides"
+						ng-model="foodCtrl.newFood.intake.fat"></td>
+					<td><input class="form-control form-control-sm" type="number"
+						min="0" max="100" step="0.01" placeholder="Glucides"
+						ng-model="foodCtrl.newFood.intake.carb"></td>
+					<td><input class="form-control form-control-sm" type="number"
+						min="0" max="100" step="0.01" placeholder="Proteines"
+						ng-model="foodCtrl.newFood.intake.protein"></td>
+					<td><input class="form-control form-control-sm" type="number"
+						min="0" max="110" placeholder="IG" ng-model="foodCtrl.newFood.intake.ig"></td>
+					<td><select class="form-control form-control-sm" ng-model="foodCtrl.newFood.counting">
+							<option value="{{c.value}}" ng-repeat="c in foodCtrl.countings">{{c.label}}</option>
+						</select></td>
 					<td class="text-center">
 						<!-- input type="number" min="10" max="100" step="10" placeholder="" ng-model="foodCtrl.newFood.per" -->
-						<button type="button" class="btn btn-sm btn-primary" ng-click="foodCtrl.create()" )>
+						<button type="button" class="btn btn-sm btn-primary" ng-click="foodCtrl.create()">
 							<i class="fa fa-plus"></i>
 						</button>
 					</td>
 				</tr>
-				<tr ng-class="{'table-primary': food.selected}" ng-repeat="food in foodCtrl.foods">
-					<td><input class="form-control form-control-sm" type="text" ng-model="food.name" ng-change="foodCtrl.update(food)"></td>
-					<td><input class="form-control form-control-sm" type="text" ng-model="food.brand" ng-change="foodCtrl.update(food)"></td>
-					<td><input class="form-control form-control-sm" type="number" min="0" max="100" step="0.1" ng-model="food.protein" ng-change="foodCtrl.update(food)"></td>
-					<td><input class="form-control form-control-sm" type="number" min="0" max="100" step="0.1" ng-model="food.carb" ng-change="foodCtrl.update(food)"></td>
-					<td><input class="form-control form-control-sm" type="number" min="0" max="100" step="0.1" ng-model="food.fat" ng-change="foodCtrl.update(food)"></td>
-					<td><input class="form-control form-control-sm" type="number" min="0" max="100" ng-model="food.ig" ng-change="foodCtrl.update(food)"></td>
-					<td><input class="form-control form-control-sm" type="number" min="0" max="5000" ng-model="food.kcal" ng-change="foodCtrl.update(food)"></td>
+				<tr ng-class="{'table-primary': food.selected, 'table-warning': !food.locked}" ng-repeat="food in foodCtrl.foods">
+					<td><input class="form-control form-control-sm" type="text" ng-model="food.name" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
+					<td><input class="form-control form-control-sm" type="text" ng-model="food.brand" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
+					<td><input class="form-control form-control-sm" type="number" min="0" max="5000" ng-model="food.intake.kcal" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
+					<td><input class="form-control form-control-sm" type="number" min="0" max="100" step="0.1" ng-model="food.intake.fat" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
+					<td><input class="form-control form-control-sm" type="number" min="0" max="100" step="0.1" ng-model="food.intake.carb" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
+					<td><input class="form-control form-control-sm" type="number" min="0" max="100" step="0.1" ng-model="food.intake.protein" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
+					<td><input class="form-control form-control-sm" type="number" min="0" max="110" ng-model="food.intake.ig" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
+					<td><select class="form-control form-control-sm" ng-model="food.counting" ng-change="foodCtrl.update(food)" ng-disabled="food.locked">
+							<option value="{{c.value}}" ng-repeat="c in foodCtrl.countings">{{c.label}}</option>
+						</select></td>
 					<td class="text-center">
-						<button type="button" class="btn btn-secondary" ng-click="foodCtrl.copy(food)">
+						<button type="button" class="btn btn-sm btn-warning" ng-click="foodCtrl.toggleLock(food)">
+							<i class="fas" ng-class="{'fa-unlock': !food.locked, 'fa-lock': food.locked}"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-secondary" ng-click="foodCtrl.copy(food)">
 							<i class="far fa-copy"></i>
 						</button>
-						<button type="button" class="btn btn-light" ng-class="{'active': food.selected}" ng-click="foodCtrl.toggleSelect(food)">
+						<button type="button" class="btn btn-sm btn-light" ng-class="{'active': food.selected}" ng-click="foodCtrl.toggleSelect(food)">
 							<i class="far" ng-class="{'fa-square': !food.selected, 'fa-check-square': food.selected}"></i>
 						</button>
 					</td>
@@ -60,15 +71,16 @@
 			</tbody>
 			<tfoot class="thead-dark">
 				<tr>
-					<th scope="col" colspan="7">
-						<button type="button" class="btn btn-sm btn-warning" ng-click="foodCtrl.delete()">
-							<i class="fas fa-trash"></i>
-						</button>
+					<th scope="col" colspan="8">
 					</th>
 					<th scope="col" class="text-center">
+						<button type="button" class="btn btn-sm btn-danger" ng-click="foodCtrl.delete()">
+							<i class="fas fa-trash"></i>
+						</button>
 					</th>
 				</tr>
 			</tfoot>
 		</table>
+	</div>
 	</div>
 </div>

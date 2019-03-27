@@ -9,13 +9,20 @@
 	function UserService($http) {
 		const self = this;
 
-		self.users = [];
+		var currentUser = null;
+		
+		var users = [];
 
-		self.init = function() {
-			self.users = [{id: 1, name: 'flominou'}];
-//			$http.get(USER_RS_URL).then(function(response) {
-//				self.users = response.data;
-//			}, onError);
+		self.getUsers = function() {
+			return users;
+		}
+		
+		self.getUser = function() {
+			return currentUser;
+		}
+		
+		self.setUser = function(user) {
+			currentUser = user;
 		};
 		
 		var onError = function(response) {
@@ -23,8 +30,6 @@
 			console.log(response);
 		};
 
-		self.init();
-		
 		return this;
 	}
 })();

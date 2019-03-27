@@ -3,9 +3,14 @@
 	<persistence-unit name="diet">
 		<jta-data-source>jdbc/diet</jta-data-source>
 		<class>diet.model.Food</class>
+		<class>diet.model.FoodData</class>
+		<class>diet.model.Intake</class>
+		<class>diet.model.LocalDateConverter</class>
+		<class>diet.model.LocalTimeConverter</class>
 		<class>diet.model.Meal</class>
 		<class>diet.model.User</class>
-		<class>diet.model.FoodData</class>
+		<class>diet.model.UserDay</class>
+		<class>diet.model.UserDayData</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="useSSL" value="false"/>

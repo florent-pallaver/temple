@@ -1,32 +1,31 @@
 package diet.model;
 
 import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
-@MappedSuperclass
-public class Intake implements Nutriment {
+@Embeddable
+public class Intake implements Nutrient {
 
 	// For a portion of 1 g
-	@Column(nullable = false, precision = 6, scale = 4)
-	double protein;
+	@Column(nullable = false)
+	private double protein;
 
 	// For a portion of 1 g
-	@Column(nullable = false, precision = 6, scale = 4)
-	double fat;
+	@Column(nullable = false)
+	private double fat;
 
 	// For a portion of 1 g
-	@Column(nullable = false, precision = 6, scale = 4)
-	double carb;
+	@Column(nullable = false)
+	private double carb;
 
-	@Column(nullable = false, precision = 8, scale = 4)
-	double kcal;
+	@Column(nullable = false)
+	private int kcal;
 
-	@Column(nullable = false, precision = 6, scale = 4)
-	double ig;
+	@Column(nullable = false)
+	private int ig;
 
 	protected Intake() {
 		super();
@@ -47,11 +46,12 @@ public class Intake implements Nutriment {
 		return carb;
 	}
 
-	public double getKcal() {
+	@Override
+	public int getKCal() {
 		return kcal;
 	}
 
-	public double getIg() {
+	public int getIg() {
 		return ig;
 	}
 

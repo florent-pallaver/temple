@@ -2,7 +2,7 @@
 
 	const MEAL_RS_URL = BASE_URL + 'meal/' ;
 	
-	const module = angular.module('meal', ['user']) ;
+	const module = angular.module('meal', ['user', 'food']) ;
 	
 	module.controller('MealController', ['$http', 'UserService', MealController]);
 

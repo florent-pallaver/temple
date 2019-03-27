@@ -15,12 +15,6 @@ import com.temple.util.file.media.stream.StreamMetadataFactory;
 import com.temple.util.file.media.stream.VideoMetadata;
 import com.temple.util.file.media.stream.VideoStreamException;
 
-/**
- * TODOC
- *
- * @author Florent Pallaver
- * @version 1.0
- */
 @ApplicationScoped
 @OperatingSystem(OperatingSystem.UNIX)
 @ImplementationStrategy(ImplementationStrategy.FFMEG)
@@ -36,7 +30,7 @@ public class UnixStreamMetadataFactory extends AbstractCDIBean implements Stream
 		if (this.isDebugLoggable()) {
 			this.debug(metadata);
 		}
-		if (metadata.streams.video == null) {
+		if (metadata == null || metadata.streams == null || metadata.streams.video == null) {
 			throw new VideoStreamException(mediaFile);
 		}
 		return new VideoMetadataImpl(metadata);

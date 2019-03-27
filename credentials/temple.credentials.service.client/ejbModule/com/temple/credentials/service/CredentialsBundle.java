@@ -2,12 +2,6 @@ package com.temple.credentials.service;
 
 import com.temple.view.LocaleBundle;
 
-/**
- * TODOC
- * 
- * @author Florent Pallaver
- * @version 1.0
- */
 public enum CredentialsBundle implements LocaleBundle {
 	DEFAULT;
 
