@@ -6,5 +6,11 @@
 
 	function HomeController(UserService) {
 		const self = this;
+
+        self.init = function() {
+            
+        };
+
+        self.init();
 	}
 })();

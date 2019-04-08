@@ -15,6 +15,8 @@ public class UserDayData extends SleepData {
 
 	private static final int DEFAULT_METABOLIC_RATE = 1650;
 	private static final int DEFAULT_METABOLIC_FACTOR = 150;
+	private static final int DEFAULT_FAT_FACTOR = 100;
+	private static final int DEFAULT_PROTEIN_FACTOR = 250;
 
 	@Column(name = "day_date", nullable = false)
 	private LocalDate dayDate; 
@@ -32,6 +34,12 @@ public class UserDayData extends SleepData {
 	@Column(name="growth_mode", nullable = false)
 	private GrowthMode growthMode;
 
+	@Column(name = "fat_factor", nullable = false)
+        private int fatFactor;
+        
+	@Column(name = "protein_factor", nullable = false)
+        private int proteinFactor;
+        
 	@Transient
 	private String comment;
 
@@ -46,6 +54,8 @@ public class UserDayData extends SleepData {
 		this.metabolicRate = DEFAULT_METABOLIC_RATE;
 		this.metabolicFactor = DEFAULT_METABOLIC_FACTOR;
 		this.growthMode = user.getGrowthMode();
+                this.fatFactor = DEFAULT_FAT_FACTOR;
+                this.proteinFactor = DEFAULT_PROTEIN_FACTOR;
 	}
 
 	public Intake getExpectedIntake() {
@@ -59,6 +69,8 @@ public class UserDayData extends SleepData {
 		this.metabolicRate = data.metabolicRate;
 		this.metabolicFactor = data.metabolicFactor;
 		this.growthMode = data.growthMode;
+                this.fatFactor = data.fatFactor;
+                this.proteinFactor = data.proteinFactor;
 //		this.comment = data.comment;
 	}
 

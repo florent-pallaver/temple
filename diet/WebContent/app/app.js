@@ -10,7 +10,7 @@ var onError = function(response) {
 (function() {
 	'use strict';
 
-	var app = angular.module('diet', ['ngRoute', 'diary', 'food']);
+	var app = angular.module('diet', ['ngRoute', 'home', 'diary', 'food']);
 
 	app.filter('dayDate', function() {
 		return function(dateStr) {
@@ -55,6 +55,7 @@ var onError = function(response) {
 		
 		self.growthModes = {
 			'INCREASE': 'Prise de masse',
+                        'MAINTAIN': 'Maintenance',
 			'DECREASE': 'Sèche'
 		};
 
@@ -75,7 +76,6 @@ var onError = function(response) {
 			self.signInData.pass = self.signInData.name; 
 			$http.post(BASE_URL + 'session', self.signInData).then(function(response) {
 				self.user = response.data;
-				//$location.reload();
 			}, onError);
 		};
 		

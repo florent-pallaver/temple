@@ -5,6 +5,7 @@ import java.util.function.Function;
 public enum GrowthMode {
 
 	INCREASE(null),
+        MAINTAIN(null),
 	DECREASE(null),
 	;
 	

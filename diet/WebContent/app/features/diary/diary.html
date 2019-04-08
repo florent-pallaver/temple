@@ -18,10 +18,6 @@
 					</div>
 					<a href="#" ng-href="{{'#!/diary/' + day.id}}" class="list-group-item list-group-item-action activable" ng-class="diaryCtrl.day === day ? 'active' : ''" ng-click="diaryCtrl.setDay(day)" ng-repeat="day in diaryCtrl.days">
 						<i class="fas fa-calendar-day"></i> {{day.dayDate |dayDate}}
-<!-- 						<span class="fa-stack growth-icon"> -->
-<!-- 							<i class="fas fa-weight fa-stack-1x"></i> -->
-<!-- 							<i class="fas fa-stack-1x text-warning" ng-class="day.growthMode === 'INCREASE' ? 'fa-level-up-alt' : 'fa-level-down-alt'"></i> -->
-<!-- 						</span> -->
 					</a>
 				</div>
 			</div>
@@ -29,7 +25,17 @@
 	</div>
 	<div class="col-xs-8 col-sm-9 col-lg-10">
 		<div class="card" ng-if="diaryCtrl.day">
-			<div class="card-header text-white bg-primary"><i class="fas fa-calendar-day"></i> {{diaryCtrl.day.dayDate |dayDate}}</div>
+			<div class="card-header text-white bg-primary">
+                <i class="fas fa-calendar-day"></i> {{diaryCtrl.day.dayDate |dayDate}}
+                <form class="form-inline">
+                    
+                    <select class="form-control form-control-sm">
+                        <option value="{{day.id}}" ng-repeat="day in diaryCtrl.days">{{day.dayDate |dayDate}}</option>
+                    </select>
+                    
+                    
+                </form>
+            </div>
 			<div class="card-body p-0">
 				<div class="list-group list-group-flush">
 					<div class="list-group-item list-group-item-info">
@@ -40,7 +46,11 @@
 							<label class="mr-2">Taux Métabolique (kcal) : </label>
 							<input type="number" min="1000" max="2000" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.metabolicRate" ng-change="diaryCtrl.setDayData()">
 							<label class="mr-2">Facteur d'activité (%) : </label>
-							<input type="number" min="50" max="200" step="5" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.metabolicFactor" ng-change="diaryCtrl.setDayData()">
+							<input type="number" min="100" max="200" step="5" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.activityFactor" ng-change="diaryCtrl.setDayData()">
+							<label class="mr-2">Facteur de prise de lipides (%) : </label>
+							<input type="number" min="100" max="150" step="5" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.fatFactor" ng-change="diaryCtrl.setDayData()">
+							<label class="mr-2">Facteur de prise de protéines (%) : </label>
+							<input type="number" min="100" max="280" step="5" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.protFactor" ng-change="diaryCtrl.setDayData()">
 						</form>
 					</div>
 					<div class="list-group-item list-group-item-warning">

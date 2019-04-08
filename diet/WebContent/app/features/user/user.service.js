@@ -13,6 +13,10 @@
 		
 		var users = [];
 
+        self.isSignedIn = function() {
+            return currentUser !== null;
+        }
+
 		self.getUsers = function() {
 			return users;
 		}

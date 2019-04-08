@@ -21,6 +21,30 @@
 		self.day = null;
 
 		self.init = function() {
+            
+            self.days = [{
+                    id: 20,
+                dayDate: '2019-02-11',
+                growthMode: 'INCREASE',
+                weight: 85,
+                metabolicRate: 1880,
+                activityFactor: 135,
+                fatFactor: 100,
+                protFactor: 250
+            },{
+                id:10,
+                dayDate: '2018-12-23',
+                growthMode: 'INCREASE',
+                weight: 85,
+                metabolicRate: 1880,
+                activityFactor: 135,
+                fatFactor: 100,
+                protFactor: 250
+            }
+        ];
+            self.day = self.days[0];
+            return;
+            
 			$http.get(baseUrl).then(function(response) {
 				self.days = response.data;
 				if (self.days && self.days.length) {
@@ -112,10 +136,9 @@
 			if(d.metabolicRate && d.metabolicFactor && d.weight) {
 				if(d.growthMode === 'INCREASE') {
 					var xtraKcal = 400; // entre 300 et 500
-					var fatFactor = 1.25; // entre 1 et 1.5
 					
 					t.kcal = xtraKcal + (d.metabolicRate * d.metabolicFactor / 100);
-					t.fat = d.weight * fatFactor;
+					t.fat = d.weight * d.fatFactor / 100;
 					t.protein = d.weight * 2.5;
 					t.carb = (t.kcal - (9 * t.fat)) / 4 - t.protein;
 				}
