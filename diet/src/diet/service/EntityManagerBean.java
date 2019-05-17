@@ -1,6 +1,7 @@
 package diet.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
@@ -48,6 +49,15 @@ public class EntityManagerBean {
 		return this.em.createQuery(cq).getResultList();
 	}
 
+	@Transactional(TxType.SUPPORTS)
+	public <E> Optional<E> getFirst(Class<E> clazz, BiConsumer<CriteriaBuilder, CriteriaQuery<E>> queryBuilder) {
+		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
+		final CriteriaQuery<E> cq = cb.createQuery(clazz);
+		queryBuilder.accept(cb, cq);
+		final List<E> result = this.em.createQuery(cq).setMaxResults(1).getResultList();
+		return Optional.ofNullable(result.isEmpty() ? null : result.get(0));
+	}
+
 	public <E> E findOne(Class<E> clazz, BiConsumer<CriteriaBuilder, CriteriaQuery<E>> queryBuilder) {
 		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		final CriteriaQuery<E> cq = cb.createQuery(clazz);
@@ -68,6 +78,10 @@ public class EntityManagerBean {
 
 	public <E> void delete(Class<E> clazz, int id) {
 		this.em.remove(this.em.getReference(clazz, id));
+	}
+	
+	public void refresh(Object o) {
+		this.em.refresh(o);
 	}
 	
 }

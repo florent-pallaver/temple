@@ -3,7 +3,10 @@ const dateFormat = new Intl.DateTimeFormat('fr', {year: 'numeric', month: 'short
 var noop = function(){};
 var onError = function(response) {
 	var msg = (response.data && response.data.message) || 'An error occured...';
-	window.alert(msg);
+	
+	document.getElementById('alert-box').classList.add('show');
+	document.getElementById('alert-msg').innerText = msg;
+
 	console.log(response);
 };
 
@@ -25,7 +28,7 @@ var onError = function(response) {
 		} ;
 	}) ;
 	
-	app.config(['$routeProvider', function($routeProvider) {
+	app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 		
 		$routeProvider
 		.when('/', {
@@ -34,6 +37,9 @@ var onError = function(response) {
 			controllerAs: 'homeCtrl'
 		})
 		.when('/food', {
+			redirectTo: '/food/misc'
+		})
+		.when('/food/:foodType', {
 			templateUrl: 'app/features/food/food.html',
 			controller: 'FoodController',
 			controllerAs: 'foodCtrl'
@@ -45,7 +51,17 @@ var onError = function(response) {
 			reloadOnUrl: false
 		})
 		.otherwise({redirectTo: '/'}) ;
-	
+
+	    //initialize get if not there
+	    if (!$httpProvider.defaults.headers.get) {
+	        $httpProvider.defaults.headers.get = {};    
+	    }    
+
+	    //disable IE ajax request caching
+	    $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+	    // extra
+	    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+	    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 	}]) ;
 
 	app.controller('MainController', ['$location', '$http', 'UserService', MainController]);
@@ -55,10 +71,21 @@ var onError = function(response) {
 		
 		self.growthModes = {
 			'INCREASE': 'Prise de masse',
-                        'MAINTAIN': 'Maintenance',
+            'MAINTAIN': 'Maintenance',
 			'DECREASE': 'Sèche'
 		};
 
+		self.foodTypes = {
+			MISC: {full: 'autres', short: 'autres', icon: 'fa-pizza-slice'},
+			DRINKS: {full: 'boissons', short: 'boissons', icon: 'fa-glass-whiskey'},
+			VEGGIES: {full: 'fruits & légumes', short: '', icon: 'fa-carrot'},
+			CEREALS: {full: 'céréales / féculents', short: 'céréales /féculents', icon: 'fa-seedling'},
+			DAIRIES: {full: 'produits laitiers', short: 'laitages', icon: 'fa-cheese'},
+			ANIMALS: {full: 'animaux', short: 'animaux', icon: 'fa-paw'}, 
+			FATS: {full: 'matières grasses', short: 'graisses', icon: 'fa-bacon'},  
+			SWEETS: {full: 'sucre / produits sucrées', short: 'sucre', icon: 'fa-candy-cane'}
+		};
+		
 		self.user = null;
 		
 		self.signInData = {

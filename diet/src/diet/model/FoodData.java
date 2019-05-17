@@ -20,14 +20,15 @@ public class FoodData implements Nutrient {
 
 	@Embedded
 	private Intake intake = new Intake();
-	
+
+	@Enumerated(EnumType.ORDINAL)
+	@Column(nullable = true) // FIXME should be false
+	private FoodType type;
+
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
-	private FoodCounting counting;
+	private Counting counting;
 	
-//	@Transient
-//	private int step;
-//
 	protected FoodData() {
 		super();
 	}
@@ -57,6 +58,11 @@ public class FoodData implements Nutrient {
 	}
 
 	@Override
+	public double getFiber() {
+		return intake.getFiber();
+	}
+
+	@Override
 	public int getKCal() {
 		return intake.getKCal();
 	}
@@ -65,11 +71,15 @@ public class FoodData implements Nutrient {
 		return intake.getIg();
 	}
 
+	public Counting getCounting() {
+		return counting;
+	}
+
 	public void set(FoodData data) {
 		this.name = data.name;
 		this.brand = data.brand;
 		this.intake.set(data.intake);
+		this.type = data.type;
 		this.counting = data.counting;
-//		this.step = data.step;
 	}
 }

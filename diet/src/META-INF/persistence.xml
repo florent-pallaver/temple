@@ -12,6 +12,7 @@
 		<class>diet.model.UserDay</class>
 		<class>diet.model.UserDayData</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<shared-cache-mode>NONE</shared-cache-mode>
 		<properties>
 			<property name="useSSL" value="false"/>
 		</properties>

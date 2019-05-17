@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
@@ -48,7 +49,7 @@ public class Meal
 	private MealTime time;
 
 	@XmlTransient
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "meal_content")
 	@MapKeyJoinColumn(name = "food_id", nullable = false)
 	@Column(name = "quantity", nullable = false)
@@ -57,10 +58,13 @@ public class Meal
 	@Transient
 	private String comment;
 
+	@Transient
+	private Intake intake;
+	
 	protected Meal() {}
 
 	public Meal(UserDay day, MealTime time) {
-		super();
+		this();
 		this.day = day;
 		this.time = time;
 		this.content = new HashMap<>();
@@ -74,8 +78,17 @@ public class Meal
 				this.content.put(entry.getKey(), entry.getValue());
 			}
 		}
+		this.computeIntake();
 	}
 
+	@PostLoad
+	private void computeIntake() {
+		this.intake = new Intake();
+		for(Entry<Food, Integer> entry: content.entrySet()) {
+			this.intake.add(entry.getKey(), entry.getValue());
+		}
+	}
+	
 //	@Override
 //	public double getProtein() {
 //		return sum(Food::getProtein);

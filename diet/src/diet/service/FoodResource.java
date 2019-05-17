@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.criteria.Root;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +19,8 @@ import javax.ws.rs.core.MediaType;
 import diet.model.Food;
 import diet.model.FoodData;
 import diet.model.FoodData_;
+import diet.model.FoodType;
+import diet.model.Food_;
 
 @Path("food")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -35,6 +38,19 @@ public class FoodResource extends AbstractBean<Food> {
 				cb.asc(root.get(FoodData_.name)),
 				cb.asc(root.get(FoodData_.brand))
 				));
+	}
+
+	@GET
+	@Path("{foodType}")
+	public List<Food> getAll(@PathParam("foodType") FoodType foodType) {
+		return super.getAll_((cb, cq) -> { 
+			final Root<Food> root = cq.from(Food.class);
+			cq.where(cb.equal(root.get(Food_.type), foodType))
+				.orderBy(
+					cb.asc(root.get(FoodData_.name)),
+					cb.asc(root.get(FoodData_.brand))
+				);
+		});
 	}
 
 	@POST

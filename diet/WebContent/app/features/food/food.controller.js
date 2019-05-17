@@ -4,11 +4,13 @@
 	
 	const module = angular.module('food', []) ;
 	
-	module.controller('FoodController', ['$http', FoodController]);
+	module.controller('FoodController', ['$http', '$routeParams', FoodController]);
 
-	function FoodController($http) {
+	function FoodController($http, $routeParams) {
 		const self = this;
 
+		self.current = $routeParams;
+		
 		self.countings = [
 			{label: '100g', value: 'GRAM', unit: 'g'}, 
 			{label: '100ml', value: 'MILLILITER', unit: 'ml'}, 
@@ -51,6 +53,9 @@
 			if(!f.intake.carb && f.intake.carb !== 0) {
 				return false;
 			}
+			if(!f.intake.fiber && f.intake.fiber !== 0) {
+				return false;
+			}
 			if(!f.intake.fat && f.intake.fat !== 0) {
 				return false;
 			}
@@ -60,6 +65,10 @@
 			if(!f.intake.kcal) {
 				return false;
 			}
+			if(!f.type) {
+				return false;
+			}
+			// TODO check fiber < carb ???
 			// TODO check kcal = 9*fat + 4*(prot+carb)
 			f.brand = f.brand.trim(); 
 			return true;

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,6 @@ import javax.ws.rs.core.MediaType;
 import diet.model.Food;
 import diet.model.Meal;
 import diet.model.MealTime;
-import diet.model.SleepData;
 import diet.model.User;
 import diet.model.UserDay;
 import diet.model.UserDayData;
@@ -51,12 +51,28 @@ public class DiaryResource extends AbstractBean<UserDay> {
 				.orderBy(cb.desc(root.get(UserDayData_.dayDate)));
 		});
 	}
+
+	@GET
+	@Path("{dayId}/meals")	
+	public List<Meal> getDayMeals(@PathParam("dayId") int dayId) throws ServiceException {
+		final List<Meal> meals = this.get(dayId).getMeals();
+//		meals.forEach(action);
+		return meals;
+	}
 	
 	@POST
 	public void addDay(DateBean dateBean) throws ServiceException {
 		final User user = this.sessionBean.getUser();
 		final LocalDate date = dateBean.getDate();
 		final UserDay userDay = new UserDay(date, user);
+
+		final Optional<UserDay> previousDay = this.emBean.getFirst(UserDay.class, (cb, cq) -> {
+			final Root<UserDay> root = cq.from(UserDay.class);
+			cq.where(cb.equal(root.get(UserDay_.user), user), cb.lessThan(root.get(UserDay_.dayDate), date))
+				.orderBy(cb.desc(root.get(UserDayData_.dayDate)));
+		});
+		previousDay.ifPresent(userDay::set);
+		
 		try {
 			super.create(userDay);
 		} catch(Exception e) {
@@ -68,7 +84,8 @@ public class DiaryResource extends AbstractBean<UserDay> {
 	@Path("{dayId}")
 	public void setDayData(@PathParam("dayId") int dayId, UserDayData data) throws ServiceException {
 		try {
-			final UserDay userDay = this.getDay(dayId);
+			final UserDay userDay = this.get(dayId);
+			this.sessionBean.checkOwner(userDay);
 			userDay.set(data);
 			this.emBean.merge(userDay);
 		} catch(Exception e) {
@@ -76,41 +93,22 @@ public class DiaryResource extends AbstractBean<UserDay> {
 		}
 	}
 	
-	private UserDay getDay(int dayId) throws ServiceException {
-		final UserDay userDay = this.get(dayId);
-		this.sessionBean.checkOwner(userDay);
-		return userDay;
-	}
-	
-	@GET
-	@Path("{dayId}/meals")	
-	public List<Meal> getDayMeals(@PathParam("dayId") int dayId) throws ServiceException {
-		return this.getDay(dayId).getMeals();
-	}
-	
 	@PUT
 	@Path("{dayId}/meals/{time}")
-	public List<Meal> setDayMeal(@PathParam("dayId") int dayId, @PathParam("time") MealTime mealTime, Map<String, Integer> foodQuantities) throws ServiceException {
-		
+	public Meal setDayMeal(@PathParam("dayId") int dayId, @PathParam("time") MealTime mealTime, Map<String, Integer> foodQuantities) throws ServiceException {
+		final UserDay day = this.get(dayId);
+		this.sessionBean.checkOwner(day);
+		final Meal meal = day.getMeal(mealTime);
 		try {
-			final Meal meal = this.getDay(dayId).getMeal(mealTime);
 			final Map<Food, Integer> quantities = foodQuantities.keySet().stream()
 				.map(Integer::valueOf)
-				.map(id -> this.emBean.getReference(Food.class, id))
+				.map(id -> this.emBean.get(Food.class, id))
 				.collect(Collectors.toMap(Function.identity(), food -> foodQuantities.get(Integer.toString(food.getId()))));
 			meal.setFoodQuantities(quantities);
 			this.emBean.merge(meal);
 		} catch(Exception e) {
 			throw new ServiceException(e, "The %s could not be updated.", mealTime);
 		}
-		
-		return this.get(dayId).getMeals();
+		return meal;
 	}
-	
-	@PUT
-	@Path("{date}/sleep")
-	public void setSleep(SleepData data) {
-		// TODO
-	}
-	
 }

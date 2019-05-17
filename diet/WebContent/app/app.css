@@ -2,13 +2,19 @@ body {
 	padding-top: 65px;
 }
 
-.form-control[ng-change]:NOT(:FOCUS),
-.form-control[ng-change]:NOT(:FOCUS) ~ .input-group-addon {
-	
+#food-page .nav-link span {
+	display: none;
+}
+#food-page .nav-link.active span,
+#food-page .nav-link span.fas {
+	display: inline;
+}
+
+td .form-control[ng-change]:NOT(:FOCUS),
+td .form-control[ng-change]:NOT(:FOCUS) ~ .input-group-addon {
 	background: transparent;
 	border-color: transparent;
 	box-shadow: none;
-	
 }
 
 td[ng-click] {
@@ -16,16 +22,28 @@ td[ng-click] {
 	vertical-align: middle;
 }
 
+th.w-4em {
+	width: 4em;
+	min-width: 4em;
+}
+th.w-5em {
+	width: 5em;
+	min-width: 4em;
+}
 th.w-6em {
 	width: 6em;
 	min-width: 4em;
 }
-th.w-12em {
-	width: 12em;
+th.w-8em {
+	width: 8em;
+	min-width: 6em;
+}
+th.w-10em {
+	width: 10em;
 	min-width: 8em;
 }
-th.w-24em {
-	width: 24em;
+th.w-20em {
+	width: 20em;
 	min-width: 18em;
 }
 input[type=number]::-webkit-inner-spin-button, 
@@ -87,6 +105,7 @@ td.quantity input {
 	overflow-y: auto;
 }
 
+.card.meal,
 .card.meal em {
 	font-size: .9em;
 }

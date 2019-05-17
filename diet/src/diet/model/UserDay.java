@@ -38,14 +38,8 @@ public class UserDay extends UserDayData implements Owned {
 	@JoinColumn(nullable = false)
 	private User user;
 
-	@Column(name="sleep_duration", nullable = false)
-	private int sleepDuration;
-	
-	@Transient
-	private int sleepQuality;
-
 	@XmlTransient
-	@OneToMany(mappedBy = "day", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "day", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy("time asc")
 	private List<Meal> meals;
 	
@@ -57,7 +51,7 @@ public class UserDay extends UserDayData implements Owned {
 	}
 
 	public UserDay(LocalDate dayDate, User user) {
-		super(dayDate, user);
+		super(dayDate);
 		this.user = user;
 		this.meals = new ArrayList<>();
 		for(final MealTime time: MealTime.values()) {
