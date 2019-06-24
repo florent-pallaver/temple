@@ -1,5 +1,5 @@
 <div class="card mb-3">
-	<div class="card-header text-white bg-secondary">
+	<div class="card-header p-2 text-white bg-secondary">
 		<div class="float-right">
 			<div class="input-group input-group-sm">
 				<input type="date" placeholder="yyyy-mm-dd" class="form-control" min="2019-02-11" ng-model="diaryCtrl.newDay">
@@ -10,39 +10,99 @@
 				</div>
 			</div>
 		</div>
-		<form class="form-inline">
-           	<label class="mr-2">Journée du</label>
-            <select class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day" 
-            	ng-options="item as item.dayDate for item in diaryCtrl.days track by item.id" ng-change="diaryCtrl.setViewingDay()">
-            </select>
-			<label class="mr-2">Heures de sommeil</label>
-            <input type="number" class="form-control form-control-sm mr-2" min="0" max="12" ng-model="diaryCtrl.day.sleepDuration" ng-change="diaryCtrl.setDayData()">
+		<form class="form-inline" ng-if="diaryCtrl.day">
+			<div class="form-group mr-2">
+			<!-- Ajouter next previous day en bouton -->
+	           	<label>Journée du</label>
+	            <select class="form-control form-control-sm" ng-model="diaryCtrl.day" 
+	            	ng-options="item as item.dayDate for item in diaryCtrl.days track by item.id" ng-change="diaryCtrl.setViewingDay()">
+	            </select>
+			</div>
+			<div class="form-group mr-2">
+				<label>Sommeil</label>
+				<div class="input-group input-group-sm mr-2">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><em>{{diaryCtrl.day.sleepDuration |duration}}</em></div>
+					</div>
+					<input type="number" class="form-control" min="0" max="720" step="15" ng-model="diaryCtrl.day.sleepDuration" ng-change="diaryCtrl.setDayData()">
+					<div class="input-group-append">
+						<div class="input-group-text">min</div>
+					</div>
+				</div>
+            </div>
+            <div class="form-group mr-2">
+				<label>Jeûne</label>
+				<div class="input-group input-group-sm mr-2">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><em>{{diaryCtrl.day.fasting |duration}}</em></div>
+					</div>
+					<input type="number" class="form-control" min="720" max="1440" step="15" ng-model="diaryCtrl.day.fasting" ng-change="diaryCtrl.setDayData()">
+					<div class="input-group-append">
+						<div class="input-group-text">min</div>
+					</div>
+				</div>
+            </div>
         </form>
     </div>
 	<div class="card-body bg-warning p-2" ng-if="diaryCtrl.day">
 		<div class="row no-gutters">
 			<div class="col-lg-6 col-xl-8">
 				<form class="form-inline">
-					<label class="mr-2">Mode : </label>
-					<select class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.growthMode" ng-change="diaryCtrl.setDayData()">
-						<option value="INCREASE">Prise de masse</option>
-						<option value="MAINTAIN">Maintenance</option>
-						<option value="DECREASE">Sèche</option>
-					</select>
-					<label class="mr-2">Poids (kg) : </label>
-					<input type="number" min="50" max="90" step="0.01" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.weight" ng-change="diaryCtrl.setDayData()">
-					<label class="mr-2">Métabolisme de base (kcal) : </label>
-					<input type="number" min="1000" max="2000" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.metabolicRate" ng-change="diaryCtrl.setDayData()">
-					<label class="mr-2">Taux d'activité (%) : </label>
-					<input type="number" min="100" max="200" step="5" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.activityFactor" ng-change="diaryCtrl.setDayData()">
+					<div class="form-group mr-2 mb-2">				
+						<label>Mode</label>
+						<select class="form-control form-control-sm" ng-model="diaryCtrl.day.growthMode" ng-change="diaryCtrl.setDayData()">
+							<option value="INCREASE">Prise de masse</option>
+							<option value="MAINTAIN">Maintenance</option>
+							<option value="DECREASE">Sèche</option>
+						</select>
+					</div>
+					<div class="form-group mr-2 mb-2">				
+						<label>Poids</label>
+						<div class="input-group input-group-sm">
+							<input type="number" min="50" max="90" step="0.01" class="form-control" ng-model="diaryCtrl.day.weight" ng-change="diaryCtrl.setDayData()">
+							<div class="input-group-append">
+								<div class="input-group-text">kg</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group mr-2 mb-2">				
+						<label>Métabolisme de base</label>
+						<div class="input-group input-group-sm">
+							<input type="number" min="1000" max="2000" class="form-control" ng-model="diaryCtrl.day.metabolicRate" ng-change="diaryCtrl.setDayData()">
+							<div class="input-group-append">
+								<div class="input-group-text">kcal</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group mr-2 mb-2">				
+						<label>Taux d'activité</label>
+						<div class="input-group input-group-sm">
+							<input type="number" min="100" max="200" step="5" class="form-control" ng-model="diaryCtrl.day.activityFactor" ng-change="diaryCtrl.setDayData()">
+							<div class="input-group-append">
+								<div class="input-group-text">%</div>
+							</div>
+						</div>
+					</div>
 				</form>
 				<form class="form-inline">
-					<label class="mr-2">Consommation calorique cible (kcal) : </label>
-					<input type="number" class="form-control form-control-sm mr-2" min="1200" max="3500" disabled ng-model="diaryCtrl.day.targetIntake.kcal">
-					<label class="mr-2">Prise de lipides (%) : </label>
-					<input type="number" min="75" max="150" step="5" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.fatFactor" ng-change="diaryCtrl.setDayData()">
-					<label class="mr-2">Prise de protéines (%) : </label>
-					<input type="number" min="150" max="255" step="5" class="form-control form-control-sm mr-2" ng-model="diaryCtrl.day.proteinFactor" ng-change="diaryCtrl.setDayData()">
+					<div class="form-group mr-2 mb-2">				
+						<label>Prise de lipides</label>
+						<div class="input-group input-group-sm">
+							<input type="number" min="60" max="125" step="5" class="form-control" ng-model="diaryCtrl.day.fatFactor" ng-change="diaryCtrl.setDayData()">
+							<div class="input-group-append">
+								<div class="input-group-text">%</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group mr-2 mb-2">				
+						<label>Prise de protéines</label>
+						<div class="input-group input-group-sm">
+							<input type="number" min="150" max="255" step="5" class="form-control" ng-model="diaryCtrl.day.proteinFactor" ng-change="diaryCtrl.setDayData()">
+							<div class="input-group-append">
+								<div class="input-group-text">%</div>
+							</div>
+						</div>
+					</div>
 				</form>
 			</div>
 			<div class="col-lg-6 col-xl-4">
@@ -57,10 +117,32 @@
 			</div>
 		</div>
 	</div>
+	<div class="card-footer p-2 text-white bg-secondary" ng-if="diaryCtrl.day">
+		<div class="float-right">
+			<form class="form-inline">
+	            <div class="form-group">
+					<label>Résultat</label>
+					<div class="input-group input-group-sm">
+						<div class="btn-group btn-group-toggle btn-group-sm">
+							<label class="btn btn-danger" ng-class="{'active': diaryCtrl.day.result === 'FAILURE'}">
+								<input type="radio" autocomplete="off" value="FAILURE" ng-model="diaryCtrl.day.result" ng-change="diaryCtrl.setDayData()"><span class="fa fa-calendar-times"></span>&nbsp;Échec
+							</label> 
+							<label class="btn btn-warning" ng-class="{'active': diaryCtrl.day.result === 'CHEAT_DAY'}">
+								<input type="radio" autocomplete="off" value="CHEAT_DAY" ng-model="diaryCtrl.day.result" ng-change="diaryCtrl.setDayData()"><span class="fa fa-smile-wink"></span>&nbsp;Cheat day
+							</label>
+							<label class="btn btn-success" ng-class="{'active': diaryCtrl.day.result === 'SUCCESS'}">
+								<input type="radio" autocomplete="off" value="SUCCESS" ng-model="diaryCtrl.day.result" ng-change="diaryCtrl.setDayData()"><span class="fa fa-calendar-check"></span>&nbsp;Succès
+							</label>
+						</div>
+					</div>
+				</div>
+	        </form>
+		</div>
+	</div>
 </div>
 
-<div class="row">
-	<div class="col-sm-6 col-md-4" ng-repeat="meal in diaryCtrl.day.meals">
+<div class="row" ng-class="{'fasting': diaryCtrl.day.fasting}" ng-if="diaryCtrl.day">
+	<div class="col-sm-6 col-md-4" ng-class="meal.time" ng-repeat="meal in diaryCtrl.day.meals">
 		<div class="card mb-3 meal" ng-class="{'bg-warning': meal.editing}">
 			<div class="card-header" ng-class="{'font-italic': meal.editing}">
 				<button type="button" class="btn btn-outline-info btn-sm"  ng-click="meal.showContent = !meal.showContent">

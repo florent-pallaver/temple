@@ -2,9 +2,13 @@ package diet.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,15 +46,8 @@ public class FoodResource extends AbstractBean<Food> {
 
 	@GET
 	@Path("{foodType}")
-	public List<Food> getAll(@PathParam("foodType") FoodType foodType) {
-		return super.getAll_((cb, cq) -> { 
-			final Root<Food> root = cq.from(Food.class);
-			cq.where(cb.equal(root.get(Food_.type), foodType))
-				.orderBy(
-					cb.asc(root.get(FoodData_.name)),
-					cb.asc(root.get(FoodData_.brand))
-				);
-		});
+	public List<Food> getAll(@BeanParam FoodFilter filter) {
+		return super.getAll_(filter);
 	}
 
 	@POST

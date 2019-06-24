@@ -89,7 +89,7 @@ public class DiaryResource extends AbstractBean<UserDay> {
 			userDay.set(data);
 			this.emBean.merge(userDay);
 		} catch(Exception e) {
-			throw new ServiceException(e, "The UserDay could not be updated.");
+			throw new ServiceException(e, "The UserDay could not be updated. Verify the data!");
 		}
 	}
 	

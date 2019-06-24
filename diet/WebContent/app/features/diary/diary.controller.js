@@ -171,6 +171,8 @@
 				fatFactor: self.day.fatFactor,
 				proteinFactor: self.day.proteinFactor,
 				sleepDuration: self.day.sleepDuration,
+				fasting: self.day.fasting,
+				result: self.day.result,
 				comments: self.day.comments || '',
 			};
 			$http.put(baseUrl + '/' + self.day.id, data).then(computeTargetIntake, onError);			

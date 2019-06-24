@@ -1,5 +1,6 @@
 const BASE_URL = '/diet/api/' ;
 const dateFormat = new Intl.DateTimeFormat('fr', {year: 'numeric', month: 'short', day: '2-digit'});
+const durationFormat =  new Intl.DateTimeFormat('fr', {hour: '2-digit', minute:'2-digit'});
 var noop = function(){};
 var onError = function(response) {
 	var msg = (response.data && response.data.message) || 'An error occured...';
@@ -28,6 +29,24 @@ var onError = function(response) {
 		} ;
 	}) ;
 	
+	app.filter('fixed0', function() {
+		return function(number) {
+			return number.toFixed(0);
+		} ;
+	}) ;
+	
+	app.filter('duration', function() {
+		return function(durationInMinutes) {
+			var date = new Date(durationInMinutes * 60 * 1000);
+			var duration = date.getUTCHours() + 'h';
+			var minutes = date.getUTCMinutes();
+			if(minutes) {
+				duration += minutes;
+			}
+			return duration;
+		} ;
+	}) ;
+
 	app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 		
 		$routeProvider
@@ -78,7 +97,8 @@ var onError = function(response) {
 		self.foodTypes = {
 			MISC: {full: 'autres', short: 'autres', icon: 'fa-pizza-slice'},
 			DRINKS: {full: 'boissons', short: 'boissons', icon: 'fa-glass-whiskey'},
-			VEGGIES: {full: 'fruits & légumes', short: '', icon: 'fa-carrot'},
+			VEGGIES: {full: 'légumes', short: 'légumes', icon: 'fa-carrot'},
+			FRUITS: {full: 'fruits', short: 'fruits', icon: 'fa-apple-alt'},
 			CEREALS: {full: 'céréales / féculents', short: 'céréales /féculents', icon: 'fa-seedling'},
 			DAIRIES: {full: 'produits laitiers', short: 'laitages', icon: 'fa-cheese'},
 			ANIMALS: {full: 'animaux', short: 'animaux', icon: 'fa-paw'}, 

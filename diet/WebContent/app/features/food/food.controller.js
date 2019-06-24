@@ -26,7 +26,8 @@
         self.selected = {};
         
 		self.init = function() {
-			$http.get(FOOD_RS_URL).then(function(response) {
+			console.log(self.current);
+			$http.get(FOOD_RS_URL + $routeParams.foodType.toUpperCase()).then(function(response) {
 				self.foods = response.data;
 				self.foods.forEach(food => food.locked = true);
 			}, onError);
@@ -68,7 +69,6 @@
 			if(!f.type) {
 				return false;
 			}
-			// TODO check fiber < carb ???
 			// TODO check kcal = 9*fat + 4*(prot+carb)
 			f.brand = f.brand.trim(); 
 			return true;

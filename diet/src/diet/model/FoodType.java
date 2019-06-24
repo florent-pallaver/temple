@@ -9,6 +9,7 @@ public enum FoodType {
 	DAIRIES,
 	ANIMALS, // viande, poisson, crustacés, oeuf
 	FATS, // corps gras
-	SWEETS // sucre
+	SWEETS,// sucre
+	FRUITS 
 	
 }

@@ -47,7 +47,14 @@ public class UserDayData extends SleepData {
 	@Transient
 	private int sleepQuality;
 
-	@Column(name = "comments", nullable = false)
+	@Column(nullable = false)
+	private int fasting;
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.ORDINAL)
+	private UserDayResult result;
+	
+	@Column(nullable = false)
 	private String comments;
 
 	protected UserDayData() {
@@ -64,6 +71,8 @@ public class UserDayData extends SleepData {
         this.fatFactor = DEFAULT_FAT_RATIO;
         this.proteinFactor = DEFAULT_PROTEIN_RATIO;
         this.sleepDuration = 0;
+        this.fasting = 0;
+        this.result = UserDayResult.FAILURE;
         this.comments = "";
 	}
 
@@ -81,6 +90,8 @@ public class UserDayData extends SleepData {
         this.fatFactor = data.fatFactor;
         this.proteinFactor = data.proteinFactor;
         this.sleepDuration = data.sleepDuration;
+        this.fasting = data.fasting;
+        this.result = data.result;
 		this.comments = data.comments;
 	}
 

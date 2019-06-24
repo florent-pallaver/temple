@@ -2,12 +2,19 @@ body {
 	padding-top: 65px;
 }
 
-#food-page .nav-link span {
+#food-page .nav-link span,
+.fasting .BREAKFAST,
+.fasting .MORNING_SNACK
+{
 	display: none;
 }
 #food-page .nav-link.active span,
 #food-page .nav-link span.fas {
 	display: inline;
+}
+
+.form-group > label {
+	margin-right: .5em;
 }
 
 td .form-control[ng-change]:NOT(:FOCUS),
