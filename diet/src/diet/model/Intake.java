@@ -86,6 +86,7 @@ public class Intake implements Nutrient {
 		this.fat += quantity * in.getFat() / divisor;
 		this.carb += quantity * in.getCarb() / divisor;
 		this.fiber += quantity * in.getFiber() / divisor;
-		this.kcal += quantity * in.getKCal() / divisor;
+//		this.kcal += quantity * in.getKCal() / divisor;
+		this.kcal = (int)Math.round(9 * this.fat + 4 * (this.carb + this.protein));
 	}
 }

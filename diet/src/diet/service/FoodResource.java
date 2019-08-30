@@ -2,12 +2,8 @@ package diet.service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import javax.enterprise.context.RequestScoped;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -23,8 +19,6 @@ import javax.ws.rs.core.MediaType;
 import diet.model.Food;
 import diet.model.FoodData;
 import diet.model.FoodData_;
-import diet.model.FoodType;
-import diet.model.Food_;
 
 @Path("food")
 @Consumes(MediaType.APPLICATION_JSON)

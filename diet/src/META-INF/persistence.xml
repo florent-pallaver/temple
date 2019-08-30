@@ -8,6 +8,7 @@
 		<class>diet.model.LocalDateConverter</class>
 		<class>diet.model.LocalTimeConverter</class>
 		<class>diet.model.Meal</class>
+		<class>diet.model.PreparedFood</class>
 		<class>diet.model.User</class>
 		<class>diet.model.UserDay</class>
 		<class>diet.model.UserDayData</class>

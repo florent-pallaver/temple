@@ -26,8 +26,8 @@
         self.selected = {};
         
 		self.init = function() {
-			console.log(self.current);
-			$http.get(FOOD_RS_URL + $routeParams.foodType.toUpperCase()).then(function(response) {
+			self.newFood.type = $routeParams.foodType.toUpperCase();
+			$http.get(FOOD_RS_URL + self.newFood.type).then(function(response) {
 				self.foods = response.data;
 				self.foods.forEach(food => food.locked = true);
 			}, onError);

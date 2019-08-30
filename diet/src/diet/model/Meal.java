@@ -50,11 +50,18 @@ public class Meal
 
 	@XmlTransient
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "meal_content")
+	@CollectionTable(name = "meal_food")
 	@MapKeyJoinColumn(name = "food_id", nullable = false)
 	@Column(name = "quantity", nullable = false)
 	private Map<Food, Integer> content;
 
+	@XmlTransient
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "meal_prepared_food")
+	@MapKeyJoinColumn(name = "prepared_food_id", nullable = false)
+	@Column(name = "quantity", nullable = false)
+	private Map<PreparedFood, Integer> prepared;
+	
 	@Transient
 	private String comment;
 

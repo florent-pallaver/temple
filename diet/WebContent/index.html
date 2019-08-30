@@ -13,18 +13,19 @@
 <!--     <link rel="stylesheet" href="assets/css/bootstrap.min.css" crossorigin="anonymous"> -->
 <!--     <link rel="stylesheet" href="assets/css/all.css" crossorigin="anonymous"> -->
 	<link rel="stylesheet" href="app/app.css">
-<!--	
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.min.js"></script>
--->
+<!--	
 	<script src="assets/js/angular.min.js"></script>
     <script src="assets/js/angular-route.min.js"></script>
+-->
 </head>
 <body ng-controller="MainController as mainCtrl">
     <header>
         <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
           <a class="navbar-brand" href="#!/">
-          	<i class="fas fa-dumbbell"></i> 
+          	<i class="fas fa-scroll"></i> 
           	<span class="text-capitalize" ng-if="mainCtrl.user">{{mainCtrl.user.name}}'s diet</span>
           	<span ng-if="!mainCtrl.user">Diet</span> 
           </a>
@@ -34,10 +35,13 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item" ng-class="{'active': mainCtrl.isCurrentPage('diary')}" ng-if="mainCtrl.user">
-                <a class="nav-link" href="#!/diary">Journal</a>
+                <a class="nav-link" href="#!/diary"><i class="far fa-calendar-alt"></i> Journal</a>
               </li>
               <li class="nav-item" ng-class="{'active': mainCtrl.isCurrentPage('food')}">
-                <a class="nav-link" href="#!/food">Aliments</a>
+                <a class="nav-link" href="#!/food"><i class="fa fa-shopping-basket"></i> Aliments</a>
+              </li>
+              <li class="nav-item" ng-class="{'active': mainCtrl.isCurrentPage('dish')}" ng-if="mainCtrl.user">
+                <a class="nav-link" href="#!/dish"><i class="fa fa-utensils"></i> Plats</a>
               </li>
             </ul>
 			<form class="form-inline" ng-submit="mainCtrl.signIn()" ng-if="!mainCtrl.user">
@@ -55,27 +59,28 @@
 <!-- 				</div> -->
 				<button type="submit" class="btn btn-sm btn-light"><i class="fas fa-check"></i></button>
 			</form>
+			<form class="form-inline" ng-submit="mainCtrl.signOut()" ng-if="mainCtrl.user">
+				<button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-sign-out-alt"></i> Déconnexion!</button>
+			</form>
           </div>
 		</nav>
     </header>
 	<div class="container-fluid">
-		<div id="alert-box" class="alert alert-danger alert-dismissible fade" role="alert">
+		<div id="alert-box" class="alert alert-danger alert-dismissible fade" role="alert" onmouseup="this.classList.remove('show')">
 			<i class="fas fa-exclamation-circle"></i>
 			<span id="alert-msg"></span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<button type="button" class="close" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div ng-view></div>
 	</div>
-<!--
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
--->
-    <script src="assets/js/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="assets/js/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="assets/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<!--     <script src="assets/js/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script> -->
+<!--     <script src="assets/js/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script> -->
+<!--     <script src="assets/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
 
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/features/user/user.service.js"></script>
@@ -84,5 +89,6 @@
     <script type="text/javascript" src="app/features/food/food.controller.js"></script>
     <script type="text/javascript" src="app/features/home/home.controller.js"></script>
     <script type="text/javascript" src="app/features/meal/meal.controller.js"></script>
+    <script type="text/javascript" src="app/features/dish/dish.controller.js"></script>
 </body>
 </html>

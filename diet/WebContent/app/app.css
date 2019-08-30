@@ -62,9 +62,17 @@ input[type=number] {
     -moz-appearance:textfield;
 }
 
+.table-responsive {
+	height: 40em;
+	max-height: 40em;
+	overflow-y: auto;
+}
+
 .table thead th {
 	text-align: center;
 	vertical-align: middle;
+	position: sticky;
+	top: 0;
 }
 .table thead th small {
 /* 	display: none; */

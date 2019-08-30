@@ -17,44 +17,41 @@
 			'UNIT': ''
 		};
 		
+		self.resultClasses = {
+			'FAILURE': 'bg-danger',
+			'CHEAT_DAY': 'bg-warning',
+			'PASSABLE': 'bg-info',
+			'SUCCESS': 'bg-success'
+		};
+		
 		self.days = [];
-
+		self.dates = [];
+		
 		self.foods = {};
 		self.foodList = [];
 		
+		self.foodFilters = {
+				'BREAKFAST': {},
+				'MORNING_SNACK': {},
+				'LUNCH': {},
+				'AFTERNOON_SNACK': {},
+				'DINNER': {},
+				'EVENING_SNACK': {},
+				'WORK_OUT': {}
+		};
+		
 		self.newDay = new Date();
 		
-		self.dayIndex = 0;
 		self.day = null;
 
 		self.init = function() {
-            
-//            self.days = [{
-//                    id: 20,
-//                dayDate: '2019-02-11',
-//                growthMode: 'INCREASE',
-//                weight: 85,
-//                metabolicRate: 1880,
-//                activityFactor: 135,
-//                fatFactor: 100,
-//                protFactor: 250
-//            },{
-//                id:10,
-//                dayDate: '2018-12-23',
-//                growthMode: 'INCREASE',
-//                weight: 85,
-//                metabolicRate: 1880,
-//                activityFactor: 135,
-//                fatFactor: 100,
-//                protFactor: 250
-//            }
-//        ];
-//            self.day = self.days[0];
-//            return;
-            	
 			$http.get(baseUrl).then(function(response) {
+				self.dates = [];
 				self.days = response.data;
 				if (self.days && self.days.length) {
+
+					self.dates = self.days.map(day => day.dayDate);
+					
 					// TODO checker si c'est today
 					self.day = self.days[0];
 					self.setViewingDay();
@@ -64,6 +61,20 @@
 			}, onError);
 		};
 
+		self.previousDay = function() {
+			changeDay(1);
+		};
+		
+		self.nextDay = function() {
+			changeDay(-1);
+		};
+		
+		function changeDay(i) {
+			var newDayIndex = (self.dates.length + self.dates.indexOf(self.day.dayDate) + i) % self.dates.length;
+			self.day = self.days[newDayIndex];
+			self.setViewingDay();
+		}
+		
 		self.initFood = function() {
 			return $http.get(FOOD_RS_URL).then(function(response) {
 				self.foods = {};
@@ -114,24 +125,25 @@
 			
 			self.add = function(intake, factor) {
 				var factor = factor || 1;
-				self.kcal += intake.kcal * factor;
 				self.fat += intake.fat * factor;
 				self.carb += intake.carb * factor;
 				self.fiber += intake.fiber * factor;
 				self.protein += intake.protein * factor;
 				self.theoricKcal = self.fat * 9 + 4 * (self.carb + self.protein);
+				self.kcal = self.theoricKcal;
 			};
 			
 			self.reset = function() {
-				self.kcal = 0;
 				self.fat = 0;
 				self.carb = 0;
-				self.protein = 0;
 				self.fiber = 0;
+				self.protein = 0;
+				self.kcal = 0;
 				self.theoricKcal = 0;
 			};
 			
 			self.reset();
+			
 			if(food && quantity) {
 				self.add(food.intake, food.counting === 'UNIT' ? quantity : (quantity / 100));
 			}
@@ -194,6 +206,10 @@
 			} else {
 				self.foodList.forEach(food => !meal.items[food.id] && (meal.items[food.id] = ''));
 			}
+		};
+		
+		self.foodComparator = function(foodId1, foodId2) {
+			
 		};
 		
 		self.initFood()

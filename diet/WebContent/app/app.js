@@ -14,7 +14,7 @@ var onError = function(response) {
 (function() {
 	'use strict';
 
-	var app = angular.module('diet', ['ngRoute', 'home', 'diary', 'food']);
+	var app = angular.module('diet', ['ngRoute', 'home', 'diary', 'food', 'dish']);
 
 	app.filter('dayDate', function() {
 		return function(dateStr) {
@@ -25,13 +25,13 @@ var onError = function(response) {
 
 	app.filter('fixed1', function() {
 		return function(number) {
-			return number.toFixed(1);
+			return number ? number.toFixed(1) : 0;
 		} ;
 	}) ;
 	
 	app.filter('fixed0', function() {
 		return function(number) {
-			return number.toFixed(0);
+			return number ? number.toFixed(0) : 0;
 		} ;
 	}) ;
 	
@@ -63,10 +63,16 @@ var onError = function(response) {
 			controller: 'FoodController',
 			controllerAs: 'foodCtrl'
 		})
-		.when('/diary/:dayId?', {
+		.when('/diary/:userId?/:date?', {
 			templateUrl: 'app/features/diary/diary.html',
 			controller: 'DiaryController',
 			controllerAs: 'diaryCtrl',
+			reloadOnUrl: false
+		})
+		.when('/dish/:userId?', {
+			templateUrl: 'app/features/dish/dish.html',
+			controller: 'DishController',
+			controllerAs: 'dishCtrl',
 			reloadOnUrl: false
 		})
 		.otherwise({redirectTo: '/'}) ;
@@ -83,9 +89,9 @@ var onError = function(response) {
 	    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 	}]) ;
 
-	app.controller('MainController', ['$location', '$http', 'UserService', MainController]);
+	app.controller('MainController', ['$location', '$route', '$http', 'UserService', MainController]);
 
-	function MainController($location, $http, UserService) {
+	function MainController($location, $route, $http, UserService) {
 		const self = this;
 		
 		self.growthModes = {
@@ -101,7 +107,8 @@ var onError = function(response) {
 			FRUITS: {full: 'fruits', short: 'fruits', icon: 'fa-apple-alt'},
 			CEREALS: {full: 'céréales / féculents', short: 'céréales /féculents', icon: 'fa-seedling'},
 			DAIRIES: {full: 'produits laitiers', short: 'laitages', icon: 'fa-cheese'},
-			ANIMALS: {full: 'animaux', short: 'animaux', icon: 'fa-paw'}, 
+			ANIMALS: {full: 'animaux', short: 'animaux', icon: 'fa-drumstick-bite'}, 
+			SEA_FOOD: {full: 'poissons', short: 'poissons', icon: 'fa-fish'}, 
 			FATS: {full: 'matières grasses', short: 'graisses', icon: 'fa-bacon'},  
 			SWEETS: {full: 'sucre / produits sucrées', short: 'sucre', icon: 'fa-candy-cane'}
 		};
@@ -123,6 +130,14 @@ var onError = function(response) {
 			self.signInData.pass = self.signInData.name; 
 			$http.post(BASE_URL + 'session', self.signInData).then(function(response) {
 				self.user = response.data;
+				$route.reload();
+			}, onError);
+		};
+		
+		self.signOut = function() {
+			$http.delete(BASE_URL + 'session').then(function(response) {
+				self.user = null;
+				$route.reload();
 			}, onError);
 		};
 		

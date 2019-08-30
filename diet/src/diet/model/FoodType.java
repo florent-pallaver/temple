@@ -7,9 +7,10 @@ public enum FoodType {
 	VEGGIES,
 	CEREALS, // céréales, féculents, légumineuses
 	DAIRIES,
-	ANIMALS, // viande, poisson, crustacés, oeuf
+	ANIMALS, // viande, oeuf
 	FATS, // corps gras
 	SWEETS,// sucre
-	FRUITS 
+	FRUITS,
+	SEA_FOOD
 	
 }
