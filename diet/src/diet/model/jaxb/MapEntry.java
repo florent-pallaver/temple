@@ -1,6 +1,13 @@
 package diet.model.jaxb;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
 import javax.xml.bind.annotation.XmlElement;
+
+import diet.model.DietEntity;
 
 public class MapEntry {
 
@@ -12,6 +19,10 @@ public class MapEntry {
 	
 	protected MapEntry() {
 		this((String)null, null);
+	}
+
+	public MapEntry(Entry<? extends DietEntity, Integer> entry) {
+		this(entry.getKey().getId(), entry.getValue());
 	}
 
 	public MapEntry(String key, Integer value) {
@@ -34,6 +45,10 @@ public class MapEntry {
 		return value;
 	}
 
-	
+	public static List<MapEntry> list(Map<? extends DietEntity, Integer> entries) {
+		return entries.entrySet().stream()
+			.map(MapEntry::new)
+			.collect(Collectors.toList());
+	}
 	
 }

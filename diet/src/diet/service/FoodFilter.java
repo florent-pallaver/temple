@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
@@ -26,6 +27,10 @@ public class FoodFilter implements BiConsumer<CriteriaBuilder, CriteriaQuery<Foo
 	@QueryParam("search")
 	private String search;
 
+	@QueryParam("includeArchived")
+	@DefaultValue("false")
+	private boolean includeArchived;
+	
 	private void clean() {
 		if(this.search != null) {
 			final String s = search.trim();
@@ -51,6 +56,10 @@ public class FoodFilter implements BiConsumer<CriteriaBuilder, CriteriaQuery<Foo
 		if(this.search != null) {
 //			cb.and(where, cb.like(arg0, arg1))
 		}
+		if(!this.includeArchived) {
+			conditions.add(cb.isFalse(root.get(Food_.archived)));
+		}
+		
 		final int conditionsCount = conditions.size();
 		if(conditionsCount > 0) {
 			query.where(conditions.toArray(new Predicate[conditionsCount]));

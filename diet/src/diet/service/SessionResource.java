@@ -15,11 +15,18 @@ import diet.model.User;
 @Path("session")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@AutoSignedIn
 @RequestScoped
 public class SessionResource {
 
-	@Inject
 	private SessionBean sessionBean;
+
+	SessionResource() {}
+
+	@Inject
+	SessionResource(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
+	}
 	
 	@GET
 	public User getUser() throws ServiceException {

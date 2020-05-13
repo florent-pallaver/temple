@@ -3,7 +3,7 @@
   <parent>
     <groupId>temple</groupId>
     <artifactId>temple</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>temple-model</artifactId>
@@ -11,7 +11,7 @@
   	<dependency>
   		<groupId>temple</groupId>
   		<artifactId>temple-common</artifactId>
-  		<version>1.0.0-SNAPSHOT</version>
+  		<version>1.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
 </project>

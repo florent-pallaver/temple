@@ -18,5 +18,10 @@
         <exclude name="org.glassfish.sample.exclude.filter.**">
             <if-system-property name="exclude-ejbs"/>
         </exclude>-->
+        
     </scan>
+    
+    <interceptors>
+		<class>diet.service.AutoSignedInInterceptor</class>    
+    </interceptors>
 </beans>

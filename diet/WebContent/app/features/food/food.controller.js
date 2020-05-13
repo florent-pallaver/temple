@@ -2,11 +2,11 @@
 
 	const FOOD_RS_URL = BASE_URL + 'food/' ;
 	
-	const module = angular.module('food', []) ;
+	const module = angular.module('food', ['user']) ;
 	
-	module.controller('FoodController', ['$http', '$routeParams', FoodController]);
+	module.controller('FoodController', ['$http', '$routeParams', 'UserService', FoodController]);
 
-	function FoodController($http, $routeParams) {
+	function FoodController($http, $routeParams, UserService) {
 		const self = this;
 
 		self.current = $routeParams;
@@ -63,9 +63,6 @@
 			if(!f.intake.ig && f.intake.ig !== 0) {
 				return false;
 			}
-			if(!f.intake.kcal) {
-				return false;
-			}
 			if(!f.type) {
 				return false;
 			}
@@ -87,6 +84,13 @@
 			}
 		};
 
+		self.toggleArchived = function(food) {
+			if(!food.locked && checkFood(food)) {
+				food.archived = !food.archived;
+				$http.put(FOOD_RS_URL + food.id, food).then(noop, onError);
+			}
+		};
+
 		self.update = function(food) {
 			if(!food.locked && checkFood(food)) {
 				$http.put(FOOD_RS_URL + food.id, food).then(noop, onError);
@@ -101,6 +105,10 @@
 		
 		self.toggleLock = function(food) {
 			food.locked = !food.locked;
+		};
+		
+		self.toggleLike = function(food) {
+			
 		};
 		
 		self.init();

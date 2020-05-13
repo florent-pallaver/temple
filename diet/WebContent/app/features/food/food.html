@@ -47,7 +47,7 @@
 						</button>
 					</td>
 				</tr>
-				<tr ng-class="{'table-primary': food.selected, 'table-warning': !food.locked}" ng-repeat="food in foodCtrl.foods">
+				<tr ng-class="{'table-primary': food.selected, 'table-warning': !food.locked, 'table-secondary': food.archived, 'table-info': mainCtrl.user.foodScores[food.id], 'archived': food.archived}" ng-repeat="food in foodCtrl.foods">
 					<td><input class="form-control form-control-sm" type="text" ng-model="food.type" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
 					<td><input class="form-control form-control-sm" type="text" ng-model="food.name" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
 					<td><input class="form-control form-control-sm" type="text" ng-model="food.brand" ng-change="foodCtrl.update(food)" ng-disabled="food.locked"></td>
@@ -66,6 +66,12 @@
 						</button>
 						<button type="button" class="btn btn-sm btn-secondary" ng-click="foodCtrl.copy(food)">
 							<i class="far fa-copy"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-info" ng-if="mainCtrl.user && food.locked" ng-class="{'active': mainCtrl.user.foodScores[food.id]}" ng-click="mainCtrl.toggleLikedFood(food)">
+							<i class="fas fa-thumbs-up"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-secondary" ng-if="mainCtrl.user && !food.locked" ng-class="{'active': food.archived}" ng-click="foodCtrl.toggleArchived(food)">
+							<i class="fas fa-archive"></i>
 						</button>
 						<button type="button" class="btn btn-sm btn-light" ng-class="{'active': food.selected}" ng-click="foodCtrl.toggleSelect(food)">
 							<i class="far" ng-class="{'fa-square': !food.selected, 'fa-check-square': food.selected}"></i>

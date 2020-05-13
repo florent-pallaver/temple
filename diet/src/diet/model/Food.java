@@ -15,7 +15,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @Entity
 @Table(name = "food")
-public class Food extends FoodData {
+public class Food extends FoodData implements DietEntity {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(nullable = false, updatable = false)
@@ -40,6 +42,7 @@ public class Food extends FoodData {
 		this.creationDate = this.lastUpdate;
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}

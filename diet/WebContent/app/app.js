@@ -130,6 +130,9 @@ var onError = function(response) {
 			self.signInData.pass = self.signInData.name; 
 			$http.post(BASE_URL + 'session', self.signInData).then(function(response) {
 				self.user = response.data;
+				let scoresMap = {};
+				self.user.foodScores.forEach(e => scoresMap[e.key] = e.value);
+				self.user.foodScores = scoresMap;
 				$route.reload();
 			}, onError);
 		};
@@ -143,6 +146,11 @@ var onError = function(response) {
 		
 		self.isCurrentPage = function(page) {
 			return $location.path().endsWith(page); 
+		};
+		
+		self.toggleLikedFood = function(food) {
+			var foodScore = 1 - (self.user.foodScores[food.id] || 0);
+			UserService.setFoodScore(food.id, foodScore).then(() => {self.user.foodScores[food.id] = foodScore}, onError);
 		};
 		
 		self.init();

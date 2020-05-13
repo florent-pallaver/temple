@@ -54,7 +54,7 @@
     </div>
 	<div class="card-body p-2" ng-if="diaryCtrl.day" ng-class="diaryCtrl.resultClasses[diaryCtrl.day.result]">
 		<div class="row no-gutters">
-			<div class="col-lg-6 col-xl-8">
+			<div class="col-lg-6">
 				<form class="form-inline">
 					<div class="form-group mr-2 mb-2">				
 						<label>Mode</label>
@@ -91,18 +91,14 @@
 							</div>
 						</div>
 					</div>
-				</form>
-				<form class="form-inline">
 					<div class="form-group mr-2 mb-2">				
 						<label>Prise de lipides</label>
-						<div class="input-group input-group-sm">
+						<div class="input-group input-group-sm mr-2">
 							<input type="number" min="60" max="175" step="5" class="form-control" ng-model="diaryCtrl.day.fatFactor" ng-change="diaryCtrl.setDayData()">
 							<div class="input-group-append">
 								<div class="input-group-text">%</div>
 							</div>
 						</div>
-					</div>
-					<div class="form-group mr-2 mb-2">				
 						<label>Prise de protéines</label>
 						<div class="input-group input-group-sm">
 							<input type="number" min="100" max="255" step="5" class="form-control" ng-model="diaryCtrl.day.proteinFactor" ng-change="diaryCtrl.setDayData()">
@@ -113,14 +109,14 @@
 					</div>
 				</form>
 			</div>
-			<div class="col-lg-6 col-xl-4">
+			<div class="col-lg-6">
 				<dl class="row mb-0">
 					<dt class="col-sm-2">Cible</dt>
-					<dd class="col-sm-10"><intake intake="diaryCtrl.day.targetIntake"></intake></dd>
+					<dd class="col-sm-10 mb-0"><intake intake="diaryCtrl.day.targetIntake"></intake></dd>
 					<dt class="col-sm-2">Effectif</dt>
-					<dd class="col-sm-10"><intake intake="diaryCtrl.day.intake"></intake></dd>
+					<dd class="col-sm-10 mb-0"><intake intake="diaryCtrl.day.intake"></intake></dd>
 					<dt class="col-sm-2">Écart</dt>
-					<dd class="col-sm-10"><intake intake="diaryCtrl.day.intakeDiff"></intake></dd>
+					<dd class="col-sm-10 mb-0"><intake intake="diaryCtrl.day.intakeDiff"></intake></dd>
 				</dl>
 			</div>
 		</div>
@@ -153,16 +149,18 @@
 <div class="row" ng-class="{'fasting': diaryCtrl.day.fasting}" ng-if="diaryCtrl.day">
 	<div class="col-sm-6 col-md-4" ng-class="meal.time" ng-repeat="meal in diaryCtrl.day.meals">
 		<div class="card mb-3 meal" ng-class="{'bg-warning': meal.editing}">
-			<div class="card-header" ng-class="{'font-italic': meal.editing}">
-				<button type="button" class="btn btn-outline-info btn-sm"  ng-click="meal.showContent = !meal.showContent">
-					<i class="fas" ng-class="{'fa-pen': meal.editing, 'fa-utensils': !meal.editing}"></i> {{meal.time}}
+			<div class="card-header p-2" ng-class="{'font-italic': meal.editing}">
+				<button type="button" class="btn btn-sm btn-dark pl-0" ng-click="meal.showContent = !meal.showContent">
+					<i class="fas fa-fw" ng-class="{'fa-caret-right': !meal.showContent, 'fa-caret-down': meal.showContent}"></i>
+					{{meal.time}} <intake ng-if="meal.content.length" intake="meal.intake"></intake>
 				</button>
-				<button type="button" class="btn btn-outline-warning btn-sm float-right" ng-class="{'btn-outline-dark': meal.editing}" ng-click="diaryCtrl.toggleMealEditing(meal)">
-					<i class="fas" ng-class="{'fa-pen': !meal.editing, 'fa-check': meal.editing}"></i>
-					{{meal.editing ? 'OK !' : 'Modifier'}}
+				<button type="button" class="btn btn-sm btn-outline-dark float-right" ng-click="diaryCtrl.toggleMealEditing(meal)">
+					<i class="fas fa-shopping-basket"></i> <span class="badge badge-dark">{{meal.content.length ? meal.content.length : ''}}</span>
+					<i class="fas" ng-class="{'fa-plus': !meal.editing, 'fa-check': meal.editing}"></i>
+					{{meal.editing ? 'OK !' : ''}}
 				</button>
 			</div>
-			<div class="card-header bg-secondary" ng-if="meal.editing">
+			<div class="card-header bg-light p-2" ng-if="meal.editing">
 				<form class="form-inline">
 					<label class="mr-1 d-none d-sm-inline">Filtre</label>
 					<input type="search" class="form-control form-control-sm mb-1 mr-sm-1" ng-model="diaryCtrl.foodFilters[meal.time].name" placeholder="Nom">
@@ -171,23 +169,50 @@
 			</div>
 			<div class="card-body p-0">
 				<div class="list-group list-group-flush" ng-if="meal.editing">
-					<div class="list-group-item p-2" ng-class="{'list-group-item-info': meal.items[food.id]}" ng-repeat="food in diaryCtrl.foodList | filter:diaryCtrl.foodFilters[meal.time]">
-						<div class="row">
-							<label class="col-10 mb-0">{{food.name}} <em>{{food.brand}}</em></label>
-							<input type="number" min="0" max="10000" class="form-control form-control-sm col-2" ng-model="meal.items[food.id]" >
+					<div class="list-group-item p-2" ng-class="{'list-group-item-info': meal.items[food.id] || meal.items[food.id] === 0}" ng-repeat="food in diaryCtrl.foodList | filter:diaryCtrl.foodFilters[meal.time]">
+						<div class="row no-gutters">
+							<div class="col-10 pr-1" ng-click="diaryCtrl.addFood(meal, food)">
+								<food value="food"></food>
+							</div>
+							<div class="col-2 pr-1">
+								<button type="button" class="btn btn-sm btn-warning" ng-click="diaryCtrl.addFood(meal, food)">
+									<i class="fas fa-plus"></i> Ajouter
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="list-group list-group-flush" ng-if="!meal.editing" ng-show="meal.showContent">
-					<div class="list-group-item p-2" ng-class="{'list-group-item-warning': (diaryCtrl.foods[foodId].intake.fiber === -1 || !diaryCtrl.foods[foodId].type)}" 
+					<div class="list-group-item p-2" 
+						ng-class="{'list-group-item-warning': (diaryCtrl.foods[foodId].intake.fiber === -1 || !diaryCtrl.foods[foodId].type), 'liked': mainCtrl.user.foodScores[foodId]}" 
 						ng-repeat="(foodId, quantity) in meal.items">
-						{{diaryCtrl.foods[foodId].name}} <em>{{diaryCtrl.foods[foodId].brand}}</em> : {{quantity}}{{diaryCtrl.units[diaryCtrl.foods[foodId].counting]}}
-						<intake intake="meal.itemIntakes[foodId]">
+						<div class="d-flex">
+							<h6 class="flex-grow-1 mb-0">
+								<button type="button" class="btn btn-sm btn-outline-danger" ng-click="diaryCtrl.removeFood(meal, foodId)"><i class="fas fa-trash"></i></button>
+								<i class="fas fa-thumbs-up"></i>
+								<i class="fas" ng-class="mainCtrl.foodTypes[diaryCtrl.foods[foodId].type].icon"></i>
+								{{diaryCtrl.foods[foodId].name}} <small><em>{{diaryCtrl.foods[foodId].brand}}</em></small>
+							</h6>
+							<div class="input-group input-group-sm align-self-start">
+								<div class="input-group-prepend">
+									<button type="button" class="btn btn-outline-secondary" ng-click="diaryCtrl.increase(meal, foodId, -10)"><i class="fas fa-angle-double-left"></i></button>
+								</div>
+								<div class="input-group-prepend">
+									<button type="button" class="btn btn-outline-secondary" ng-click="diaryCtrl.increase(meal, foodId, -1)"><i class="fas fa-angle-left"></i></button>
+								</div>
+								<input type="number" min="0" max="{{diaryCtrl.foods[foodId].input.max}}" step="{{diaryCtrl.foods[foodId].input.step}}" class="form-control text-right pr-0" ng-model="meal.items[foodId]" ng-change="diaryCtrl.foodUpdated(meal, foodId)" ng-model-options="{ debounce: 750 }">
+								<div class="input-group-append"><span class="input-group-text pl-1">{{diaryCtrl.units[diaryCtrl.foods[foodId].counting]}}</span></div>
+								<div class="input-group-append">
+									<button type="button" class="btn btn-outline-secondary" ng-click="diaryCtrl.increase(meal, foodId, +1)"><i class="fas fa-angle-right"></i></button>
+								</div>
+								<div class="input-group-append">
+									<button type="button" class="btn btn-outline-secondary" ng-click="diaryCtrl.increase(meal, foodId, +10)"><i class="fas fa-angle-double-right"></i></button>
+								</div>
+							</div>
+						</div>
+						<intake intake="meal.itemIntakes[foodId]"></intake>
 					</div>
 				</div>
-			</div>
-			<div class="card-footer" ng-if="meal.content.length">
-				<intake intake="meal.intake"></intake>
 			</div>
 		</div>
 	</div>

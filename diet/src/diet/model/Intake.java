@@ -3,12 +3,13 @@ package diet.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 @Embeddable
-public class Intake implements Nutrient {
+public class Intake {
 
 	@Column(nullable = false)
 	private double protein;
@@ -36,27 +37,27 @@ public class Intake implements Nutrient {
 		super();
 	}
 
-	@Override
 	public double getProtein() {
 		return protein;
 	}
 
-	@Override
 	public double getFat() {
 		return fat;
 	}
 
-	@Override
 	public double getCarb() {
 		return carb;
 	}
 
-	@Override
+	// 7kcal par gramme
+	public double getAlcohol() {
+		return 0;
+	}
+	
 	public int getKCal() {
 		return kcal;
 	}
 
-	@Override
 	public double getFiber() {
 		return this.fiber;
 	}
@@ -65,11 +66,11 @@ public class Intake implements Nutrient {
 		return ig;
 	}
 
-	@Override
-	public Counting getCounting() {
-		return Counting.UNIT;
+	@XmlElement
+	public IGLevel getIgLevel() {
+		return IGLevel.valueOf(this.ig);
 	}
-
+	
 	@XmlTransient
 	public void set(Intake data) {
 		this.protein = data.protein;
@@ -82,11 +83,33 @@ public class Intake implements Nutrient {
 	
 	public void add(Nutrient in, int quantity) {
 		final double divisor = in.getCounting().getRatio();
-		this.protein += quantity * in.getProtein() / divisor;
-		this.fat += quantity * in.getFat() / divisor;
-		this.carb += quantity * in.getCarb() / divisor;
-		this.fiber += quantity * in.getFiber() / divisor;
-//		this.kcal += quantity * in.getKCal() / divisor;
+		final Intake intake = in.getIntake();
+		this.protein += quantity * intake.protein / divisor;
+		this.fat += quantity * intake.fat / divisor;
+		this.carb += quantity * intake.carb / divisor;
+		this.fiber += quantity * intake.fiber / divisor;
+		this.computeKcal();
+	}
+
+	public Intake raw(int rawQuantity) {
+		return this.cooked(rawQuantity, rawQuantity);
+	}
+
+	public Intake cooked(double rawQuantity, double cookedQuantity) {
+		final double factor = rawQuantity / cookedQuantity;
+		
+		final Intake totalIntake = new Intake();
+		totalIntake.protein += factor * this.protein;
+		totalIntake.fat += factor * this.fat;
+		totalIntake.carb += factor * this.carb;
+		totalIntake.fiber += factor * this.fiber;
+		totalIntake.computeKcal();
+
+		return totalIntake;
+	}
+		
+	private void computeKcal() {
 		this.kcal = (int)Math.round(9 * this.fat + 4 * (this.carb + this.protein));
 	}
+	
 }

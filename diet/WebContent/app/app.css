@@ -1,7 +1,12 @@
 body {
 	padding-top: 65px;
 }
-
+#alert-box.show {
+	width: 80%;
+	margin: 0 10%;
+	top: 80px;
+	z-index: 1020;
+}
 #food-page .nav-link span,
 .fasting .BREAKFAST,
 .fasting .MORNING_SNACK
@@ -132,3 +137,120 @@ td.quantity input {
 input[type="number"] {
 	/* max-width: 5em;*/
 }
+._food ._intake b,
+.meal ._intake b {
+	display: none;
+}
+.meal .card-body .d-flex .input-group {
+	max-width: 11.8em;	
+}
+
+.meal .card-body .input-group input {
+	border-right: 0;
+}
+.meal .card-body .input-group .input-group-text {
+	border-left: 0;
+	background: transparent;
+}
+.meal .card-body .fa-thumbs-up {
+	display: none;
+}
+.meal .card-body .liked .fa-thumbs-up {
+	display: inline;
+}
+
+.archived {
+	display: none;
+}
+.show-archived tr.archived {
+	display: table-row;
+	text-decoration: line-through;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  height: 34px;
+  cursor: pointer;
+  background: var(--light);
+  border: 1px solid #000000;
+}
+input[type=range]::-webkit-slider-thumb {
+  border: 1px solid black;
+  height: 34px;
+  width: 10px;
+  margin-top: -1px;
+  background: var(--secondary);
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+input[type=range] {
+  height: 34px;
+  -webkit-appearance: none;
+}
+input[type=range]:focus {
+  outline: none;
+}
+.input-group-range button {
+	width: 2em;
+} 
+@media (max-width: 575.98px) {
+	.input-group-range button {
+		width: 3em;
+	} 
+}
+
+._food.MISC ._fa-auto:before {
+	content: "\f818";
+}
+._food.DRINKS ._fa-auto:before {
+	content: "\f7a0";
+}
+._food.VEGGIES ._fa-auto:before {
+	content: "\f787";
+}
+._food.FRUITS ._fa-auto:before {
+	content: "\f5d1";
+}
+._food.CEREALS ._fa-auto:before {
+	content: "\f4d8";
+}
+._food.DAIRIES ._fa-auto:before {
+	content: "\f7ef";
+}
+._food.ANIMALS ._fa-auto:before {
+	content: "\f6d7";
+}
+._food.SEA_FOOD ._fa-auto:before {
+	content: "\f578";
+}
+._food.FATS ._fa-auto:before {
+	content: "\f7e5";
+}
+._food.SWEETS ._fa-auto:before {
+	content: "\f786";
+}
+
+.ig-UNKNOWN {
+	color: var(--warning);
+}
+.ig-UNKNOWN ._fa-ig-auto:before {
+	content: "\f059";	
+}
+.ig-LOW {
+	color: var(--success);
+}
+.ig-LOW ._fa-ig-auto:before {
+	content: "\f058";	
+}
+.ig-MEDIUM {
+	color: var(--info);
+}
+.ig-MEDIUM ._fa-ig-auto:before {
+	content: "\f05a";	
+}
+.ig-HIGH {
+	color: var(--danger);
+}
+.ig-HIGH ._fa-ig-auto:before {
+	content: "\f06a";	
+}
+

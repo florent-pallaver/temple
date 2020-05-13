@@ -75,11 +75,17 @@
 			self.setViewingDay();
 		}
 		
+		let DEFAULT_INPUT = {
+				'GRAM': {max: 2500, step: 5},
+				'MILLILITER': {max: 2500, step: 5},
+				'UNIT': {max: 50, step: 1}
+		};
 		self.initFood = function() {
 			return $http.get(FOOD_RS_URL).then(function(response) {
 				self.foods = {};
 				self.foodList = response.data;
 				self.foodList.forEach(food => self.foods[food.id] = food);
+				self.foodList.forEach(food => food.input = angular.copy(DEFAULT_INPUT[food.counting]));
 			}, onError);
 		}
 
@@ -131,6 +137,8 @@
 				self.protein += intake.protein * factor;
 				self.theoricKcal = self.fat * 9 + 4 * (self.carb + self.protein);
 				self.kcal = self.theoricKcal;
+				self.igLevel = intake.igLevel;
+				self.ig = intake.ig;
 			};
 			
 			self.reset = function() {
@@ -193,20 +201,53 @@
 		self.toggleMealEditing = function(meal) {
 			meal.editing = !meal.editing;
 			if(!meal.editing) {
-				self.foodList.forEach(food => !meal.items[food.id] && (delete meal.items[food.id]));
-				$http.put(baseUrl + '/' + self.day.id + '/meals/' + meal.time, meal.items).then(function(response) {
+				_saveMeal(meal);
+			}
+		};
+		
+		function _saveMeal(meal) {
+			return $http.put(baseUrl + '/' + self.day.id + '/meals/' + meal.time, meal.items).then(function(response) {
+				self.day.intake.add(meal.intake, -1);
+				meal.intake = response.data.intake;
+				meal.content = response.data.content;
+				initMeal(meal);
+				self.day.intake.add(meal.intake, +1);
+				computeTargetIntake();
+				meal.showContent = true;
+			}, onError);
+		}
+		
+		self.foodUpdated = function(meal, foodId) {
+			if(meal.items[foodId] !== null) {
+				meal.itemIntakes[foodId] = new Intake(self.foods[foodId], meal.items[foodId]);
+				return $http.put(baseUrl + '/' + self.day.id + '/meals/' + meal.time, meal.items).then(function(response) {
 					self.day.intake.add(meal.intake, -1);
 					meal.intake = response.data.intake;
 					meal.content = response.data.content;
-					initMeal(meal);
 					self.day.intake.add(meal.intake, +1);
 					computeTargetIntake();
 					meal.showContent = true;
-				}, onError);
-			} else {
-				self.foodList.forEach(food => !meal.items[food.id] && (meal.items[food.id] = ''));
+				}, onError)
 			}
 		};
+		
+		self.addFood = function(meal, food) {
+			meal.items[food.id] = 0;
+		};
+		
+		self.removeFood = function(meal, foodId) {
+			delete meal.items[foodId];
+			_saveMeal(meal);
+		};
+		
+		self.increase = function(meal, foodId, factor) {
+			meal.items[foodId] += factor * self.foods[foodId].input.step;
+			var input = self.foods[foodId].input;
+			if(input.max < meal.items[foodId]) {
+				input.max = meal.items[foodId];
+			}
+			return self.foodUpdated(meal, foodId);
+		}
 		
 		self.foodComparator = function(foodId1, foodId2) {
 			

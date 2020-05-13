@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,18 +25,27 @@ import diet.model.FoodData_;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
+@AutoSignedIn
 public class FoodResource extends AbstractBean<Food> {
 
+	@Inject
+	private SessionBean sessionBean;
+	
 	FoodResource() {
 		super(Food.class);
 	}
 
 	@GET
-	public List<Food> getAll() {
-		return super.getAll((cb, root) -> Arrays.asList(
+	public List<Food> getAll() throws ServiceException {
+		final List<Food> all = super.getAll((cb, root) -> Arrays.asList(
 				cb.asc(root.get(FoodData_.name)),
 				cb.asc(root.get(FoodData_.brand))
 				));
+		
+		if(sessionBean.isSignedIn()) {
+			all.sort(sessionBean.getUser());
+		}
+		return all;
 	}
 
 	@GET
@@ -60,7 +70,9 @@ public class FoodResource extends AbstractBean<Food> {
 	}
 
 	@DELETE
-	public void delete(@QueryParam("id") List<Integer> foodIds) {
+	public void delete(@QueryParam("id") List<Integer> foodIds) throws ServiceException {
+		this.sessionBean.checkIsSignedIn();
 		foodIds.forEach(super::delete);
 	}
+
 }

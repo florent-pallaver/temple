@@ -1,8 +1,8 @@
 
-<ul class="list-inline mb-0 small">
-	<li class="list-inline-item">Calories : {{$ctrl.intake.kcal |fixed0}}</li>
-	<li class="list-inline-item">Lipides : {{$ctrl.intake.fat |fixed1}}</li>
-	<li class="list-inline-item">Glucides : {{$ctrl.intake.carb |fixed1}}</li>
-	<li class="list-inline-item">Fibres : {{$ctrl.intake.fiber |fixed1}}</li>
-	<li class="list-inline-item">Protéines : {{$ctrl.intake.protein |fixed1}}</li>
+<ul class="list-inline mb-0 small d-inline _intake">
+	<li class="list-inline-item">{{$ctrl.intake.kcal |fixed0}} kcal</li>
+	<li class="list-inline-item" ng-class="{'_zero': !$ctrl.intake.protein}"><i title="Lipides" class="fas fa-bacon mr-1"></i><b>Lipides </b>{{$ctrl.intake.fat |fixed1}}</li>
+	<li class="list-inline-item" ng-class="'ig-' + $ctrl.intake.igLevel"><i title="Glucides" class="fas fa-candy-cane mr-1"></i><b>Glucides </b>{{$ctrl.intake.carb |fixed1}}<abbr class="fas _fa-ig-auto ml-1" title="{{$ctrl.intake.igLevel + ' IG: ' + $ctrl.intake.ig}}"></abbr></li>
+	<li class="list-inline-item" ng-class="{'_zero': !$ctrl.intake.protein}"><i title="Fibres" class="fas fa-shapes mr-1"></i><b>Fibres </b>{{$ctrl.intake.fiber |fixed1}}</li>
+	<li class="list-inline-item" ng-class="{'_zero': !$ctrl.intake.protein}"><i title="Protéines" class="fas fa-drumstick-bite mr-1"></i><b>Protéines </b>{{$ctrl.intake.protein |fixed1}}</li>
 </ul>

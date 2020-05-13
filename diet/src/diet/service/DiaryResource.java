@@ -33,6 +33,7 @@ import diet.model.UserDay_;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
+@AutoSignedIn
 public class DiaryResource extends AbstractBean<UserDay> {
 	
 	@Inject

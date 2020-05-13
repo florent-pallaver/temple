@@ -28,6 +28,10 @@ public class SessionBean implements Serializable {
 		this.checkIsSignedIn();
 		return this.currentUser;
 	}
+
+	public boolean isSignedIn() {
+		return this.currentUser != null;
+	}
 	
 	public void checkIsSignedIn() throws ServiceException {
 		if(currentUser == null) {

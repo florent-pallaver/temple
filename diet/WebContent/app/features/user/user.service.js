@@ -29,6 +29,14 @@
 			currentUser = user;
 		};
 		
+		self.getFoodScores = function() {
+			return $http.get(USER_RS_URL + 'scores/food');
+		}
+		
+		self.setFoodScore = function(foodId, score) {
+			return $http.put(USER_RS_URL + 'scores/food/' + foodId + '/' + score, {});
+		}
+		
 		var onError = function(response) {
 			window.alert('An error occured...');
 			console.log(response);

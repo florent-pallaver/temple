@@ -1,6 +1,5 @@
 package diet.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,41 +95,9 @@ public class Meal
 		}
 	}
 	
-//	@Override
-//	public double getProtein() {
-//		return sum(Food::getProtein);
-//	}
-//
-//	@Override
-//	public double getFat() {
-//		return sum(Food::getFat);
-//	}
-//
-//	@Override
-//	public double getCarb() {
-//		return sum(Food::getCarb);
-//	}
-//
-//	@Override
-//	public int getKCal() {
-//		return content.keySet().stream()
-//				.mapToInt(food -> food.getKCal() * content.get(food))
-//				.sum();
-//	}
-//
-//	private double sum(Function<Food, Double> getter) {
-//		return content.keySet().stream()
-//				.mapToDouble(food -> getter.apply(food) * content.get(food))
-//				.sum();
-//	}
-	
 	@XmlElement
 	List<MapEntry> getContent() {
-		final List<MapEntry> content = new ArrayList<>();
-		for(Entry<Food, Integer> entry: this.content.entrySet()) {
-			content.add(new MapEntry(entry.getKey().getId(), entry.getValue()));
-		}
-		return content;
+		return MapEntry.list(this.content);
 	}
 	
 }
