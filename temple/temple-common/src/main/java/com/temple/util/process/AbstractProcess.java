@@ -115,11 +115,19 @@ public abstract class AbstractProcess<P extends Progress, RESULT> extends Abstra
 			if (this.process != null
 					// && this.process.isAlive() && this.progress.hasStartedProcessing()
 					) {
-				this.process.destroyForcibly();
+				this.process.destroy();
 				try {
-					this.process.waitFor(AbstractProcess.DEFAULT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
+					this.process.waitFor(10, TimeUnit.SECONDS);
 				} catch (final InterruptedException e) {
 					this.ignored(e);
+				}
+				if(this.process.isAlive()) {
+					this.process.destroyForcibly();
+					try {
+						this.process.waitFor(10, TimeUnit.SECONDS);
+					} catch (final InterruptedException e) {
+						this.ignored(e);
+					}
 				}
 			}
 			this.progress.done();
@@ -128,10 +136,7 @@ public abstract class AbstractProcess<P extends Progress, RESULT> extends Abstra
 			if (this.process.isAlive()) {
 				this.warning("%s process could not be ended", this);
 			} else {
-				final int termination = this.process.exitValue();
-				if (termination != 0) {
-					this.error("%s failed with exit code %d", this, termination);
-				}
+				this.info("%s exited with code %d", this, this.process.exitValue());
 			}
 		}
 	}

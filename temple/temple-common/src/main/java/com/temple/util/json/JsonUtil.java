@@ -19,12 +19,6 @@ import com.temple.util.AnnotatedFieldCache;
 import com.temple.util.TempleUtil;
 import com.temple.util.json.JsonField.Handler;
 
-/**
- * TODOC
- *
- * @author Florent Pallaver
- * @version 1.0
- */
 public abstract class JsonUtil extends TempleUtil {
 
 	private static final Map<Class<? extends Handler>, Handler> handlerCache = new HashMap<>();
